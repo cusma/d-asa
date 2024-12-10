@@ -23,6 +23,7 @@ class AssetInfo(arc4.Struct, kw_only=True):
     issuance_date: arc4.UInt64
     maturity_date: arc4.UInt64
     suspended: arc4.Bool
+    defaulted: arc4.Bool
 
 
 class AccountInfo(arc4.Struct, kw_only=True):

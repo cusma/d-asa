@@ -757,7 +757,7 @@ class BaseDAsa(ARC4Contract):
         Returns:
             Denomination Asset ID, Outstanding principal, Unit nominal value, Day-count convention, Interest rate, Total
             supply, Circulating supply, Primary Distribution Opening Date, Primary Distribution Closure Date, Issuance
-            Date, Maturity Date, Suspended
+            Date, Maturity Date, Suspended, Defaulted
         """
         return typ.AssetInfo(
             denomination_asset_id=arc4.UInt64(self.denomination_asset_id),
@@ -776,6 +776,7 @@ class BaseDAsa(ARC4Contract):
             issuance_date=arc4.UInt64(self.issuance_date),
             maturity_date=arc4.UInt64(self.maturity_date),
             suspended=arc4.Bool(bool(self.suspended)),
+            defaulted=arc4.Bool(bool(self.defaulted)),
         )
 
     @arc4.abimethod(readonly=True)

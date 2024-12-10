@@ -68,7 +68,6 @@
   - [Get Account Units Current Value](./interface-get-account-units-current-value.md)
   - [Get Roles](./interface-get-roles.md)
   - [Get Role Config](./interface-get-role-config.md)
-  - [Get Default Status](./interface-get-default-status.md)
   - [Get Time Events](./interface-get-time-events.md)
   - [Get Time Periods](./interface-get-time-periods.md)
   - [Get Coupon Rates](./interface-get-coupon-rates.md)
