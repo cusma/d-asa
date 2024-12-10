@@ -1,0 +1,10 @@
+{
+  "name": "get_default_status",
+  "desc": "Get default status",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "bool",
+    "desc": "Defaulted"
+  }
+}

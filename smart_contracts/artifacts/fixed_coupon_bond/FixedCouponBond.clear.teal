@@ -1,0 +1,5 @@
+#pragma version 10
+
+smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.clear_state_program:
+    pushint 1 // 1
+    return

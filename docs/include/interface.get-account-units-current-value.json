@@ -1,0 +1,35 @@
+{
+  "name": "get_current_account_units_current_value",
+  "desc": "Get current account's current units value and accrued interest",
+  "readonly": true,
+  "args": [
+    {
+      "type": "address",
+      "name": "holding_address",
+      "desc": "Account Holding Address"
+    },
+    {
+      "type": "uint64",
+      "name": "units",
+      "desc": "Account's units for the current value calculation"
+    }
+  ],
+  "returns": {
+    "type": "(uint64,uint64,(uint64,uint64))",
+    "desc": "Units current value in denomination asset, Accrued interest in denomination asset, (Day count factor numerator, Day count factor denominator)"
+  },
+  "errors": [
+    {
+      "code": "NO_PRIMARY_DISTRIBUTION",
+      "message": "Primary distribution not yet executed"
+    },
+    {
+      "code": "INVALID_HOLDING_ADDRESS",
+      "message": "Invalid Holding Address"
+    },
+    {
+      "code": "INVALID_UNITS",
+      "message": "Invalid amount of units for the account"
+    }
+  ]
+}

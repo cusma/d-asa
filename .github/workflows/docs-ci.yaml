@@ -1,0 +1,32 @@
+name: Validate docs
+
+on:
+  pull_request:
+    # If not specified, types includes by default [opened, reopened, synchronize]
+    # This next line should be used in conjunction with the if statement that prevents CI jobs to run on draft PRs.
+    # ready_for_review is then added to make sure that a PR with no code change triggers CI if it's no longer a draft PR.
+    types: [ opened, reopened, synchronize, ready_for_review ]
+
+jobs:
+  validate:
+    # Preventing a job from running on draft PRs.
+    if: '! github.event.pull_request.draft'
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Check markdown linting
+        run: pre-commit run markdownlint
+
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v2
+        with:
+          mdbook-version: '0.4.43'
+
+      - name: Build docs
+        run: mdbook build
+
+      - name: Test docs
+        run: mdbook test

@@ -1,0 +1,84 @@
+{
+  "name": "asset_config",
+  "desc": "Configure the Debt Algorand Standard Asset",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint64",
+      "name": "denomination_asset_id",
+      "desc": "Denomination asset identifier"
+    },
+    {
+      "type": "uint64",
+      "name": "principal",
+      "desc": "Principal, expressed in denomination asset"
+    },
+    {
+      "type": "uint64",
+      "name": "minimum_denomination",
+      "desc": "Minimum denomination, expressed in denomination asset"
+    },
+    {
+      "type": "uint8",
+      "name": "day_count_convention_id",
+      "desc": "Day-count convention for interests calculation"
+    },
+    {
+      "type": "uint16",
+      "name": "interest_rate",
+      "desc": "Interest rates in bps"
+    },
+    {
+      "type": "uint16[]",
+      "name": "coupon_rates",
+      "desc": "Coupon interest rates in bps"
+    },
+    {
+      "type": "uint64[]",
+      "name": "time_events",
+      "desc": "Time events (strictly ascending order)"
+    },
+    {
+      "type": "(uint64,uint64)[]",
+      "name": "time_periods",
+      "desc": "Time periods of recurring time events"
+    }
+  ],
+  "returns": {
+    "type": "void"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "ALREADY_CONFIGURED",
+      "message": "D-ASA already configured"
+    },
+    {
+      "code": "INVALID_MINIMUM_DENOMINATION",
+      "message": "Minimum denomination is not a divisor of principal"
+    },
+    {
+      "code": "INVALID_DAY_COUNT_CONVENTION",
+      "message": "Invalid day-count convention ID"
+    },
+    {
+      "code": "INVALID_TIME_EVENTS_LENGTH",
+      "message": "Time events length is invalid"
+    },
+    {
+      "code": "INVALID_TIME",
+      "message": "Time events must be set in the future"
+    },
+    {
+      "code": "INVALID_SORTING",
+      "message": "Time events are not sorted correctly"
+    }
+    {
+      "code": "INVALID_TIME_PERIOD_DURATION",
+      "message": "Time period durations must be greater than zero"
+    }
+  ]
+}

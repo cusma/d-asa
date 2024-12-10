@@ -1,0 +1,39 @@
+{
+  "name": "open_account",
+  "desc": "Open D-ASA account",
+  "readonly": false,
+  "args": [
+    {
+      "type": "address",
+      "name": "holding_address",
+      "desc": "Account Holding Address"
+    },
+    {
+      "type": "address",
+      "name": "payment_address",
+      "desc": "Account Payment Address"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the account opening"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Suspended operations"
+    },
+    {
+      "code": "INVALID_HOLDING_ADDRESS",
+      "message": "Invalid account holding address"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "get_asset_metadata",
+  "desc": "Get D-ASA metadata",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "byte[]",
+    "desc": "Asset metadata"
+  }
+}

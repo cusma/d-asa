@@ -1,0 +1,5 @@
+# License
+
+```text
+{{#include ../LICENSE}}
+```

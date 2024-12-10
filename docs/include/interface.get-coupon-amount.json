@@ -1,0 +1,31 @@
+{
+  "name": "get_coupon_amount",
+  "desc": "Get the coupon payment amount",
+  "readonly": true,
+  "args": [
+    {
+      "type": "address",
+      "name": "holding_address",
+      "desc": "Account Holding Address"
+    },
+    {
+      "type": "uint64",
+      "name": "coupon",
+      "desc": "1-based coupon index for the amount"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Coupon payment amount in denomination asset"
+  },
+  "errors": [
+    {
+      "code": "INVALID_HOLDING_ADDRESS",
+      "message": "Invalid Holding Address"
+    },
+    {
+      "code": "INVALID_COUPON_INDEX",
+      "message": "Invalid 1-based coupon index"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        description: "Black: The uncompromising Python code formatter"
+        entry: poetry run black
+        language: system
+        minimum_pre_commit_version: 2.9.2
+        require_serial: true
+        types_or: [ python, pyi ]
+
+      - id: ruff
+        name: ruff
+        description: "Run 'ruff' for extremely fast Python linting"
+        entry: poetry run ruff
+        language: system
+        minimum_pre_commit_version: '0'
+        require_serial: false
+        types: [ python ]
+        args: [ "check", "--fix" ]
+        additional_dependencies: [ ]
+        files: '^(src|tests)/'
+
+      - id: mypy
+        name: mypy
+        description: '`mypy` will check Python types for correctness'
+        entry: poetry run mypy
+        language: system
+        minimum_pre_commit_version: 2.9.2
+        require_serial: true
+        types_or: [ python, pyi ]
+        additional_dependencies: [ ]
+        files: '^(src|tests)/'
+
+      # # Uncomment to enable TEAL static analysis using Tealer package
+      # - id: tealer
+      #   name: tealer
+      #   description: "Run AlgoKit `Tealer` for TEAL static analysis"
+      #   entry: algokit
+      #   language: system
+      #   args: [project, run, "audit-teal"]
+      #   require_serial: false
+      #   additional_dependencies: []
+      #   minimum_pre_commit_version: "0"
+      #   files: '^.*\.teal$'
+
+  # Markdown
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.43.0
+    hooks:
+      - id: markdownlint
+        name: markdownlint
+        description: "Checks the style of Markdown/Commonmark files."
+        entry: markdownlint
+        language: node
+        minimum_pre_commit_version: 0.15.0
+        types: [ markdown ]
+        files: '^(docs)/'
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        name: trim trailing whitespace
+        description: trims trailing whitespace.
+        entry: trailing-whitespace-fixer
+        language: python
+        minimum_pre_commit_version: 3.2.0
+        types: [ markdown ]
+        files: '^(docs)/'

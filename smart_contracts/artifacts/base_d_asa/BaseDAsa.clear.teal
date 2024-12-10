@@ -1,0 +1,5 @@
+#pragma version 10
+
+smart_contracts.base_d_asa.contract.BaseDAsa.clear_state_program:
+    pushint 1 // 1
+    return

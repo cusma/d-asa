@@ -1,0 +1,30 @@
+{
+  "name": "close_account",
+  "desc": "Close D-ASA account",
+  "readonly": false,
+  "args": [
+    {
+      "type": "address",
+      "name": "holding_address",
+      "desc": "Account Holding Address"
+    }
+  ],
+  "returns": {
+    "type": "(uint64,uint64)",
+    "desc": "Closed units, Timestamp of the account closing"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "INVALID_HOLDING_ADDRESS",
+      "message": "Invalid account holding address"
+    }
+  ]
+}

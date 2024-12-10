@@ -1,0 +1,42 @@
+{
+  "name": "set_amortizing_rates",
+  "desc": "Set principal amortizing rates",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint64[]",
+      "name": "amortizing_rates",
+      "desc": "Principal amortizing rates in bps"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the set rates"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Suspended operations"
+    },
+    {
+      "code": "INVALID_AMORTIZING_RATES_LENGTH",
+      "message": "Amortizing rates length is invalid"
+    },
+    {
+      "code": "INVALID_RATES",
+      "message": "Sum of amortizing rates must be equal to 10000 bps"
+    },
+    {
+      "code": "INVALID_PAST_RATE",
+      "message": "Past amortizing rates can not be modified"
+    }
+  ]
+}

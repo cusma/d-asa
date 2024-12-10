@@ -1,0 +1,31 @@
+{
+  "name": "get_role_config",
+  "desc": "Get role configuration",
+  "readonly": true,
+  "args": [
+    {
+      "type": "address",
+      "name": "role_address",
+      "desc": "Account Role Address"
+    },
+    {
+      "type": "uint8",
+      "name": "role",
+      "desc": "Role identifier"
+    }
+  ],
+  "returns": {
+    "type": "bytes[]",
+    "desc": "Role configuration"
+  },
+  "errors": [
+    {
+      "code": "INVALID_ROLE",
+      "message": "Invalid role identifier"
+    },
+    {
+      "code": "INVALID_ROLE_ADDRESS",
+      "message": "Invalid account role address"
+    }
+  ]
+}

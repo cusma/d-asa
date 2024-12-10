@@ -1,0 +1,22 @@
+{
+  "name": "set_asset_suspension_status",
+  "desc": "Set asset suspension status",
+  "readonly": false,
+  "args": [
+    {
+      "type": "bool",
+      "name": "suspended",
+      "desc": "Suspension status"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the set asset suspension status"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    }
+  ]
+}

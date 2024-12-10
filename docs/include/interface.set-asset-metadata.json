@@ -1,0 +1,30 @@
+{
+  "name": "set_asset_metadata",
+  "desc": "Set D-ASA metadata",
+  "readonly": false,
+  "args": [
+    {
+      "type": "byte[]",
+      "name": "metadata",
+      "desc": "Asset metadata"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the set metadata"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Asset operations are suspended"
+    }
+  ]
+}

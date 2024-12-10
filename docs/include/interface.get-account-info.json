@@ -1,0 +1,22 @@
+{
+  "name": "get_account_info",
+  "desc": "Get account account info",
+  "readonly": true,
+  "args": [
+    {
+      "type": "address",
+      "name": "holding_address",
+      "desc": "Account Holding Address"
+    }
+  ],
+  "returns": {
+    "type": "(address,uint64,uint64,uint64,bool)",
+    "desc": "Payment Address, D-ASA units, Unit nominal value, Paid coupons, Suspended"
+  },
+  "errors": [
+    {
+      "code": "INVALID_HOLDING_ADDRESS",
+      "message": "Invalid Holding Address"
+    }
+  ]
+}

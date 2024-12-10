@@ -1,0 +1,46 @@
+{
+  "name": "update_time_events",
+  "desc": "Update D-ASA variable time schedule",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint64[]",
+      "name": "time_events",
+      "desc": "D-ASA time events (strictly ascending order)"
+    }
+  ],
+  "returns": {
+    "type": "(uint64, uint64, uint64, uint64, uint64)",
+    "desc": "Primary distribution opening date, Primary distribution closure date, Issuance date, Maturity date, Timestamp of the update"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Suspended operations"
+    },
+    {
+      "code": "INVALID_TIME_EVENTS_LENGTH",
+      "message": "Time events length is invalid"
+    },
+    {
+      "code": "INVALID_TIME",
+      "message": "Time events must be set in the future"
+    },
+    {
+      "code": "INVALID_SORTING",
+      "message": "Time events are not sorted correctly"
+    },
+    {
+      "code": "INVALID_PAST_EVENT",
+      "message": "Past time events can not be modified"
+    }
+  ]
+}

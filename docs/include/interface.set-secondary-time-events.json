@@ -1,0 +1,50 @@
+{
+  "name": "set_secondary_time_events",
+  "desc": "Set secondary market time schedule",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint64[]",
+      "name": "secondary_market_time_events",
+      "desc": "Secondary market time events (strictly ascending order)"
+    }
+  ],
+  "returns": {
+    "type": "(uint64, uint64)",
+    "desc": "Secondary market opening date, Secondary market closure date"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Suspended operations"
+    },
+    {
+      "code": "INVALID_TIME_EVENTS_LENGTH",
+      "message": "Time events length is invalid"
+    },
+    {
+      "code": "INVALID_SORTING",
+      "message": "Time events are not sorted correctly"
+    },
+    {
+      "code": "INVALID_SECONDARY_OPENING_DATE",
+      "message": "Invalid secondary market opening date"
+    },
+    {
+      "code": "INVALID_SECONDARY_CLOSURE_DATE",
+      "message": "Invalid secondary market closure date"
+    },
+    {
+      "code": "INVALID_PAST_EVENT",
+      "message": "Past time events can not be modified"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "update_interest_rate",
+  "desc": "Update variable interest rates in bps",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint16",
+      "name": "interest_rate",
+      "desc": "Interest ratee in bps"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the update"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Asset operations are suspended"
+    }
+  ]
+}

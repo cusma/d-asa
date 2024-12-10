@@ -1,0 +1,34 @@
+{
+  "name": "update_time_periods",
+  "desc": "Update D-ASA variable time periods",
+  "readonly": false,
+  "args": [
+    {
+      "type": "(uint64,uint64)[]",
+      "name": "time_periods",
+      "desc": "D-ASA time periods"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the update"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Suspended operations"
+    },
+    {
+      "code": "INVALID_TIME_PERIOD",
+      "message": "Time period durations must be greater than zero"
+    }
+  ]
+}

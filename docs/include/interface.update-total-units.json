@@ -1,0 +1,30 @@
+{
+  "name": "update_total_units",
+  "desc": "Update D-ASA total_units",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint64",
+      "name": "total_units",
+      "desc": "D-ASA total units"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the update"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Asset operations are suspended"
+    }
+  ]
+}

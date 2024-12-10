@@ -1,0 +1,22 @@
+{
+  "name": "set_default_status",
+  "desc": "Set D-ASA default status",
+  "readonly": false,
+  "args": [
+    {
+      "type": "bool",
+      "name": "defaulted",
+      "desc": "Default status"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the set status"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    }
+  ]
+}
