@@ -97,6 +97,10 @@ class BaseDAsa(ARC4Contract):
         return self.status == cfg.STATUS_ENDED
 
     @subroutine
+    def assert_is_not_defaulted(self) -> None:
+        assert not self.defaulted, err.DEFAULTED
+
+    @subroutine
     def assert_caller_is_arranger(self) -> None:
         assert Txn.sender == self.arranger, err.UNAUTHORIZED
 
@@ -263,7 +267,7 @@ class BaseDAsa(ARC4Contract):
         # The reference implementation grants transfer right on secondary market to D-ASA owners. Other implementations
         # may relay on other roles or external Apps (e.g. an order book or a transfer agent) through C2C calls.
         assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
-        assert not self.defaulted, err.DEFAULTED
+        self.assert_is_not_defaulted()
         assert not self.suspended, err.SUSPENDED
         self.assert_valid_holding_address(sender_holding_address)
         self.assert_valid_holding_address(receiver_holding_address)
@@ -329,7 +333,7 @@ class BaseDAsa(ARC4Contract):
     def assert_pay_principal_authorization(self, holding_address: arc4.Address) -> None:
         # The reference implementation does not restrict caller authorization
         assert self.status_is_active(), err.UNAUTHORIZED
-        assert not self.defaulted, err.DEFAULTED
+        self.assert_is_not_defaulted()
         assert not self.suspended, err.SUSPENDED
         self.assert_valid_holding_address(holding_address)
         units = self.account[holding_address].units.native
@@ -458,7 +462,7 @@ class BaseDAsa(ARC4Contract):
         """
         self.assert_caller_is_arranger()
         assert not self.status_is_ended(), err.UNAUTHORIZED
-        assert not self.defaulted, err.DEFAULTED
+        self.assert_is_not_defaulted()
 
         assert secondary_market_time_events.length == UInt64(
             cfg.SECONDARY_MARKET_SCHEDULE_LIMITS
@@ -514,7 +518,7 @@ class BaseDAsa(ARC4Contract):
             INVALID_ROLE_ADDRESS: Invalid account role address
         """
         self.assert_caller_is_arranger()
-        assert not self.defaulted, err.DEFAULTED
+        self.assert_is_not_defaulted()
         assert role.native in (
             UInt64(cst.ROLE_ARRANGER),
             UInt64(cst.ROLE_ACCOUNT_MANAGER),
@@ -566,7 +570,7 @@ class BaseDAsa(ARC4Contract):
             INVALID_ROLE_ADDRESS: Invalid account role address
         """
         self.assert_caller_is_arranger()
-        assert not self.defaulted, err.DEFAULTED
+        self.assert_is_not_defaulted()
         assert role.native in (
             UInt64(cst.ROLE_ACCOUNT_MANAGER),
             UInt64(cst.ROLE_PRIMARY_DEALER),
@@ -613,7 +617,7 @@ class BaseDAsa(ARC4Contract):
         """
         self.assert_caller_is_account_manager()
         assert not self.status_is_ended(), err.UNAUTHORIZED
-        assert not self.defaulted, err.DEFAULTED
+        self.assert_is_not_defaulted()
         assert not self.suspended, err.SUSPENDED
         assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
 
@@ -645,7 +649,7 @@ class BaseDAsa(ARC4Contract):
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
         self.assert_caller_is_account_manager()
-        assert not self.defaulted, err.DEFAULTED
+        self.assert_is_not_defaulted()
         self.assert_valid_holding_address(holding_address)
 
         closed_units = self.account[holding_address].units.native
@@ -684,7 +688,7 @@ class BaseDAsa(ARC4Contract):
         # implementations may relay on other roles or external Apps (e.g. an auction) through C2C calls.
         self.assert_caller_is_primary_dealer()
         self.assert_valid_holding_address(holding_address)
-        assert not self.defaulted, err.DEFAULTED
+        self.assert_is_not_defaulted()
         assert not self.suspended, err.SUSPENDED
         assert units.native > 0, err.ZERO_UNITS
         assert (
