@@ -50,20 +50,20 @@ def test_from_issuance(
         ),
     ).return_value.accrued_interest
 
-    coupon_amount = fixed_coupon_bond_client_ongoing.get_coupon_amount(
+    coupon_amount = fixed_coupon_bond_client_ongoing.get_payment_amount(
         holding_address=account_a.holding_address,
-        coupon=due_coupons + 1,
+        payment_index=due_coupons + 1,
         transaction_parameters=OnCompleteCallParameters(
             boxes=[
                 (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
                 (fixed_coupon_bond_client_ongoing.app_id, sc_cst.BOX_ID_COUPON_RATES),
             ]
         ),
-    ).return_value
+    ).return_value.interest
     assert accrued_interest == coupon_amount // 2
 
 
-def test_from_lastes_coupon_due_date(
+def test_from_latest_coupon_due_date(
     algorand_client: AlgorandClient,
     account_a: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
@@ -105,16 +105,16 @@ def test_from_lastes_coupon_due_date(
         ),
     ).return_value.accrued_interest
 
-    coupon_amount = fixed_coupon_bond_client_ongoing.get_coupon_amount(
+    coupon_amount = fixed_coupon_bond_client_ongoing.get_payment_amount(
         holding_address=account_a.holding_address,
-        coupon=due_coupons + 1,
+        payment_index=due_coupons + 1,
         transaction_parameters=OnCompleteCallParameters(
             boxes=[
                 (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
                 (fixed_coupon_bond_client_ongoing.app_id, sc_cst.BOX_ID_COUPON_RATES),
             ]
         ),
-    ).return_value
+    ).return_value.interest
     assert accrued_interest == coupon_amount // 10
 
 

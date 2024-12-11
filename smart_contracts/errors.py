@@ -50,8 +50,8 @@ NOT_MATURE = "Not mature"
 # Get Current Units Value
 NO_PRIMARY_DISTRIBUTION = "Primary distribution not yet executed"
 
-# Get Coupon Amount
-INVALID_COUPON_INDEX = "Invalid 1-based coupon index"
+# Get Payment Amount
+INVALID_PAYMENT_INDEX = "Invalid 1-based payment index"
 NO_UNITS = "No D-ASA units"
 
 # Get Accrued Interest Amount

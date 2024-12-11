@@ -360,31 +360,43 @@ class FixedCouponBond(
         return coupon_rates
 
     @arc4.abimethod(readonly=True)
-    def get_coupon_amount(
-        self, holding_address: arc4.Address, coupon: arc4.UInt64
-    ) -> arc4.UInt64:
+    def get_payment_amount(
+        self, holding_address: arc4.Address, payment_index: arc4.UInt64
+    ) -> typ.PaymentAmounts:
         """
-        Get the coupon payment amount
+        Get the payment amount
 
         Args:
             holding_address: Account Holding Address
-            coupon: 1-based coupon index for the amount
+            payment_index: 1-based payment index for the amount
 
         Returns:
-            Coupon payment amount in denomination asset
+            Interest amount in denomination asset, Principal amount in denomination asset
 
         Raises:
             INVALID_HOLDING_ADDRESS: Invalid account holding address
-            INVALID_COUPON_INDEX: Invalid 1-based coupon index
+            INVALID_PAYMENT_INDEX: Invalid 1-based payment index
         """
         assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-        coupon_amount = UInt64()
+        interest_amount = UInt64()
+        principal_amount = UInt64()
         if self.status_is_active():
-            assert 1 <= coupon.native <= self.total_coupons, err.INVALID_COUPON_INDEX
-            coupon_amount = self.coupon_interest_amount(
-                self.account_total_units_value(holding_address), coupon.native
-            )
-        return arc4.UInt64(coupon_amount)
+            assert (
+                1 <= payment_index.native <= self.total_coupons + 1
+            ), err.INVALID_PAYMENT_INDEX
+            if payment_index.native <= self.total_coupons:
+                # Coupon Payment
+                interest_amount = self.coupon_interest_amount(
+                    self.account_total_units_value(holding_address),
+                    payment_index.native,
+                )
+            else:
+                # Principal Payment
+                principal_amount = self.account_total_units_value(holding_address)
+        return typ.PaymentAmounts(
+            interest=arc4.UInt64(interest_amount),
+            principal=arc4.UInt64(principal_amount),
+        )
 
     @arc4.abimethod(readonly=True)
     def get_coupons_status(self) -> typ.CouponsInfo:

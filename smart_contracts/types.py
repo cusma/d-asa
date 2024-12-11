@@ -53,6 +53,13 @@ class CouponsInfo(arc4.Struct, kw_only=True):
     all_due_coupons_paid: arc4.Bool
 
 
+class PaymentAmounts(arc4.Struct, kw_only=True):
+    """D-ASA Payment Amounts"""
+
+    interest: arc4.UInt64
+    principal: arc4.UInt64
+
+
 class PaymentResult(arc4.Struct, kw_only=True):
     """D-ASA Payment Result"""
 

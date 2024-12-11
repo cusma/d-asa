@@ -2,7 +2,7 @@
 
 smart_contracts.base_d_asa.contract.BaseDAsa.approval_program:
     intcblock 0 1 8 40
-    bytecblock 0x151f7c75 "circulating_units" "defaulted" "status" "unit_value" "total_units" "suspended" 0x52333023 "arranger" "denomination_asset_id" "day_count_convention" "primary_distribution_opening_date" "primary_distribution_closure_date" "issuance_date" "secondary_market_opening_date" "secondary_market_closure_date" "maturity_date" "metadata" "interest_rate" "total_coupons" 0x74696d654576656e7473 0x52343023 0x52353023 0x52363023 0x52373023 0x0000000000000000 0x636f75706f6e5261746573 0x068101
+    bytecblock 0x151f7c75 "circulating_units" "defaulted" "status" "unit_value" "total_units" "suspended" 0x52333023 "arranger" "denomination_asset_id" "day_count_convention" "primary_distribution_opening_date" "primary_distribution_closure_date" "issuance_date" "secondary_market_opening_date" "secondary_market_closure_date" "maturity_date" "metadata" "interest_rate" "total_coupons" 0x74696d654576656e7473 0x52343023 0x52353023 0x52363023 0x52373023 0x0000000000000000 0x00 0x636f75706f6e5261746573 0x068101
     txn ApplicationID
     bnz main_after_if_else@2
     callsub __init__
@@ -123,7 +123,7 @@ __puya_arc4_router__:
     proto 0 1
     txn NumAppArgs
     bz __puya_arc4_router___after_if_else@21
-    pushbytess 0x63f99589 0xeae05031 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0xe0f2be50 0xed02759f 0xfad2173e 0x08efea35 0xddcec07b // method "asset_create(address,byte[])void", method "asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()byte[]"
+    pushbytess 0x63f99589 0xeae05031 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x301dd919 0xed02759f 0xfad2173e 0x08efea35 0xddcec07b // method "asset_create(address,byte[])void", method "asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,bool)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()byte[]"
     txna ApplicationArgs 0
     match __puya_arc4_router___asset_create_route@2 __puya_arc4_router___asset_config_route@3 __puya_arc4_router___set_secondary_time_events_route@4 __puya_arc4_router___assign_role_route@5 __puya_arc4_router___revoke_role_route@6 __puya_arc4_router___open_account_route@7 __puya_arc4_router___close_account_route@8 __puya_arc4_router___primary_distribution_route@9 __puya_arc4_router___set_asset_suspension_route@10 __puya_arc4_router___set_account_suspension_route@11 __puya_arc4_router___set_default_status_route@12 __puya_arc4_router___get_asset_info_route@13 __puya_arc4_router___get_account_info_route@14 __puya_arc4_router___get_time_events_route@15 __puya_arc4_router___get_secondary_market_schedule_route@16 __puya_arc4_router___get_asset_metadata_route@17
     intc_0 // 0
@@ -380,7 +380,7 @@ __puya_arc4_router___get_asset_info_route@13:
     retsub
 
 __puya_arc4_router___get_account_info_route@14:
-    // smart_contracts/base_d_asa/contract.py:781
+    // smart_contracts/base_d_asa/contract.py:782
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -390,7 +390,7 @@ __puya_arc4_router___get_account_info_route@14:
     // smart_contracts/base_d_asa/contract.py:26
     // class BaseDAsa(ARC4Contract):
     txna ApplicationArgs 1
-    // smart_contracts/base_d_asa/contract.py:781
+    // smart_contracts/base_d_asa/contract.py:782
     // @arc4.abimethod(readonly=True)
     callsub get_account_info
     bytec_0 // 0x151f7c75
@@ -401,7 +401,7 @@ __puya_arc4_router___get_account_info_route@14:
     retsub
 
 __puya_arc4_router___get_time_events_route@15:
-    // smart_contracts/base_d_asa/contract.py:798
+    // smart_contracts/base_d_asa/contract.py:799
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -417,7 +417,7 @@ __puya_arc4_router___get_time_events_route@15:
     retsub
 
 __puya_arc4_router___get_secondary_market_schedule_route@16:
-    // smart_contracts/base_d_asa/contract.py:811
+    // smart_contracts/base_d_asa/contract.py:812
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -433,7 +433,7 @@ __puya_arc4_router___get_secondary_market_schedule_route@16:
     retsub
 
 __puya_arc4_router___get_asset_metadata_route@17:
-    // smart_contracts/base_d_asa/contract.py:818
+    // smart_contracts/base_d_asa/contract.py:819
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -608,10 +608,10 @@ asset_config_bool_merge@4:
     app_global_put
     // smart_contracts/base_d_asa/contract.py:415
     // self.coupon_rates.value = coupon_rates.copy()
-    bytec 26 // 0x636f75706f6e5261746573
+    bytec 27 // 0x636f75706f6e5261746573
     box_del
     pop
-    bytec 26 // 0x636f75706f6e5261746573
+    bytec 27 // 0x636f75706f6e5261746573
     frame_dig -3
     box_put
     // smart_contracts/base_d_asa/contract.py:419
@@ -1635,7 +1635,7 @@ open_account:
     concat
     // smart_contracts/base_d_asa/contract.py:621
     // suspended=arc4.Bool(),
-    pushbytes 0x00
+    bytec 26 // 0x00
     // smart_contracts/base_d_asa/contract.py:616-622
     // self.account[holding_address] = typ.AccountInfo(
     //     payment_address=payment_address,
@@ -2468,11 +2468,21 @@ get_asset_info:
     bytec 6 // "suspended"
     app_global_get_ex
     assert // check self.suspended exists
-    pushbytes 0x00
+    bytec 26 // 0x00
     intc_0 // 0
     uncover 2
     setbit
-    // smart_contracts/base_d_asa/contract.py:762-779
+    // smart_contracts/base_d_asa/contract.py:779
+    // defaulted=arc4.Bool(bool(self.defaulted)),
+    intc_0 // 0
+    bytec_2 // "defaulted"
+    app_global_get_ex
+    assert // check self.defaulted exists
+    bytec 26 // 0x00
+    intc_0 // 0
+    uncover 2
+    setbit
+    // smart_contracts/base_d_asa/contract.py:762-780
     // return typ.AssetInfo(
     //     denomination_asset_id=arc4.UInt64(self.denomination_asset_id),
     //     outstanding_principal=arc4.UInt64(self.circulating_units * self.unit_value),
@@ -2490,8 +2500,11 @@ get_asset_info:
     //     issuance_date=arc4.UInt64(self.issuance_date),
     //     maturity_date=arc4.UInt64(self.maturity_date),
     //     suspended=arc4.Bool(bool(self.suspended)),
+    //     defaulted=arc4.Bool(bool(self.defaulted)),
     // )
-    uncover 11
+    uncover 12
+    uncover 12
+    concat
     uncover 11
     concat
     uncover 10
@@ -2513,17 +2526,21 @@ get_asset_info:
     uncover 2
     concat
     swap
-    concat
+    intc_0 // 0
+    getbit
+    pushint 601 // 601
+    swap
+    setbit
     retsub
 
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_account_info(holding_address: bytes) -> bytes:
 get_account_info:
-    // smart_contracts/base_d_asa/contract.py:781-782
+    // smart_contracts/base_d_asa/contract.py:782-783
     // @arc4.abimethod(readonly=True)
     // def get_account_info(self, holding_address: arc4.Address) -> typ.AccountInfo:
     proto 1 1
-    // smart_contracts/base_d_asa/contract.py:795
+    // smart_contracts/base_d_asa/contract.py:796
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 7 // 0x52333023
     frame_dig -1
@@ -2532,7 +2549,7 @@ get_account_info:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/base_d_asa/contract.py:796
+    // smart_contracts/base_d_asa/contract.py:797
     // return self.account[holding_address]
     box_get
     assert // check self.account entry exists
@@ -2541,18 +2558,18 @@ get_account_info:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_time_events() -> bytes:
 get_time_events:
-    // smart_contracts/base_d_asa/contract.py:798-799
+    // smart_contracts/base_d_asa/contract.py:799-800
     // @arc4.abimethod(readonly=True)
     // def get_time_events(self) -> typ.TimeEvents:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:806
+    // smart_contracts/base_d_asa/contract.py:807
     // time_events = typ.TimeEvents()
     pushbytes 0x0000
-    // smart_contracts/base_d_asa/contract.py:807
+    // smart_contracts/base_d_asa/contract.py:808
     // if self.status_is_active():
     callsub status_is_active
     bz get_time_events_after_if_else@2
-    // smart_contracts/base_d_asa/contract.py:808
+    // smart_contracts/base_d_asa/contract.py:809
     // time_events = self.time_events.value.copy()
     bytec 20 // 0x74696d654576656e7473
     box_get
@@ -2561,7 +2578,7 @@ get_time_events:
     assert // check self.time_events exists
 
 get_time_events_after_if_else@2:
-    // smart_contracts/base_d_asa/contract.py:809
+    // smart_contracts/base_d_asa/contract.py:810
     // return time_events
     frame_dig 0
     swap
@@ -2570,25 +2587,25 @@ get_time_events_after_if_else@2:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_secondary_market_schedule() -> bytes:
 get_secondary_market_schedule:
-    // smart_contracts/base_d_asa/contract.py:811-812
+    // smart_contracts/base_d_asa/contract.py:812-813
     // @arc4.abimethod(readonly=True)
     // def get_secondary_market_schedule(self) -> typ.TimeEvents:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:814
+    // smart_contracts/base_d_asa/contract.py:815
     // arc4.UInt64(self.secondary_market_opening_date),
     intc_0 // 0
     bytec 14 // "secondary_market_opening_date"
     app_global_get_ex
     assert // check self.secondary_market_opening_date exists
     itob
-    // smart_contracts/base_d_asa/contract.py:815
+    // smart_contracts/base_d_asa/contract.py:816
     // arc4.UInt64(self.secondary_market_closure_date),
     intc_0 // 0
     bytec 15 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
     itob
-    // smart_contracts/base_d_asa/contract.py:813-816
+    // smart_contracts/base_d_asa/contract.py:814-817
     // return typ.TimeEvents(
     //     arc4.UInt64(self.secondary_market_opening_date),
     //     arc4.UInt64(self.secondary_market_closure_date),
@@ -2602,11 +2619,11 @@ get_secondary_market_schedule:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_asset_metadata() -> bytes:
 get_asset_metadata:
-    // smart_contracts/base_d_asa/contract.py:818-819
+    // smart_contracts/base_d_asa/contract.py:819-820
     // @arc4.abimethod(readonly=True)
     // def get_asset_metadata(self) -> typ.AssetMetadata:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:820
+    // smart_contracts/base_d_asa/contract.py:821
     // return typ.AssetMetadata(self.metadata)
     intc_0 // 0
     bytec 17 // "metadata"
@@ -2638,9 +2655,9 @@ ensure_budget_while_top@1:
     itxn_field TypeEnum
     pushint 5 // DeleteApplication
     itxn_field OnCompletion
-    bytec 27 // 0x068101
+    bytec 28 // 0x068101
     itxn_field ApprovalProgram
-    bytec 27 // 0x068101
+    bytec 28 // 0x068101
     itxn_field ClearStateProgram
     frame_dig -1
     switch ensure_budget_switch_case_0@3 ensure_budget_switch_case_1@4

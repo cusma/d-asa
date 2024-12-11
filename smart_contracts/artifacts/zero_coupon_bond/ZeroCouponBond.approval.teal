@@ -1,8 +1,8 @@
 #pragma version 10
 
 smart_contracts.zero_coupon_bond.contract.ZeroCouponBond.approval_program:
-    intcblock 0 1 8 100 448 86400
-    bytecblock 0x52333023 0x151f7c75 "circulating_units" "defaulted" "maturity_date" "issuance_date" "suspended" 0x0000000000000000 "denomination_asset_id" "primary_distribution_opening_date" "status" "unit_value" "day_count_convention" "total_units" "interest_rate" "secondary_market_opening_date" "secondary_market_closure_date" 0x00 "arranger" "primary_distribution_closure_date" "metadata" "total_coupons" 0x74696d654576656e7473 0x52343023 0x52353023 0x52363023 0x52373023 0x636f75706f6e5261746573 0x068101
+    intcblock 0 1 8 100 448 10000 86400
+    bytecblock 0x52333023 0x151f7c75 "circulating_units" "defaulted" "maturity_date" "issuance_date" "suspended" 0x0000000000000000 "denomination_asset_id" "interest_rate" "primary_distribution_opening_date" "status" 0x00 "unit_value" "day_count_convention" "total_units" "secondary_market_opening_date" "secondary_market_closure_date" "arranger" "primary_distribution_closure_date" "metadata" "total_coupons" 0x74696d654576656e7473 0x52343023 0x52353023 0x52363023 0x52373023 0x636f75706f6e5261746573 0x068101
     txn ApplicationID
     bnz main_after_if_else@2
     callsub __init__
@@ -65,12 +65,12 @@ smart_contracts.base_d_asa.contract.BaseDAsa.__init__:
     app_global_put
     // smart_contracts/base_d_asa/contract.py:55
     // self.unit_value = UInt64()
-    bytec 11 // "unit_value"
+    bytec 13 // "unit_value"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:56
     // self.day_count_convention = UInt64()
-    bytec 12 // "day_count_convention"
+    bytec 14 // "day_count_convention"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:58-59
@@ -82,7 +82,7 @@ smart_contracts.base_d_asa.contract.BaseDAsa.__init__:
     // smart_contracts/base_d_asa/contract.py:61-62
     // # Supply
     // self.total_units = UInt64()
-    bytec 13 // "total_units"
+    bytec 15 // "total_units"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:63
@@ -93,7 +93,7 @@ smart_contracts.base_d_asa.contract.BaseDAsa.__init__:
     // smart_contracts/base_d_asa/contract.py:65-66
     // # Interest
     // self.interest_rate = UInt64()
-    bytec 14 // "interest_rate"
+    bytec 9 // "interest_rate"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:70
@@ -103,7 +103,7 @@ smart_contracts.base_d_asa.contract.BaseDAsa.__init__:
     app_global_put
     // smart_contracts/base_d_asa/contract.py:74
     // self.primary_distribution_opening_date = UInt64()
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:75
@@ -118,12 +118,12 @@ smart_contracts.base_d_asa.contract.BaseDAsa.__init__:
     app_global_put
     // smart_contracts/base_d_asa/contract.py:77
     // self.secondary_market_opening_date = UInt64()
-    bytec 15 // "secondary_market_opening_date"
+    bytec 16 // "secondary_market_opening_date"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:78
     // self.secondary_market_closure_date = UInt64()
-    bytec 16 // "secondary_market_closure_date"
+    bytec 17 // "secondary_market_closure_date"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:79
@@ -134,7 +134,7 @@ smart_contracts.base_d_asa.contract.BaseDAsa.__init__:
     // smart_contracts/base_d_asa/contract.py:81-82
     // # Status
     // self.status = UInt64(cfg.STATUS_EMPTY)
-    bytec 10 // "status"
+    bytec 11 // "status"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:83
@@ -164,10 +164,10 @@ __puya_arc4_router__:
     // ):
     proto 0 1
     txn NumAppArgs
-    bz __puya_arc4_router___after_if_else@24
-    pushbytess 0x4fd6a3cc 0x9c76b6a3 0x44363d49 0x63f99589 0xeae05031 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0xe0f2be50 0xed02759f 0xfad2173e 0x08efea35 0xddcec07b // method "asset_transfer(address,address,uint64)uint64", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "asset_create(address,byte[])void", method "asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()byte[]"
+    bz __puya_arc4_router___after_if_else@25
+    pushbytess 0x4fd6a3cc 0x9c76b6a3 0x44363d49 0x2e2877af 0x63f99589 0xeae05031 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x301dd919 0xed02759f 0xfad2173e 0x08efea35 0xddcec07b // method "asset_transfer(address,address,uint64)uint64", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_payment_amount(address,uint64)(uint64,uint64)", method "asset_create(address,byte[])void", method "asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,bool)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()byte[]"
     txna ApplicationArgs 0
-    match __puya_arc4_router___asset_transfer_route@2 __puya_arc4_router___pay_principal_route@3 __puya_arc4_router___get_account_units_current_value_route@4 __puya_arc4_router___asset_create_route@5 __puya_arc4_router___asset_config_route@6 __puya_arc4_router___set_secondary_time_events_route@7 __puya_arc4_router___assign_role_route@8 __puya_arc4_router___revoke_role_route@9 __puya_arc4_router___open_account_route@10 __puya_arc4_router___close_account_route@11 __puya_arc4_router___primary_distribution_route@12 __puya_arc4_router___set_asset_suspension_route@13 __puya_arc4_router___set_account_suspension_route@14 __puya_arc4_router___set_default_status_route@15 __puya_arc4_router___get_asset_info_route@16 __puya_arc4_router___get_account_info_route@17 __puya_arc4_router___get_time_events_route@18 __puya_arc4_router___get_secondary_market_schedule_route@19 __puya_arc4_router___get_asset_metadata_route@20
+    match __puya_arc4_router___asset_transfer_route@2 __puya_arc4_router___pay_principal_route@3 __puya_arc4_router___get_account_units_current_value_route@4 __puya_arc4_router___get_payment_amount_route@5 __puya_arc4_router___asset_create_route@6 __puya_arc4_router___asset_config_route@7 __puya_arc4_router___set_secondary_time_events_route@8 __puya_arc4_router___assign_role_route@9 __puya_arc4_router___revoke_role_route@10 __puya_arc4_router___open_account_route@11 __puya_arc4_router___close_account_route@12 __puya_arc4_router___primary_distribution_route@13 __puya_arc4_router___set_asset_suspension_route@14 __puya_arc4_router___set_account_suspension_route@15 __puya_arc4_router___set_default_status_route@16 __puya_arc4_router___get_asset_info_route@17 __puya_arc4_router___get_account_info_route@18 __puya_arc4_router___get_time_events_route@19 __puya_arc4_router___get_secondary_market_schedule_route@20 __puya_arc4_router___get_asset_metadata_route@21
     intc_0 // 0
     retsub
 
@@ -262,7 +262,37 @@ __puya_arc4_router___get_account_units_current_value_route@4:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___asset_create_route@5:
+__puya_arc4_router___get_payment_amount_route@5:
+    // smart_contracts/zero_coupon_bond/contract.py:220
+    // @arc4.abimethod(readonly=True)
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/zero_coupon_bond/contract.py:19-27
+    // class ZeroCouponBond(
+    //     BaseDAsa,
+    //     state_totals=StateTotals(
+    //         global_bytes=cfg.GLOBAL_BYTES,
+    //         global_uints=cfg.GLOBAL_UINTS,
+    //         local_bytes=cfg.LOCAL_BYTES,
+    //         local_uints=cfg.LOCAL_UINTS,
+    //     ),
+    // ):
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    // smart_contracts/zero_coupon_bond/contract.py:220
+    // @arc4.abimethod(readonly=True)
+    callsub get_payment_amount
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    retsub
+
+__puya_arc4_router___asset_create_route@6:
     // smart_contracts/base_d_asa/contract.py:344
     // @arc4.abimethod(create="require")
     txn OnCompletion
@@ -289,7 +319,7 @@ __puya_arc4_router___asset_create_route@5:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___asset_config_route@6:
+__puya_arc4_router___asset_config_route@7:
     // smart_contracts/base_d_asa/contract.py:356
     // @arc4.abimethod
     txn OnCompletion
@@ -321,7 +351,7 @@ __puya_arc4_router___asset_config_route@6:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___set_secondary_time_events_route@7:
+__puya_arc4_router___set_secondary_time_events_route@8:
     // smart_contracts/base_d_asa/contract.py:434
     // @arc4.abimethod
     txn OnCompletion
@@ -350,7 +380,7 @@ __puya_arc4_router___set_secondary_time_events_route@7:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___assign_role_route@8:
+__puya_arc4_router___assign_role_route@9:
     // smart_contracts/base_d_asa/contract.py:491
     // @arc4.abimethod
     txn OnCompletion
@@ -381,7 +411,7 @@ __puya_arc4_router___assign_role_route@8:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___revoke_role_route@9:
+__puya_arc4_router___revoke_role_route@10:
     // smart_contracts/base_d_asa/contract.py:546
     // @arc4.abimethod
     txn OnCompletion
@@ -411,7 +441,7 @@ __puya_arc4_router___revoke_role_route@9:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___open_account_route@10:
+__puya_arc4_router___open_account_route@11:
     // smart_contracts/base_d_asa/contract.py:590
     // @arc4.abimethod
     txn OnCompletion
@@ -441,7 +471,7 @@ __puya_arc4_router___open_account_route@10:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___close_account_route@11:
+__puya_arc4_router___close_account_route@12:
     // smart_contracts/base_d_asa/contract.py:625
     // @arc4.abimethod
     txn OnCompletion
@@ -470,7 +500,7 @@ __puya_arc4_router___close_account_route@11:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___primary_distribution_route@12:
+__puya_arc4_router___primary_distribution_route@13:
     // smart_contracts/base_d_asa/contract.py:655
     // @arc4.abimethod
     txn OnCompletion
@@ -500,7 +530,7 @@ __puya_arc4_router___primary_distribution_route@12:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___set_asset_suspension_route@13:
+__puya_arc4_router___set_asset_suspension_route@14:
     // smart_contracts/base_d_asa/contract.py:697
     // @arc4.abimethod
     txn OnCompletion
@@ -529,7 +559,7 @@ __puya_arc4_router___set_asset_suspension_route@13:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___set_account_suspension_route@14:
+__puya_arc4_router___set_account_suspension_route@15:
     // smart_contracts/base_d_asa/contract.py:715
     // @arc4.abimethod
     txn OnCompletion
@@ -559,7 +589,7 @@ __puya_arc4_router___set_account_suspension_route@14:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___set_default_status_route@15:
+__puya_arc4_router___set_default_status_route@16:
     // smart_contracts/base_d_asa/contract.py:738
     // @arc4.abimethod
     txn OnCompletion
@@ -584,7 +614,7 @@ __puya_arc4_router___set_default_status_route@15:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___get_asset_info_route@16:
+__puya_arc4_router___get_asset_info_route@17:
     // smart_contracts/base_d_asa/contract.py:752
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
@@ -600,8 +630,8 @@ __puya_arc4_router___get_asset_info_route@16:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___get_account_info_route@17:
-    // smart_contracts/base_d_asa/contract.py:781
+__puya_arc4_router___get_account_info_route@18:
+    // smart_contracts/base_d_asa/contract.py:782
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -619,7 +649,7 @@ __puya_arc4_router___get_account_info_route@17:
     //     ),
     // ):
     txna ApplicationArgs 1
-    // smart_contracts/base_d_asa/contract.py:781
+    // smart_contracts/base_d_asa/contract.py:782
     // @arc4.abimethod(readonly=True)
     callsub get_account_info
     bytec_1 // 0x151f7c75
@@ -629,8 +659,8 @@ __puya_arc4_router___get_account_info_route@17:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___get_time_events_route@18:
-    // smart_contracts/base_d_asa/contract.py:798
+__puya_arc4_router___get_time_events_route@19:
+    // smart_contracts/base_d_asa/contract.py:799
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -645,8 +675,8 @@ __puya_arc4_router___get_time_events_route@18:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___get_secondary_market_schedule_route@19:
-    // smart_contracts/base_d_asa/contract.py:811
+__puya_arc4_router___get_secondary_market_schedule_route@20:
+    // smart_contracts/base_d_asa/contract.py:812
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -661,8 +691,8 @@ __puya_arc4_router___get_secondary_market_schedule_route@19:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___get_asset_metadata_route@20:
-    // smart_contracts/base_d_asa/contract.py:818
+__puya_arc4_router___get_asset_metadata_route@21:
+    // smart_contracts/base_d_asa/contract.py:819
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -677,7 +707,7 @@ __puya_arc4_router___get_asset_metadata_route@20:
     intc_1 // 1
     retsub
 
-__puya_arc4_router___after_if_else@24:
+__puya_arc4_router___after_if_else@25:
     // smart_contracts/zero_coupon_bond/contract.py:19-27
     // class ZeroCouponBond(
     //     BaseDAsa,
@@ -806,7 +836,7 @@ assert_is_secondary_market_open:
     // smart_contracts/base_d_asa/contract.py:172
     // and self.secondary_market_opening_date
     intc_0 // 0
-    bytec 15 // "secondary_market_opening_date"
+    bytec 16 // "secondary_market_opening_date"
     app_global_get_ex
     assert // check self.secondary_market_opening_date exists
     // smart_contracts/base_d_asa/contract.py:173
@@ -826,7 +856,7 @@ assert_is_secondary_market_open:
     // smart_contracts/base_d_asa/contract.py:174
     // < self.secondary_market_closure_date
     intc_0 // 0
-    bytec 16 // "secondary_market_closure_date"
+    bytec 17 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
     // smart_contracts/base_d_asa/contract.py:173-174
@@ -866,7 +896,7 @@ status_is_active:
     // smart_contracts/base_d_asa/contract.py:93
     // return self.status == cfg.STATUS_ACTIVE
     intc_0 // 0
-    bytec 10 // "status"
+    bytec 11 // "status"
     app_global_get_ex
     assert // check self.status exists
     intc_3 // 100
@@ -934,7 +964,7 @@ assert_asset_transfer_authorization:
     assert // check self.account entry exists
     intc 4 // 448
     getbit
-    bytec 17 // 0x00
+    bytec 12 // 0x00
     intc_0 // 0
     uncover 2
     setbit
@@ -950,7 +980,7 @@ assert_asset_transfer_authorization:
     assert // check self.account entry exists
     intc 4 // 448
     getbit
-    bytec 17 // 0x00
+    bytec 12 // 0x00
     intc_0 // 0
     uncover 2
     setbit
@@ -1140,7 +1170,7 @@ accrued_interest_amount:
     // smart_contracts/zero_coupon_bond/contract.py:63
     // * self.interest_rate
     intc_0 // 0
-    bytec 14 // "interest_rate"
+    bytec 9 // "interest_rate"
     app_global_get_ex
     assert // check self.interest_rate exists
     // smart_contracts/zero_coupon_bond/contract.py:62-63
@@ -1155,7 +1185,7 @@ accrued_interest_amount:
     *
     // smart_contracts/zero_coupon_bond/contract.py:66
     // cst.BPS * principal_period
-    pushint 10000 // 10000
+    intc 5 // 10000
     uncover 2
     *
     // smart_contracts/zero_coupon_bond/contract.py:62-67
@@ -1210,7 +1240,7 @@ day_count_factor:
     // smart_contracts/zero_coupon_bond/contract.py:46
     // if self.day_count_convention == UInt64(cst.DCC_A_A):
     intc_0 // 0
-    bytec 12 // "day_count_convention"
+    bytec 14 // "day_count_convention"
     app_global_get_ex
     assert // check self.day_count_convention exists
     intc_3 // 100
@@ -1258,7 +1288,7 @@ days_in:
     // smart_contracts/base_d_asa/contract.py:239
     // return time_period // UInt64(cst.DAY_2_SEC)
     frame_dig -1
-    intc 5 // 86400
+    intc 6 // 86400
     /
     retsub
 
@@ -1566,7 +1596,7 @@ is_payment_executable:
     assert // check self.account entry exists
     intc 4 // 448
     getbit
-    bytec 17 // 0x00
+    bytec 12 // 0x00
     intc_0 // 0
     uncover 2
     setbit
@@ -1717,7 +1747,7 @@ end_if_no_circulating_units:
     bnz end_if_no_circulating_units_after_if_else@2
     // smart_contracts/base_d_asa/contract.py:250
     // self.status = UInt64(cfg.STATUS_ENDED)
-    bytec 10 // "status"
+    bytec 11 // "status"
     pushint 200 // 200
     app_global_put
 
@@ -1739,7 +1769,7 @@ get_account_units_current_value:
     // smart_contracts/zero_coupon_bond/contract.py:173
     // self.primary_distribution_opening_date
     intc_0 // 0
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
     // smart_contracts/zero_coupon_bond/contract.py:173-174
@@ -1750,7 +1780,7 @@ get_account_units_current_value:
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     global LatestTimestamp
     intc_0 // 0
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
     >=
@@ -1826,12 +1856,12 @@ get_account_units_current_value_bool_merge@8:
     // smart_contracts/zero_coupon_bond/contract.py:185
     // account_units_nominal_value * self.interest_rate // cst.BPS
     intc_0 // 0
-    bytec 14 // "interest_rate"
+    bytec 9 // "interest_rate"
     app_global_get_ex
     assert // check self.interest_rate exists
     dig 1
     *
-    pushint 10000 // 10000
+    intc 5 // 10000
     /
     // smart_contracts/zero_coupon_bond/contract.py:190
     // account_units_nominal_value - account_units_discount
@@ -1973,6 +2003,75 @@ get_account_units_current_value_after_if_else@13:
     retsub
 
 
+// smart_contracts.zero_coupon_bond.contract.ZeroCouponBond.get_payment_amount(holding_address: bytes, payment_index: bytes) -> bytes:
+get_payment_amount:
+    // smart_contracts/zero_coupon_bond/contract.py:220-223
+    // @arc4.abimethod(readonly=True)
+    // def get_payment_amount(
+    //     self, holding_address: arc4.Address, payment_index: arc4.UInt64
+    // ) -> typ.PaymentAmounts:
+    proto 2 1
+    // smart_contracts/zero_coupon_bond/contract.py:238
+    // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+    bytec_0 // 0x52333023
+    frame_dig -2
+    concat
+    box_len
+    bury 1
+    assert // Invalid account holding address
+    // smart_contracts/zero_coupon_bond/contract.py:239
+    // interest_amount = UInt64()
+    intc_0 // 0
+    // smart_contracts/zero_coupon_bond/contract.py:240
+    // principal_amount = UInt64()
+    dup
+    // smart_contracts/zero_coupon_bond/contract.py:241
+    // if self.status_is_active():
+    callsub status_is_active
+    bz get_payment_amount_after_if_else@2
+    // smart_contracts/zero_coupon_bond/contract.py:242
+    // assert payment_index.native == 1, err.INVALID_PAYMENT_INDEX
+    frame_dig -1
+    btoi
+    intc_1 // 1
+    ==
+    assert // Invalid 1-based payment index
+    // smart_contracts/zero_coupon_bond/contract.py:243
+    // principal_amount = self.account_total_units_value(holding_address)
+    frame_dig -2
+    callsub account_total_units_value
+    dup
+    frame_bury 1
+    // smart_contracts/zero_coupon_bond/contract.py:244
+    // interest_amount = principal_amount * self.interest_rate // cst.BPS
+    intc_0 // 0
+    bytec 9 // "interest_rate"
+    app_global_get_ex
+    assert // check self.interest_rate exists
+    *
+    intc 5 // 10000
+    /
+    frame_bury 0
+
+get_payment_amount_after_if_else@2:
+    // smart_contracts/zero_coupon_bond/contract.py:246
+    // interest=arc4.UInt64(interest_amount),
+    frame_dig 0
+    itob
+    // smart_contracts/zero_coupon_bond/contract.py:247
+    // principal=arc4.UInt64(principal_amount),
+    frame_dig 1
+    itob
+    // smart_contracts/zero_coupon_bond/contract.py:245-248
+    // return typ.PaymentAmounts(
+    //     interest=arc4.UInt64(interest_amount),
+    //     principal=arc4.UInt64(principal_amount),
+    // )
+    concat
+    frame_bury 0
+    retsub
+
+
 // smart_contracts.base_d_asa.contract.BaseDAsa.asset_create(arranger: bytes, metadata: bytes) -> void:
 asset_create:
     // smart_contracts/base_d_asa/contract.py:344-345
@@ -2016,7 +2115,7 @@ asset_config:
     // smart_contracts/base_d_asa/contract.py:391
     // assert self.status == cfg.STATUS_EMPTY, err.ALREADY_CONFIGURED
     intc_0 // 0
-    bytec 10 // "status"
+    bytec 11 // "status"
     app_global_get_ex
     assert // check self.status exists
     !
@@ -2048,13 +2147,13 @@ asset_config:
     assert // Minimum denomination is not a divisor of principal
     // smart_contracts/base_d_asa/contract.py:400
     // self.unit_value = minimum_denomination.native
-    bytec 11 // "unit_value"
+    bytec 13 // "unit_value"
     dig 1
     app_global_put
     // smart_contracts/base_d_asa/contract.py:401
     // self.total_units = principal.native // minimum_denomination.native
     /
-    bytec 13 // "total_units"
+    bytec 15 // "total_units"
     swap
     app_global_put
     // smart_contracts/base_d_asa/contract.py:403-404
@@ -2104,7 +2203,7 @@ asset_config_bool_merge@4:
     assert // Invalid day-count convention ID
     // smart_contracts/base_d_asa/contract.py:408
     // self.day_count_convention = day_count_convention.native
-    bytec 12 // "day_count_convention"
+    bytec 14 // "day_count_convention"
     frame_dig 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:410-411
@@ -2112,7 +2211,7 @@ asset_config_bool_merge@4:
     // self.interest_rate = interest_rate.native
     frame_dig -4
     btoi
-    bytec 14 // "interest_rate"
+    bytec 9 // "interest_rate"
     swap
     app_global_put
     // smart_contracts/base_d_asa/contract.py:413-414
@@ -2190,7 +2289,7 @@ asset_config_bool_merge@4:
     assert
     // smart_contracts/base_d_asa/contract.py:432
     // self.status = UInt64(cfg.STATUS_ACTIVE)
-    bytec 10 // "status"
+    bytec 11 // "status"
     intc_3 // 100
     app_global_put
     retsub
@@ -2336,7 +2435,7 @@ assert_time_events_sorted_for_header@1:
     // smart_contracts/base_d_asa/contract.py:153
     // if self.day_count_convention != UInt64(cst.DCC_CONT):
     intc_0 // 0
-    bytec 12 // "day_count_convention"
+    bytec 14 // "day_count_convention"
     app_global_get_ex
     assert // check self.day_count_convention exists
     pushint 255 // 255
@@ -2353,7 +2452,7 @@ assert_time_events_sorted_for_header@1:
     // assert (time_f - time_i) % UInt64(
     //     cst.DAY_2_SEC
     // ) == 0, err.INVALID_TIME_PERIOD
-    intc 5 // 86400
+    intc 6 // 86400
     %
     !
     assert // Time periods in Actual/Actual day count convention must be multiples of a day (in seconds)
@@ -2390,7 +2489,7 @@ set_time_events:
     btoi
     // smart_contracts/base_d_asa/contract.py:228
     // self.primary_distribution_opening_date = time_events[
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     // smart_contracts/base_d_asa/contract.py:228-230
     // self.primary_distribution_opening_date = time_events[
     //     cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX
@@ -2554,7 +2653,7 @@ set_secondary_time_events:
     assert // Invalid secondary market closure date
     // smart_contracts/base_d_asa/contract.py:476
     // self.secondary_market_opening_date = secondary_market_time_events[
-    bytec 15 // "secondary_market_opening_date"
+    bytec 16 // "secondary_market_opening_date"
     // smart_contracts/base_d_asa/contract.py:476-478
     // self.secondary_market_opening_date = secondary_market_time_events[
     //     cfg.SECONDARY_MARKET_OPENING_DATE_IDX
@@ -2563,7 +2662,7 @@ set_secondary_time_events:
     app_global_put
     // smart_contracts/base_d_asa/contract.py:479
     // self.secondary_market_closure_date = secondary_market_time_events[
-    bytec 16 // "secondary_market_closure_date"
+    bytec 17 // "secondary_market_closure_date"
     // smart_contracts/base_d_asa/contract.py:479-481
     // self.secondary_market_closure_date = secondary_market_time_events[
     //     cfg.SECONDARY_MARKET_CLOSURE_DATE_IDX
@@ -2573,7 +2672,7 @@ set_secondary_time_events:
     // smart_contracts/base_d_asa/contract.py:484
     // self.secondary_market_opening_date
     intc_0 // 0
-    bytec 15 // "secondary_market_opening_date"
+    bytec 16 // "secondary_market_opening_date"
     app_global_get_ex
     assert // check self.secondary_market_opening_date exists
     // smart_contracts/base_d_asa/contract.py:483-485
@@ -2584,7 +2683,7 @@ set_secondary_time_events:
     // smart_contracts/base_d_asa/contract.py:487
     // self.secondary_market_closure_date
     intc_0 // 0
-    bytec 16 // "secondary_market_closure_date"
+    bytec 17 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
     // smart_contracts/base_d_asa/contract.py:486-488
@@ -2614,7 +2713,7 @@ status_is_ended:
     // smart_contracts/base_d_asa/contract.py:97
     // return self.status == cfg.STATUS_ENDED
     intc_0 // 0
-    bytec 10 // "status"
+    bytec 11 // "status"
     app_global_get_ex
     assert // check self.status exists
     pushint 200 // 200
@@ -3144,7 +3243,7 @@ open_account:
     concat
     // smart_contracts/base_d_asa/contract.py:621
     // suspended=arc4.Bool(),
-    bytec 17 // 0x00
+    bytec 12 // 0x00
     // smart_contracts/base_d_asa/contract.py:616-622
     // self.account[holding_address] = typ.AccountInfo(
     //     payment_address=payment_address,
@@ -3365,7 +3464,7 @@ primary_distribution:
     dig 1
     +
     intc_0 // 0
-    bytec 13 // "total_units"
+    bytec 15 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
     <=
@@ -3415,7 +3514,7 @@ primary_distribution:
     // smart_contracts/base_d_asa/contract.py:694
     // self.account[holding_address].unit_value = arc4.UInt64(self.unit_value)
     intc_0 // 0
-    bytec 11 // "unit_value"
+    bytec 13 // "unit_value"
     app_global_get_ex
     assert // check self.unit_value exists
     itob
@@ -3428,7 +3527,7 @@ primary_distribution:
     // smart_contracts/base_d_asa/contract.py:695
     // return arc4.UInt64(self.total_units - self.circulating_units)
     intc_0 // 0
-    bytec 13 // "total_units"
+    bytec 15 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
     intc_0 // 0
@@ -3459,7 +3558,7 @@ assert_is_primary_distribution_open:
     // smart_contracts/base_d_asa/contract.py:163
     // and self.primary_distribution_opening_date
     intc_0 // 0
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
     // smart_contracts/base_d_asa/contract.py:164
@@ -3853,7 +3952,7 @@ get_asset_info:
     app_global_get_ex
     assert // check self.circulating_units exists
     intc_0 // 0
-    bytec 11 // "unit_value"
+    bytec 13 // "unit_value"
     app_global_get_ex
     assert // check self.unit_value exists
     *
@@ -3861,14 +3960,14 @@ get_asset_info:
     // smart_contracts/base_d_asa/contract.py:765
     // unit_value=arc4.UInt64(self.unit_value),
     intc_0 // 0
-    bytec 11 // "unit_value"
+    bytec 13 // "unit_value"
     app_global_get_ex
     assert // check self.unit_value exists
     itob
     // smart_contracts/base_d_asa/contract.py:766
     // day_count_convention=arc4.UInt8(self.day_count_convention),
     intc_0 // 0
-    bytec 12 // "day_count_convention"
+    bytec 14 // "day_count_convention"
     app_global_get_ex
     assert // check self.day_count_convention exists
     itob
@@ -3876,7 +3975,7 @@ get_asset_info:
     // smart_contracts/base_d_asa/contract.py:767
     // interest_rate=arc4.UInt16(self.interest_rate),
     intc_0 // 0
-    bytec 14 // "interest_rate"
+    bytec 9 // "interest_rate"
     app_global_get_ex
     assert // check self.interest_rate exists
     itob
@@ -3884,7 +3983,7 @@ get_asset_info:
     // smart_contracts/base_d_asa/contract.py:768
     // total_supply=arc4.UInt64(self.total_units),
     intc_0 // 0
-    bytec 13 // "total_units"
+    bytec 15 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
     itob
@@ -3898,7 +3997,7 @@ get_asset_info:
     // smart_contracts/base_d_asa/contract.py:771
     // self.primary_distribution_opening_date
     intc_0 // 0
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
     // smart_contracts/base_d_asa/contract.py:770-772
@@ -3937,11 +4036,21 @@ get_asset_info:
     bytec 6 // "suspended"
     app_global_get_ex
     assert // check self.suspended exists
-    bytec 17 // 0x00
+    bytec 12 // 0x00
     intc_0 // 0
     uncover 2
     setbit
-    // smart_contracts/base_d_asa/contract.py:762-779
+    // smart_contracts/base_d_asa/contract.py:779
+    // defaulted=arc4.Bool(bool(self.defaulted)),
+    intc_0 // 0
+    bytec_3 // "defaulted"
+    app_global_get_ex
+    assert // check self.defaulted exists
+    bytec 12 // 0x00
+    intc_0 // 0
+    uncover 2
+    setbit
+    // smart_contracts/base_d_asa/contract.py:762-780
     // return typ.AssetInfo(
     //     denomination_asset_id=arc4.UInt64(self.denomination_asset_id),
     //     outstanding_principal=arc4.UInt64(self.circulating_units * self.unit_value),
@@ -3959,8 +4068,11 @@ get_asset_info:
     //     issuance_date=arc4.UInt64(self.issuance_date),
     //     maturity_date=arc4.UInt64(self.maturity_date),
     //     suspended=arc4.Bool(bool(self.suspended)),
+    //     defaulted=arc4.Bool(bool(self.defaulted)),
     // )
-    uncover 11
+    uncover 12
+    uncover 12
+    concat
     uncover 11
     concat
     uncover 10
@@ -3982,17 +4094,21 @@ get_asset_info:
     uncover 2
     concat
     swap
-    concat
+    intc_0 // 0
+    getbit
+    pushint 601 // 601
+    swap
+    setbit
     retsub
 
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_account_info(holding_address: bytes) -> bytes:
 get_account_info:
-    // smart_contracts/base_d_asa/contract.py:781-782
+    // smart_contracts/base_d_asa/contract.py:782-783
     // @arc4.abimethod(readonly=True)
     // def get_account_info(self, holding_address: arc4.Address) -> typ.AccountInfo:
     proto 1 1
-    // smart_contracts/base_d_asa/contract.py:795
+    // smart_contracts/base_d_asa/contract.py:796
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec_0 // 0x52333023
     frame_dig -1
@@ -4001,7 +4117,7 @@ get_account_info:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/base_d_asa/contract.py:796
+    // smart_contracts/base_d_asa/contract.py:797
     // return self.account[holding_address]
     box_get
     assert // check self.account entry exists
@@ -4010,18 +4126,18 @@ get_account_info:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_time_events() -> bytes:
 get_time_events:
-    // smart_contracts/base_d_asa/contract.py:798-799
+    // smart_contracts/base_d_asa/contract.py:799-800
     // @arc4.abimethod(readonly=True)
     // def get_time_events(self) -> typ.TimeEvents:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:806
+    // smart_contracts/base_d_asa/contract.py:807
     // time_events = typ.TimeEvents()
     pushbytes 0x0000
-    // smart_contracts/base_d_asa/contract.py:807
+    // smart_contracts/base_d_asa/contract.py:808
     // if self.status_is_active():
     callsub status_is_active
     bz get_time_events_after_if_else@2
-    // smart_contracts/base_d_asa/contract.py:808
+    // smart_contracts/base_d_asa/contract.py:809
     // time_events = self.time_events.value.copy()
     bytec 22 // 0x74696d654576656e7473
     box_get
@@ -4030,7 +4146,7 @@ get_time_events:
     assert // check self.time_events exists
 
 get_time_events_after_if_else@2:
-    // smart_contracts/base_d_asa/contract.py:809
+    // smart_contracts/base_d_asa/contract.py:810
     // return time_events
     frame_dig 0
     swap
@@ -4039,25 +4155,25 @@ get_time_events_after_if_else@2:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_secondary_market_schedule() -> bytes:
 get_secondary_market_schedule:
-    // smart_contracts/base_d_asa/contract.py:811-812
+    // smart_contracts/base_d_asa/contract.py:812-813
     // @arc4.abimethod(readonly=True)
     // def get_secondary_market_schedule(self) -> typ.TimeEvents:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:814
+    // smart_contracts/base_d_asa/contract.py:815
     // arc4.UInt64(self.secondary_market_opening_date),
     intc_0 // 0
-    bytec 15 // "secondary_market_opening_date"
+    bytec 16 // "secondary_market_opening_date"
     app_global_get_ex
     assert // check self.secondary_market_opening_date exists
     itob
-    // smart_contracts/base_d_asa/contract.py:815
+    // smart_contracts/base_d_asa/contract.py:816
     // arc4.UInt64(self.secondary_market_closure_date),
     intc_0 // 0
-    bytec 16 // "secondary_market_closure_date"
+    bytec 17 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
     itob
-    // smart_contracts/base_d_asa/contract.py:813-816
+    // smart_contracts/base_d_asa/contract.py:814-817
     // return typ.TimeEvents(
     //     arc4.UInt64(self.secondary_market_opening_date),
     //     arc4.UInt64(self.secondary_market_closure_date),
@@ -4071,11 +4187,11 @@ get_secondary_market_schedule:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_asset_metadata() -> bytes:
 get_asset_metadata:
-    // smart_contracts/base_d_asa/contract.py:818-819
+    // smart_contracts/base_d_asa/contract.py:819-820
     // @arc4.abimethod(readonly=True)
     // def get_asset_metadata(self) -> typ.AssetMetadata:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:820
+    // smart_contracts/base_d_asa/contract.py:821
     // return typ.AssetMetadata(self.metadata)
     intc_0 // 0
     bytec 20 // "metadata"

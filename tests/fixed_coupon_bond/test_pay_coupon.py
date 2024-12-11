@@ -54,9 +54,9 @@ def test_pass_pay_coupon(
             + account_b_units * pre_payment_account_b_paid_coupons
         )
 
-        account_a_coupon_amount = fixed_coupon_bond_client_ongoing.get_coupon_amount(
+        account_a_coupon_amount = fixed_coupon_bond_client_ongoing.get_payment_amount(
             holding_address=account_a.holding_address,
-            coupon=coupon,
+            payment_index=coupon,
             transaction_parameters=OnCompleteCallParameters(
                 boxes=[
                     (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
@@ -66,11 +66,11 @@ def test_pass_pay_coupon(
                     ),
                 ]
             ),
-        ).return_value
+        ).return_value.interest
 
-        account_b_coupon_amount = fixed_coupon_bond_client_ongoing.get_coupon_amount(
+        account_b_coupon_amount = fixed_coupon_bond_client_ongoing.get_payment_amount(
             holding_address=account_b.holding_address,
-            coupon=coupon,
+            payment_index=coupon,
             transaction_parameters=OnCompleteCallParameters(
                 boxes=[
                     (fixed_coupon_bond_client_ongoing.app_id, account_b.box_id),
@@ -80,7 +80,7 @@ def test_pass_pay_coupon(
                     ),
                 ]
             ),
-        ).return_value
+        ).return_value.interest
 
         # Coupon reaches due date
         coupon_due_date = time_events[sc_cfg.FIRST_COUPON_DATE_IDX - 1 + coupon]
@@ -194,9 +194,9 @@ def test_pass_pay_multiple_coupons(
 
     for coupon in range(1, fixed_coupon_bond_cfg.total_coupons + 1):
         print(f"Coupon {coupon} of {fixed_coupon_bond_cfg.total_coupons}")
-        coupon_amount = fixed_coupon_bond_client_at_maturity.get_coupon_amount(
+        coupon_amount = fixed_coupon_bond_client_at_maturity.get_payment_amount(
             holding_address=account_a.holding_address,
-            coupon=coupon,
+            payment_index=coupon,
             transaction_parameters=OnCompleteCallParameters(
                 foreign_assets=[currency.id],
                 accounts=[account_a.payment_address],
@@ -208,7 +208,7 @@ def test_pass_pay_multiple_coupons(
                     ),
                 ],
             ),
-        ).return_value
+        ).return_value.interest
 
         # Pre payment sate
         pre_payment_account_paid_coupons = account_a.paid_coupons
