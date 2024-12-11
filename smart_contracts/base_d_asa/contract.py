@@ -101,6 +101,10 @@ class BaseDAsa(ARC4Contract):
         assert not self.defaulted, err.DEFAULTED
 
     @subroutine
+    def assert_is_not_suspended(self) -> None:
+        assert not self.suspended, err.SUSPENDED
+
+    @subroutine
     def assert_caller_is_arranger(self) -> None:
         assert Txn.sender == self.arranger, err.UNAUTHORIZED
 
@@ -268,7 +272,7 @@ class BaseDAsa(ARC4Contract):
         # may relay on other roles or external Apps (e.g. an order book or a transfer agent) through C2C calls.
         assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
         self.assert_is_not_defaulted()
-        assert not self.suspended, err.SUSPENDED
+        self.assert_is_not_suspended()
         self.assert_valid_holding_address(sender_holding_address)
         self.assert_valid_holding_address(receiver_holding_address)
         assert not self.account[sender_holding_address].suspended.native, err.SUSPENDED
@@ -334,7 +338,7 @@ class BaseDAsa(ARC4Contract):
         # The reference implementation does not restrict caller authorization
         assert self.status_is_active(), err.UNAUTHORIZED
         self.assert_is_not_defaulted()
-        assert not self.suspended, err.SUSPENDED
+        self.assert_is_not_suspended()
         self.assert_valid_holding_address(holding_address)
         units = self.account[holding_address].units.native
         assert units > 0, err.NO_UNITS
@@ -618,7 +622,7 @@ class BaseDAsa(ARC4Contract):
         self.assert_caller_is_account_manager()
         assert not self.status_is_ended(), err.UNAUTHORIZED
         self.assert_is_not_defaulted()
-        assert not self.suspended, err.SUSPENDED
+        self.assert_is_not_suspended()
         assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
 
         self.account[holding_address] = typ.AccountInfo(
@@ -689,7 +693,7 @@ class BaseDAsa(ARC4Contract):
         self.assert_caller_is_primary_dealer()
         self.assert_valid_holding_address(holding_address)
         self.assert_is_not_defaulted()
-        assert not self.suspended, err.SUSPENDED
+        self.assert_is_not_suspended()
         assert units.native > 0, err.ZERO_UNITS
         assert (
             self.circulating_units + units.native <= self.total_units
