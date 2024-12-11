@@ -33,11 +33,11 @@ The reference implementation provides the following features:
 
 For the coupon payments, the reference implementation enforces the following behaviors:
 
-- A coupon payment can not be executed until all the previous due coupons (if any)
-have been paid to all the investors.
+- A coupon payment **can no**t be executed until all the previous due coupons (if
+any) have been paid to all the investors.
 
 For the asset transfer of secondary markets, the reference implementation enforces
 the following behaviors:
 
-- D-ASA units can not be transferred until all the pending due coupon payments for
-the sender and receiver (if any) have been executed.
+- D-ASA units **can not** be transferred until all the pending due coupon payments
+for the sender and receiver (if any) have been executed.
