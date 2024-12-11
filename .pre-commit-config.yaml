@@ -21,7 +21,7 @@ repos:
         types: [ python ]
         args: [ "check", "--fix" ]
         additional_dependencies: [ ]
-        files: '^(src|tests)/'
+        files: '^(smart_contracts|tests)/'
 
       - id: mypy
         name: mypy
@@ -32,7 +32,7 @@ repos:
         require_serial: true
         types_or: [ python, pyi ]
         additional_dependencies: [ ]
-        files: '^(src|tests)/'
+        files: '^(smart_contracts|tests)/'
 
       # # Uncomment to enable TEAL static analysis using Tealer package
       # - id: tealer
@@ -57,6 +57,7 @@ repos:
         language: node
         minimum_pre_commit_version: 0.15.0
         types: [ markdown ]
+        additional_dependencies: [ ]
         files: '^(docs)/'
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -64,9 +65,31 @@ repos:
     hooks:
       - id: trailing-whitespace
         name: trim trailing whitespace
-        description: trims trailing whitespace.
+        description: "Trims trailing whitespace."
         entry: trailing-whitespace-fixer
         language: python
         minimum_pre_commit_version: 3.2.0
         types: [ markdown ]
+        additional_dependencies: [ ]
         files: '^(docs)/'
+
+  - repo: local
+    hooks:
+      - id: mdbook-build
+        name: mdbook build
+        description: "Builds mdBook."
+        entry: mdbook build
+        language: rust
+        minimum_pre_commit_version: 3.2.0
+        additional_dependencies: [ ]
+        pass_filenames: false
+
+      - id: mdbook-test
+        name: mdbook test
+        description: "Checks mdBook pass tests."
+        entry: mdbook test
+        language: rust
+        minimum_pre_commit_version: 3.2.0
+        types: [ markdown ]
+        additional_dependencies: [ ]
+        pass_filenames: false
