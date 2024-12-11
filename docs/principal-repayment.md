@@ -19,8 +19,8 @@ If the D-ASA principal repayment schedule is *amortizing*, it **MUST** define th
 
 - The length of the array is `N=K+1`, with `K` equal to the *total coupons*;
 
-- The first `K`\-elements of the array are the *amortizing rates* associated with
-*coupon* payments*;
+- The first `K`elements of the array are the *amortizing rates* associated with
+*coupon* payments;
 
 - The last element of the array is the *amortization rate* associated with *principal*
 payment;
@@ -28,31 +28,31 @@ payment;
 - The elements of the array are expressed in *<a href="https://en.wikipedia.org/wiki/Basis_point">basis
 points</a>* (*bps*);
 
-- The sum of all the *amortization rates* is equal to 10,000 *bps*.
+- The sum of all the *amortization rates* is equal to `10,000` *bps*.
 
 > 📎 **EXAMPLE**
 >
-> D-ASA with 5 coupons and even principal amortizing rates has the following amortizing
+> A D-ASA with 5 coupons and even principal amortizing rates has the following amortizing
 > rates (bps):
 >
 > ```uint64[] = [2000, 2000, 2000, 2000, 2000, 0]```
 
 > 📎 **EXAMPLE**
 >
-> D-ASA with 5 coupons and a single principal early repayment of 50% has the following
+> A D-ASA with 5 coupons and a single principal early repayment of 50% has the following
 > amortizing rates (bps):
 >
 > ```uint64[] = [0, 0, 5000, 0, 0, 5000]```
 
 > 📎 **EXAMPLE**
 >
-> D-ASA with 4 coupons and different principal amortizing rates (bps):
+> A D-ASA with 4 coupons and different principal amortizing rates (bps):
 >
 > ```uint64[] = [1000, 2000, 3000, 4000, 0]```
 
 > 📎 **EXAMPLE**
 >
-> The following are invalid amortizing rates since their sum is not equal to 10,000
+> The following are invalid amortizing rates, since their sum is not equal to `10,000`
 > bps:
 >
 > ```uint64[] = [1000, 2000, 3000, 4000, 5000]```
@@ -74,18 +74,18 @@ The D-ASA *unit value* **MUST** be updated according to the *outstanding princip
 
 > 📎 **EXAMPLE**
 >
-> Let’s have a D-ASA denominated in EUR, with a principal of 1M EUR and a minimum
-> denomination of 1,000 EUR, 5 coupons, and an even amortizing schedule (20% amortizing
-> rate). The D-ASA has 1,000 total units. The D-ASA unit's initial value is 1,000
-> EUR. The 1st coupon pays both the interest (according to the coupon rates) and
-> 20% of the principal (according to amortizing rates). The D-ASA outstanding principal
-> is 800k EUR. The D-ASA unit value is 800 EUR.
+> Let’s have a D-ASA denominated in EUR, with a *principal* of 1M EUR and a *minimum
+> denomination* of 1,000 EUR, 5 coupons, and an even amortizing schedule (20% amortizing
+> rate). The D-ASA has 1,000 *total units*. The D-ASA initial *unit value* is 1,000
+> EUR. The 1st coupon pays both the interest (according to the *coupon rates*) and
+> 20% of the principal (according to *amortizing rates*). The D-ASA outstanding
+> principal is 800k EUR. The D-ASA *unit value* is 800 EUR.
 
 > 📎 **EXAMPLE**
 >
-> Let’s have a D-ASA denominated in EUR, with a principal of 1M EUR and a minimum
-> denomination of 1,000 EUR. The D-ASA originally had 1,000 total units (worth 1,000
-> EUR each) in circulation. A partial repayment of 500k EUR (50% of the original
-> principal) must be executed pro rata to all Lenders. A single amortizing rate
+> Let’s have a D-ASA denominated in EUR, with a *principal* of 1M EUR and a *minimum
+> denomination* of 1,000 EUR. The D-ASA originally had 1,000 *total units* (worth
+> 1,000 EUR each) in circulation. A partial repayment of 500k EUR (50% of the original
+> principal) must be executed pro rata to all lenders. A single amortizing rate
 > of 5,000 bps is used. After the partial repayment, the D-ASA still has 1000 circulating
 > units (worth 500 EUR each).

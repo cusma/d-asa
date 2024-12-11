@@ -14,7 +14,7 @@ The *time periods* **SHOULD** be defined as UNIX time, in seconds.
 
 In the case of *time periods* defined in UNIX time and non-continuous *day-count
 conventions* (ID<`255`, see Day-Count Conventions section), the *time periods*
-**SHOULD** be multiples of a day, in seconds (`86400`).
+**MUST** be multiples of a day, in seconds (`86400`).
 
 The *time periods* **MAY** be set using the `asset_config` method.
 
@@ -23,8 +23,10 @@ If the D-ASA does not implement *time periods,* it **MUST** be set to `[]` in th
 
 > 📎 **EXAMPLE**
 >
-> The following are valid time periods (UNIX times) indicating a daily time even
-> with unlimited repetitions and a monthly (30 days) time event with 12 repetitions:
+> The following are valid *time periods* (UNIX times) indicating:
+>
+> - a daily time event with unlimited repetitions
+> - a monthly (30 days) time event with 12 repetitions
 >
 > ```text
 > (uint64,uint64)[] = [(86400, 0), (2592000, 12)]
@@ -32,8 +34,19 @@ If the D-ASA does not implement *time periods,* it **MUST** be set to `[]` in th
 
 > 📎 **EXAMPLE**
 >
-> The following are invalid time periods (UNIX times):
+> The following are invalid *time periods* (UNIX times):
 >
 > ```text
 > (uint64,uint64)[] = [(0, 0), (0, 12)]
 > ```
+
+The *time periods* **MUST** be chronologically consistent with respect to the *time
+events*.
+
+> 📎 **EXAMPLE**
+>
+> Let's have a D-ASA with an *issuance date* and a *maturity date*, defined as *time
+> events*, and 4 coupons whose periods are defined by *time periods*.
+>
+> The sum of the 4 coupon *time period durations* must be smaller than the time
+> period between the *issuance date* and the *maturity date*.

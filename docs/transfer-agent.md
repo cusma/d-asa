@@ -1,13 +1,13 @@
 # Transfer Agent {#transfer-agent}
 
-> Debt instruments can be transferable among owners.
+> Debt instruments can be transferable among investors.
 
 > D-ASA supports both on-chain and off-chain transfer agents.
 
 The Transfer Agent **SHALL** authorize the D-ASA transfers according to the transferability
 policy.
 
-The transferred D-ASA *units* **MUST** be *fungible* (see D-ASA units fungibility
+The transferred D-ASA *units* **MUST** be *fungible* (see [D-ASA Units fungibility](./units.md#fungibility-fungibility)
 section).
 
 The transferred D-ASA *units* **MUST** record D-ASA *unit value* and *paid coupons*.

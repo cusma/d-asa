@@ -39,7 +39,7 @@ The D-ASA **MAY** define the *coupon rates* as `uint16[]` array, where:
 If the D-ASA has zero or undefined coupons (`K=0`), the *coupon rates* array **MUST**
 be empty and the *interest rate* **MUST** be used instead.
 
-> Coupon rates could be derived from the interest rate.*
+> Coupon rates could be derived from the interest rate.
 
 > 📎 **EXAMPLE**
 >

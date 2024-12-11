@@ -6,13 +6,13 @@
 
 The D-ASA **MUST** define its *total units* (`uint64`).
 
-If the D-ASA has a *principal*, its *total units* **MUST** be equal to the *principal*
-divided by the *minimum denomination.*
+If the D-ASA has a *principal*, its initials *total units* **MUST** be equal to
+the *principal* divided by the *minimum denomination.*
 
 > 📎 **EXAMPLE**
 >
 > Let’s have a D-ASA denominated in EUR, with a principal of 1M EUR and a minimum
-> denomination of 1,000 EUR. The D-ASA has 1,000 total units.
+> denomination of 1,000 EUR. The D-ASA has 1,000 initial total units.
 
 The D-ASA *total units* **MAY** be updated with the **OPTIONAL** `update_total_units`
 method.
