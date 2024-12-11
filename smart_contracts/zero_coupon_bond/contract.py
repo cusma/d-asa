@@ -173,7 +173,7 @@ class ZeroCouponBond(
             self.primary_distribution_opening_date
             and Global.latest_timestamp >= self.primary_distribution_opening_date
         ), err.NO_PRIMARY_DISTRIBUTION
-        assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+        self.assert_valid_holding_address(holding_address)
         assert (
             0 < units <= self.account[holding_address].units.native
         ), err.INVALID_UNITS
@@ -235,7 +235,7 @@ class ZeroCouponBond(
             INVALID_HOLDING_ADDRESS: Invalid account holding address
             INVALID_PAYMENT_INDEX: Invalid 1-based payment index
         """
-        assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+        self.assert_valid_holding_address(holding_address)
         interest_amount = UInt64()
         principal_amount = UInt64()
         if self.status_is_active():

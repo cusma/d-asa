@@ -141,6 +141,10 @@ class BaseDAsa(ARC4Contract):
         ), err.UNAUTHORIZED
 
     @subroutine
+    def assert_valid_holding_address(self, holding_address: arc4.Address) -> None:
+        assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+
+    @subroutine
     def assert_time_events_sorted(self, time_events: typ.TimeEvents) -> None:
         for _t in urange(time_events.length - 1):
             ensure_budget(
@@ -261,8 +265,8 @@ class BaseDAsa(ARC4Contract):
         assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
         assert not self.defaulted, err.DEFAULTED
         assert not self.suspended, err.SUSPENDED
-        assert sender_holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-        assert receiver_holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+        self.assert_valid_holding_address(sender_holding_address)
+        self.assert_valid_holding_address(receiver_holding_address)
         assert not self.account[sender_holding_address].suspended.native, err.SUSPENDED
         assert not self.account[
             receiver_holding_address
@@ -327,7 +331,7 @@ class BaseDAsa(ARC4Contract):
         assert self.status_is_active(), err.UNAUTHORIZED
         assert not self.defaulted, err.DEFAULTED
         assert not self.suspended, err.SUSPENDED
-        assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+        self.assert_valid_holding_address(holding_address)
         units = self.account[holding_address].units.native
         assert units > 0, err.NO_UNITS
         assert Global.latest_timestamp >= self.maturity_date, err.NOT_MATURE
@@ -642,7 +646,7 @@ class BaseDAsa(ARC4Contract):
         """
         self.assert_caller_is_account_manager()
         assert not self.defaulted, err.DEFAULTED
-        assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+        self.assert_valid_holding_address(holding_address)
 
         closed_units = self.account[holding_address].units.native
         op.Box.delete(cst.PREFIX_BOX_ID_ACCOUNT + holding_address.bytes)
@@ -679,7 +683,7 @@ class BaseDAsa(ARC4Contract):
         # The reference implementation grants primary distribution permissions to the Primary Dealer role. Other
         # implementations may relay on other roles or external Apps (e.g. an auction) through C2C calls.
         self.assert_caller_is_primary_dealer()
-        assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+        self.assert_valid_holding_address(holding_address)
         assert not self.defaulted, err.DEFAULTED
         assert not self.suspended, err.SUSPENDED
         assert units.native > 0, err.ZERO_UNITS
@@ -731,7 +735,7 @@ class BaseDAsa(ARC4Contract):
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
         self.assert_caller_is_authority()
-        assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+        self.assert_valid_holding_address(holding_address)
         self.account[holding_address].suspended = suspended
         return arc4.UInt64(Global.latest_timestamp)
 
@@ -793,7 +797,7 @@ class BaseDAsa(ARC4Contract):
         Raises:
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
-        assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+        self.assert_valid_holding_address(holding_address)
         return self.account[holding_address]
 
     @arc4.abimethod(readonly=True)
