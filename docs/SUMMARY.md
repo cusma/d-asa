@@ -91,4 +91,4 @@
 ---
 
 [Contributors]()
-[License](./LICENSE.md)
+[License](./license.md)
