@@ -29,7 +29,7 @@ def deploy(
 
     app_client.deploy(
         on_schema_break=algokit_utils.OnSchemaBreak.AppendApp,
-        on_update=algokit_utils.OnUpdate.AppendApp,
+        on_update=algokit_utils.OnUpdate.UpdateApp,
         create_args=DeployCreate(
             args=AssetCreateArgs(
                 arranger=os.environ["DEPLOYER_ADDRESS"],
