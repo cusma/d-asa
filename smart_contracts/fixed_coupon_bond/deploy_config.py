@@ -1,7 +1,7 @@
 import logging
+import os
 
 import algokit_utils
-from algosdk.constants import ZERO_ADDRESS
 from algosdk.v2client.algod import AlgodClient
 from algosdk.v2client.indexer import IndexerClient
 
@@ -31,6 +31,9 @@ def deploy(
         on_schema_break=algokit_utils.OnSchemaBreak.AppendApp,
         on_update=algokit_utils.OnUpdate.AppendApp,
         create_args=DeployCreate(
-            args=AssetCreateArgs(arranger=ZERO_ADDRESS, metadata=b"")
+            args=AssetCreateArgs(
+                arranger=os.environ["DEPLOYER_ADDRESS"],
+                metadata=b"Fixed Coupon Bond Prospectus",
+            )
         ),
     )
