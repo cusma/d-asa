@@ -1,7 +1,6 @@
 name: Release d-asa docs
 
 on:
-  workflow_call:
   push:
     branches:
       - main
