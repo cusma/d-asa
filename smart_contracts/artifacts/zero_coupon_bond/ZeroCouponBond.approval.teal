@@ -931,8 +931,8 @@ assert_asset_transfer_authorization:
     // ) -> None:
     proto 3 0
     // smart_contracts/base_d_asa/contract.py:271-273
-    // # The reference implementation grants transfer right to D-ASA owners. Other implementations may relay on other roles,
-    // # external Apps through C2C calls (e.g., an order book), or off-chain transfer agents.
+    // # The reference implementation grants transfer right to D-ASA owners. Other implementations may relay on other
+    // # roles, external Apps through C2C calls (e.g., an order book), or off-chain transfer agents.
     // assert Txn.sender == sender_holding_address.native, err.UNAUTHORIZED
     txn Sender
     frame_dig -3
