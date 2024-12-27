@@ -219,7 +219,7 @@ class FixedCouponBond(
         due_coupons = self.count_due_coupons()
         account_paid_coupons = self.account[holding_address].paid_coupons.native
         assert due_coupons > account_paid_coupons, err.NO_DUE_COUPON
-        # The following conditions verifies if other accounts are still waiting for the payment of previous coupons
+        # The following conditions verify if other accounts are still waiting for the payment of previous coupons
         assert self.all_due_coupons_paid(
             account_paid_coupons
         ), err.PENDING_COUPON_PAYMENT
@@ -275,6 +275,7 @@ class FixedCouponBond(
         assert self.all_due_coupons_paid(
             self.count_due_coupons()
         ), err.PENDING_COUPON_PAYMENT
+        # The reference implementation does not assert if there is enough liquidity to pay the principal to all
 
         if self.is_payment_executable(holding_address):
             payment_amount = self.account_total_units_value(holding_address)

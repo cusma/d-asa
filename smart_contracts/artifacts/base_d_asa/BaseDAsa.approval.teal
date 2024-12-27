@@ -1870,7 +1870,7 @@ primary_distribution:
     callsub assert_is_primary_distribution_open
     // smart_contracts/base_d_asa/contract.py:701-703
     // # The reference implementation grants primary distribution permissions to the Primary Dealer role. Other
-    // # implementations may relay on other roles or external Apps (e.g. an auction) through C2C calls.
+    // # implementations may relay on other roles or external Apps through C2C calls (e.g., an auction).
     // self.assert_caller_is_primary_dealer()
     callsub assert_caller_is_primary_dealer
     // smart_contracts/base_d_asa/contract.py:704

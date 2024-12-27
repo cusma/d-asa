@@ -134,6 +134,7 @@ class ZeroCouponBond(
             NOT_MATURE: Not mature
         """
         self.assert_pay_principal_authorization(holding_address)
+        # The reference implementation does not assert if there is enough liquidity to pay the principal to all
 
         if self.is_payment_executable(holding_address):
             payment_amount = self.account_total_units_value(holding_address)

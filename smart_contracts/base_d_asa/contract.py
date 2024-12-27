@@ -268,9 +268,9 @@ class BaseDAsa(ARC4Contract):
         receiver_holding_address: arc4.Address,
         units: UInt64,
     ) -> None:
-        # The reference implementation grants transfer right on secondary market to D-ASA owners. Other implementations
-        # may relay on other roles or external Apps (e.g. an order book or a transfer agent) through C2C calls.
-        assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
+        # The reference implementation grants transfer right to D-ASA owners. Other implementations may relay on other roles,
+        # external Apps through C2C calls (e.g., an order book), or off-chain transfer agents.
+        assert Txn.sender == sender_holding_address.native, err.UNAUTHORIZED
         self.assert_is_not_defaulted()
         self.assert_is_not_suspended()
         self.assert_valid_holding_address(sender_holding_address)
@@ -699,7 +699,7 @@ class BaseDAsa(ARC4Contract):
         """
         self.assert_is_primary_distribution_open()
         # The reference implementation grants primary distribution permissions to the Primary Dealer role. Other
-        # implementations may relay on other roles or external Apps (e.g. an auction) through C2C calls.
+        # implementations may relay on other roles or external Apps through C2C calls (e.g., an auction).
         self.assert_caller_is_primary_dealer()
         self.assert_valid_holding_address(holding_address)
         self.assert_is_not_defaulted()
