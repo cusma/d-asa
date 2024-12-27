@@ -13,9 +13,6 @@ points</a>* (*bps*).
 
 The D-ASA **MUST** define an *interest rate* (`uint16`).
 
-The *interest rate* **MAY** be updated using the **OPTIONAL** `update_interest_rate`
-method.
-
 ## Coupons {#coupons}
 
 > Debt instruments can pay interest in periodic installments, called coupons.
@@ -62,12 +59,25 @@ The *coupon rates* **MUST** be set using the `asset_config` method.
 
 ## Variable Rates {#variable-rates}
 
+The *interest rate* **MAY** be updated using the **OPTIONAL** `update_interest_rate`
+method.
+
 The *coupon rates* **MAY** be updated using the **OPTIONAL** `update_coupon_rates`
 method.
 
 The updated *coupon rates* **MUST NOT** modify past coupon rates.
 
 > A reference implementation **SHOULD** properly restrict the coupon rate updatability.
+
+> 📎 **EXAMPLE**
+>
+> A D-ASA has variable interest rates pegged to an off-chain index. Interest update
+> permissions are granted to an external interest oracle.
+
+> 📎 **EXAMPLE**
+>
+> A D-ASA has variable interest rates based on covenant breaches. Interest update
+> permissions are granted to a trustee in charge of verifying breaches.
 
 ## Accruing Interest {#accruing-interest}
 
