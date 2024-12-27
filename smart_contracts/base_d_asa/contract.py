@@ -268,8 +268,8 @@ class BaseDAsa(ARC4Contract):
         receiver_holding_address: arc4.Address,
         units: UInt64,
     ) -> None:
-        # The reference implementation grants transfer right to D-ASA owners. Other implementations may relay on other roles,
-        # external Apps through C2C calls (e.g., an order book), or off-chain transfer agents.
+        # The reference implementation grants transfer right to D-ASA owners. Other implementations may relay on other
+        # roles, external Apps through C2C calls (e.g., an order book), or off-chain transfer agents.
         assert Txn.sender == sender_holding_address.native, err.UNAUTHORIZED
         self.assert_is_not_defaulted()
         self.assert_is_not_suspended()
