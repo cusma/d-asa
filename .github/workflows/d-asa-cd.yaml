@@ -6,11 +6,16 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     name: Validate d-asa
     uses: ./.github/workflows/d-asa-ci.yaml
+
   deploy-testnet:
+    name: Deploy d-asa
     runs-on: "ubuntu-latest"
     needs: validate
     environment: contract-testnet
