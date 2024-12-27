@@ -10,9 +10,9 @@ The definition of a comprehensive specification for the tokenization of debt ins
 benefits several players of the traditional value chain, such as issuers, arrangers,
 asset managers, lenders, payment agents, and transfer agents, etc.
 
-This specification defines the *Debt Algorand Standard Asset*, which turns a traditional
-debt instrument into a deterministic contract, executed on the Algorand Virtual
-Machine (AVM). The machine-readable and executable contract removes existing frictions
-over the debt instruments lifecycle and reconciliation, enabling use cases such
-as truly atomic delivery-vs-payment (with instant finality), deterministic cash
-flows analysis (when, how much, to whom), and easier quantitative risk management.
+The *Debt Algorand Standard Asset* turns a traditional debt instrument into a deterministic
+contract, executed on the Algorand Virtual Machine (AVM). The machine-readable and
+executable contract removes existing frictions over the debt instruments lifecycle
+and reconciliation, enabling use cases such as truly atomic delivery-vs-payment
+(with instant finality), deterministic cash flows analysis (when, how much, to whom),
+and easier quantitative risk management.

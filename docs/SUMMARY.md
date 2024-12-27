@@ -6,7 +6,6 @@
 
 # Introduction
 
-- [Abstract](./abstract.md)
 - [Motivation](./motivation.md)
 
 # Specification
