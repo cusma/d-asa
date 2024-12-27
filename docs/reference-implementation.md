@@ -1,5 +1,8 @@
 # Reference Implementation {#reference-implementation}
 
+> ⚠️The reference implementations have not been audited. Do not use this code for
+> real products. The author declines all responsibility.
+
 The reference implementation provides the following features:
 
 - RBAC:
