@@ -3,7 +3,7 @@
 The reference implementation provides the following features:
 
 - RBAC:
-  - Arranger: creates and configures the D-ASA
+  - Arranger: creates, configures and updates the D-ASA
   - Account Manager: opens and closes accounts (proxy a KYC process)
   - Primary Dealer: performs the primary distribution on the primary market
   - Trustee: can call a default
@@ -16,28 +16,20 @@ The reference implementation provides the following features:
   - On-chain (ASA)
 
 - Day-count conventions:
-  - Actual/Actual
+  - Actual/Actual (time periods must be in days, i.e., multiples of `86400` seconds)
   - Continuous
-
-- Payoffs:
-  - Fixed Coupon Bond: placed at nominal value, fixed coupon rates, fixed payments
-  time schedule, principal at maturity
-  - Zero Coupon Bond: placed at discount, fixed interest rate, principal at maturity
 
 - Transfer Agent:
   - On-chain
+  - Direct (i.e., from investor to investor)
 
 - Secondary market
 
 - Notarize metadata (e.g. prospectus)
 
-For the coupon payments, the reference implementation enforces the following behaviors:
+- Updatable program (restricted to the Arranger)
 
-- A coupon payment **can no**t be executed until all the previous due coupons (if
-any) have been paid to all the investors.
+## Payoffs
 
-For the asset transfer of secondary markets, the reference implementation enforces
-the following behaviors:
-
-- D-ASA units **can not** be transferred until all the pending due coupon payments
-for the sender and receiver (if any) have been executed.
+- [Zero Coupon Bond](./ref-zero-coupon-bond.md)
+- [Fixed Coupon Bond](./ref-fixed-coupon-bond.md)

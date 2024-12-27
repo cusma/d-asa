@@ -53,3 +53,20 @@ The D-ASA **MAY** disable all non-administrative methods on *default* status.
 > or manually (based on the decision of a trustee).
 
 The *default* status **MAY** be set with the **OPTIONAL** `set_default_status` method.
+
+> 📎 **EXAMPLE**
+>
+> A D-ASA coupon payment is triggered on due date, but there is not enough liquidity
+> to pay all the investors. The D-ASA contract automatically enters in default immediately.
+
+> 📎 **EXAMPLE**
+>
+> A D-ASA coupon payment is triggered on due date, but there is not enough liquidity
+> to pay all the investors. The D-ASA program increments a failed payments counter
+> and waits 3 hours to retry. If the D-ASA has three failed payments in a row, then
+> the contract automatically enters in default.
+
+> 📎 **EXAMPLE**
+>
+> A D-ASA coupon payment is triggered on due date, but there is not enough liquidity
+> to pay all the investors. The D-ASA contract relies on a trustee to call the default.
