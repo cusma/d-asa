@@ -22,12 +22,6 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Check markdown linting
-        run: pre-commit run markdownlint
-
-      - name: Check trailing whitespaces
-        run: pre-commit run trailing-whitespace
-
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v2
         with:
@@ -38,3 +32,13 @@ jobs:
 
       - name: Test docs
         run: mdbook test
+
+      - name: Check markdown linting
+        uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: markdownlint
+
+      - name: Check trailing whitespaces
+        uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: trailing-whitespace
