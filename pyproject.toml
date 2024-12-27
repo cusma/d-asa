@@ -1,9 +1,15 @@
 [tool.poetry]
+package-mode = false
 name = "d-asa"
 version = "0.1.0"
 description = "Debt Algorand Standard Asset"
+license = "AGPL-3.0"
 authors = ["cusma <cosimo.bassi@gmail.com>"]
-readme = "README.md"
+maintainers = ["cusma <cosimo.bassi@gmail.com>"]
+readme = ["README.md", "docs/SUMMARY.md"]
+# documentation = "..."
+repository = "https://github.com/cusma/d-asa"
+keywords = ["algorand", "debt", "tokenization", "finance"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
