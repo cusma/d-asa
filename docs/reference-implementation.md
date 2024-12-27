@@ -29,7 +29,16 @@ The reference implementation provides the following features:
 
 - Updatable program (restricted to the Arranger)
 
-## Payoffs
+## Deployments {#deployments}
 
-- [Zero Coupon Bond](./ref-zero-coupon-bond.md)
-- [Fixed Coupon Bond](./ref-fixed-coupon-bond.md)
+D-ASA examples deployed on TestNet:
+
+| Payoff                                          | App ID | App Spec                                                                                                                  |
+|-------------------------------------------------|--------|---------------------------------------------------------------------------------------------------------------------------|
+| [Zero Coupon Bond](./ref-zero-coupon-bond.md)   | TBD    | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/zero_coupon_bond/ZeroCouponBond.arc32.json)   |
+| [Fixed Coupon Bond](./ref-fixed-coupon-bond.md) | TBD    | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/fixed_coupon_bond/FixedCouponBond.arc32.json) |
+
+1. Download the App Spec JSON file;
+1. Navigate to the [Lora App Lab](https://lora.algokit.io/testnet/app-lab);
+1. Create the App Interface using the existing App ID and App Spec JSON;
+1. Explore the D-ASA interface.
