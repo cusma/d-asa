@@ -31,3 +31,4 @@ PREFIX_BOX_ID_AUTHORITY: Final[bytes] = b"R70#"
 # Box IDs
 BOX_ID_COUPON_RATES: Final[bytes] = b"couponRates"
 BOX_ID_TIME_EVENTS: Final[bytes] = b"timeEvents"
+BOX_ID_TIME_PERIODS: Final[bytes] = b"timePeriods"

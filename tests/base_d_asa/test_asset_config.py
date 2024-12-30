@@ -138,6 +138,10 @@ def test_fail_invalid_minimum_denomination(
         )
 
 
+def test_fail_invalid_denomination() -> None:
+    pass  # TODO
+
+
 def test_fail_invalid_day_count_convention(
     base_d_asa_cfg: DAsaConfig,
     base_d_asa_client_empty: BaseDAsaClient,
@@ -155,6 +159,14 @@ def test_fail_invalid_day_count_convention(
                 ],
             ),
         )
+
+
+def test_fail_invalid_interest_rate() -> None:
+    pass  # TODO
+
+
+def test_fail_invalid_coupon_rates() -> None:
+    pass  # TODO
 
 
 def test_fail_invalid_time_events_length(

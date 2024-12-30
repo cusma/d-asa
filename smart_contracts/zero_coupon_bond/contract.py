@@ -139,6 +139,7 @@ class ZeroCouponBond(
         if self.is_payment_executable(holding_address):
             payment_amount = self.account_total_units_value(holding_address)
             # The reference implementation has on-chain payment agent
+            self.assert_enough_funds(payment_amount)
             self.pay(self.account[holding_address].payment_address, payment_amount)
         else:
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA

@@ -44,6 +44,10 @@ class FixedCouponBond(
         self.paid_coupon_units = UInt64()
 
     @subroutine
+    def assert_coupon_rates(self, coupon_rates: typ.CouponRates) -> None:
+        assert coupon_rates.length, err.INVALID_COUPON_RATES
+
+    @subroutine
     def count_due_coupons(self) -> UInt64:
         current_ts = Global.latest_timestamp
         due_coupons = self.due_coupons_watermark
@@ -226,22 +230,23 @@ class FixedCouponBond(
         # The reference implementation does not assert if there is enough liquidity to pay current due coupon to all
 
         if self.is_payment_executable(holding_address):
-            coupon_amount = self.coupon_interest_amount(
+            payment_amount = self.coupon_interest_amount(
                 self.account_total_units_value(holding_address),
                 account_paid_coupons + 1,
             )
             # The reference implementation has on-chain payment agent
-            self.pay(self.account[holding_address].payment_address, coupon_amount)
+            self.assert_enough_funds(payment_amount)
+            self.pay(self.account[holding_address].payment_address, payment_amount)
         else:
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
-            coupon_amount = UInt64()
+            payment_amount = UInt64()
 
         self.account[holding_address].paid_coupons = arc4.UInt64(
             self.account[holding_address].paid_coupons.native + 1
         )
         self.paid_coupon_units += units
         return typ.PaymentResult(
-            amount=arc4.UInt64(coupon_amount),
+            amount=arc4.UInt64(payment_amount),
             timestamp=arc4.UInt64(Global.latest_timestamp),
             context=payment_info.copy(),  # TODO: Add info on failed payment
         )
@@ -280,6 +285,7 @@ class FixedCouponBond(
         if self.is_payment_executable(holding_address):
             payment_amount = self.account_total_units_value(holding_address)
             # The reference implementation has on-chain payment agent
+            self.assert_enough_funds(payment_amount)
             self.pay(self.account[holding_address].payment_address, payment_amount)
         else:
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
