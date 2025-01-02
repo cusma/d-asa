@@ -240,4 +240,8 @@ def test_fail_invalid_sorting(
         )
 
 
+def test_fail_invalid_time_periods() -> None:
+    pass  # TODO
+
+
 # TODO: Test INVALID_TIME_PERIOD for Actual/Actual convention

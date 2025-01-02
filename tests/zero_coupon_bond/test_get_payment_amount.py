@@ -24,11 +24,9 @@ def test_pass_get_principal_payment_amount(
 
     payment_amount = zero_coupon_bond_client_primary.get_payment_amount(
         holding_address=account.holding_address,
-        payment_index=1,
         transaction_parameters=OnCompleteCallParameters(
             boxes=[
                 (zero_coupon_bond_client_primary.app_id, account.box_id),
-                (zero_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_COUPON_RATES),
             ]
         ),
     ).return_value
@@ -52,11 +50,9 @@ def test_pass_not_configured(
     account = account_factory(zero_coupon_bond_client_empty)
     payment_amount = zero_coupon_bond_client_empty.get_payment_amount(
         holding_address=account.holding_address,
-        payment_index=0,
         transaction_parameters=OnCompleteCallParameters(
             boxes=[
                 (zero_coupon_bond_client_empty.app_id, account.box_id),
-                (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
             ]
         ),
     ).return_value
@@ -70,55 +66,12 @@ def test_fail_invalid_holding_address(
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         zero_coupon_bond_client_primary.get_payment_amount(
             holding_address=oscar.address,
-            payment_index=1,
             transaction_parameters=OnCompleteCallParameters(
                 boxes=[
                     (
                         zero_coupon_bond_client_primary.app_id,
                         DAsaAccount.box_id_from_address(oscar.address),
-                    ),
-                    (
-                        zero_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                ]
-            ),
-        )
-
-
-def test_fail_invalid_coupon_index(
-    zero_coupon_bond_cfg: DAsaConfig,
-    zero_coupon_bond_client_primary: FixedCouponBondClient,
-    account_with_units_factory: Callable[..., DAsaAccount],
-) -> None:
-    account = account_with_units_factory(units=D_ASA_TEST_UNITS)
-
-    with pytest.raises(LogicError, match=err.INVALID_PAYMENT_INDEX):
-        zero_coupon_bond_client_primary.get_payment_amount(
-            holding_address=account.holding_address,
-            payment_index=0,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (zero_coupon_bond_client_primary.app_id, account.box_id),
-                    (
-                        zero_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                ]
-            ),
-        )
-
-    with pytest.raises(LogicError, match=err.INVALID_PAYMENT_INDEX):
-        zero_coupon_bond_client_primary.get_payment_amount(
-            holding_address=account.holding_address,
-            payment_index=zero_coupon_bond_cfg.total_coupons + 2,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (zero_coupon_bond_client_primary.app_id, account.box_id),
-                    (
-                        zero_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
+                    )
                 ]
             ),
         )

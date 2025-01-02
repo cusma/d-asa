@@ -56,7 +56,6 @@ def test_pass_pay_coupon(
 
         account_a_coupon_amount = fixed_coupon_bond_client_ongoing.get_payment_amount(
             holding_address=account_a.holding_address,
-            payment_index=coupon,
             transaction_parameters=OnCompleteCallParameters(
                 boxes=[
                     (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
@@ -70,7 +69,6 @@ def test_pass_pay_coupon(
 
         account_b_coupon_amount = fixed_coupon_bond_client_ongoing.get_payment_amount(
             holding_address=account_b.holding_address,
-            payment_index=coupon,
             transaction_parameters=OnCompleteCallParameters(
                 boxes=[
                     (fixed_coupon_bond_client_ongoing.app_id, account_b.box_id),
@@ -196,7 +194,6 @@ def test_pass_pay_multiple_coupons(
         print(f"Coupon {coupon} of {fixed_coupon_bond_cfg.total_coupons}")
         coupon_amount = fixed_coupon_bond_client_at_maturity.get_payment_amount(
             holding_address=account_a.holding_address,
-            payment_index=coupon,
             transaction_parameters=OnCompleteCallParameters(
                 foreign_assets=[currency.id],
                 accounts=[account_a.payment_address],

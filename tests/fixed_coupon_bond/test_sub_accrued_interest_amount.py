@@ -7,7 +7,7 @@ from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
 )
-from tests.utils import DAsaAccount, get_latest_timestamp, time_warp
+from tests.utils import Currency, DAsaAccount, get_latest_timestamp, time_warp
 
 TEST_UNITS: Final[int] = 3
 
@@ -52,7 +52,6 @@ def test_from_issuance(
 
     coupon_amount = fixed_coupon_bond_client_ongoing.get_payment_amount(
         holding_address=account_a.holding_address,
-        payment_index=due_coupons + 1,
         transaction_parameters=OnCompleteCallParameters(
             boxes=[
                 (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
@@ -64,6 +63,7 @@ def test_from_issuance(
 
 
 def test_from_latest_coupon_due_date(
+    currency: Currency,
     algorand_client: AlgorandClient,
     account_a: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
@@ -76,6 +76,25 @@ def test_from_latest_coupon_due_date(
     time_warp(first_coupon_due_date)
     current_date = get_latest_timestamp(fixed_coupon_bond_client_ongoing.algod_client)
     assert current_date == first_coupon_due_date
+    fixed_coupon_bond_client_ongoing.pay_coupon(
+        holding_address=account_a.holding_address,
+        payment_info=b"",
+        transaction_parameters=OnCompleteCallParameters(
+            foreign_assets=[currency.id],
+            accounts=[account_a.payment_address],
+            boxes=[
+                (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
+                (
+                    fixed_coupon_bond_client_ongoing.app_id,
+                    sc_cst.BOX_ID_COUPON_RATES,
+                ),
+                (
+                    fixed_coupon_bond_client_ongoing.app_id,
+                    sc_cst.BOX_ID_TIME_EVENTS,
+                ),
+            ],
+        ),
+    )
 
     next_coupon_due_date = fixed_coupon_bond_client_ongoing.get_coupons_status(
         transaction_parameters=OnCompleteCallParameters(
@@ -107,7 +126,6 @@ def test_from_latest_coupon_due_date(
 
     coupon_amount = fixed_coupon_bond_client_ongoing.get_payment_amount(
         holding_address=account_a.holding_address,
-        payment_index=due_coupons + 1,
         transaction_parameters=OnCompleteCallParameters(
             boxes=[
                 (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
@@ -160,3 +178,7 @@ def test_on_coupon_due_date(
         ),
     ).return_value.accrued_interest
     assert accrued_interest == 0
+
+
+def test_fail_pending_coupon_payment() -> None:
+    pass  # TODO
