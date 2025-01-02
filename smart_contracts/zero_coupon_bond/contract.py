@@ -52,6 +52,11 @@ class ZeroCouponBond(
         )
 
     @subroutine
+    def is_accruing_interest(self) -> bool:
+        # The check on maturity date ensures D-ASA has been configured as block timestamp cannot be less than 0 (init).
+        return self.issuance_date <= Global.latest_timestamp < self.maturity_date
+
+    @subroutine
     def accrued_interest_amount(
         self, holding_address: arc4.Address, units: UInt64
     ) -> UInt64:
@@ -198,7 +203,7 @@ class ZeroCouponBond(
         denominator = UInt64()
 
         # Accruing interest
-        if self.issuance_date <= Global.latest_timestamp < self.maturity_date:
+        if self.is_accruing_interest():
             day_count_factor = self.day_count_factor()
             accrued_interest = self.accrued_interest_amount(
                 holding_address, units.native

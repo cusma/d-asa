@@ -116,7 +116,8 @@ class FixedCouponBond(
     @subroutine
     def is_accruing_interest(self, due_coupons: UInt64) -> bool:
         return (
-            Global.latest_timestamp > self.issuance_date
+            self.issuance_date != 0
+            and Global.latest_timestamp > self.issuance_date
             and due_coupons < self.total_coupons
         )
 
