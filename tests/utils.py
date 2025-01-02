@@ -5,6 +5,7 @@ from typing import Optional, TypeAlias
 from algokit_utils import OnCompleteCallParameters
 from algokit_utils.beta.account_manager import AddressAndSigner, TransactionSigner
 from algokit_utils.beta.algorand_client import AlgorandClient, PayParams
+from algosdk.abi import TupleType, UintType
 from algosdk.constants import min_txn_fee
 from algosdk.encoding import decode_address
 from algosdk.transaction import SuggestedParams
@@ -259,3 +260,9 @@ def sp_per_coupon(coupon_idx: int) -> SuggestedParams:
     sp.flat_fee = True
     sp.fee = math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee
     return sp
+
+
+def set_role_config(validity_start: int = 0, validity_end: int = 2**64 - 1) -> bytes:
+    return TupleType([UintType(64), UintType(64)]).encode(
+        [validity_start, validity_end]
+    )

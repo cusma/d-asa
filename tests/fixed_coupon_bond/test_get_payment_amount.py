@@ -91,6 +91,7 @@ def test_pass_get_principal_payment_amount(
     fixed_coupon_bond_client_primary: FixedCouponBondClient,
     account_with_coupons_factory: Callable[..., DAsaAccount],
 ) -> None:
+    # Account with all coupons paid and principal repayment left
     account = account_with_coupons_factory()
 
     payment_amount = fixed_coupon_bond_client_primary.get_payment_amount(
