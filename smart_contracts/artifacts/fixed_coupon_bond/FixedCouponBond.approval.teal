@@ -176,14 +176,14 @@ __puya_arc4_router__:
     proto 0 1
     txn NumAppArgs
     bz __puya_arc4_router___bare_routing@27
-    pushbytess 0x4fd6a3cc 0x8cf14b51 0x9c76b6a3 0x44363d49 0x53bef045 0x2e2877af 0xf6a96c8d 0x63f99589 0xeae05031 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x301dd919 0xed02759f 0xfad2173e 0x08efea35 0xddcec07b // method "asset_transfer(address,address,uint64)uint64", method "pay_coupon(address,byte[])(uint64,uint64,byte[])", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_coupon_rates()uint16[]", method "get_payment_amount(address,uint64)(uint64,uint64)", method "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)", method "asset_create(address,byte[])void", method "asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,bool)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()byte[]"
+    pushbytess 0x4fd6a3cc 0x8cf14b51 0x9c76b6a3 0x44363d49 0x53bef045 0x67db4f20 0xf6a96c8d 0x63f99589 0xeae05031 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x301dd919 0xed02759f 0xfad2173e 0x08efea35 0xddcec07b // method "asset_transfer(address,address,uint64)uint64", method "pay_coupon(address,byte[])(uint64,uint64,byte[])", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_coupon_rates()uint16[]", method "get_payment_amount(address)(uint64,uint64)", method "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)", method "asset_create(address,byte[])void", method "asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,bool)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()byte[]"
     txna ApplicationArgs 0
     match __puya_arc4_router___asset_transfer_route@2 __puya_arc4_router___pay_coupon_route@3 __puya_arc4_router___pay_principal_route@4 __puya_arc4_router___get_account_units_current_value_route@5 __puya_arc4_router___get_coupon_rates_route@6 __puya_arc4_router___get_payment_amount_route@7 __puya_arc4_router___get_coupons_status_route@8 __puya_arc4_router___asset_create_route@9 __puya_arc4_router___asset_config_route@10 __puya_arc4_router___set_secondary_time_events_route@11 __puya_arc4_router___assign_role_route@12 __puya_arc4_router___revoke_role_route@13 __puya_arc4_router___open_account_route@14 __puya_arc4_router___close_account_route@15 __puya_arc4_router___primary_distribution_route@16 __puya_arc4_router___set_asset_suspension_route@17 __puya_arc4_router___set_account_suspension_route@18 __puya_arc4_router___set_default_status_route@19 __puya_arc4_router___get_asset_info_route@20 __puya_arc4_router___get_account_info_route@21 __puya_arc4_router___get_time_events_route@22 __puya_arc4_router___get_secondary_market_schedule_route@23 __puya_arc4_router___get_asset_metadata_route@24
     intc_0 // 0
     retsub
 
 __puya_arc4_router___asset_transfer_route@2:
-    // smart_contracts/fixed_coupon_bond/contract.py:142
+    // smart_contracts/fixed_coupon_bond/contract.py:145
     // @arc4.abimethod
     txn OnCompletion
     !
@@ -203,7 +203,7 @@ __puya_arc4_router___asset_transfer_route@2:
     txna ApplicationArgs 1
     txna ApplicationArgs 2
     txna ApplicationArgs 3
-    // smart_contracts/fixed_coupon_bond/contract.py:142
+    // smart_contracts/fixed_coupon_bond/contract.py:145
     // @arc4.abimethod
     callsub asset_transfer
     bytec_1 // 0x151f7c75
@@ -214,7 +214,7 @@ __puya_arc4_router___asset_transfer_route@2:
     retsub
 
 __puya_arc4_router___pay_coupon_route@3:
-    // smart_contracts/fixed_coupon_bond/contract.py:193
+    // smart_contracts/fixed_coupon_bond/contract.py:192
     // @arc4.abimethod
     txn OnCompletion
     !
@@ -233,7 +233,7 @@ __puya_arc4_router___pay_coupon_route@3:
     // ):
     txna ApplicationArgs 1
     txna ApplicationArgs 2
-    // smart_contracts/fixed_coupon_bond/contract.py:193
+    // smart_contracts/fixed_coupon_bond/contract.py:192
     // @arc4.abimethod
     callsub pay_coupon
     bytec_1 // 0x151f7c75
@@ -244,7 +244,7 @@ __puya_arc4_router___pay_coupon_route@3:
     retsub
 
 __puya_arc4_router___pay_principal_route@4:
-    // smart_contracts/fixed_coupon_bond/contract.py:254
+    // smart_contracts/fixed_coupon_bond/contract.py:253
     // @arc4.abimethod
     txn OnCompletion
     !
@@ -263,7 +263,7 @@ __puya_arc4_router___pay_principal_route@4:
     // ):
     txna ApplicationArgs 1
     txna ApplicationArgs 2
-    // smart_contracts/fixed_coupon_bond/contract.py:254
+    // smart_contracts/fixed_coupon_bond/contract.py:253
     // @arc4.abimethod
     callsub pay_principal
     bytec_1 // 0x151f7c75
@@ -274,7 +274,7 @@ __puya_arc4_router___pay_principal_route@4:
     retsub
 
 __puya_arc4_router___get_account_units_current_value_route@5:
-    // smart_contracts/fixed_coupon_bond/contract.py:301
+    // smart_contracts/fixed_coupon_bond/contract.py:300
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -293,7 +293,7 @@ __puya_arc4_router___get_account_units_current_value_route@5:
     // ):
     txna ApplicationArgs 1
     txna ApplicationArgs 2
-    // smart_contracts/fixed_coupon_bond/contract.py:301
+    // smart_contracts/fixed_coupon_bond/contract.py:300
     // @arc4.abimethod(readonly=True)
     callsub get_account_units_current_value
     bytec_1 // 0x151f7c75
@@ -304,7 +304,7 @@ __puya_arc4_router___get_account_units_current_value_route@5:
     retsub
 
 __puya_arc4_router___get_coupon_rates_route@6:
-    // smart_contracts/fixed_coupon_bond/contract.py:356
+    // smart_contracts/fixed_coupon_bond/contract.py:358
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -320,7 +320,7 @@ __puya_arc4_router___get_coupon_rates_route@6:
     retsub
 
 __puya_arc4_router___get_payment_amount_route@7:
-    // smart_contracts/fixed_coupon_bond/contract.py:369
+    // smart_contracts/fixed_coupon_bond/contract.py:371
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -338,8 +338,7 @@ __puya_arc4_router___get_payment_amount_route@7:
     //     ),
     // ):
     txna ApplicationArgs 1
-    txna ApplicationArgs 2
-    // smart_contracts/fixed_coupon_bond/contract.py:369
+    // smart_contracts/fixed_coupon_bond/contract.py:371
     // @arc4.abimethod(readonly=True)
     callsub get_payment_amount
     bytec_1 // 0x151f7c75
@@ -350,7 +349,7 @@ __puya_arc4_router___get_payment_amount_route@7:
     retsub
 
 __puya_arc4_router___get_coupons_status_route@8:
-    // smart_contracts/fixed_coupon_bond/contract.py:408
+    // smart_contracts/fixed_coupon_bond/contract.py:404
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -812,7 +811,7 @@ __puya_arc4_router___asset_update@28:
 
 // smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.asset_transfer(sender_holding_address: bytes, receiver_holding_address: bytes, units: bytes) -> bytes:
 asset_transfer:
-    // smart_contracts/fixed_coupon_bond/contract.py:142-148
+    // smart_contracts/fixed_coupon_bond/contract.py:145-151
     // @arc4.abimethod
     // def asset_transfer(
     //     self,
@@ -821,11 +820,11 @@ asset_transfer:
     //     units: arc4.UInt64,
     // ) -> arc4.UInt64:
     proto 3 1
-    // smart_contracts/fixed_coupon_bond/contract.py:173
+    // smart_contracts/fixed_coupon_bond/contract.py:176
     // units.native,
     frame_dig -1
     btoi
-    // smart_contracts/fixed_coupon_bond/contract.py:170-174
+    // smart_contracts/fixed_coupon_bond/contract.py:173-177
     // self.assert_asset_transfer_preconditions(
     //     sender_holding_address,
     //     receiver_holding_address,
@@ -835,42 +834,28 @@ asset_transfer:
     frame_dig -2
     dig 2
     callsub assert_asset_transfer_preconditions
-    // smart_contracts/fixed_coupon_bond/contract.py:176-177
-    // # Transfer is forbidden in case of pending coupon payments
-    // due_coupons = self.count_due_coupons()
-    callsub count_due_coupons
-    // smart_contracts/fixed_coupon_bond/contract.py:179
-    // self.account[sender_holding_address].paid_coupons == due_coupons
+    // smart_contracts/fixed_coupon_bond/contract.py:179-180
+    // # Transferred units value (must be computed before the transfer)
+    // sender_unit_value = self.account[sender_holding_address].unit_value
     bytec_0 // 0x52333023
     frame_dig -3
     concat
-    dup
-    box_get
-    assert // check self.account entry exists
-    extract 48 8 // on error: Index access is out of bounds
-    dig 2
-    itob
-    b==
-    // smart_contracts/fixed_coupon_bond/contract.py:178-180
-    // assert (
-    //     self.account[sender_holding_address].paid_coupons == due_coupons
-    // ), err.PENDING_COUPON_PAYMENT
-    assert // Pending due coupon payment
-    // smart_contracts/fixed_coupon_bond/contract.py:182-183
-    // # Transferred units value (must be computed before the transfer)
-    // sender_unit_value = self.account[sender_holding_address].unit_value
     box_get
     assert // check self.account entry exists
     extract 40 8 // on error: Index access is out of bounds
-    // smart_contracts/fixed_coupon_bond/contract.py:184-186
+    // smart_contracts/fixed_coupon_bond/contract.py:181
+    // due_coupons = self.count_due_coupons()
+    callsub count_due_coupons
+    // smart_contracts/fixed_coupon_bond/contract.py:182-185
+    // # Transfers is forbidden in case of pending coupon payments, checked in the accrued interest calculation
     // accrued_interest = self.accrued_interest_amount(
     //     sender_holding_address, units.native, due_coupons
     // )
     frame_dig -3
     dig 3
-    uncover 3
+    uncover 2
     callsub accrued_interest_amount
-    // smart_contracts/fixed_coupon_bond/contract.py:188-190
+    // smart_contracts/fixed_coupon_bond/contract.py:187-189
     // self.transfer_units(
     //     sender_holding_address, receiver_holding_address, units.native
     // )
@@ -878,7 +863,7 @@ asset_transfer:
     frame_dig -2
     dig 4
     callsub transfer_units
-    // smart_contracts/fixed_coupon_bond/contract.py:191
+    // smart_contracts/fixed_coupon_bond/contract.py:190
     // return arc4.UInt64(units.native * sender_unit_value.native + accrued_interest)
     swap
     btoi
@@ -1426,26 +1411,42 @@ accrued_interest_amount:
     //     self, holding_address: arc4.Address, units: UInt64, due_coupons: UInt64
     // ) -> UInt64:
     proto 3 1
-    // smart_contracts/fixed_coupon_bond/contract.py:127
+    // smart_contracts/fixed_coupon_bond/contract.py:128
+    // self.account[holding_address].paid_coupons == due_coupons
+    bytec_0 // 0x52333023
+    frame_dig -3
+    concat
+    box_get
+    assert // check self.account entry exists
+    extract 48 8 // on error: Index access is out of bounds
+    frame_dig -1
+    itob
+    b==
+    // smart_contracts/fixed_coupon_bond/contract.py:127-129
+    // assert (
+    //     self.account[holding_address].paid_coupons == due_coupons
+    // ), err.PENDING_COUPON_PAYMENT
+    assert // Pending due coupon payment
+    // smart_contracts/fixed_coupon_bond/contract.py:130
     // day_count_factor = self.day_count_factor(due_coupons)
     frame_dig -1
     callsub day_count_factor
-    // smart_contracts/fixed_coupon_bond/contract.py:128
+    // smart_contracts/fixed_coupon_bond/contract.py:131
     // coupon_accrued_period = day_count_factor.numerator.native
     dup
     extract 0 8 // on error: Index access is out of bounds
     btoi
-    // smart_contracts/fixed_coupon_bond/contract.py:129
+    // smart_contracts/fixed_coupon_bond/contract.py:132
     // coupon_period = day_count_factor.denominator.native
     swap
     extract 8 8 // on error: Index access is out of bounds
     btoi
-    // smart_contracts/fixed_coupon_bond/contract.py:130
+    // smart_contracts/fixed_coupon_bond/contract.py:133
     // next_coupon_rate_bps = self.coupon_rates.value[
     bytec 17 // 0x636f75706f6e5261746573
     box_get
     assert // check self.coupon_rates exists
-    // smart_contracts/fixed_coupon_bond/contract.py:130-132
+    // smart_contracts/fixed_coupon_bond/contract.py:133-135
     // next_coupon_rate_bps = self.coupon_rates.value[
     //     due_coupons
     // ].native  # due_coupons is equal to the 0-base idx of next coupon
@@ -1456,27 +1457,27 @@ accrued_interest_amount:
     intc_3 // 2
     extract3 // on error: Index access is out of bounds
     btoi
-    // smart_contracts/fixed_coupon_bond/contract.py:134
+    // smart_contracts/fixed_coupon_bond/contract.py:137
     // self.account_units_value(holding_address, units)
     frame_dig -3
     frame_dig -2
     callsub account_units_value
-    // smart_contracts/fixed_coupon_bond/contract.py:134-135
+    // smart_contracts/fixed_coupon_bond/contract.py:137-138
     // self.account_units_value(holding_address, units)
     // * next_coupon_rate_bps
     *
-    // smart_contracts/fixed_coupon_bond/contract.py:134-136
+    // smart_contracts/fixed_coupon_bond/contract.py:137-139
     // self.account_units_value(holding_address, units)
     // * next_coupon_rate_bps
     // * coupon_accrued_period
     uncover 2
     *
-    // smart_contracts/fixed_coupon_bond/contract.py:138
+    // smart_contracts/fixed_coupon_bond/contract.py:141
     // cst.BPS * coupon_period
     pushint 10000 // 10000
     uncover 2
     *
-    // smart_contracts/fixed_coupon_bond/contract.py:134-139
+    // smart_contracts/fixed_coupon_bond/contract.py:137-142
     // self.account_units_value(holding_address, units)
     // * next_coupon_rate_bps
     // * coupon_accrued_period
@@ -1484,7 +1485,7 @@ accrued_interest_amount:
     //     cst.BPS * coupon_period
     // )  # div-by-zero: coupon_period != 0 due to assert_time_events_sorted checks
     /
-    // smart_contracts/fixed_coupon_bond/contract.py:133-140
+    // smart_contracts/fixed_coupon_bond/contract.py:136-143
     // return (
     //     self.account_units_value(holding_address, units)
     //     * next_coupon_rate_bps
@@ -1828,28 +1829,28 @@ reset_account_if_zero_units_after_if_else@2:
 
 // smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.pay_coupon(holding_address: bytes, payment_info: bytes) -> bytes:
 pay_coupon:
-    // smart_contracts/fixed_coupon_bond/contract.py:193-196
+    // smart_contracts/fixed_coupon_bond/contract.py:192-195
     // @arc4.abimethod
     // def pay_coupon(
     //     self, holding_address: arc4.Address, payment_info: arc4.DynamicBytes
     // ) -> typ.PaymentResult:
     proto 2 1
-    // smart_contracts/fixed_coupon_bond/contract.py:216-217
+    // smart_contracts/fixed_coupon_bond/contract.py:215-216
     // # The reference implementation does not restrict caller authorization
     // assert self.status_is_active(), err.UNAUTHORIZED
     callsub status_is_active
     assert // Not authorized
-    // smart_contracts/fixed_coupon_bond/contract.py:218
+    // smart_contracts/fixed_coupon_bond/contract.py:217
     // self.assert_is_not_defaulted()
     callsub assert_is_not_defaulted
-    // smart_contracts/fixed_coupon_bond/contract.py:219
+    // smart_contracts/fixed_coupon_bond/contract.py:218
     // self.assert_is_not_suspended()
     callsub assert_is_not_suspended
-    // smart_contracts/fixed_coupon_bond/contract.py:220
+    // smart_contracts/fixed_coupon_bond/contract.py:219
     // self.assert_valid_holding_address(holding_address)
     frame_dig -2
     callsub assert_valid_holding_address
-    // smart_contracts/fixed_coupon_bond/contract.py:221
+    // smart_contracts/fixed_coupon_bond/contract.py:220
     // units = self.account[holding_address].units.native
     bytec_0 // 0x52333023
     frame_dig -2
@@ -1861,13 +1862,13 @@ pay_coupon:
     btoi
     dup
     cover 2
-    // smart_contracts/fixed_coupon_bond/contract.py:222
+    // smart_contracts/fixed_coupon_bond/contract.py:221
     // assert units > 0, err.NO_UNITS
     assert // No D-ASA units
-    // smart_contracts/fixed_coupon_bond/contract.py:223
+    // smart_contracts/fixed_coupon_bond/contract.py:222
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
-    // smart_contracts/fixed_coupon_bond/contract.py:224
+    // smart_contracts/fixed_coupon_bond/contract.py:223
     // account_paid_coupons = self.account[holding_address].paid_coupons.native
     swap
     box_get
@@ -1876,44 +1877,44 @@ pay_coupon:
     btoi
     dup
     uncover 2
-    // smart_contracts/fixed_coupon_bond/contract.py:225
+    // smart_contracts/fixed_coupon_bond/contract.py:224
     // assert due_coupons > account_paid_coupons, err.NO_DUE_COUPON
     dig 1
     >
     assert // No due coupon to pay
-    // smart_contracts/fixed_coupon_bond/contract.py:226-229
+    // smart_contracts/fixed_coupon_bond/contract.py:225-228
     // # The following conditions verify if other accounts are still waiting for the payment of previous coupons
     // assert self.all_due_coupons_paid(
     //     account_paid_coupons
     // ), err.PENDING_COUPON_PAYMENT
     callsub all_due_coupons_paid
     assert // Pending due coupon payment
-    // smart_contracts/fixed_coupon_bond/contract.py:232
+    // smart_contracts/fixed_coupon_bond/contract.py:231
     // if self.is_payment_executable(holding_address):
     frame_dig -2
     callsub is_payment_executable
     bz pay_coupon_else_body@2
-    // smart_contracts/fixed_coupon_bond/contract.py:234
+    // smart_contracts/fixed_coupon_bond/contract.py:233
     // self.account_total_units_value(holding_address),
     frame_dig -2
     callsub account_total_units_value
-    // smart_contracts/fixed_coupon_bond/contract.py:235
+    // smart_contracts/fixed_coupon_bond/contract.py:234
     // account_paid_coupons + 1,
     frame_dig 2
     intc_1 // 1
     +
-    // smart_contracts/fixed_coupon_bond/contract.py:233-236
+    // smart_contracts/fixed_coupon_bond/contract.py:232-235
     // payment_amount = self.coupon_interest_amount(
     //     self.account_total_units_value(holding_address),
     //     account_paid_coupons + 1,
     // )
     callsub coupon_interest_amount
     dupn 2
-    // smart_contracts/fixed_coupon_bond/contract.py:237-238
+    // smart_contracts/fixed_coupon_bond/contract.py:236-237
     // # The reference implementation has on-chain payment agent
     // self.assert_enough_funds(payment_amount)
     callsub assert_enough_funds
-    // smart_contracts/fixed_coupon_bond/contract.py:239
+    // smart_contracts/fixed_coupon_bond/contract.py:238
     // self.pay(self.account[holding_address].payment_address, payment_amount)
     frame_dig 0
     box_get
@@ -1924,13 +1925,13 @@ pay_coupon:
     b pay_coupon_after_if_else@3
 
 pay_coupon_else_body@2:
-    // smart_contracts/fixed_coupon_bond/contract.py:241-242
+    // smart_contracts/fixed_coupon_bond/contract.py:240-241
     // # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
     // payment_amount = UInt64()
     intc_0 // 0
 
 pay_coupon_after_if_else@3:
-    // smart_contracts/fixed_coupon_bond/contract.py:245
+    // smart_contracts/fixed_coupon_bond/contract.py:244
     // self.account[holding_address].paid_coupons.native + 1
     frame_dig 0
     dup
@@ -1940,24 +1941,24 @@ pay_coupon_after_if_else@3:
     btoi
     intc_1 // 1
     +
-    // smart_contracts/fixed_coupon_bond/contract.py:244-246
+    // smart_contracts/fixed_coupon_bond/contract.py:243-245
     // self.account[holding_address].paid_coupons = arc4.UInt64(
     //     self.account[holding_address].paid_coupons.native + 1
     // )
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:244
+    // smart_contracts/fixed_coupon_bond/contract.py:243
     // self.account[holding_address].paid_coupons = arc4.UInt64(
     dig 1
     box_get
     assert // check self.account entry exists
-    // smart_contracts/fixed_coupon_bond/contract.py:244-246
+    // smart_contracts/fixed_coupon_bond/contract.py:243-245
     // self.account[holding_address].paid_coupons = arc4.UInt64(
     //     self.account[holding_address].paid_coupons.native + 1
     // )
     swap
     replace2 48
     box_put
-    // smart_contracts/fixed_coupon_bond/contract.py:247
+    // smart_contracts/fixed_coupon_bond/contract.py:246
     // self.paid_coupon_units += units
     intc_0 // 0
     bytec 19 // "paid_coupon_units"
@@ -1968,14 +1969,14 @@ pay_coupon_after_if_else@3:
     bytec 19 // "paid_coupon_units"
     swap
     app_global_put
-    // smart_contracts/fixed_coupon_bond/contract.py:249
+    // smart_contracts/fixed_coupon_bond/contract.py:248
     // amount=arc4.UInt64(payment_amount),
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:250
+    // smart_contracts/fixed_coupon_bond/contract.py:249
     // timestamp=arc4.UInt64(Global.latest_timestamp),
     global LatestTimestamp
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:248-252
+    // smart_contracts/fixed_coupon_bond/contract.py:247-251
     // return typ.PaymentResult(
     //     amount=arc4.UInt64(payment_amount),
     //     timestamp=arc4.UInt64(Global.latest_timestamp),
@@ -2219,41 +2220,41 @@ pay:
 
 // smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.pay_principal(holding_address: bytes, payment_info: bytes) -> bytes:
 pay_principal:
-    // smart_contracts/fixed_coupon_bond/contract.py:254-257
+    // smart_contracts/fixed_coupon_bond/contract.py:253-256
     // @arc4.abimethod
     // def pay_principal(
     //     self, holding_address: arc4.Address, payment_info: arc4.DynamicBytes
     // ) -> typ.PaymentResult:
     proto 2 1
-    // smart_contracts/fixed_coupon_bond/contract.py:277
+    // smart_contracts/fixed_coupon_bond/contract.py:276
     // self.assert_pay_principal_authorization(holding_address)
     frame_dig -2
     callsub assert_pay_principal_authorization
-    // smart_contracts/fixed_coupon_bond/contract.py:281
+    // smart_contracts/fixed_coupon_bond/contract.py:280
     // self.count_due_coupons()
     callsub count_due_coupons
-    // smart_contracts/fixed_coupon_bond/contract.py:279-282
+    // smart_contracts/fixed_coupon_bond/contract.py:278-281
     // # Principal payment is forbidden in case of pending coupon payments
     // assert self.all_due_coupons_paid(
     //     self.count_due_coupons()
     // ), err.PENDING_COUPON_PAYMENT
     callsub all_due_coupons_paid
     assert // Pending due coupon payment
-    // smart_contracts/fixed_coupon_bond/contract.py:285
+    // smart_contracts/fixed_coupon_bond/contract.py:284
     // if self.is_payment_executable(holding_address):
     frame_dig -2
     callsub is_payment_executable
     bz pay_principal_else_body@2
-    // smart_contracts/fixed_coupon_bond/contract.py:286
+    // smart_contracts/fixed_coupon_bond/contract.py:285
     // payment_amount = self.account_total_units_value(holding_address)
     frame_dig -2
     callsub account_total_units_value
     dupn 2
-    // smart_contracts/fixed_coupon_bond/contract.py:287-288
+    // smart_contracts/fixed_coupon_bond/contract.py:286-287
     // # The reference implementation has on-chain payment agent
     // self.assert_enough_funds(payment_amount)
     callsub assert_enough_funds
-    // smart_contracts/fixed_coupon_bond/contract.py:289
+    // smart_contracts/fixed_coupon_bond/contract.py:288
     // self.pay(self.account[holding_address].payment_address, payment_amount)
     bytec_0 // 0x52333023
     frame_dig -2
@@ -2266,24 +2267,24 @@ pay_principal:
     b pay_principal_after_if_else@3
 
 pay_principal_else_body@2:
-    // smart_contracts/fixed_coupon_bond/contract.py:291-292
+    // smart_contracts/fixed_coupon_bond/contract.py:290-291
     // # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
     // payment_amount = UInt64()
     intc_0 // 0
 
 pay_principal_after_if_else@3:
-    // smart_contracts/fixed_coupon_bond/contract.py:294
+    // smart_contracts/fixed_coupon_bond/contract.py:293
     // self.update_supply_after_principal_payment(holding_address)
     frame_dig -2
     callsub update_supply_after_principal_payment
-    // smart_contracts/fixed_coupon_bond/contract.py:296
+    // smart_contracts/fixed_coupon_bond/contract.py:295
     // amount=arc4.UInt64(payment_amount),
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:297
+    // smart_contracts/fixed_coupon_bond/contract.py:296
     // timestamp=arc4.UInt64(Global.latest_timestamp),
     global LatestTimestamp
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:295-299
+    // smart_contracts/fixed_coupon_bond/contract.py:294-298
     // return typ.PaymentResult(
     //     amount=arc4.UInt64(payment_amount),
     //     timestamp=arc4.UInt64(Global.latest_timestamp),
@@ -2409,7 +2410,7 @@ end_if_no_circulating_units_after_if_else@2:
 
 // smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.get_account_units_current_value(holding_address: bytes, units: bytes) -> bytes:
 get_account_units_current_value:
-    // smart_contracts/fixed_coupon_bond/contract.py:301-304
+    // smart_contracts/fixed_coupon_bond/contract.py:300-303
     // @arc4.abimethod(readonly=True)
     // def get_account_units_current_value(
     //     self, holding_address: arc4.Address, units: arc4.UInt64
@@ -2528,7 +2529,9 @@ get_account_units_current_value_bool_merge@8:
     frame_dig 3
     dup
     callsub day_count_factor
-    // smart_contracts/fixed_coupon_bond/contract.py:342-344
+    // smart_contracts/fixed_coupon_bond/contract.py:342-346
+    // # Account units current value calculation fails in case of pending coupon payments, checked in the accrued
+    // # interest calculation
     // accrued_interest = self.accrued_interest_amount(
     //     holding_address, units.native, due_coupons
     // )
@@ -2537,42 +2540,42 @@ get_account_units_current_value_bool_merge@8:
     uncover 3
     callsub accrued_interest_amount
     frame_bury 1
-    // smart_contracts/fixed_coupon_bond/contract.py:345
+    // smart_contracts/fixed_coupon_bond/contract.py:347
     // numerator = day_count_factor.numerator.native
     dup
     extract 0 8 // on error: Index access is out of bounds
     btoi
     frame_bury 4
-    // smart_contracts/fixed_coupon_bond/contract.py:346
+    // smart_contracts/fixed_coupon_bond/contract.py:348
     // denominator = day_count_factor.denominator.native
     extract 8 8 // on error: Index access is out of bounds
     btoi
     frame_bury 2
 
 get_account_units_current_value_after_if_else@10:
-    // smart_contracts/fixed_coupon_bond/contract.py:348
+    // smart_contracts/fixed_coupon_bond/contract.py:350
     // units_value=arc4.UInt64(account_units_nominal_value),
     frame_dig 0
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:349
+    // smart_contracts/fixed_coupon_bond/contract.py:351
     // accrued_interest=arc4.UInt64(accrued_interest),
     frame_dig 1
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:351
+    // smart_contracts/fixed_coupon_bond/contract.py:353
     // numerator=arc4.UInt64(numerator),
     frame_dig 4
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:352
+    // smart_contracts/fixed_coupon_bond/contract.py:354
     // denominator=arc4.UInt64(denominator),
     frame_dig 2
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:350-353
+    // smart_contracts/fixed_coupon_bond/contract.py:352-355
     // day_count_factor=typ.DayCountFactor(
     //     numerator=arc4.UInt64(numerator),
     //     denominator=arc4.UInt64(denominator),
     // ),
     concat
-    // smart_contracts/fixed_coupon_bond/contract.py:347-354
+    // smart_contracts/fixed_coupon_bond/contract.py:349-356
     // return typ.CurrentUnitsValue(
     //     units_value=arc4.UInt64(account_units_nominal_value),
     //     accrued_interest=arc4.UInt64(accrued_interest),
@@ -2636,18 +2639,18 @@ is_accruing_interest_bool_merge@4:
 
 // smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.get_coupon_rates() -> bytes:
 get_coupon_rates:
-    // smart_contracts/fixed_coupon_bond/contract.py:356-357
+    // smart_contracts/fixed_coupon_bond/contract.py:358-359
     // @arc4.abimethod(readonly=True)
     // def get_coupon_rates(self) -> typ.CouponRates:
     proto 0 1
-    // smart_contracts/fixed_coupon_bond/contract.py:364
+    // smart_contracts/fixed_coupon_bond/contract.py:366
     // coupon_rates = typ.CouponRates()
     bytec 31 // 0x0000
-    // smart_contracts/fixed_coupon_bond/contract.py:365
+    // smart_contracts/fixed_coupon_bond/contract.py:367
     // if self.status_is_active():
     callsub status_is_active
     bz get_coupon_rates_after_if_else@2
-    // smart_contracts/fixed_coupon_bond/contract.py:366
+    // smart_contracts/fixed_coupon_bond/contract.py:368
     // coupon_rates = self.coupon_rates.value.copy()
     bytec 17 // 0x636f75706f6e5261746573
     box_get
@@ -2656,118 +2659,100 @@ get_coupon_rates:
     assert // check self.coupon_rates exists
 
 get_coupon_rates_after_if_else@2:
-    // smart_contracts/fixed_coupon_bond/contract.py:367
+    // smart_contracts/fixed_coupon_bond/contract.py:369
     // return coupon_rates
     frame_dig 0
     swap
     retsub
 
 
-// smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.get_payment_amount(holding_address: bytes, payment_index: bytes) -> bytes:
+// smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.get_payment_amount(holding_address: bytes) -> bytes:
 get_payment_amount:
-    // smart_contracts/fixed_coupon_bond/contract.py:369-372
+    // smart_contracts/fixed_coupon_bond/contract.py:371-372
     // @arc4.abimethod(readonly=True)
-    // def get_payment_amount(
-    //     self, holding_address: arc4.Address, payment_index: arc4.UInt64
-    // ) -> typ.PaymentAmounts:
-    proto 2 1
+    // def get_payment_amount(self, holding_address: arc4.Address) -> typ.PaymentAmounts:
+    proto 1 1
     pushbytes ""
-    // smart_contracts/fixed_coupon_bond/contract.py:387
+    // smart_contracts/fixed_coupon_bond/contract.py:385
     // self.assert_valid_holding_address(holding_address)
-    frame_dig -2
+    frame_dig -1
     callsub assert_valid_holding_address
-    // smart_contracts/fixed_coupon_bond/contract.py:388
+    // smart_contracts/fixed_coupon_bond/contract.py:386
     // interest_amount = UInt64()
     intc_0 // 0
-    // smart_contracts/fixed_coupon_bond/contract.py:388-389
+    // smart_contracts/fixed_coupon_bond/contract.py:386-387
     // interest_amount = UInt64()
     // principal_amount = UInt64()
     dupn 3
-    // smart_contracts/fixed_coupon_bond/contract.py:390
+    // smart_contracts/fixed_coupon_bond/contract.py:388
     // if self.status_is_active():
     callsub status_is_active
     swap
     cover 2
-    bz get_payment_amount_after_if_else@9
-    // smart_contracts/fixed_coupon_bond/contract.py:392
-    // 1 <= payment_index.native <= self.total_coupons + 1
+    bz get_payment_amount_after_if_else@5
+    // smart_contracts/fixed_coupon_bond/contract.py:389
+    // paid_coupons = self.account[holding_address].paid_coupons.native
+    bytec_0 // 0x52333023
     frame_dig -1
+    concat
+    box_get
+    assert // check self.account entry exists
+    extract 48 8 // on error: Index access is out of bounds
     btoi
     dup
     frame_bury 0
-    intc_1 // 1
-    >=
-    bz get_payment_amount_bool_false@4
+    // smart_contracts/fixed_coupon_bond/contract.py:390
+    // if paid_coupons < self.total_coupons:
     intc_0 // 0
     bytec_3 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
+    <
+    bz get_payment_amount_else_body@3
+    // smart_contracts/fixed_coupon_bond/contract.py:393
+    // self.account_total_units_value(holding_address),
+    frame_dig -1
+    callsub account_total_units_value
+    // smart_contracts/fixed_coupon_bond/contract.py:394
+    // paid_coupons + 1,
+    frame_dig 0
     intc_1 // 1
     +
-    frame_dig 0
-    >=
-    bz get_payment_amount_bool_false@4
-    intc_1 // 1
-    b get_payment_amount_bool_merge@5
-
-get_payment_amount_bool_false@4:
-    intc_0 // 0
-
-get_payment_amount_bool_merge@5:
-    // smart_contracts/fixed_coupon_bond/contract.py:391-393
-    // assert (
-    //     1 <= payment_index.native <= self.total_coupons + 1
-    // ), err.INVALID_PAYMENT_INDEX
-    assert // Invalid 1-based payment index
-    // smart_contracts/fixed_coupon_bond/contract.py:394
-    // if payment_index.native <= self.total_coupons:
-    intc_0 // 0
-    bytec_3 // "total_coupons"
-    app_global_get_ex
-    assert // check self.total_coupons exists
-    frame_dig 0
-    >=
-    bz get_payment_amount_else_body@7
-    // smart_contracts/fixed_coupon_bond/contract.py:397
-    // self.account_total_units_value(holding_address),
-    frame_dig -2
-    callsub account_total_units_value
-    // smart_contracts/fixed_coupon_bond/contract.py:395-399
+    // smart_contracts/fixed_coupon_bond/contract.py:391-395
     // # Coupon Payment
     // interest_amount = self.coupon_interest_amount(
     //     self.account_total_units_value(holding_address),
-    //     payment_index.native,
+    //     paid_coupons + 1,
     // )
-    frame_dig 0
     callsub coupon_interest_amount
     frame_bury 1
-    b get_payment_amount_after_if_else@8
+    b get_payment_amount_after_if_else@4
 
-get_payment_amount_else_body@7:
-    // smart_contracts/fixed_coupon_bond/contract.py:401-402
+get_payment_amount_else_body@3:
+    // smart_contracts/fixed_coupon_bond/contract.py:397-398
     // # Principal Payment
     // principal_amount = self.account_total_units_value(holding_address)
-    frame_dig -2
+    frame_dig -1
     callsub account_total_units_value
     frame_bury 2
 
-get_payment_amount_after_if_else@8:
+get_payment_amount_after_if_else@4:
     frame_dig 2
     frame_bury 3
     frame_dig 1
     frame_bury 4
 
-get_payment_amount_after_if_else@9:
+get_payment_amount_after_if_else@5:
     frame_dig 3
     frame_dig 4
-    // smart_contracts/fixed_coupon_bond/contract.py:404
+    // smart_contracts/fixed_coupon_bond/contract.py:400
     // interest=arc4.UInt64(interest_amount),
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:405
+    // smart_contracts/fixed_coupon_bond/contract.py:401
     // principal=arc4.UInt64(principal_amount),
     swap
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:403-406
+    // smart_contracts/fixed_coupon_bond/contract.py:399-402
     // return typ.PaymentAmounts(
     //     interest=arc4.UInt64(interest_amount),
     //     principal=arc4.UInt64(principal_amount),
@@ -2779,88 +2764,88 @@ get_payment_amount_after_if_else@9:
 
 // smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.get_coupons_status() -> bytes:
 get_coupons_status:
-    // smart_contracts/fixed_coupon_bond/contract.py:408-409
+    // smart_contracts/fixed_coupon_bond/contract.py:404-405
     // @arc4.abimethod(readonly=True)
     // def get_coupons_status(self) -> typ.CouponsInfo:
     proto 0 1
-    // smart_contracts/fixed_coupon_bond/contract.py:417
+    // smart_contracts/fixed_coupon_bond/contract.py:413
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
     dupn 2
-    // smart_contracts/fixed_coupon_bond/contract.py:418
+    // smart_contracts/fixed_coupon_bond/contract.py:414
     // next_coupon_due_date = self.next_coupon_due_date(due_coupons)
     callsub next_coupon_due_date
     swap
-    // smart_contracts/fixed_coupon_bond/contract.py:419
+    // smart_contracts/fixed_coupon_bond/contract.py:415
     // all_due_coupons_paid = self.all_due_coupons_paid(due_coupons)
     dup
     callsub all_due_coupons_paid
     swap
-    // smart_contracts/fixed_coupon_bond/contract.py:420
+    // smart_contracts/fixed_coupon_bond/contract.py:416
     // numerator = UInt64()
     intc_0 // 0
     swap
-    // smart_contracts/fixed_coupon_bond/contract.py:421
+    // smart_contracts/fixed_coupon_bond/contract.py:417
     // denominator = UInt64()
     intc_0 // 0
     swap
-    // smart_contracts/fixed_coupon_bond/contract.py:422
+    // smart_contracts/fixed_coupon_bond/contract.py:418
     // if self.is_accruing_interest(due_coupons):
     callsub is_accruing_interest
     bz get_coupons_status_after_if_else@2
-    // smart_contracts/fixed_coupon_bond/contract.py:423
+    // smart_contracts/fixed_coupon_bond/contract.py:419
     // day_count_factor = self.day_count_factor(due_coupons)
     frame_dig 0
     callsub day_count_factor
-    // smart_contracts/fixed_coupon_bond/contract.py:424
+    // smart_contracts/fixed_coupon_bond/contract.py:420
     // numerator = day_count_factor.numerator.native
     dup
     extract 0 8 // on error: Index access is out of bounds
     btoi
     frame_bury 3
-    // smart_contracts/fixed_coupon_bond/contract.py:425
+    // smart_contracts/fixed_coupon_bond/contract.py:421
     // denominator = day_count_factor.denominator.native
     extract 8 8 // on error: Index access is out of bounds
     btoi
     frame_bury 4
 
 get_coupons_status_after_if_else@2:
-    // smart_contracts/fixed_coupon_bond/contract.py:427
+    // smart_contracts/fixed_coupon_bond/contract.py:423
     // total_coupons=arc4.UInt64(self.total_coupons),
     intc_0 // 0
     bytec_3 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:428
+    // smart_contracts/fixed_coupon_bond/contract.py:424
     // due_coupons=arc4.UInt64(due_coupons),
     frame_dig 0
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:429
+    // smart_contracts/fixed_coupon_bond/contract.py:425
     // next_coupon_due_date=arc4.UInt64(next_coupon_due_date),
     frame_dig 1
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:431
+    // smart_contracts/fixed_coupon_bond/contract.py:427
     // numerator=arc4.UInt64(numerator),
     frame_dig 3
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:432
+    // smart_contracts/fixed_coupon_bond/contract.py:428
     // denominator=arc4.UInt64(denominator),
     frame_dig 4
     itob
-    // smart_contracts/fixed_coupon_bond/contract.py:430-433
+    // smart_contracts/fixed_coupon_bond/contract.py:426-429
     // day_count_factor=typ.DayCountFactor(
     //     numerator=arc4.UInt64(numerator),
     //     denominator=arc4.UInt64(denominator),
     // ),
     concat
-    // smart_contracts/fixed_coupon_bond/contract.py:434
+    // smart_contracts/fixed_coupon_bond/contract.py:430
     // all_due_coupons_paid=arc4.Bool(all_due_coupons_paid),
     bytec 7 // 0x00
     intc_0 // 0
     frame_dig 2
     setbit
-    // smart_contracts/fixed_coupon_bond/contract.py:426-435
+    // smart_contracts/fixed_coupon_bond/contract.py:422-431
     // return typ.CouponsInfo(
     //     total_coupons=arc4.UInt64(self.total_coupons),
     //     due_coupons=arc4.UInt64(due_coupons),

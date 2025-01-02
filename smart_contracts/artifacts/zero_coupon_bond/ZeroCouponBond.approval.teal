@@ -165,7 +165,7 @@ __puya_arc4_router__:
     proto 0 1
     txn NumAppArgs
     bz __puya_arc4_router___bare_routing@24
-    pushbytess 0x4fd6a3cc 0x9c76b6a3 0x44363d49 0x2e2877af 0x63f99589 0xeae05031 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x301dd919 0xed02759f 0xfad2173e 0x08efea35 0xddcec07b // method "asset_transfer(address,address,uint64)uint64", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_payment_amount(address,uint64)(uint64,uint64)", method "asset_create(address,byte[])void", method "asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,bool)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()byte[]"
+    pushbytess 0x4fd6a3cc 0x9c76b6a3 0x44363d49 0x67db4f20 0x63f99589 0xeae05031 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x301dd919 0xed02759f 0xfad2173e 0x08efea35 0xddcec07b // method "asset_transfer(address,address,uint64)uint64", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_payment_amount(address)(uint64,uint64)", method "asset_create(address,byte[])void", method "asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,bool)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()byte[]"
     txna ApplicationArgs 0
     match __puya_arc4_router___asset_transfer_route@2 __puya_arc4_router___pay_principal_route@3 __puya_arc4_router___get_account_units_current_value_route@4 __puya_arc4_router___get_payment_amount_route@5 __puya_arc4_router___asset_create_route@6 __puya_arc4_router___asset_config_route@7 __puya_arc4_router___set_secondary_time_events_route@8 __puya_arc4_router___assign_role_route@9 __puya_arc4_router___revoke_role_route@10 __puya_arc4_router___open_account_route@11 __puya_arc4_router___close_account_route@12 __puya_arc4_router___primary_distribution_route@13 __puya_arc4_router___set_asset_suspension_route@14 __puya_arc4_router___set_account_suspension_route@15 __puya_arc4_router___set_default_status_route@16 __puya_arc4_router___get_asset_info_route@17 __puya_arc4_router___get_account_info_route@18 __puya_arc4_router___get_time_events_route@19 __puya_arc4_router___get_secondary_market_schedule_route@20 __puya_arc4_router___get_asset_metadata_route@21
     intc_0 // 0
@@ -281,7 +281,6 @@ __puya_arc4_router___get_payment_amount_route@5:
     //     ),
     // ):
     txna ApplicationArgs 1
-    txna ApplicationArgs 2
     // smart_contracts/zero_coupon_bond/contract.py:222
     // @arc4.abimethod(readonly=True)
     callsub get_payment_amount
@@ -2082,42 +2081,33 @@ get_account_units_current_value_after_if_else@13:
     retsub
 
 
-// smart_contracts.zero_coupon_bond.contract.ZeroCouponBond.get_payment_amount(holding_address: bytes, payment_index: bytes) -> bytes:
+// smart_contracts.zero_coupon_bond.contract.ZeroCouponBond.get_payment_amount(holding_address: bytes) -> bytes:
 get_payment_amount:
-    // smart_contracts/zero_coupon_bond/contract.py:222-225
+    // smart_contracts/zero_coupon_bond/contract.py:222-223
     // @arc4.abimethod(readonly=True)
-    // def get_payment_amount(
-    //     self, holding_address: arc4.Address, payment_index: arc4.UInt64
-    // ) -> typ.PaymentAmounts:
-    proto 2 1
-    // smart_contracts/zero_coupon_bond/contract.py:240
+    // def get_payment_amount(self, holding_address: arc4.Address) -> typ.PaymentAmounts:
+    proto 1 1
+    // smart_contracts/zero_coupon_bond/contract.py:237
     // self.assert_valid_holding_address(holding_address)
-    frame_dig -2
+    frame_dig -1
     callsub assert_valid_holding_address
-    // smart_contracts/zero_coupon_bond/contract.py:241
+    // smart_contracts/zero_coupon_bond/contract.py:238
     // interest_amount = UInt64()
     intc_0 // 0
-    // smart_contracts/zero_coupon_bond/contract.py:242
+    // smart_contracts/zero_coupon_bond/contract.py:239
     // principal_amount = UInt64()
     dup
-    // smart_contracts/zero_coupon_bond/contract.py:243
+    // smart_contracts/zero_coupon_bond/contract.py:240
     // if self.status_is_active():
     callsub status_is_active
     bz get_payment_amount_after_if_else@2
-    // smart_contracts/zero_coupon_bond/contract.py:244
-    // assert payment_index.native == 1, err.INVALID_PAYMENT_INDEX
-    frame_dig -1
-    btoi
-    intc_1 // 1
-    ==
-    assert // Invalid 1-based payment index
-    // smart_contracts/zero_coupon_bond/contract.py:245
+    // smart_contracts/zero_coupon_bond/contract.py:241
     // principal_amount = self.account_total_units_value(holding_address)
-    frame_dig -2
+    frame_dig -1
     callsub account_total_units_value
     dup
     frame_bury 1
-    // smart_contracts/zero_coupon_bond/contract.py:246
+    // smart_contracts/zero_coupon_bond/contract.py:242
     // interest_amount = principal_amount * self.interest_rate // cst.BPS
     intc_0 // 0
     bytec 7 // "interest_rate"
@@ -2129,15 +2119,15 @@ get_payment_amount:
     frame_bury 0
 
 get_payment_amount_after_if_else@2:
-    // smart_contracts/zero_coupon_bond/contract.py:248
+    // smart_contracts/zero_coupon_bond/contract.py:244
     // interest=arc4.UInt64(interest_amount),
     frame_dig 0
     itob
-    // smart_contracts/zero_coupon_bond/contract.py:249
+    // smart_contracts/zero_coupon_bond/contract.py:245
     // principal=arc4.UInt64(principal_amount),
     frame_dig 1
     itob
-    // smart_contracts/zero_coupon_bond/contract.py:247-250
+    // smart_contracts/zero_coupon_bond/contract.py:243-246
     // return typ.PaymentAmounts(
     //     interest=arc4.UInt64(interest_amount),
     //     principal=arc4.UInt64(principal_amount),
