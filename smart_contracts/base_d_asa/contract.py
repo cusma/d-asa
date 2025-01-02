@@ -541,16 +541,18 @@ class BaseDAsa(ARC4Contract):
         assert not self.status_is_ended(), err.UNAUTHORIZED
         self.assert_is_not_defaulted()
 
-        assert secondary_market_time_events.length == UInt64(
-            cfg.SECONDARY_MARKET_SCHEDULE_LIMITS
-        ), err.INVALID_TIME_EVENTS_LENGTH
-        self.assert_time_events_sorted(secondary_market_time_events)
+        assert secondary_market_time_events.length >= 1, err.INVALID_TIME_EVENTS_LENGTH
+        if secondary_market_time_events.length > 1:
+            self.assert_time_events_sorted(secondary_market_time_events)
         assert (
             self.issuance_date
             <= secondary_market_time_events[
                 cfg.SECONDARY_MARKET_OPENING_DATE_IDX
             ].native
         ), err.INVALID_SECONDARY_OPENING_DATE
+        self.secondary_market_opening_date = secondary_market_time_events[
+            cfg.SECONDARY_MARKET_OPENING_DATE_IDX
+        ].native
         if self.maturity_date:
             assert (
                 self.maturity_date
@@ -558,13 +560,9 @@ class BaseDAsa(ARC4Contract):
                     cfg.SECONDARY_MARKET_CLOSURE_DATE_IDX
                 ].native
             ), err.INVALID_SECONDARY_CLOSURE_DATE
-
-        self.secondary_market_opening_date = secondary_market_time_events[
-            cfg.SECONDARY_MARKET_OPENING_DATE_IDX
-        ].native
-        self.secondary_market_closure_date = secondary_market_time_events[
-            cfg.SECONDARY_MARKET_CLOSURE_DATE_IDX
-        ].native
+            self.secondary_market_closure_date = secondary_market_time_events[
+                cfg.SECONDARY_MARKET_CLOSURE_DATE_IDX
+            ].native
         return typ.SecondaryMarketSchedule(
             secondary_market_opening_date=arc4.UInt64(
                 self.secondary_market_opening_date

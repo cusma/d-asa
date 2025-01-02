@@ -19,7 +19,6 @@ ISSUANCE_DATE_IDX: Final[int] = 2
 MATURITY_DATE_IDX: Final[int] = -1
 
 # Secondary Market Schedule Limits
-SECONDARY_MARKET_SCHEDULE_LIMITS: Final[int] = 2
 SECONDARY_MARKET_OPENING_DATE_IDX: Final[int] = 0
 SECONDARY_MARKET_CLOSURE_DATE_IDX: Final[int] = -1
 
