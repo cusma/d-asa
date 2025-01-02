@@ -35,7 +35,7 @@ The D-ASA *unit value* **MAY** change globally or locally (per account).
 
 > The D-ASA unit’s value can be global or local (per-account). Global unit value
 > should be used when the value of all the units can be updated at the same time.
-> Local unit value should be used when the units value are updated at different
+> Local unit value should be used when the units' value ia updated at different
 > times per each account.
 
 > 📎 **EXAMPLE**
@@ -47,7 +47,7 @@ The D-ASA *unit value* **MAY** change globally or locally (per account).
 > 📎 **EXAMPLE**
 >
 > Let’s have a D-ASA denominated in EUR, with an initial unit value of 1,000 EUR.
-> The D-ASA has an amortizing principal repayment schedule. Repayment are executed
+> The D-ASA has an amortizing principal repayment schedule. Repayments are executed
 > per-account. The unit value is updated per-account (for the account’s units).
 
 The D-ASA *unit value* **MAY** be globally updated with the **OPTIONAL** `update_global_unit_value`
@@ -65,8 +65,8 @@ The D-ASA *fungible units* **MUST** have the same *value* and *executed payments
 
 > 📎 **EXAMPLE**
 >
-> Let’s have Lenders A and B, holding 10 D-ASA units each. The 1st coupon reaches
-> the due date. Coupon payments are not executed synchronously for all the Lenders.
-> The coupon payment is executed for Lender A, while Lender B is still waiting for
-> the payment settlement. Lender A units are temporarily non-fungible with Lender
-> B units until the 1st coupon is paid for both.
+> Let’s have a D-ASA with 4 coupons. Lenders A and B are holding 10 D-ASA units
+> each. The 1st coupon is due. Coupon payments are not executed synchronously for
+> all the Lenders. The coupon payment is executed for Lender A, while Lender B is
+> still waiting for the payment settlement. Lender A units are temporarily non-fungible
+> with Lender B units until the 1st coupon is paid for both.
