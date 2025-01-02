@@ -85,3 +85,24 @@ The updated *coupon rates* **MUST NOT** modify past coupon rates.
 
 The D-ASA *units* **MAY** accrue interest, according to the *day-count convention*
 (see [Day-Count Convention](./day-count-convention.md) section).
+
+If the D-ASA has coupons, the *units* accrued interest **MUST** be calculated with
+respect to the latest coupon due date.
+
+> 📎 **EXAMPLE**
+>
+> Let's have a D-ASA with `4` coupons. The 2nd coupon is due. The D-ASA units are
+> accruing the interest of the 3rd coupon. The accrued interest is calculated according
+> to the day-count convention, applied to the elapsed time with respect to the 2nd
+> coupon due date.
+
+If the D-ASA has coupons, the account *units* accrued interest calculation **SHOULD**
+fail if it has pending coupon payments.
+
+> 📎 **EXAMPLE**
+>
+> Let's have a D-ASA with `4` coupons. The 2nd coupon is due. The D-ASA units are
+> accruing the interest of the 3rd coupon. Coupon payments are not executed synchronously
+> for all the Lenders. The 2nd coupon payment is executed for Lender A, while Lender
+> B is still waiting for the payment settlement. The accrued interest calculation
+> succeeds for Lander A and fails for Lender B until the 2nd coupon payment is settled.
