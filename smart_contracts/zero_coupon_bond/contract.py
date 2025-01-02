@@ -220,15 +220,12 @@ class ZeroCouponBond(
         )
 
     @arc4.abimethod(readonly=True)
-    def get_payment_amount(
-        self, holding_address: arc4.Address, payment_index: arc4.UInt64
-    ) -> typ.PaymentAmounts:
+    def get_payment_amount(self, holding_address: arc4.Address) -> typ.PaymentAmounts:
         """
-        Get the payment amount
+        Get the next payment amount
 
         Args:
             holding_address: Account Holding Address
-            payment_index: 1-based payment index for the amount
 
         Returns:
             Interest amount in denomination asset, Principal amount in denomination asset
@@ -241,7 +238,6 @@ class ZeroCouponBond(
         interest_amount = UInt64()
         principal_amount = UInt64()
         if self.status_is_active():
-            assert payment_index.native == 1, err.INVALID_PAYMENT_INDEX
             principal_amount = self.account_total_units_value(holding_address)
             interest_amount = principal_amount * self.interest_rate // cst.BPS
         return typ.PaymentAmounts(

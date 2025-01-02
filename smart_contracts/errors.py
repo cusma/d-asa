@@ -13,6 +13,7 @@ INVALID_TIME_EVENTS_LENGTH = "Time events length is invalid"
 INVALID_SORTING = "Time events must be sorted in strictly ascending order"
 PENDING_COUPON_PAYMENT = "Pending due coupon payment"
 NOT_ENOUGH_FUNDS = "Not enough funds for the payment"
+NO_UNITS = "No D-ASA units"
 
 # Asset Config
 ALREADY_CONFIGURED = "D-ASA already configured"
@@ -53,12 +54,8 @@ NO_DUE_COUPON = "No due coupon to pay"
 # Pay Principal
 NOT_MATURE = "Not mature"
 
-# Get Current Units Value
+# Get Account Units Current Value
 NO_PRIMARY_DISTRIBUTION = "Primary distribution not yet executed"
-
-# Get Payment Amount
-INVALID_PAYMENT_INDEX = "Invalid 1-based payment index"
-NO_UNITS = "No D-ASA units"
 
 # Get Accrued Interest Amount
 INVALID_UNITS = "Invalid amount of units for the account"

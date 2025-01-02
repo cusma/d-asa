@@ -124,6 +124,9 @@ class FixedCouponBond(
     def accrued_interest_amount(
         self, holding_address: arc4.Address, units: UInt64, due_coupons: UInt64
     ) -> UInt64:
+        assert (
+            self.account[holding_address].paid_coupons == due_coupons
+        ), err.PENDING_COUPON_PAYMENT
         day_count_factor = self.day_count_factor(due_coupons)
         coupon_accrued_period = day_count_factor.numerator.native
         coupon_period = day_count_factor.denominator.native
@@ -173,14 +176,10 @@ class FixedCouponBond(
             units.native,
         )
 
-        # Transfer is forbidden in case of pending coupon payments
-        due_coupons = self.count_due_coupons()
-        assert (
-            self.account[sender_holding_address].paid_coupons == due_coupons
-        ), err.PENDING_COUPON_PAYMENT
-
         # Transferred units value (must be computed before the transfer)
         sender_unit_value = self.account[sender_holding_address].unit_value
+        due_coupons = self.count_due_coupons()
+        # Transfers is forbidden in case of pending coupon payments, checked in the accrued interest calculation
         accrued_interest = self.accrued_interest_amount(
             sender_holding_address, units.native, due_coupons
         )
@@ -316,6 +315,7 @@ class FixedCouponBond(
             NO_PRIMARY_DISTRIBUTION: Primary distribution not yet executed
             INVALID_HOLDING_ADDRESS: Invalid account holding address
             INVALID_UNITS: Invalid amount of units for the account
+            PENDING_COUPON_PAYMENT: Pending due coupon payment for the account
         """
         assert (
             self.primary_distribution_opening_date
@@ -339,6 +339,8 @@ class FixedCouponBond(
         due_coupons = self.count_due_coupons()
         if self.is_accruing_interest(due_coupons):
             day_count_factor = self.day_count_factor(due_coupons)
+            # Account units current value calculation fails in case of pending coupon payments, checked in the accrued
+            # interest calculation
             accrued_interest = self.accrued_interest_amount(
                 holding_address, units.native, due_coupons
             )
@@ -367,35 +369,29 @@ class FixedCouponBond(
         return coupon_rates
 
     @arc4.abimethod(readonly=True)
-    def get_payment_amount(
-        self, holding_address: arc4.Address, payment_index: arc4.UInt64
-    ) -> typ.PaymentAmounts:
+    def get_payment_amount(self, holding_address: arc4.Address) -> typ.PaymentAmounts:
         """
-        Get the payment amount
+        Get the next payment amount
 
         Args:
             holding_address: Account Holding Address
-            payment_index: 1-based payment index for the amount
 
         Returns:
             Interest amount in denomination asset, Principal amount in denomination asset
 
         Raises:
             INVALID_HOLDING_ADDRESS: Invalid account holding address
-            INVALID_PAYMENT_INDEX: Invalid 1-based payment index
         """
         self.assert_valid_holding_address(holding_address)
         interest_amount = UInt64()
         principal_amount = UInt64()
         if self.status_is_active():
-            assert (
-                1 <= payment_index.native <= self.total_coupons + 1
-            ), err.INVALID_PAYMENT_INDEX
-            if payment_index.native <= self.total_coupons:
+            paid_coupons = self.account[holding_address].paid_coupons.native
+            if paid_coupons < self.total_coupons:
                 # Coupon Payment
                 interest_amount = self.coupon_interest_amount(
                     self.account_total_units_value(holding_address),
-                    payment_index.native,
+                    paid_coupons + 1,
                 )
             else:
                 # Principal Payment
