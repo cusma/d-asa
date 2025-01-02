@@ -45,8 +45,7 @@ def test_pass_get_account_units_current_value(
         next_due_date_idx = sc_cfg.FIRST_COUPON_DATE_IDX - 1 + coupon
         next_due_date = fixed_coupon_bond_cfg.time_events[next_due_date_idx]
         coupon_period = (
-            fixed_coupon_bond_cfg.time_events[next_due_date_idx + 1]
-            - next_due_date
+            fixed_coupon_bond_cfg.time_events[next_due_date_idx + 1] - next_due_date
         )
         coupon_period_fraction = 10
         time_warp(next_due_date + coupon_period // coupon_period_fraction)
