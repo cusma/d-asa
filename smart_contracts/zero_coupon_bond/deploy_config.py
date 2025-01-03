@@ -32,7 +32,7 @@ def deploy(
         on_update=algokit_utils.OnUpdate.UpdateApp,
         create_args=DeployCreate(
             args=AssetCreateArgs(
-                arranger=os.environ["DEPLOYER_ADDRESS"],
+                arranger=os.environ["ARRANGER_ADDRESS"],
                 metadata=b"Zero Coupon Bond Prospectus",
             )
         ),
