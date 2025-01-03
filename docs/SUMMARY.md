@@ -85,6 +85,7 @@
 - [Reference Implementation](./reference-implementation.md)
   - [Zero Coupon Bond](./ref-zero-coupon-bond.md)
   - [Fixed Coupon Bond](./ref-fixed-coupon-bond.md)
+  - [Perpetual Bond](./ref-perpetual-bond.md)
 - [Tests]()
 
 ---
