@@ -2,15 +2,15 @@
 
 Documentation: TBD
 
-## Deployments {#deployments}
+## Deployments
 
 D-ASA examples deployed on TestNet:
 
-| Payoff                                          | App ID | App Spec                                                                                                                  |
-|-------------------------------------------------|--------|---------------------------------------------------------------------------------------------------------------------------|
-| [Zero Coupon Bond](./ref-zero-coupon-bond.md)   | TBD    | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/zero_coupon_bond/ZeroCouponBond.arc32.json)   |
-| [Fixed Coupon Bond](./ref-fixed-coupon-bond.md) | TBD    | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/fixed_coupon_bond/FixedCouponBond.arc32.json) |
-| [Perpetual Bond](./ref-perpetual-bond.md)       | TBD    | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/perpetual_bond/PerpetualBond.arc32.json)      |
+| Payoff            | App ID                                                             | App Spec                                                                                                                  |
+|-------------------|--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Zero Coupon Bond] | [731948406](https://lora.algokit.io/testnet/application/731948406) | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/zero_coupon_bond/ZeroCouponBond.arc32.json)   |
+| Fixed Coupon Bond | [731948407](https://lora.algokit.io/testnet/application/731948407) | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/fixed_coupon_bond/FixedCouponBond.arc32.json) |
+| Perpetual Bond    | [731948408](https://lora.algokit.io/testnet/application/731948408) | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/perpetual_bond/PerpetualBond.arc32.json)      |
 
 1. Download the App Spec JSON file;
 1. Navigate to the [Lora App Lab](https://lora.algokit.io/testnet/app-lab);
