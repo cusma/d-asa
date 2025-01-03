@@ -44,6 +44,10 @@ class FixedCouponBond(
         self.paid_coupon_units = UInt64()
 
     @subroutine
+    def assert_coupon_rates(self, coupon_rates: typ.CouponRates) -> None:
+        assert coupon_rates.length, err.INVALID_COUPON_RATES
+
+    @subroutine
     def count_due_coupons(self) -> UInt64:
         current_ts = Global.latest_timestamp
         due_coupons = self.due_coupons_watermark
@@ -86,6 +90,14 @@ class FixedCouponBond(
         return self.paid_coupon_units >= self.circulating_units * due_coupons
 
     @subroutine
+    def assert_no_pending_coupon_payment(
+        self, holding_address: arc4.Address, due_coupons: UInt64
+    ) -> None:
+        assert (
+            self.account[holding_address].paid_coupons == due_coupons
+        ), err.PENDING_COUPON_PAYMENT
+
+    @subroutine
     def coupon_interest_amount(
         self, principal_amount: UInt64, coupon: UInt64
     ) -> UInt64:
@@ -112,7 +124,8 @@ class FixedCouponBond(
     @subroutine
     def is_accruing_interest(self, due_coupons: UInt64) -> bool:
         return (
-            Global.latest_timestamp > self.issuance_date
+            self.issuance_date != 0
+            and Global.latest_timestamp >= self.issuance_date
             and due_coupons < self.total_coupons
         )
 
@@ -120,6 +133,8 @@ class FixedCouponBond(
     def accrued_interest_amount(
         self, holding_address: arc4.Address, units: UInt64, due_coupons: UInt64
     ) -> UInt64:
+        # The following assert safeguards the subroutine from forbidden invocations
+        self.assert_no_pending_coupon_payment(holding_address, due_coupons)
         day_count_factor = self.day_count_factor(due_coupons)
         coupon_accrued_period = day_count_factor.numerator.native
         coupon_period = day_count_factor.denominator.native
@@ -171,9 +186,7 @@ class FixedCouponBond(
 
         # Transfer is forbidden in case of pending coupon payments
         due_coupons = self.count_due_coupons()
-        assert (
-            self.account[sender_holding_address].paid_coupons == due_coupons
-        ), err.PENDING_COUPON_PAYMENT
+        self.assert_no_pending_coupon_payment(sender_holding_address, due_coupons)
 
         # Transferred units value (must be computed before the transfer)
         sender_unit_value = self.account[sender_holding_address].unit_value
@@ -226,22 +239,23 @@ class FixedCouponBond(
         # The reference implementation does not assert if there is enough liquidity to pay current due coupon to all
 
         if self.is_payment_executable(holding_address):
-            coupon_amount = self.coupon_interest_amount(
+            payment_amount = self.coupon_interest_amount(
                 self.account_total_units_value(holding_address),
                 account_paid_coupons + 1,
             )
             # The reference implementation has on-chain payment agent
-            self.pay(self.account[holding_address].payment_address, coupon_amount)
+            self.assert_enough_funds(payment_amount)
+            self.pay(self.account[holding_address].payment_address, payment_amount)
         else:
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
-            coupon_amount = UInt64()
+            payment_amount = UInt64()
 
         self.account[holding_address].paid_coupons = arc4.UInt64(
             self.account[holding_address].paid_coupons.native + 1
         )
         self.paid_coupon_units += units
         return typ.PaymentResult(
-            amount=arc4.UInt64(coupon_amount),
+            amount=arc4.UInt64(payment_amount),
             timestamp=arc4.UInt64(Global.latest_timestamp),
             context=payment_info.copy(),  # TODO: Add info on failed payment
         )
@@ -280,6 +294,7 @@ class FixedCouponBond(
         if self.is_payment_executable(holding_address):
             payment_amount = self.account_total_units_value(holding_address)
             # The reference implementation has on-chain payment agent
+            self.assert_enough_funds(payment_amount)
             self.pay(self.account[holding_address].payment_address, payment_amount)
         else:
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
@@ -310,6 +325,7 @@ class FixedCouponBond(
             NO_PRIMARY_DISTRIBUTION: Primary distribution not yet executed
             INVALID_HOLDING_ADDRESS: Invalid account holding address
             INVALID_UNITS: Invalid amount of units for the account
+            PENDING_COUPON_PAYMENT: Pending due coupon payment for the account
         """
         assert (
             self.primary_distribution_opening_date
@@ -331,6 +347,7 @@ class FixedCouponBond(
 
         # Accruing interest
         due_coupons = self.count_due_coupons()
+        self.assert_no_pending_coupon_payment(holding_address, due_coupons)
         if self.is_accruing_interest(due_coupons):
             day_count_factor = self.day_count_factor(due_coupons)
             accrued_interest = self.accrued_interest_amount(
@@ -361,35 +378,29 @@ class FixedCouponBond(
         return coupon_rates
 
     @arc4.abimethod(readonly=True)
-    def get_payment_amount(
-        self, holding_address: arc4.Address, payment_index: arc4.UInt64
-    ) -> typ.PaymentAmounts:
+    def get_payment_amount(self, holding_address: arc4.Address) -> typ.PaymentAmounts:
         """
-        Get the payment amount
+        Get the next payment amount
 
         Args:
             holding_address: Account Holding Address
-            payment_index: 1-based payment index for the amount
 
         Returns:
             Interest amount in denomination asset, Principal amount in denomination asset
 
         Raises:
             INVALID_HOLDING_ADDRESS: Invalid account holding address
-            INVALID_PAYMENT_INDEX: Invalid 1-based payment index
         """
         self.assert_valid_holding_address(holding_address)
         interest_amount = UInt64()
         principal_amount = UInt64()
         if self.status_is_active():
-            assert (
-                1 <= payment_index.native <= self.total_coupons + 1
-            ), err.INVALID_PAYMENT_INDEX
-            if payment_index.native <= self.total_coupons:
+            paid_coupons = self.account[holding_address].paid_coupons.native
+            if paid_coupons < self.total_coupons:
                 # Coupon Payment
                 interest_amount = self.coupon_interest_amount(
                     self.account_total_units_value(holding_address),
-                    payment_index.native,
+                    paid_coupons + 1,
                 )
             else:
                 # Principal Payment

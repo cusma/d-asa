@@ -50,10 +50,9 @@ def test_fail_defaulted_status() -> None:
 def test_fail_invalid_time_events_length(
     base_d_asa_client_active: BaseDAsaClient,
 ) -> None:
-    state = base_d_asa_client_active.get_global_state()
     with pytest.raises(LogicError, match=err.INVALID_TIME_EVENTS_LENGTH):
         base_d_asa_client_active.set_secondary_time_events(
-            secondary_market_time_events=[state.issuance_date],
+            secondary_market_time_events=[],
         )
 
 

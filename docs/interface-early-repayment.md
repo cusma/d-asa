@@ -32,3 +32,6 @@ remaining D-ASA units to repay.
 
 The call **MUST** fail with the `ALREADY_MATURE` error code if the principal is
 mature.
+
+If the D-ASA has on-chain payment agent, the call **MUST** fail with the `NOT_ENOUGH_FUNDS`
+error code if funds are not enough for the payment.

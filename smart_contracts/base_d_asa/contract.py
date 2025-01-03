@@ -30,6 +30,7 @@ class BaseDAsa(ARC4Contract):
     - Asset creation and configuration
     - Role-based access control
     - Account management (creation, suspension, close-out)
+    - Time schedule with no coupons and maturity date
     - Primary distribution
     - Getters (asset info, account info, time events)
     """
@@ -48,6 +49,9 @@ class BaseDAsa(ARC4Contract):
         )
         self.authority = BoxMap(
             arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_BOX_ID_AUTHORITY
+        )
+        self.interest_oracle = BoxMap(
+            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_BOX_ID_INTEREST_ORACLE
         )
 
         # Asset Configuration
@@ -71,6 +75,7 @@ class BaseDAsa(ARC4Contract):
 
         # Time Schedule
         self.time_events = Box(typ.TimeEvents, key=cst.BOX_ID_TIME_EVENTS)
+        self.time_periods = Box(typ.TimePeriods, key=cst.BOX_ID_TIME_PERIODS)
         self.primary_distribution_opening_date = UInt64()
         self.primary_distribution_closure_date = UInt64()
         self.issuance_date = UInt64()
@@ -119,6 +124,16 @@ class BaseDAsa(ARC4Contract):
         ), err.UNAUTHORIZED
 
     @subroutine
+    def assert_caller_is_primary_dealer(self) -> None:
+        caller = arc4.Address(Txn.sender)
+        assert (
+            caller in self.primary_dealer
+            and self.primary_dealer[caller].role_validity_start
+            <= Global.latest_timestamp
+            <= self.primary_dealer[caller].role_validity_end
+        ), err.UNAUTHORIZED
+
+    @subroutine
     def assert_caller_is_trustee(self) -> None:
         caller = arc4.Address(Txn.sender)
         assert (
@@ -139,13 +154,13 @@ class BaseDAsa(ARC4Contract):
         ), err.UNAUTHORIZED
 
     @subroutine
-    def assert_caller_is_primary_dealer(self) -> None:
+    def assert_caller_is_interest_oracle(self) -> None:
         caller = arc4.Address(Txn.sender)
         assert (
-            caller in self.primary_dealer
-            and self.primary_dealer[caller].role_validity_start
+            caller in self.interest_oracle
+            and self.interest_oracle[caller].role_validity_start
             <= Global.latest_timestamp
-            <= self.primary_dealer[caller].role_validity_end
+            <= self.interest_oracle[caller].role_validity_end
         ), err.UNAUTHORIZED
 
     @subroutine
@@ -153,7 +168,64 @@ class BaseDAsa(ARC4Contract):
         assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
 
     @subroutine
+    def assert_denomination_asset(self, denomination_asset_id: UInt64) -> None:
+        # The reference implementation has on-chain payment agent with ASA
+        assert (
+            denomination_asset_id != UInt64(0) and Asset(denomination_asset_id).creator
+        ), err.INVALID_DENOMINATION
+
+    @subroutine
+    def set_denomination_asset(self, denomination_asset_id: UInt64) -> None:
+        self.denomination_asset_id = denomination_asset_id
+        itxn.AssetTransfer(
+            xfer_asset=self.denomination_asset_id,
+            asset_receiver=Global.current_application_address,
+            asset_amount=0,
+            fee=Global.min_txn_fee,
+        ).submit()
+
+    @subroutine
+    def assert_day_count_convention(self, day_count_convention: UInt64) -> None:
+        # The reference implementation supports only the Actual/Actual and Continuous day-count conventions
+        assert day_count_convention in (
+            UInt64(cst.DCC_A_A),
+            UInt64(cst.DCC_CONT),
+        ), err.INVALID_DAY_COUNT_CONVENTION
+
+    @subroutine
+    def set_day_count_convention(self, day_count_convention: UInt64) -> None:
+        self.day_count_convention = day_count_convention
+
+    @subroutine
+    def assert_interest_rate(self, interest_rate: UInt64) -> None:
+        assert interest_rate > UInt64(0), err.INVALID_INTEREST_RATE
+
+    @subroutine
+    def set_interest_rate(self, interest_rate: UInt64) -> None:
+        self.interest_rate = interest_rate
+
+    @subroutine
+    def assert_coupon_rates(self, coupon_rates: typ.CouponRates) -> None:
+        assert not coupon_rates.length, err.INVALID_COUPON_RATES
+
+    @subroutine
+    def set_coupon_rates(self, coupon_rates: typ.CouponRates) -> None:
+        self.total_coupons = coupon_rates.length
+        if self.total_coupons:
+            self.coupon_rates.value = coupon_rates.copy()
+
+    @subroutine
+    def assert_time_schedule_limits(self, time_events: typ.TimeEvents) -> None:
+        assert (
+            time_events.length == self.total_coupons + cfg.TIME_SCHEDULE_LIMITS
+        ), err.INVALID_TIME_EVENTS_LENGTH
+
+    @subroutine
     def assert_time_events_sorted(self, time_events: typ.TimeEvents) -> None:
+        assert (
+            time_events[cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX].native
+            > Global.latest_timestamp
+        ), err.INVALID_TIME
         for _t in urange(time_events.length - 1):
             ensure_budget(
                 required_budget=UInt64(cfg.OP_UP_TIME_EVENT_SORTING),
@@ -167,6 +239,29 @@ class BaseDAsa(ARC4Contract):
                 assert (time_f - time_i) % UInt64(
                     cst.DAY_2_SEC
                 ) == 0, err.INVALID_TIME_PERIOD
+
+    @subroutine
+    def set_time_events(self, time_events: typ.TimeEvents) -> None:
+        self.time_events.value = time_events.copy()
+        self.primary_distribution_opening_date = time_events[
+            cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX
+        ].native
+        self.primary_distribution_closure_date = time_events[
+            cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
+        ].native
+        self.issuance_date = time_events[cfg.ISSUANCE_DATE_IDX].native
+
+        # Some D-ASA may not have a maturity date (e.g., perpetuals)
+        if time_events.length == self.total_coupons + cfg.TIME_SCHEDULE_LIMITS:
+            self.maturity_date = time_events[cfg.MATURITY_DATE_IDX].native
+
+    @subroutine
+    def assert_time_periods(self, time_periods: typ.TimePeriods) -> None:
+        assert not time_periods.length, err.INVALID_TIME_PERIODS
+
+    @subroutine
+    def set_time_periods(self, time_periods: typ.TimePeriods) -> None:
+        pass
 
     @subroutine
     def assert_is_primary_distribution_open(self) -> None:
@@ -196,15 +291,6 @@ class BaseDAsa(ARC4Contract):
         ), err.NON_FUNGIBLE_UNITS
 
     @subroutine
-    def opt_in_denomination_asset(self) -> None:
-        itxn.AssetTransfer(
-            xfer_asset=self.denomination_asset_id,
-            asset_receiver=Global.current_application_address,
-            asset_amount=0,
-            fee=Global.min_txn_fee,
-        ).submit()
-
-    @subroutine
     def is_payment_executable(self, holding_address: arc4.Address) -> bool:
         return (
             self.account[holding_address].payment_address.native.is_opted_in(
@@ -212,6 +298,15 @@ class BaseDAsa(ARC4Contract):
             )
             and not self.account[holding_address].suspended.native
         )
+
+    @subroutine
+    def assert_enough_funds(self, payment_amount: UInt64) -> None:
+        assert (
+            Asset(self.denomination_asset_id).balance(
+                Global.current_application_address
+            )
+            >= payment_amount
+        ), err.NOT_ENOUGH_FUNDS
 
     @subroutine
     def pay(self, receiver: arc4.Address, amount: UInt64) -> None:
@@ -233,18 +328,6 @@ class BaseDAsa(ARC4Contract):
         return self.account_units_value(
             holding_address, self.account[holding_address].units.native
         )
-
-    @subroutine
-    def set_time_events(self, time_events: typ.TimeEvents) -> None:
-        self.time_events.value = time_events.copy()
-        self.primary_distribution_opening_date = time_events[
-            cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX
-        ].native
-        self.primary_distribution_closure_date = time_events[
-            cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
-        ].native
-        self.issuance_date = time_events[cfg.ISSUANCE_DATE_IDX].native
-        self.maturity_date = time_events[cfg.MATURITY_DATE_IDX].native
 
     @subroutine
     def days_in(self, time_period: UInt64) -> UInt64:
@@ -412,44 +495,37 @@ class BaseDAsa(ARC4Contract):
         self.assert_caller_is_arranger()
         assert self.status == cfg.STATUS_EMPTY, err.ALREADY_CONFIGURED
 
-        self.denomination_asset_id = denomination_asset_id.native
-        # The reference implementation has on-chain payment agent
-        self.opt_in_denomination_asset()
+        # Set Denomination Asset
+        self.assert_denomination_asset(denomination_asset_id.native)
+        self.set_denomination_asset(denomination_asset_id.native)
 
+        # Set Principal and Minimum Denomination
         assert (
             principal.native % minimum_denomination.native == 0
         ), err.INVALID_MINIMUM_DENOMINATION
         self.unit_value = minimum_denomination.native
         self.total_units = principal.native // minimum_denomination.native
 
-        # The reference implementation supports only the Actual/Actual and Continuous day-count conventions
-        assert day_count_convention.native in (
-            UInt64(cst.DCC_A_A),
-            UInt64(cst.DCC_CONT),
-        ), err.INVALID_DAY_COUNT_CONVENTION
-        self.day_count_convention = day_count_convention.native
+        # Set Day-Count Convention
+        self.assert_day_count_convention(day_count_convention.native)
+        self.set_day_count_convention(day_count_convention.native)
 
         # Set Interest Rate
-        self.interest_rate = interest_rate.native
+        self.assert_interest_rate(interest_rate.native)
+        self.set_interest_rate(interest_rate.native)
 
         # Set Coupons
-        self.total_coupons = coupon_rates.length
-        self.coupon_rates.value = coupon_rates.copy()
+        self.assert_coupon_rates(coupon_rates)
+        self.set_coupon_rates(coupon_rates)
 
         # Set Time Events
-        assert (
-            time_events.length == self.total_coupons + cfg.TIME_SCHEDULE_LIMITS
-        ), err.INVALID_TIME_EVENTS_LENGTH
-        assert (
-            time_events[cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX].native
-            > Global.latest_timestamp
-        ), err.INVALID_TIME
+        self.assert_time_schedule_limits(time_events)
         self.assert_time_events_sorted(time_events)
         self.set_time_events(time_events)
 
         # Set Time Periods
-        # The reference implementation does not use time periods
-        assert not time_periods.length
+        self.assert_time_periods(time_periods)
+        self.set_time_periods(time_periods)
 
         self.status = UInt64(cfg.STATUS_ACTIVE)
 
@@ -478,29 +554,28 @@ class BaseDAsa(ARC4Contract):
         assert not self.status_is_ended(), err.UNAUTHORIZED
         self.assert_is_not_defaulted()
 
-        assert secondary_market_time_events.length == UInt64(
-            cfg.SECONDARY_MARKET_SCHEDULE_LIMITS
-        ), err.INVALID_TIME_EVENTS_LENGTH
-        self.assert_time_events_sorted(secondary_market_time_events)
+        assert secondary_market_time_events.length >= 1, err.INVALID_TIME_EVENTS_LENGTH
+        if secondary_market_time_events.length > 1:
+            self.assert_time_events_sorted(secondary_market_time_events)
         assert (
             self.issuance_date
             <= secondary_market_time_events[
                 cfg.SECONDARY_MARKET_OPENING_DATE_IDX
             ].native
         ), err.INVALID_SECONDARY_OPENING_DATE
-        assert (
-            self.maturity_date
-            >= secondary_market_time_events[
-                cfg.SECONDARY_MARKET_CLOSURE_DATE_IDX
-            ].native
-        ), err.INVALID_SECONDARY_CLOSURE_DATE
-
         self.secondary_market_opening_date = secondary_market_time_events[
             cfg.SECONDARY_MARKET_OPENING_DATE_IDX
         ].native
-        self.secondary_market_closure_date = secondary_market_time_events[
-            cfg.SECONDARY_MARKET_CLOSURE_DATE_IDX
-        ].native
+        if self.maturity_date:
+            assert (
+                self.maturity_date
+                >= secondary_market_time_events[
+                    cfg.SECONDARY_MARKET_CLOSURE_DATE_IDX
+                ].native
+            ), err.INVALID_SECONDARY_CLOSURE_DATE
+            self.secondary_market_closure_date = secondary_market_time_events[
+                cfg.SECONDARY_MARKET_CLOSURE_DATE_IDX
+            ].native
         return typ.SecondaryMarketSchedule(
             secondary_market_opening_date=arc4.UInt64(
                 self.secondary_market_opening_date
@@ -539,6 +614,7 @@ class BaseDAsa(ARC4Contract):
             UInt64(cst.ROLE_PRIMARY_DEALER),
             UInt64(cst.ROLE_TRUSTEE),
             UInt64(cst.ROLE_AUTHORITY),
+            UInt64(cst.ROLE_INTEREST_ORACLE),
         ), err.INVALID_ROLE
         match role.native:
             case UInt64(cst.ROLE_ARRANGER):
@@ -561,6 +637,13 @@ class BaseDAsa(ARC4Contract):
             case UInt64(cst.ROLE_AUTHORITY):
                 assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
                 self.authority[role_address] = typ.RoleConfig.from_bytes(config.native)
+            case UInt64(cst.ROLE_INTEREST_ORACLE):
+                assert (
+                    role_address not in self.interest_oracle
+                ), err.INVALID_ROLE_ADDRESS
+                self.interest_oracle[role_address] = typ.RoleConfig.from_bytes(
+                    config.native
+                )
             case _:
                 op.err()
         return arc4.UInt64(Global.latest_timestamp)
@@ -590,6 +673,7 @@ class BaseDAsa(ARC4Contract):
             UInt64(cst.ROLE_PRIMARY_DEALER),
             UInt64(cst.ROLE_TRUSTEE),
             UInt64(cst.ROLE_AUTHORITY),
+            UInt64(cst.ROLE_INTEREST_ORACLE),
         ), err.INVALID_ROLE
         match role.native:
             # Arranger role can not be revoked (just rotated)
@@ -605,6 +689,9 @@ class BaseDAsa(ARC4Contract):
             case UInt64(cst.ROLE_AUTHORITY):
                 assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
                 op.Box.delete(cst.PREFIX_BOX_ID_AUTHORITY + role_address.bytes)
+            case UInt64(cst.ROLE_INTEREST_ORACLE):
+                assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
+                op.Box.delete(cst.PREFIX_BOX_ID_INTEREST_ORACLE + role_address.bytes)
             case _:
                 op.err()
         return arc4.UInt64(Global.latest_timestamp)

@@ -9,7 +9,8 @@ from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
 )
-from tests.utils import Currency, DAsaAccount, DAsaConfig
+from smart_contracts.fixed_coupon_bond import config as sc_cfg
+from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
 
 D_ASA_TEST_UNITS: Final[int] = 3
 
@@ -21,6 +22,12 @@ def test_pass_get_coupon_payment_amount(
     account_with_units_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_with_units_factory(units=D_ASA_TEST_UNITS)
+
+    time_events = fixed_coupon_bond_client_primary.get_time_events(
+        transaction_parameters=OnCompleteCallParameters(
+            boxes=[(fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_TIME_EVENTS)]
+        )
+    ).return_value
 
     coupon_rates = fixed_coupon_bond_client_primary.get_coupon_rates(
         transaction_parameters=OnCompleteCallParameters(
@@ -34,7 +41,6 @@ def test_pass_get_coupon_payment_amount(
     for coupon in range(1, fixed_coupon_bond_cfg.total_coupons + 1):
         payment_amount = fixed_coupon_bond_client_primary.get_payment_amount(
             holding_address=account.holding_address,
-            payment_index=coupon,
             transaction_parameters=OnCompleteCallParameters(
                 boxes=[
                     (fixed_coupon_bond_client_primary.app_id, account.box_id),
@@ -55,18 +61,41 @@ def test_pass_get_coupon_payment_amount(
         )
         assert payment_amount.principal == 0
 
+        # Coupon reaches due date
+        coupon_due_date = time_events[sc_cfg.FIRST_COUPON_DATE_IDX - 1 + coupon]
+        time_warp(coupon_due_date)
+        fixed_coupon_bond_client_primary.pay_coupon(
+            holding_address=account.holding_address,
+            payment_info=b"",
+            transaction_parameters=OnCompleteCallParameters(
+                foreign_assets=[currency.id],
+                accounts=[account.payment_address],
+                boxes=[
+                    (fixed_coupon_bond_client_primary.app_id, account.box_id),
+                    (
+                        fixed_coupon_bond_client_primary.app_id,
+                        sc_cst.BOX_ID_COUPON_RATES,
+                    ),
+                    (
+                        fixed_coupon_bond_client_primary.app_id,
+                        sc_cst.BOX_ID_TIME_EVENTS,
+                    ),
+                ],
+            ),
+        )
+
 
 def test_pass_get_principal_payment_amount(
     currency: Currency,
     fixed_coupon_bond_cfg: DAsaConfig,
     fixed_coupon_bond_client_primary: FixedCouponBondClient,
-    account_with_units_factory: Callable[..., DAsaAccount],
+    account_with_coupons_factory: Callable[..., DAsaAccount],
 ) -> None:
-    account = account_with_units_factory(units=D_ASA_TEST_UNITS)
+    # Account with all coupons paid and principal repayment left
+    account = account_with_coupons_factory()
 
     payment_amount = fixed_coupon_bond_client_primary.get_payment_amount(
         holding_address=account.holding_address,
-        payment_index=fixed_coupon_bond_cfg.total_coupons + 1,
         transaction_parameters=OnCompleteCallParameters(
             boxes=[
                 (fixed_coupon_bond_client_primary.app_id, account.box_id),
@@ -89,7 +118,6 @@ def test_pass_not_configured(
     account = account_factory(fixed_coupon_bond_client_empty)
     payment_amount = fixed_coupon_bond_client_empty.get_payment_amount(
         holding_address=account.holding_address,
-        payment_index=0,
         transaction_parameters=OnCompleteCallParameters(
             boxes=[
                 (fixed_coupon_bond_client_empty.app_id, account.box_id),
@@ -107,7 +135,6 @@ def test_fail_invalid_holding_address(
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_at_maturity.get_payment_amount(
             holding_address=oscar.address,
-            payment_index=1,
             transaction_parameters=OnCompleteCallParameters(
                 boxes=[
                     (
@@ -116,44 +143,6 @@ def test_fail_invalid_holding_address(
                     ),
                     (
                         fixed_coupon_bond_client_at_maturity.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                ]
-            ),
-        )
-
-
-def test_fail_invalid_coupon_index(
-    fixed_coupon_bond_cfg: DAsaConfig,
-    fixed_coupon_bond_client_primary: FixedCouponBondClient,
-    account_with_units_factory: Callable[..., DAsaAccount],
-) -> None:
-    account = account_with_units_factory(units=D_ASA_TEST_UNITS)
-
-    with pytest.raises(LogicError, match=err.INVALID_PAYMENT_INDEX):
-        fixed_coupon_bond_client_primary.get_payment_amount(
-            holding_address=account.holding_address,
-            payment_index=0,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                ]
-            ),
-        )
-
-    with pytest.raises(LogicError, match=err.INVALID_PAYMENT_INDEX):
-        fixed_coupon_bond_client_primary.get_payment_amount(
-            holding_address=account.holding_address,
-            payment_index=fixed_coupon_bond_cfg.total_coupons + 2,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
                         sc_cst.BOX_ID_COUPON_RATES,
                     ),
                 ]

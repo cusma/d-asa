@@ -6,7 +6,7 @@
     {
       "type": "uint16",
       "name": "interest_rate",
-      "desc": "Interest ratee in bps"
+      "desc": "Interest rate in bps"
     }
   ],
   "returns": {
@@ -25,6 +25,10 @@
     {
       "code": "SUSPENDED",
       "message": "Asset operations are suspended"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "ending due coupon payment"
     }
   ]
 }

@@ -7,13 +7,14 @@ transferable and implement the **OPTIONAL** `set_secondary_time_events`.
 
 The D-ASA **MUST** define *secondary market time events* as `uint64[]` array, where:
 
-- The length of the array **MUST** be `N>=2`;
+- The length of the array **MUST** be `N>=1`;
 
 - The first element **MUST** be the *secondary market opening date* (`uint64`):
 the time at which the secondary market opens;
 
-- The last element **MUST** be the *secondary market closure date* (`uint64`):
-the time at which the secondary market closes.
+- If the secondary market has a closure date, the last element **MUST** be the
+*secondary market closure date* (`uint64`): the time at which the secondary market
+closes.
 
 The *secondary market time events* **MUST** be sorted in strictly ascending order.
 

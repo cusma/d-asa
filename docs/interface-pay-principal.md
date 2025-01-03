@@ -23,8 +23,11 @@ does not exist.
 The call **MUST** fail with the `NO_UNTIS` error code if the Account has no D-ASA
 units.
 
-The call **SHOULD** fail with the `NOT_MATURE` error code if the principal is not
+The call **MUST** fail with the `NOT_MATURE` error code if the principal is not
 mature.
 
 The call **MUST** fail with the `PENDING_COUPON_PAYMENT` error code if there is
 any due coupon still to be paid.
+
+If the D-ASA has on-chain payment agent, the call **MUST** fail with the `NOT_ENOUGH_FUNDS`
+error code if funds are not enough for the payment.

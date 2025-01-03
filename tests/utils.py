@@ -5,6 +5,7 @@ from typing import Optional, TypeAlias
 from algokit_utils import OnCompleteCallParameters
 from algokit_utils.beta.account_manager import AddressAndSigner, TransactionSigner
 from algokit_utils.beta.algorand_client import AlgorandClient, PayParams
+from algosdk.abi import TupleType, UintType
 from algosdk.constants import min_txn_fee
 from algosdk.encoding import decode_address
 from algosdk.transaction import SuggestedParams
@@ -69,6 +70,25 @@ class DAsaAccountManager(AddressAndSigner):
 
 
 @dataclass(kw_only=True)
+class DAsaPrimaryDealer(AddressAndSigner):
+    @classmethod
+    def role_box_prefix(cls) -> bytes:
+        return sc_cst.PREFIX_BOX_ID_PRIMARY_DEALER
+
+    @classmethod
+    def role_id(cls) -> int:
+        return sc_cst.ROLE_PRIMARY_DEALER
+
+    @classmethod
+    def box_id_from_address(cls, address: str) -> bytes:
+        return cls.role_box_prefix() + decode_address(address)
+
+    @property
+    def box_id(self) -> bytes:
+        return self.role_box_prefix() + decode_address(self.address)
+
+
+@dataclass(kw_only=True)
 class DAsaTrustee(AddressAndSigner):
     @classmethod
     def role_box_prefix(cls) -> bytes:
@@ -107,14 +127,14 @@ class DAsaAuthority(AddressAndSigner):
 
 
 @dataclass(kw_only=True)
-class DAsaPrimaryDealer(AddressAndSigner):
+class DAsaInterestOracle(AddressAndSigner):
     @classmethod
     def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_BOX_ID_PRIMARY_DEALER
+        return sc_cst.PREFIX_BOX_ID_INTEREST_ORACLE
 
     @classmethod
     def role_id(cls) -> int:
-        return sc_cst.ROLE_PRIMARY_DEALER
+        return sc_cst.ROLE_INTEREST_ORACLE
 
     @classmethod
     def box_id_from_address(cls, address: str) -> bytes:
@@ -259,3 +279,9 @@ def sp_per_coupon(coupon_idx: int) -> SuggestedParams:
     sp.flat_fee = True
     sp.fee = math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee
     return sp
+
+
+def set_role_config(validity_start: int = 0, validity_end: int = 2**64 - 1) -> bytes:
+    return TupleType([UintType(64), UintType(64)]).encode(
+        [validity_start, validity_end]
+    )

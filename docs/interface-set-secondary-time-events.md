@@ -13,7 +13,7 @@ The call **MAY** fail with the `SUSPENDED` error code if the asset operations ar
 suspended.
 
 The call **MUST** fail with the `INVALID_TIME_EVENTS_LENGTH` error code if the length
-of the *time events* is not greater than or equal to `2`.
+of the *time events* is not greater than or equal to `1`.
 
 The call **MUST** fail with the `INVALID_SORTING` error code if the *time events*
 are not sorted in strictly ascending order.

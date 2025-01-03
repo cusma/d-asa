@@ -23,8 +23,11 @@ does not exist.
 The call **MUST** fail with the `NO_UNTIS` error code if the Account has no D-ASA
 units.
 
-The call **SHOULD** fail with the `NO_DUE_COUPON` error code if there is no due
+The call **MUST** fail with the `NO_DUE_COUPON` error code if there is no due
 coupon left to pay for the Account.
 
 The call **MUST** fail with the `PENDING_COUPON_PAYMENT` error code if there is
 an old due coupon still to be paid to any account.
+
+If the D-ASA has on-chain payment agent, the call **MUST** fail with the `NOT_ENOUGH_FUNDS`
+error code if funds are not enough for the payment.

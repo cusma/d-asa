@@ -30,6 +30,10 @@
     {
       "code": "INVALID_UNITS",
       "message": "Invalid amount of units for the account"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment for the account"
     }
   ]
 }

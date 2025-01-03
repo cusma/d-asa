@@ -5,7 +5,8 @@ from algopy import arc4
 AssetMetadata: TypeAlias = arc4.DynamicBytes
 CouponRates: TypeAlias = arc4.DynamicArray[arc4.UInt16]
 TimeEvents: TypeAlias = arc4.DynamicArray[arc4.UInt64]
-TimePeriods: TypeAlias = arc4.DynamicArray[arc4.Tuple[arc4.UInt64, arc4.UInt64]]
+TimePeriod: TypeAlias = arc4.Tuple[arc4.UInt64, arc4.UInt64]
+TimePeriods: TypeAlias = arc4.DynamicArray[TimePeriod]
 
 
 class AssetInfo(arc4.Struct, kw_only=True):

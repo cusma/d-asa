@@ -94,6 +94,14 @@ def test_pass_asset_config(
     assert not state.suspended
 
 
+def test_fail_invalid_interest_rate() -> None:
+    pass  # TODO
+
+
+def test_fail_invalid_coupon_rates() -> None:
+    pass  # TODO
+
+
 def test_fail_invalid_time_events_length(
     fixed_coupon_bond_cfg: DAsaConfig,
     fixed_coupon_bond_client_empty: FixedCouponBondClient,

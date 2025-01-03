@@ -1,17 +1,12 @@
 {
   "name": "get_payment_amount",
-  "desc": "Get the payment amount",
+  "desc": "Get the next payment amount",
   "readonly": true,
   "args": [
     {
       "type": "address",
       "name": "holding_address",
       "desc": "Account Holding Address"
-    },
-    {
-      "type": "uint64",
-      "name": "payment_index",
-      "desc": "1-based payment index for the amount"
     }
   ],
   "returns": {
@@ -22,10 +17,6 @@
     {
       "code": "INVALID_HOLDING_ADDRESS",
       "message": "Invalid Holding Address"
-    },
-    {
-      "code": "INVALID_PAYMENT_INDEX",
-      "message": "Invalid 1-based payment index"
     }
   ]
 }

@@ -13,7 +13,6 @@ from algokit_utils.beta.algorand_client import (
     AssetTransferParams,
 )
 from algokit_utils.config import config
-from algosdk import abi
 from algosdk.v2client.algod import AlgodClient
 from algosdk.v2client.indexer import IndexerClient
 
@@ -130,12 +129,7 @@ def account_manager(
             min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
         ),
     )
-    role_config = abi.TupleType([abi.UintType(64), abi.UintType(64)]).encode(
-        [
-            0,
-            zero_coupon_bond_cfg.time_events[-1] * 2,
-        ]  # This ensures the role validity would last long after maturity
-    )
+    role_config = utils.set_role_config()
     zero_coupon_bond_client_empty.assign_role(
         role_address=account.address,
         role=account.role_id(),
@@ -163,12 +157,7 @@ def authority(
             min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
         ),
     )
-    role_config = abi.TupleType([abi.UintType(64), abi.UintType(64)]).encode(
-        [
-            0,
-            zero_coupon_bond_cfg.time_events[-1] * 2,
-        ]  # This ensures the role validity would last long after maturity
-    )
+    role_config = utils.set_role_config()
     zero_coupon_bond_client_empty.assign_role(
         role_address=account.address,
         role=account.role_id(),
@@ -227,11 +216,8 @@ def primary_dealer(
         ),
     )
     state = zero_coupon_bond_client_active.get_global_state()
-    role_config = abi.TupleType([abi.UintType(64), abi.UintType(64)]).encode(
-        [
-            state.primary_distribution_opening_date,
-            state.primary_distribution_closure_date,
-        ]
+    role_config = utils.set_role_config(
+        state.primary_distribution_opening_date, state.primary_distribution_closure_date
     )
     zero_coupon_bond_client_active.assign_role(
         role_address=account.address,

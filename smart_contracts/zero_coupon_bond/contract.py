@@ -52,6 +52,11 @@ class ZeroCouponBond(
         )
 
     @subroutine
+    def is_accruing_interest(self) -> bool:
+        # The check on maturity date ensures D-ASA has been configured as block timestamp cannot be less than 0 (init).
+        return self.issuance_date <= Global.latest_timestamp < self.maturity_date
+
+    @subroutine
     def accrued_interest_amount(
         self, holding_address: arc4.Address, units: UInt64
     ) -> UInt64:
@@ -139,6 +144,7 @@ class ZeroCouponBond(
         if self.is_payment_executable(holding_address):
             payment_amount = self.account_total_units_value(holding_address)
             # The reference implementation has on-chain payment agent
+            self.assert_enough_funds(payment_amount)
             self.pay(self.account[holding_address].payment_address, payment_amount)
         else:
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
@@ -197,7 +203,7 @@ class ZeroCouponBond(
         denominator = UInt64()
 
         # Accruing interest
-        if self.issuance_date <= Global.latest_timestamp < self.maturity_date:
+        if self.is_accruing_interest():
             day_count_factor = self.day_count_factor()
             accrued_interest = self.accrued_interest_amount(
                 holding_address, units.native
@@ -219,15 +225,12 @@ class ZeroCouponBond(
         )
 
     @arc4.abimethod(readonly=True)
-    def get_payment_amount(
-        self, holding_address: arc4.Address, payment_index: arc4.UInt64
-    ) -> typ.PaymentAmounts:
+    def get_payment_amount(self, holding_address: arc4.Address) -> typ.PaymentAmounts:
         """
-        Get the payment amount
+        Get the next payment amount
 
         Args:
             holding_address: Account Holding Address
-            payment_index: 1-based payment index for the amount
 
         Returns:
             Interest amount in denomination asset, Principal amount in denomination asset
@@ -240,7 +243,6 @@ class ZeroCouponBond(
         interest_amount = UInt64()
         principal_amount = UInt64()
         if self.status_is_active():
-            assert payment_index.native == 1, err.INVALID_PAYMENT_INDEX
             principal_amount = self.account_total_units_value(holding_address)
             interest_amount = principal_amount * self.interest_rate // cst.BPS
         return typ.PaymentAmounts(
