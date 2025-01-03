@@ -11,6 +11,7 @@ The reference implementation provides the following features:
   - Primary Dealer: performs the primary distribution on the primary market
   - Trustee: can call a default
   - Authority: can suspend accounts or the whole asset
+  - Interest Oracle: can update the interest rate in case of variable rates
 
 - Denomination:
   - ASA
