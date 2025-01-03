@@ -54,7 +54,7 @@ class Currency:
 class DAsaAccountManager(AddressAndSigner):
     @classmethod
     def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_BOX_ID_ACCOUNT_MANAGER
+        return sc_cst.PREFIX_ID_ACCOUNT_MANAGER
 
     @classmethod
     def role_id(cls) -> int:
@@ -73,7 +73,7 @@ class DAsaAccountManager(AddressAndSigner):
 class DAsaPrimaryDealer(AddressAndSigner):
     @classmethod
     def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_BOX_ID_PRIMARY_DEALER
+        return sc_cst.PREFIX_ID_PRIMARY_DEALER
 
     @classmethod
     def role_id(cls) -> int:
@@ -92,7 +92,7 @@ class DAsaPrimaryDealer(AddressAndSigner):
 class DAsaTrustee(AddressAndSigner):
     @classmethod
     def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_BOX_ID_TRUSTEE
+        return sc_cst.PREFIX_ID_TRUSTEE
 
     @classmethod
     def role_id(cls) -> int:
@@ -111,7 +111,7 @@ class DAsaTrustee(AddressAndSigner):
 class DAsaAuthority(AddressAndSigner):
     @classmethod
     def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_BOX_ID_AUTHORITY
+        return sc_cst.PREFIX_ID_AUTHORITY
 
     @classmethod
     def role_id(cls) -> int:
@@ -130,7 +130,7 @@ class DAsaAuthority(AddressAndSigner):
 class DAsaInterestOracle(AddressAndSigner):
     @classmethod
     def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_BOX_ID_INTEREST_ORACLE
+        return sc_cst.PREFIX_ID_INTEREST_ORACLE
 
     @classmethod
     def role_id(cls) -> int:
@@ -153,7 +153,7 @@ class DAsaAccount:
 
     @classmethod
     def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_BOX_ID_ACCOUNT
+        return sc_cst.PREFIX_ID_ACCOUNT
 
     @classmethod
     def box_id_from_address(cls, address: str) -> bytes:

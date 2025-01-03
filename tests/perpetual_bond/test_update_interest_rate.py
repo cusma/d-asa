@@ -96,7 +96,7 @@ def test_fail_unauthorized(
                 boxes=[
                     (
                         perpetual_bond_client_primary.app_id,
-                        sc_cst.PREFIX_BOX_ID_INTEREST_ORACLE
+                        sc_cst.PREFIX_ID_INTEREST_ORACLE
                         + decode_address(oscar.address),
                     )
                 ],

@@ -22,13 +22,13 @@ ROLE_AUTHORITY: Final[int] = 70
 ROLE_INTEREST_ORACLE: Final[int] = 80
 
 # Role Keys Prefix
-PREFIX_BOX_ID_ARRANGER: Final[bytes] = b"R20#"
-PREFIX_BOX_ID_ACCOUNT: Final[bytes] = b"R30#"
-PREFIX_BOX_ID_ACCOUNT_MANAGER: Final[bytes] = b"R40#"
-PREFIX_BOX_ID_PRIMARY_DEALER: Final[bytes] = b"R50#"
-PREFIX_BOX_ID_TRUSTEE: Final[bytes] = b"R60#"
-PREFIX_BOX_ID_AUTHORITY: Final[bytes] = b"R70#"
-PREFIX_BOX_ID_INTEREST_ORACLE: Final[bytes] = b"R80#"
+PREFIX_ID_ARRANGER: Final[bytes] = b"R20#"
+PREFIX_ID_ACCOUNT: Final[bytes] = b"R30#"
+PREFIX_ID_ACCOUNT_MANAGER: Final[bytes] = b"R40#"
+PREFIX_ID_PRIMARY_DEALER: Final[bytes] = b"R50#"
+PREFIX_ID_TRUSTEE: Final[bytes] = b"R60#"
+PREFIX_ID_AUTHORITY: Final[bytes] = b"R70#"
+PREFIX_ID_INTEREST_ORACLE: Final[bytes] = b"R80#"
 
 # Box IDs
 BOX_ID_COUPON_RATES: Final[bytes] = b"couponRates"

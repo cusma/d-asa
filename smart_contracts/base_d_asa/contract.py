@@ -1,11 +1,13 @@
 # pyright: reportMissingModuleSource=false
 from algopy import (
+    Account,
     ARC4Contract,
     Asset,
     Box,
     BoxMap,
     Bytes,
     Global,
+    GlobalState,
     OpUpFeeSource,
     Txn,
     UInt64,
@@ -37,21 +39,21 @@ class BaseDAsa(ARC4Contract):
 
     def __init__(self) -> None:
         # Role Based Access Control
-        self.arranger = Global.zero_address  # TODO: Use role key
+        self.arranger = GlobalState(Account(), key=cst.PREFIX_ID_ARRANGER)
         self.account_manager = BoxMap(
-            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_BOX_ID_ACCOUNT_MANAGER
+            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_ID_ACCOUNT_MANAGER
         )
         self.primary_dealer = BoxMap(
-            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_BOX_ID_PRIMARY_DEALER
+            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_ID_PRIMARY_DEALER
         )
         self.trustee = BoxMap(
-            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_BOX_ID_TRUSTEE
+            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_ID_TRUSTEE
         )
         self.authority = BoxMap(
-            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_BOX_ID_AUTHORITY
+            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_ID_AUTHORITY
         )
         self.interest_oracle = BoxMap(
-            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_BOX_ID_INTEREST_ORACLE
+            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_ID_INTEREST_ORACLE
         )
 
         # Asset Configuration
@@ -90,7 +92,7 @@ class BaseDAsa(ARC4Contract):
 
         # Account
         self.account = BoxMap(
-            arc4.Address, typ.AccountInfo, key_prefix=cst.PREFIX_BOX_ID_ACCOUNT
+            arc4.Address, typ.AccountInfo, key_prefix=cst.PREFIX_ID_ACCOUNT
         )
 
     @subroutine
@@ -111,7 +113,7 @@ class BaseDAsa(ARC4Contract):
 
     @subroutine
     def assert_caller_is_arranger(self) -> None:
-        assert Txn.sender == self.arranger, err.UNAUTHORIZED
+        assert Txn.sender == self.arranger.value, err.UNAUTHORIZED
 
     @subroutine
     def assert_caller_is_account_manager(self) -> None:
@@ -445,7 +447,7 @@ class BaseDAsa(ARC4Contract):
             arranger: D-ASA Arranger Address
             metadata: D-ASA metadata digest (e.g. prospectus digest)
         """
-        self.arranger = arranger.native
+        self.arranger.value = arranger.native
         self.metadata = metadata.native
 
     @arc4.baremethod(allow_actions=["UpdateApplication"])
@@ -618,7 +620,7 @@ class BaseDAsa(ARC4Contract):
         ), err.INVALID_ROLE
         match role.native:
             case UInt64(cst.ROLE_ARRANGER):
-                self.arranger = role_address.native
+                self.arranger.value = role_address.native
             case UInt64(cst.ROLE_ACCOUNT_MANAGER):
                 assert (
                     role_address not in self.account_manager
@@ -679,19 +681,19 @@ class BaseDAsa(ARC4Contract):
             # Arranger role can not be revoked (just rotated)
             case UInt64(cst.ROLE_ACCOUNT_MANAGER):
                 assert role_address in self.account_manager, err.INVALID_ROLE_ADDRESS
-                op.Box.delete(cst.PREFIX_BOX_ID_ACCOUNT_MANAGER + role_address.bytes)
+                op.Box.delete(cst.PREFIX_ID_ACCOUNT_MANAGER + role_address.bytes)
             case UInt64(cst.ROLE_PRIMARY_DEALER):
                 assert role_address in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-                op.Box.delete(cst.PREFIX_BOX_ID_PRIMARY_DEALER + role_address.bytes)
+                op.Box.delete(cst.PREFIX_ID_PRIMARY_DEALER + role_address.bytes)
             case UInt64(cst.ROLE_TRUSTEE):
                 assert role_address in self.trustee, err.INVALID_ROLE_ADDRESS
-                op.Box.delete(cst.PREFIX_BOX_ID_TRUSTEE + role_address.bytes)
+                op.Box.delete(cst.PREFIX_ID_TRUSTEE + role_address.bytes)
             case UInt64(cst.ROLE_AUTHORITY):
                 assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
-                op.Box.delete(cst.PREFIX_BOX_ID_AUTHORITY + role_address.bytes)
+                op.Box.delete(cst.PREFIX_ID_AUTHORITY + role_address.bytes)
             case UInt64(cst.ROLE_INTEREST_ORACLE):
                 assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
-                op.Box.delete(cst.PREFIX_BOX_ID_INTEREST_ORACLE + role_address.bytes)
+                op.Box.delete(cst.PREFIX_ID_INTEREST_ORACLE + role_address.bytes)
             case _:
                 op.err()
         return arc4.UInt64(Global.latest_timestamp)
@@ -754,7 +756,7 @@ class BaseDAsa(ARC4Contract):
         self.assert_valid_holding_address(holding_address)
 
         closed_units = self.account[holding_address].units.native
-        op.Box.delete(cst.PREFIX_BOX_ID_ACCOUNT + holding_address.bytes)
+        op.Box.delete(cst.PREFIX_ID_ACCOUNT + holding_address.bytes)
         self.circulating_units -= closed_units
         self.end_if_no_circulating_units()
         return arc4.Tuple(
