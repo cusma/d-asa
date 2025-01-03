@@ -90,6 +90,14 @@ class FixedCouponBond(
         return self.paid_coupon_units >= self.circulating_units * due_coupons
 
     @subroutine
+    def assert_no_pending_coupon_payment(
+        self, holding_address: arc4.Address, due_coupons: UInt64
+    ) -> None:
+        assert (
+            self.account[holding_address].paid_coupons == due_coupons
+        ), err.PENDING_COUPON_PAYMENT
+
+    @subroutine
     def coupon_interest_amount(
         self, principal_amount: UInt64, coupon: UInt64
     ) -> UInt64:
@@ -117,7 +125,7 @@ class FixedCouponBond(
     def is_accruing_interest(self, due_coupons: UInt64) -> bool:
         return (
             self.issuance_date != 0
-            and Global.latest_timestamp > self.issuance_date
+            and Global.latest_timestamp >= self.issuance_date
             and due_coupons < self.total_coupons
         )
 
@@ -125,9 +133,8 @@ class FixedCouponBond(
     def accrued_interest_amount(
         self, holding_address: arc4.Address, units: UInt64, due_coupons: UInt64
     ) -> UInt64:
-        assert (
-            self.account[holding_address].paid_coupons == due_coupons
-        ), err.PENDING_COUPON_PAYMENT
+        # The following assert safeguards the subroutine from forbidden invocations
+        self.assert_no_pending_coupon_payment(holding_address, due_coupons)
         day_count_factor = self.day_count_factor(due_coupons)
         coupon_accrued_period = day_count_factor.numerator.native
         coupon_period = day_count_factor.denominator.native
@@ -177,10 +184,12 @@ class FixedCouponBond(
             units.native,
         )
 
+        # Transfer is forbidden in case of pending coupon payments
+        due_coupons = self.count_due_coupons()
+        self.assert_no_pending_coupon_payment(sender_holding_address, due_coupons)
+
         # Transferred units value (must be computed before the transfer)
         sender_unit_value = self.account[sender_holding_address].unit_value
-        due_coupons = self.count_due_coupons()
-        # Transfers is forbidden in case of pending coupon payments, checked in the accrued interest calculation
         accrued_interest = self.accrued_interest_amount(
             sender_holding_address, units.native, due_coupons
         )
@@ -338,10 +347,9 @@ class FixedCouponBond(
 
         # Accruing interest
         due_coupons = self.count_due_coupons()
+        self.assert_no_pending_coupon_payment(holding_address, due_coupons)
         if self.is_accruing_interest(due_coupons):
             day_count_factor = self.day_count_factor(due_coupons)
-            # Account units current value calculation fails in case of pending coupon payments, checked in the accrued
-            # interest calculation
             accrued_interest = self.accrued_interest_amount(
                 holding_address, units.native, due_coupons
             )
