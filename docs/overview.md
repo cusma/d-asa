@@ -1,8 +1,8 @@
 # Overview {#overview}
 
-A *Debt Algorand Standard Asset* (D-ASA) is a debt instrument issued as an Algorand
-Application, that conforms to this specification, and whose operations and cash
-flows are executed on the AVM.
+A *Debt Algorand Standard Application* (D-ASA) is a debt instrument issued as an
+Algorand Application, that conforms to this specification, and whose operations
+and cash flows are executed on the AVM.
 
 This specification defines the actors of a D-ASA and the interfaces of the Algorand
 Application to:

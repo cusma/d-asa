@@ -1,2 +1,2 @@
 # d-asa
-Debt Algorand Standard Asset
+Debt Algorand Standard Application

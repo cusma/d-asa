@@ -471,7 +471,7 @@ class BaseDAsa(ARC4Contract):
         time_periods: typ.TimePeriods,
     ) -> None:
         """
-        Configure the Debt Algorand Standard Asset
+        Configure the Debt Algorand Standard Application
 
         Args:
             denomination_asset_id: Denomination asset identifier

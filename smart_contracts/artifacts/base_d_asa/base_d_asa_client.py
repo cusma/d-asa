@@ -376,7 +376,7 @@ _APP_SPEC_JSON = r"""{
                 "returns": {
                     "type": "void"
                 },
-                "desc": "Configure the Debt Algorand Standard Asset"
+                "desc": "Configure the Debt Algorand Standard Application"
             },
             {
                 "name": "set_secondary_time_events",
@@ -677,7 +677,7 @@ def _convert_deploy_args(
 
 @dataclasses.dataclass(kw_only=True)
 class AssetConfigArgs(_ArgsBase[None]):
-    """Configure the Debt Algorand Standard Asset"""
+    """Configure the Debt Algorand Standard Application"""
 
     denomination_asset_id: int
     """Denomination asset identifier"""
@@ -998,7 +998,7 @@ class Composer:
         time_periods: list[tuple[int, int]],
         transaction_parameters: algokit_utils.TransactionParameters | None = None,
     ) -> "Composer":
-        """Configure the Debt Algorand Standard Asset
+        """Configure the Debt Algorand Standard Application
         
         Adds a call to `asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void` ABI method
         
@@ -1596,7 +1596,7 @@ class BaseDAsaClient:
         time_periods: list[tuple[int, int]],
         transaction_parameters: algokit_utils.TransactionParameters | None = None,
     ) -> algokit_utils.ABITransactionResponse[None]:
-        """Configure the Debt Algorand Standard Asset
+        """Configure the Debt Algorand Standard Application
         
         Calls `asset_config(uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void` ABI method
         

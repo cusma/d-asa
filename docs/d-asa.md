@@ -1,9 +1,9 @@
-# Debt Algorand Standard Asset {#debt-algorand-standard-asset}
+# Debt Algorand Standard Application {#debt-algorand-standard-application}
 
 > A standard for debt instruments tokenization on Algorand
 
-The *Debt Algorand Standard Asset* (D-ASA) is a standard for tokenizing *debt instruments*
-on the Algorand Virtual Machine.
+The *Debt Algorand Standard Application* (D-ASA) is a standard for tokenizing *debt
+instruments* on the Algorand Virtual Machine.
 
 It provides the interfaces for arranging the asset, configuring its role-based access
 control, issuing and distributing it on the primary market, executing cash flows,

@@ -1,6 +1,6 @@
 # Summary
 
-[Debt Algorand Standard Asset](./d-asa.md)
+[Debt Algorand Standard Application](./d-asa.md)
 
 ---
 
