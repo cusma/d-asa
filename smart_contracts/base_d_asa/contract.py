@@ -50,6 +50,9 @@ class BaseDAsa(ARC4Contract):
         self.authority = BoxMap(
             arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_BOX_ID_AUTHORITY
         )
+        self.interest_oracle = BoxMap(
+            arc4.Address, typ.RoleConfig, key_prefix=cst.PREFIX_BOX_ID_INTEREST_ORACLE
+        )
 
         # Asset Configuration
         self.denomination_asset_id = UInt64()
@@ -121,6 +124,16 @@ class BaseDAsa(ARC4Contract):
         ), err.UNAUTHORIZED
 
     @subroutine
+    def assert_caller_is_primary_dealer(self) -> None:
+        caller = arc4.Address(Txn.sender)
+        assert (
+            caller in self.primary_dealer
+            and self.primary_dealer[caller].role_validity_start
+            <= Global.latest_timestamp
+            <= self.primary_dealer[caller].role_validity_end
+        ), err.UNAUTHORIZED
+
+    @subroutine
     def assert_caller_is_trustee(self) -> None:
         caller = arc4.Address(Txn.sender)
         assert (
@@ -141,13 +154,13 @@ class BaseDAsa(ARC4Contract):
         ), err.UNAUTHORIZED
 
     @subroutine
-    def assert_caller_is_primary_dealer(self) -> None:
+    def assert_caller_is_interest_oracle(self) -> None:
         caller = arc4.Address(Txn.sender)
         assert (
-            caller in self.primary_dealer
-            and self.primary_dealer[caller].role_validity_start
+            caller in self.interest_oracle
+            and self.interest_oracle[caller].role_validity_start
             <= Global.latest_timestamp
-            <= self.primary_dealer[caller].role_validity_end
+            <= self.interest_oracle[caller].role_validity_end
         ), err.UNAUTHORIZED
 
     @subroutine
@@ -601,6 +614,7 @@ class BaseDAsa(ARC4Contract):
             UInt64(cst.ROLE_PRIMARY_DEALER),
             UInt64(cst.ROLE_TRUSTEE),
             UInt64(cst.ROLE_AUTHORITY),
+            UInt64(cst.ROLE_INTEREST_ORACLE),
         ), err.INVALID_ROLE
         match role.native:
             case UInt64(cst.ROLE_ARRANGER):
@@ -623,6 +637,13 @@ class BaseDAsa(ARC4Contract):
             case UInt64(cst.ROLE_AUTHORITY):
                 assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
                 self.authority[role_address] = typ.RoleConfig.from_bytes(config.native)
+            case UInt64(cst.ROLE_INTEREST_ORACLE):
+                assert (
+                    role_address not in self.interest_oracle
+                ), err.INVALID_ROLE_ADDRESS
+                self.interest_oracle[role_address] = typ.RoleConfig.from_bytes(
+                    config.native
+                )
             case _:
                 op.err()
         return arc4.UInt64(Global.latest_timestamp)
@@ -652,6 +673,7 @@ class BaseDAsa(ARC4Contract):
             UInt64(cst.ROLE_PRIMARY_DEALER),
             UInt64(cst.ROLE_TRUSTEE),
             UInt64(cst.ROLE_AUTHORITY),
+            UInt64(cst.ROLE_INTEREST_ORACLE),
         ), err.INVALID_ROLE
         match role.native:
             # Arranger role can not be revoked (just rotated)
@@ -667,6 +689,9 @@ class BaseDAsa(ARC4Contract):
             case UInt64(cst.ROLE_AUTHORITY):
                 assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
                 op.Box.delete(cst.PREFIX_BOX_ID_AUTHORITY + role_address.bytes)
+            case UInt64(cst.ROLE_INTEREST_ORACLE):
+                assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
+                op.Box.delete(cst.PREFIX_BOX_ID_INTEREST_ORACLE + role_address.bytes)
             case _:
                 op.err()
         return arc4.UInt64(Global.latest_timestamp)

@@ -70,6 +70,25 @@ class DAsaAccountManager(AddressAndSigner):
 
 
 @dataclass(kw_only=True)
+class DAsaPrimaryDealer(AddressAndSigner):
+    @classmethod
+    def role_box_prefix(cls) -> bytes:
+        return sc_cst.PREFIX_BOX_ID_PRIMARY_DEALER
+
+    @classmethod
+    def role_id(cls) -> int:
+        return sc_cst.ROLE_PRIMARY_DEALER
+
+    @classmethod
+    def box_id_from_address(cls, address: str) -> bytes:
+        return cls.role_box_prefix() + decode_address(address)
+
+    @property
+    def box_id(self) -> bytes:
+        return self.role_box_prefix() + decode_address(self.address)
+
+
+@dataclass(kw_only=True)
 class DAsaTrustee(AddressAndSigner):
     @classmethod
     def role_box_prefix(cls) -> bytes:
@@ -108,14 +127,14 @@ class DAsaAuthority(AddressAndSigner):
 
 
 @dataclass(kw_only=True)
-class DAsaPrimaryDealer(AddressAndSigner):
+class DAsaInterestOracle(AddressAndSigner):
     @classmethod
     def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_BOX_ID_PRIMARY_DEALER
+        return sc_cst.PREFIX_BOX_ID_INTEREST_ORACLE
 
     @classmethod
     def role_id(cls) -> int:
-        return sc_cst.ROLE_PRIMARY_DEALER
+        return sc_cst.ROLE_INTEREST_ORACLE
 
     @classmethod
     def box_id_from_address(cls, address: str) -> bytes:
