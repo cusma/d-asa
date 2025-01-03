@@ -18,10 +18,12 @@ jobs:
   validate-docs:
     name: Validate d-asa docs
     uses: ./.github/workflows/docs-ci.yaml
+    secrets: inherit
 
   deploy-d-asa:
     name: Deploy d-asa
     uses: ./.github/workflows/d-asa-cd.yaml
+    secrets: inherit
 
   deploy-docs:
     name: Deploy d-asa docs

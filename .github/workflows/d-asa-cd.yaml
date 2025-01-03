@@ -10,6 +10,7 @@ jobs:
   validate:
     name: Validate d-asa
     uses: ./.github/workflows/d-asa-ci.yaml
+    secrets: inherit
 
   deploy-testnet:
     name: Deploy d-asa
