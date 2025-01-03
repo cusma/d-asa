@@ -35,7 +35,7 @@ The D-ASA *unit value* **MAY** change globally or locally (per account).
 
 > The D-ASA unit’s value can be global or local (per-account). Global unit value
 > should be used when the value of all the units can be updated at the same time.
-> Local unit value should be used when the units' value ia updated at different
+> Local unit value should be used when the units' value is updated at different
 > times per each account.
 
 > 📎 **EXAMPLE**
