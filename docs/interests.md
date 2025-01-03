@@ -62,6 +62,9 @@ The *coupon rates* **MUST** be set using the `asset_config` method.
 The *interest rate* **MAY** be updated using the **OPTIONAL** `update_interest_rate`
 method.
 
+If the D-ASA has coupons, the *interest rate* **MUST NOT** be updated if there is
+any due coupon still to be paid.
+
 The *coupon rates* **MAY** be updated using the **OPTIONAL** `update_coupon_rates`
 method.
 

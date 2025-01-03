@@ -2,19 +2,22 @@
 
 > Debt instruments repay the principal according to the repayment schedule.
 
-The D-ASA **MUST** repay the *principal*, according to a *principal repayment schedule*.
+The *principal* **MUST** be repaid according to a *principal repayment schedule*.
+
+If the D-ASA has coupons, the *principal* **MUST NOT** be paid if there is any due
+coupon still to be paid.
 
 In the case of an on-chain payment agent, the D-ASA **MUST** repay the *principal*
 to the Lander’s Payment Addresses.
 
 ## Bullet Schedule
 
-If the D-ASA principal repayment schedule is *bullet*, it **MUST** repay the entire
-*principal* at the *maturity date* using the `pay_principal` method.
+If the *principal repayment schedule* is *bullet*, the principal **MUST** be paid
+entirely at the *maturity date* using the `pay_principal` method.
 
 ## Amortizing Schedule
 
-If the D-ASA principal repayment schedule is *amortizing*, it **MUST** define the
+If *principal repayment schedule* is *amortizing*, the D-ASA **MUST** define the
 *amortization rates* as `uint16[]` array, where:
 
 - The length of the array is `N=K+1`, with `K` equal to the *total coupons*;
@@ -65,8 +68,8 @@ method.
 
 The updated *amortizing rates* **MUST NOT** modify past amortizing rates.
 
-The D-ASA **MUST** repay the *principal* along with *coupons*, according to the
-*amortizing rates*, using the `pay_coupon` method.
+The *principal* **MUST** be repaid along with *coupons*, according to the *amortizing
+rates*, using the `pay_coupon` method.
 
 The D-ASA *unit value* **MUST** be updated according to the *outstanding principal.*
 
