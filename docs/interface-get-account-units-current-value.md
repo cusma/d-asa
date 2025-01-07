@@ -1,4 +1,4 @@
-# Get Current Account Units Current Value
+# Get Account Units Current Value
 
 ```json
 {{#include ./include/interface.get-account-units-current-value.json}}

@@ -1,6 +1,6 @@
 {
-  "name": "get_current_account_units_current_value",
-  "desc": "Get current account's current units value and accrued interest",
+  "name": "get_account_units_current_value",
+  "desc": "Get account's current units value and accrued interest",
   "readonly": true,
   "args": [
     {
