@@ -1,5 +1,7 @@
 # Debt Algorand Standard Application {#debt-algorand-standard-application}
 
+![Smart Financial Contract](./images/cover.jpg "Smart Financial Contract")
+
 > A standard for debt instruments tokenization on Algorand
 
 The *Debt Algorand Standard Application* (D-ASA) is a standard for tokenizing *debt
