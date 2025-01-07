@@ -7,6 +7,8 @@ on:
     # This next line should be used in conjunction with the if statement that prevents CI jobs to run on draft PRs.
     # ready_for_review is then added to make sure that a PR with no code change triggers CI if it's no longer a draft PR.
     types: [ opened, reopened, synchronize, ready_for_review ]
+    paths:
+      - 'docs/**'
 
 permissions:
   contents: read
