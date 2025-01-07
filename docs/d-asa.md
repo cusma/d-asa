@@ -10,7 +10,8 @@ control, issuing and distributing it on the primary market, executing cash flows
 exchanging it on the secondary market, and querying information about the debt instrument.
 
 The specification allows the tokenization of various debt instruments, such as bonds,
-loans, commercial papers, mortgages, etc.
+loans, commercial papers, mortgages, etc. A [reference implementation](./reference-implementation.md)
+of some payoff examples is provided.
 
 This document is a *technical specification*, it is not to be intended as a legal
 or a financial document.
