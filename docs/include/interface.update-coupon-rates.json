@@ -33,6 +33,10 @@
     {
       "code": "INVALID_PAST_RATE",
       "message": "Due coupon rates can not be modified"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment"
     }
   ]
 }

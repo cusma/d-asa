@@ -41,6 +41,10 @@
     {
       "code": "INVALID_PAST_EVENT",
       "message": "Past time events can not be modified"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment"
     }
   ]
 }

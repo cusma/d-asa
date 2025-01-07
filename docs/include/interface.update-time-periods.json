@@ -29,6 +29,10 @@
     {
       "code": "INVALID_TIME_PERIOD",
       "message": "Time period durations must be greater than zero"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment"
     }
   ]
 }

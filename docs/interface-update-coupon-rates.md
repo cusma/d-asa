@@ -16,3 +16,6 @@ length of the *coupon rates* is not equal to *total_coupons*.
 
 The call **MUST** fail with the `INVALID_PAST_RATE` error code if a due coupon rate
 is modified.
+
+The call **MUST** fail with the `PENDING_COUPON_PAYMENT` error code if there is
+any due coupon still to be paid.

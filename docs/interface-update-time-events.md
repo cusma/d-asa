@@ -22,3 +22,6 @@ are not sorted in strictly ascending order.
 
 The call **MUST** fail with the `INVALID_PAST_EVENT` error code if a past event
 is modified.
+
+The call **MUST** fail with the `PENDING_COUPON_PAYMENT` error code if there is
+any due coupon still to be paid.

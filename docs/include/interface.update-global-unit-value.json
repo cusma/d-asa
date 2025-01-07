@@ -25,6 +25,10 @@
     {
       "code": "SUSPENDED",
       "message": "Asset operations are suspended"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment"
     }
   ]
 }
