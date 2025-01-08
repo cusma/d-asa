@@ -7,8 +7,6 @@ on:
     # This next line should be used in conjunction with the if statement that prevents CI jobs to run on draft PRs.
     # ready_for_review is then added to make sure that a PR with no code change triggers CI if it's no longer a draft PR.
     types: [ opened, reopened, synchronize, ready_for_review ]
-    paths-ignore:
-      - 'docs/**'
   schedule:
     # * is a special character in YAML, so this string needs quote
     - cron: '0 17 * * 3'  # Run once a week at 5 PM on Wednesday
@@ -18,6 +16,7 @@ permissions:
 
 jobs:
   validate:
+    name: Validate d-asa
     # Preventing a job from running on draft PRs.
     if: '! github.event.pull_request.draft'
     runs-on: "ubuntu-latest"
