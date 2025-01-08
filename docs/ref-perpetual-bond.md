@@ -1,6 +1,20 @@
 # Perpetual Bond
 
-Placed at nominal value, variable interest rate, not callable.
+| Property                | Option                     |
+|-------------------------|----------------------------|
+| Denomination            | On-chain (ASA)             |
+| Principal repayment     | Not callable               |
+| Early repayment options | No                         |
+| Interest                | Variable (Interest Oracle) |
+| Coupons                 | Yes (Perpetual)            |
+| Time Schedule           | Fixed (Events, Periods)    |
+| Day-Count Convention    | Actual/Actual, Continuous  |
+| Primary Distribution    | Direct placement           |
+| Primary Market          | Placed at nominal value    |
+| Transfer Agent          | Trustless                  |
+| Payment Agent           | Trustless                  |
+| Secondary Market        | Yes                        |
+| Default                 | Manual (Trustee)           |
 
 ## Payment Agent
 

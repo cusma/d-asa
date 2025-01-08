@@ -1,7 +1,20 @@
 # Fixed Coupon Bond
 
-Placed at nominal value, fixed coupon rates, fixed payments time schedule, principal
-at maturity.
+| Property                | Option                    |
+|-------------------------|---------------------------|
+| Denomination            | On-chain (ASA)            |
+| Principal repayment     | At maturity               |
+| Early repayment options | No                        |
+| Interest                | Fixed                     |
+| Coupons                 | Yes (Fixed)               |
+| Time Schedule           | Fixed (Events)            |
+| Day-Count Convention    | Actual/Actual, Continuous |
+| Primary Distribution    | Direct placement          |
+| Primary Market          | Placed at nominal value   |
+| Transfer Agent          | Trustless                 |
+| Payment Agent           | Trustless                 |
+| Secondary Market        | Yes                       |
+| Default                 | Manual (Trustee)          |
 
 ## Payment Agent
 
