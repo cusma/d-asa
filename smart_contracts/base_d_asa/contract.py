@@ -19,9 +19,9 @@ from algopy import (
     urange,
 )
 
+from .. import abi_types as typ
 from .. import constants as cst
 from .. import errors as err
-from .. import types as typ
 from . import config as cfg
 
 
