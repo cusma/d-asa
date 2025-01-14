@@ -1,12 +1,13 @@
 # Payment Agent {#payment-agent}
 
-> Debts instruments' cash flows depend on the payoff, they usually involve:
+> Debt instruments' cash flows depend on the payoff, they usually involve:
 >
 > - *Principal repayment;*
 > - *Early repayment options;*
 > - *Coupon payments.*
 
-> D-ASA supports both on-chain and off-chain payment agents.
+> D-ASA supports both on-chain and off-chain payment agents, depending on the settlement
+> asset (see [Settlement](./settlement.md) section).
 
 The D-ASA payment methods **MAY** provide additional information about the payment.
 
