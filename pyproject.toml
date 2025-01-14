@@ -9,7 +9,7 @@ readme = "README.md"
 python = "^3.12"
 algokit-utils = "^2.4.0"
 python-dotenv = "^1.0.0"
-algorand-python = "^2.3.0"
+algorand-python = "^2.4.1"
 algorand-python-testing = "^0.4.1"
 
 [tool.poetry.group.dev.dependencies]
