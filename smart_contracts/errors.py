@@ -23,6 +23,9 @@ INVALID_DAY_COUNT_CONVENTION = "Invalid day-count convention ID"
 INVALID_INTEREST_RATE = "Interest rate is not properly defined"
 INVALID_TIME = "Time events must be set in the future"
 INVALID_TIME_PERIOD = "Time periods in Actual/Actual day count convention must be multiples of a day (in seconds)"
+INVALID_SETTLEMENT_ASSET = (
+    "Different settlement asset not supported, must be equal to denomination asset"
+)
 INVALID_TIME_PERIODS = "Time periods are not properly defined"
 INVALID_TIME_PERIOD_DURATION = (
     "Time period durations must be strictly greater than zero"

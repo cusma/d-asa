@@ -244,4 +244,23 @@ def test_fail_invalid_time_periods() -> None:
     pass  # TODO
 
 
+def test_fail_invalid_settlement_asset(
+    base_d_asa_cfg: DAsaConfig,
+    base_d_asa_client_empty: BaseDAsaClient,
+) -> None:
+    wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
+    wrong_d_asa_cfg.settlement_asset_id = wrong_d_asa_cfg.denomination_asset_id + 1
+    with pytest.raises(LogicError, match=err.INVALID_SETTLEMENT_ASSET):
+        base_d_asa_client_empty.asset_config(
+            **wrong_d_asa_cfg.dictify(),
+            transaction_parameters=OnCompleteCallParameters(
+                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
+                boxes=[
+                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
+                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
+                ],
+            ),
+        )
+
+
 # TODO: Test INVALID_TIME_PERIOD for Actual/Actual convention
