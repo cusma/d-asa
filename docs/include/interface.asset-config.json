@@ -10,6 +10,11 @@
     },
     {
       "type": "uint64",
+      "name": "settlement_asset_id",
+      "desc": "Settlement asset identifier"
+    },
+    {
+      "type": "uint64",
       "name": "principal",
       "desc": "Principal, expressed in denomination asset"
     },
@@ -75,10 +80,26 @@
     {
       "code": "INVALID_SORTING",
       "message": "Time events are not sorted correctly"
-    }
+    },
     {
       "code": "INVALID_TIME_PERIOD_DURATION",
       "message": "Time period durations must be greater than zero"
+    },
+    {
+      "code": "INVALID_SETTLEMENT_ASSET",
+      "message": "Different settlement asset not supported, must be equal to denomination asset"
+    },
+    {
+      "code": "INVALID_TIME_PERIODS",
+      "message": "Time periods not properly set"
+    },
+    {
+      "code": "INVALID_TIME_PERIOD_REPETITIONS",
+      "message": "Time period repetitions not properly set"
+    },
+    {
+      "code": "INVALID_COUPON_RATES",
+      "message": "Coupon rates not properly set"
     }
   ]
 }
