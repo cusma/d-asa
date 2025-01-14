@@ -24,6 +24,7 @@ TimePeriods: TypeAlias = list[tuple[int, int]]
 @dataclass
 class DAsaConfig:
     denomination_asset_id: int
+    settlement_asset_id: int
     principal: int
     minimum_denomination: int
     day_count_convention: int
