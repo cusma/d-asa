@@ -22,7 +22,7 @@ pytest-cov = "^6.0.0"
 pytest-sugar = "^1.0.0"
 pip-audit = "^2.7.3"
 pre-commit = "^4.0.1"
-puyapy = "^4.0.0"
+puyapy = "^4.1.1"
 
 [build-system]
 requires = ["poetry-core"]
