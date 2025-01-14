@@ -38,7 +38,7 @@ The call **MUST** fail with the `INVALID_TIME_PERIOD_DURATION` error code if the
 *time period durations* are not strictly greater than zero.
 
 The call **MAY** fail with the `INVALID_SETTLEMENT_ASSET` error code if a *settlement
-asset* different from the *denomination asset* is not supported by the specific 
+asset* different from the *denomination asset* is not supported by the specific
 implementation.
 
 The call **MAY** fail with the `INVALID_TIME_PERIODS` error code if the *time periods*
