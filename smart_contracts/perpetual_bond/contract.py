@@ -236,6 +236,7 @@ class PerpetualBond(
             )
             # The reference implementation has on-chain payment agent
             self.assert_enough_funds(payment_amount)
+            # The reference implementation has the same asset for denomination and settlement, no conversion needed
             self.pay(self.account[holding_address].payment_address, payment_amount)
         else:
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
