@@ -1,0 +1,38 @@
+name: Validate d-asa on latest AVM
+
+on:
+  schedule:
+    # * is a special character in YAML, so this string needs quote
+    - cron: '0 17 * * 3'  # Run once a week at 5 PM on Wednesday
+
+permissions:
+  contents: read
+
+jobs:
+  latest-avm:
+    name: Validate latest AVM
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up AlgoKit
+        uses: ./.github/actions/algokit-setup
+
+      - name: Lint and format python dependencies
+        run: algokit project run lint
+
+      - name: Run tests
+        shell: bash
+        run: |
+          set -o pipefail
+          algokit project run test
+
+      - name: Build smart contracts
+        run: algokit project run build
+
+      - name: Check output stability of the smart contracts
+        run: algokit project run ci-teal-diff
+
+      - name: Run deployer against LocalNet
+        run: algokit project deploy localnet
