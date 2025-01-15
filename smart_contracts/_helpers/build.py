@@ -8,6 +8,7 @@ deployment_extension = "py"
 
 # DEL-ME
 
+
 def _get_output_path(output_dir: Path, deployment_extension: str) -> Path:
     return output_dir / Path(
         "{contract_name}"
