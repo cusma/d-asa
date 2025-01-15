@@ -31,6 +31,6 @@ jobs:
               - 'docs/**'
               - '/README.md'
 
-      - name: docs ci action
+      - name: Docs CI actions
         if: steps.filter.outputs.docs == 'true'
         uses: ./.github/actions/docs-ci-action
