@@ -211,7 +211,7 @@ class FixedCouponBond(
             payment_info: Additional payment information (Optional)
 
         Returns:
-            Paid coupon amount, Payment timestamp, Payment context
+            Paid coupon amount in denomination asset, Payment timestamp, Payment context
 
         Raises:
             UNAUTHORIZED: Not authorized
@@ -273,7 +273,7 @@ class FixedCouponBond(
             payment_info: Additional payment information (Optional)
 
         Returns:
-            Paid principal amount, Payment timestamp, Payment context
+            Paid principal amount in denomination asset, Payment timestamp, Payment context
 
         Raises:
             UNAUTHORIZED: Not authorized
