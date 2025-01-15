@@ -7,9 +7,6 @@ on:
     # This next line should be used in conjunction with the if statement that prevents CI jobs to run on draft PRs.
     # ready_for_review is then added to make sure that a PR with no code change triggers CI if it's no longer a draft PR.
     types: [ opened, reopened, synchronize, ready_for_review ]
-  schedule:
-    # * is a special character in YAML, so this string needs quote
-    - cron: '0 17 * * 3'  # Run once a week at 5 PM on Wednesday
 
 permissions:
   contents: read
@@ -24,29 +21,8 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Install poetry
-        run: pipx install poetry
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: "poetry"
-
-      - name: Install algokit
-        run: pipx install algokit
-
-      - name: Start LocalNet
-        run: algokit localnet start
-
-      - name: Bootstrap dependencies
-        run: algokit project bootstrap all
-
-      - name: Configure git
-        shell: bash
-        run: |
-          # set git user and email as test invoke git
-          git config --global user.email "actions@github.com" && git config --global user.name "github-actions"
+      - name: Set up AlgoKit
+        uses: ./.github/actions/algokit-setup
 
       - name: Audit python dependencies
         run: algokit project run audit
@@ -54,11 +30,63 @@ jobs:
       - name: Lint and format python dependencies
         run: algokit project run lint
 
-      - name: Run tests
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |      
+            base-d-asa:
+              - 'smart_contracts/*(.)'
+              - 'smart_contracts/artifacts/base_d_asa/**'
+            zero-coupon-bond:
+              - 'smart_contracts/*(.)'
+              - 'smart_contracts/artifacts/zero_coupon_bond/**'
+            fixed-coupon-bond:
+              - 'smart_contracts/*(.)'
+              - 'smart_contracts/artifacts/fixed_coupon_bond/**'
+            perpetual-bond:
+              - 'smart_contracts/*(.)'
+              - 'smart_contracts/artifacts/perpetual_bond/**'
+            test-base-d-asa:
+              - 'tests/*(.)'
+              - 'tests/base_d_asa/**'
+            test-zero-coupon-bond:
+              - 'tests/*(.)'
+              - 'tests/zero-coupon-bond/**'
+            test-fixed-coupon-bond:
+              - 'tests/*(.)'
+              - 'tests/fixed_coupon_bond/**'
+            test-perpetual-bond:
+              - 'tests/*(.)'
+              - 'tests/perpetual_bond/**'
+
+      - name: Run Base D-ASA tests
+        if: steps.filter.outputs.base-d-asa == 'true' || steps.filter.outputs.test-base-d-asa == 'true'
         shell: bash
         run: |
           set -o pipefail
-          algokit project run test
+          algokit project run test tests/base_d_asa
+
+      - name: Run Zero Coupon Bond tests
+        if: steps.filter.outputs.zero-coupon-bond == 'true' || steps.filter.outputs.test-zero-coupon-bond == 'true'
+        shell: bash
+        run: |
+          set -o pipefail
+          algokit project run test tests/zero_coupon_bond
+
+      - name: Run Fixed Coupon Bond tests
+        if: steps.filter.outputs.fixed-coupon-bond == 'true' || steps.filter.outputs.test-fixed-coupon-bond == 'true'
+        shell: bash
+        run: |
+          set -o pipefail
+          algokit project run test tests/fixed_coupon_bond
+
+      - name: Run Perpetual Bond tests
+        if: steps.filter.outputs.perpetual-bond == 'true' || steps.filter.outputs.test-perpetual-bond == 'true'
+        shell: bash
+        run: |
+          set -o pipefail
+          algokit project run test tests/perpetual_bond
 
       - name: Build smart contracts
         run: algokit project run build
