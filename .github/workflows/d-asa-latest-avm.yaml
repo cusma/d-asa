@@ -31,6 +31,9 @@ jobs:
       - name: Build smart contracts
         run: algokit project run build
 
+      - name: Scan TEAL files for issues
+        run: algokit project run audit-teal
+
       - name: Check output stability of the smart contracts
         run: algokit project run ci-teal-diff
 
