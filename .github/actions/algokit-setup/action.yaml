@@ -1,0 +1,32 @@
+name: AlgoKit set up
+description: 'Set up AlgoKit'
+runs:
+  using: "composite"
+  steps:
+    - name: Install poetry
+      shell: bash
+      run: pipx install poetry
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: "poetry"
+
+    - name: Install algokit
+      shell: bash
+      run: pipx install algokit
+
+    - name: Start LocalNet
+      shell: bash
+      run: algokit localnet start
+
+    - name: Bootstrap dependencies
+      shell: bash
+      run: algokit project bootstrap all
+
+    - name: Configure git
+      shell: bash
+      run: |
+        # set git user and email as test invoke git
+        git config --global user.email "actions@github.com" && git config --global user.name "github-actions"

@@ -22,7 +22,7 @@ D-ASA examples deployed on TestNet:
 The D-ASA project is developed with [AlgoKit](https://algorand.co/algokit).
 
 - Install AlgoKit
-- Setup your virtual environment (managed with [Poetry](https://python-poetry.org/))
+- Set up your virtual environment (managed with [Poetry](https://python-poetry.org/))
 
 ```shell
 algokit bootstrap all
@@ -48,4 +48,4 @@ poetry run pytest -s -v tests/<contract_name>/<test_case>.py
 
 ## How to contribute
 
-Refer to D-ASA documentation.
+Refer to D-ASA documentation!
