@@ -48,16 +48,16 @@ jobs:
               - 'smart_contracts/_helpers/**'
               - 'smart_contracts/artifacts/perpetual_bond/**'
             test-base-d-asa:
-              - 'tests/*(.)'
+              - 'tests/*(.).py'
               - 'tests/base_d_asa/**'
             test-zero-coupon-bond:
-              - 'tests/*(.)'
+              - 'tests/*(.).py'
               - 'tests/zero-coupon-bond/**'
             test-fixed-coupon-bond:
-              - 'tests/*(.)'
+              - 'tests/*(.).py'
               - 'tests/fixed_coupon_bond/**'
             test-perpetual-bond:
-              - 'tests/*(.)'
+              - 'tests/*(.).py'
               - 'tests/perpetual_bond/**'
 
       - name: Run Base D-ASA tests
