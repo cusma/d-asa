@@ -4,7 +4,7 @@
   "readonly": true,
   "args": [],
   "returns": {
-    "type": "(uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64, uint64,uint64,uint64,bool,bool)",
-    "desc": "Denomination Asset ID, Outstanding principal, Unit nominal value, Day-count convention, Interest rate, Total supply, Circulating supply, Primary distribution opening date, Primary distribution closure date, Issuance date, Maturity date, Suspended, Defaulted"
+    "type": "(uint64,uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64, uint64,uint64,uint64,bool,bool)",
+    "desc": "Denomination asset ID, Settlement asset ID, Outstanding principal, Unit nominal value, Day-count convention, Interest rate, Total supply, Circulating supply, Primary distribution opening date, Primary distribution closure date, Issuance date, Maturity date, Suspended, Defaulted"
   }
 }
