@@ -33,4 +33,4 @@ jobs:
 
       - name: docs ci action
         if: steps.filter.outputs.docs == 'true'
-        uses: ${{ github.workspace }}/d-asa/.github/actions/doc-ci-action
+        uses: ./.github/actions/docs-ci-action
