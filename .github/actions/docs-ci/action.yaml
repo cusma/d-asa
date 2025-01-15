@@ -2,7 +2,6 @@ name: Docs CI action
 description: 'Lint docs, build and test mdBook'
 runs:
   using: "composite"
-  shell: bash
   steps:
     - name: Setup mdBook
       uses: peaceiris/actions-mdbook@v2
@@ -10,9 +9,11 @@ runs:
         mdbook-version: '0.4.43'
 
     - name: Build docs
+      shell: bash
       run: mdbook build
 
     - name: Test docs
+      shell: bash
       run: mdbook test
 
     - name: Check markdown linting
