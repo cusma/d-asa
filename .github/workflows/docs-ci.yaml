@@ -33,4 +33,4 @@ jobs:
 
       - name: Docs CI actions
         if: steps.filter.outputs.docs == 'true'
-        uses: ./.github/actions/docs-ci-action
+        uses: ./.github/actions/docs-ci
