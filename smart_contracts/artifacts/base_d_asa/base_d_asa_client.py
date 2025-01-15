@@ -604,7 +604,7 @@ _APP_SPEC_JSON = r"""{
                     "type": "byte[]",
                     "desc": "Asset metadata"
                 },
-                "desc": "Get D-ASA metadata"
+                "desc": "Get D-ASA metadata #DELME"
             }
         ],
         "networks": {},
@@ -914,7 +914,7 @@ class GetSecondaryMarketScheduleArgs(_ArgsBase[list[int]]):
 
 @dataclasses.dataclass(kw_only=True)
 class GetAssetMetadataArgs(_ArgsBase[bytes | bytearray]):
-    """Get D-ASA metadata"""
+    """Get D-ASA metadata #DELME"""
 
     @staticmethod
     def method() -> str:
@@ -1395,7 +1395,7 @@ class Composer:
         *,
         transaction_parameters: algokit_utils.TransactionParameters | None = None,
     ) -> "Composer":
-        """Get D-ASA metadata
+        """Get D-ASA metadata #DELME
         
         Adds a call to `get_asset_metadata()byte[]` ABI method
         
@@ -1995,7 +1995,7 @@ class BaseDAsaClient:
         *,
         transaction_parameters: algokit_utils.TransactionParameters | None = None,
     ) -> algokit_utils.ABITransactionResponse[bytes | bytearray]:
-        """Get D-ASA metadata
+        """Get D-ASA metadata #DELME
         
         Calls `get_asset_metadata()byte[]` ABI method
         

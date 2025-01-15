@@ -959,7 +959,7 @@ class BaseDAsa(ARC4Contract):
     @arc4.abimethod(readonly=True)
     def get_asset_metadata(self) -> typ.AssetMetadata:
         """
-        Get D-ASA metadata
+        Get D-ASA metadata #DELME
 
         Returns:
             Asset metadata
