@@ -1,4 +1,4 @@
-# State Schema
+# State Schema #DELME
 WRONG_GLOBAL_BYTES = "Wrong Global Bytes allocation"
 WRONG_GLOBAL_UINTS = "Wrong Global UInts allocation"
 WRONG_LOCAL_BYTES = "Wrong Local Bytes allocation"
