@@ -23,6 +23,7 @@ def test_pass_asset_create(
 
     # Asset Configuration
     assert not state.denomination_asset_id
+    assert not state.settlement_asset_id
     assert not state.unit_value
     assert not state.day_count_convention
 
