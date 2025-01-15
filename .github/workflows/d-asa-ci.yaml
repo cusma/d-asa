@@ -36,16 +36,16 @@ jobs:
         with:
           filters: |      
             base-d-asa:
-              - 'smart_contracts/*(.)'
+              - 'smart_contracts/_helpers'
               - 'smart_contracts/artifacts/base_d_asa/**'
             zero-coupon-bond:
-              - 'smart_contracts/*(.)'
+              - 'smart_contracts/_helpers'
               - 'smart_contracts/artifacts/zero_coupon_bond/**'
             fixed-coupon-bond:
-              - 'smart_contracts/*(.)'
+              - 'smart_contracts/_helpers'
               - 'smart_contracts/artifacts/fixed_coupon_bond/**'
             perpetual-bond:
-              - 'smart_contracts/*(.)'
+              - 'smart_contracts/_helpers'
               - 'smart_contracts/artifacts/perpetual_bond/**'
             test-base-d-asa:
               - 'tests/*(.)'
