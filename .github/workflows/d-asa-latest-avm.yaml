@@ -1,6 +1,7 @@
 name: Validate d-asa on latest AVM
 
 on:
+  workflow_dispatch:
   schedule:
     # * is a special character in YAML, so this string needs quote
     - cron: '0 17 * * 3'  # Run once a week at 5 PM on Wednesday
