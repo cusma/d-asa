@@ -48,4 +48,4 @@ poetry run pytest -s -v tests/<contract_name>/<test_case>.py
 
 ## How to contribute
 
-Refer to D-ASA documentation.
+Refer to D-ASA documentation!
