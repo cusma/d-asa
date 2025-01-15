@@ -16,6 +16,7 @@
   - [Role-Based Access Control (RBAC)](./rbac.md)
   - [Regulations](./regulations.md)
 - [Contract]()
+  - [Type](./contract-type.md)
   - [Denomination](./denomination.md)
   - [Settlement](./settlement.md)
   - [Principal (Par)](./principal.md)
