@@ -19,7 +19,6 @@ from algosdk.v2client.indexer import IndexerClient
 from smart_contracts import constants as sc_cst
 from tests import utils
 
-# DEL-ME
 
 INITIAL_ALGO_FUNDS: Final[int] = 10_000_000_000  # microALGO
 
