@@ -8,6 +8,9 @@ in this document are to be interpreted as described in <a href="https://datatrac
 The data types (like `uint64`, `byte[]`, etc.) in this document are to be interpreted
 as specified in <a href="https://arc.algorand.foundation/ARCs/arc-0004">ARC-4</a>.
 
+Acronyms in square brackets like \\([THIS]\\) are to be interpreted as defined in
+the <a href="https://github.com/actusfrf/actus-dictionary">ACTUS dictionary</a>.
+
 > Notes like this are non-normative
 
 Non-normative sections mainly contextualize the specification for technical readers
