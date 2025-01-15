@@ -2,6 +2,7 @@ name: Docs CI action
 description: 'Lint docs, build and test mdBook'
 runs:
   using: "composite"
+  shell: bash
   steps:
     - name: Setup mdBook
       uses: peaceiris/actions-mdbook@v2
