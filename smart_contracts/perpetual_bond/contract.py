@@ -203,7 +203,7 @@ class PerpetualBond(
             payment_info: Additional payment information (Optional)
 
         Returns:
-            Paid coupon amount, Payment timestamp, Payment context
+            Paid coupon amount in denomination asset, Payment timestamp, Payment context
 
         Raises:
             UNAUTHORIZED: Not authorized

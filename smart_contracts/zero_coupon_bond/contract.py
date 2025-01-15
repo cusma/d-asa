@@ -128,7 +128,7 @@ class ZeroCouponBond(
             payment_info: Additional payment information (Optional)
 
         Returns:
-            Paid amount, Payment timestamp, Payment context
+            Paid amount in denomination asset, Payment timestamp, Payment context
 
         Raises:
             UNAUTHORIZED: Not authorized

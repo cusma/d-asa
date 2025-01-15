@@ -309,7 +309,7 @@ class BaseDAsa(ARC4Contract):
     def is_payment_executable(self, holding_address: arc4.Address) -> bool:
         return (
             self.account[holding_address].payment_address.native.is_opted_in(
-                Asset(self.denomination_asset_id)
+                Asset(self.settlement_asset_id)
             )
             and not self.account[holding_address].suspended.native
         )
@@ -317,9 +317,7 @@ class BaseDAsa(ARC4Contract):
     @subroutine
     def assert_enough_funds(self, payment_amount: UInt64) -> None:
         assert (
-            Asset(self.denomination_asset_id).balance(
-                Global.current_application_address
-            )
+            Asset(self.settlement_asset_id).balance(Global.current_application_address)
             >= payment_amount
         ), err.NOT_ENOUGH_FUNDS
 
@@ -890,12 +888,13 @@ class BaseDAsa(ARC4Contract):
         Get D-ASA info
 
         Returns:
-            Denomination Asset ID, Outstanding principal, Unit nominal value, Day-count convention, Interest rate, Total
-            supply, Circulating supply, Primary Distribution Opening Date, Primary Distribution Closure Date, Issuance
-            Date, Maturity Date, Suspended, Defaulted
+            Denomination asset ID, Settlement asset ID, Outstanding principal, Unit nominal value, Day-count convention,
+            Interest rate, Total supply, Circulating supply, Primary distribution opening date, Primary distribution
+            closure date, Issuance date, Maturity date, Suspended, Defaulted
         """
         return typ.AssetInfo(
             denomination_asset_id=arc4.UInt64(self.denomination_asset_id),
+            settlement_asset_id=arc4.UInt64(self.settlement_asset_id),
             outstanding_principal=arc4.UInt64(self.circulating_units * self.unit_value),
             unit_value=arc4.UInt64(self.unit_value),
             day_count_convention=arc4.UInt8(self.day_count_convention),
@@ -923,7 +922,7 @@ class BaseDAsa(ARC4Contract):
             holding_address: Account Holding Address
 
         Returns:
-            Payment Address, D-ASA units, Unit value, Paid coupons, Suspended
+            Payment Address, D-ASA units, Unit nominal value in denomination asset, Paid coupons, Suspended
 
         Raises:
             INVALID_HOLDING_ADDRESS: Invalid account holding address
@@ -946,6 +945,12 @@ class BaseDAsa(ARC4Contract):
 
     @arc4.abimethod(readonly=True)
     def get_secondary_market_schedule(self) -> typ.TimeEvents:
+        """
+        Get secondary market schedule
+
+        Returns:
+            Secondary market schedule
+        """
         return typ.TimeEvents(
             arc4.UInt64(self.secondary_market_opening_date),
             arc4.UInt64(self.secondary_market_closure_date),
@@ -953,4 +958,10 @@ class BaseDAsa(ARC4Contract):
 
     @arc4.abimethod(readonly=True)
     def get_asset_metadata(self) -> typ.AssetMetadata:
+        """
+        Get D-ASA metadata
+
+        Returns:
+            Asset metadata
+        """
         return typ.AssetMetadata(self.metadata)

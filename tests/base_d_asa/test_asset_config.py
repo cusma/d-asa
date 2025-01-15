@@ -37,6 +37,7 @@ def test_pass_asset_config(
 
     # Asset Configuration
     assert state.denomination_asset_id == currency.id
+    assert state.settlement_asset_id == state.denomination_asset_id
     assert state.unit_value == base_d_asa_cfg.minimum_denomination
     assert state.day_count_convention == base_d_asa_cfg.day_count_convention
 
