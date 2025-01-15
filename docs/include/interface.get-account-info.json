@@ -11,7 +11,7 @@
   ],
   "returns": {
     "type": "(address,uint64,uint64,uint64,bool)",
-    "desc": "Payment Address, D-ASA units, Unit nominal value, Paid coupons, Suspended"
+    "desc": "Payment Address, D-ASA units, Unit nominal value in denomination asset, Paid coupons, Suspended"
   },
   "errors": [
     {
