@@ -175,7 +175,7 @@ main_after_if_else@30:
     return
 
 main_get_asset_metadata_route@27:
-    // smart_contracts/base_d_asa/contract.py:969
+    // smart_contracts/base_d_asa/contract.py:970
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -191,7 +191,7 @@ main_get_asset_metadata_route@27:
     return
 
 main_get_secondary_market_schedule_route@26:
-    // smart_contracts/base_d_asa/contract.py:956
+    // smart_contracts/base_d_asa/contract.py:957
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -207,7 +207,7 @@ main_get_secondary_market_schedule_route@26:
     return
 
 main_get_time_events_route@25:
-    // smart_contracts/base_d_asa/contract.py:943
+    // smart_contracts/base_d_asa/contract.py:944
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -223,7 +223,7 @@ main_get_time_events_route@25:
     return
 
 main_get_account_info_route@24:
-    // smart_contracts/base_d_asa/contract.py:926
+    // smart_contracts/base_d_asa/contract.py:927
     // @arc4.abimethod(readonly=True)
     txn OnCompletion
     !
@@ -241,7 +241,7 @@ main_get_account_info_route@24:
     //     ),
     // ):
     txna ApplicationArgs 1
-    // smart_contracts/base_d_asa/contract.py:926
+    // smart_contracts/base_d_asa/contract.py:927
     // @arc4.abimethod(readonly=True)
     callsub get_account_info
     bytec_0 // 0x151f7c75
@@ -4421,27 +4421,28 @@ get_asset_info:
 get_asset_info_after_if_else@3:
     frame_dig 2
     frame_bury 0
-    // smart_contracts/base_d_asa/contract.py:902
+    // smart_contracts/base_d_asa/contract.py:902-903
+    // # The reference implementation has no grace or delinquency periods
     // if self.defaulted:
     intc_0 // 0
     bytec 22 // "defaulted"
     app_global_get_ex
     assert // check self.defaulted exists
     bz get_asset_info_after_if_else@5
-    // smart_contracts/base_d_asa/contract.py:903
+    // smart_contracts/base_d_asa/contract.py:904
     // performance = UInt64(cst.PRF_DEFAULTED)
     pushint 3 // 3
     frame_bury 0
 
 get_asset_info_after_if_else@5:
-    // smart_contracts/base_d_asa/contract.py:906
+    // smart_contracts/base_d_asa/contract.py:907
     // denomination_asset_id=arc4.UInt64(self.denomination_asset_id),
     intc_0 // 0
     bytec 19 // "denomination_asset_id"
     app_global_get_ex
     assert // check self.denomination_asset_id exists
     itob
-    // smart_contracts/base_d_asa/contract.py:907
+    // smart_contracts/base_d_asa/contract.py:908
     // settlement_asset_id=arc4.UInt64(self.settlement_asset_id),
     intc_0 // 0
     bytec 5 // "settlement_asset_id"
@@ -4459,17 +4460,17 @@ get_asset_info_after_if_else@5:
     app_global_get_ex
     assert // check self.unit_value exists
     *
-    // smart_contracts/base_d_asa/contract.py:908
+    // smart_contracts/base_d_asa/contract.py:909
     // outstanding_principal=arc4.UInt64(self.outstanding_principal()),
     itob
-    // smart_contracts/base_d_asa/contract.py:909
+    // smart_contracts/base_d_asa/contract.py:910
     // unit_value=arc4.UInt64(self.unit_value),
     intc_0 // 0
     bytec 12 // "unit_value"
     app_global_get_ex
     assert // check self.unit_value exists
     itob
-    // smart_contracts/base_d_asa/contract.py:910
+    // smart_contracts/base_d_asa/contract.py:911
     // day_count_convention=arc4.UInt8(self.day_count_convention),
     intc_0 // 0
     bytec 13 // "day_count_convention"
@@ -4477,7 +4478,7 @@ get_asset_info_after_if_else@5:
     assert // check self.day_count_convention exists
     itob
     extract 7 1
-    // smart_contracts/base_d_asa/contract.py:911
+    // smart_contracts/base_d_asa/contract.py:912
     // interest_rate=arc4.UInt16(self.interest_rate),
     intc_0 // 0
     bytec 6 // "interest_rate"
@@ -4485,57 +4486,57 @@ get_asset_info_after_if_else@5:
     assert // check self.interest_rate exists
     itob
     extract 6 2
-    // smart_contracts/base_d_asa/contract.py:912
+    // smart_contracts/base_d_asa/contract.py:913
     // total_supply=arc4.UInt64(self.total_units),
     intc_0 // 0
     bytec 14 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
     itob
-    // smart_contracts/base_d_asa/contract.py:913
+    // smart_contracts/base_d_asa/contract.py:914
     // circulating_supply=arc4.UInt64(self.circulating_units),
     intc_0 // 0
     bytec_3 // "circulating_units"
     app_global_get_ex
     assert // check self.circulating_units exists
     itob
-    // smart_contracts/base_d_asa/contract.py:915
+    // smart_contracts/base_d_asa/contract.py:916
     // self.primary_distribution_opening_date
     intc_0 // 0
     bytec 9 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
-    // smart_contracts/base_d_asa/contract.py:914-916
+    // smart_contracts/base_d_asa/contract.py:915-917
     // primary_distribution_opening_date=arc4.UInt64(
     //     self.primary_distribution_opening_date
     // ),
     itob
-    // smart_contracts/base_d_asa/contract.py:918
+    // smart_contracts/base_d_asa/contract.py:919
     // self.primary_distribution_closure_date
     intc_0 // 0
     bytec 20 // "primary_distribution_closure_date"
     app_global_get_ex
     assert // check self.primary_distribution_closure_date exists
-    // smart_contracts/base_d_asa/contract.py:917-919
+    // smart_contracts/base_d_asa/contract.py:918-920
     // primary_distribution_closure_date=arc4.UInt64(
     //     self.primary_distribution_closure_date
     // ),
     itob
-    // smart_contracts/base_d_asa/contract.py:920
+    // smart_contracts/base_d_asa/contract.py:921
     // issuance_date=arc4.UInt64(self.issuance_date),
     intc_0 // 0
     bytec 4 // "issuance_date"
     app_global_get_ex
     assert // check self.issuance_date exists
     itob
-    // smart_contracts/base_d_asa/contract.py:921
+    // smart_contracts/base_d_asa/contract.py:922
     // maturity_date=arc4.UInt64(self.maturity_date),
     intc_0 // 0
     bytec 10 // "maturity_date"
     app_global_get_ex
     assert // check self.maturity_date exists
     itob
-    // smart_contracts/base_d_asa/contract.py:922
+    // smart_contracts/base_d_asa/contract.py:923
     // suspended=arc4.Bool(bool(self.suspended)),
     intc_0 // 0
     bytec 21 // "suspended"
@@ -4545,12 +4546,12 @@ get_asset_info_after_if_else@5:
     intc_0 // 0
     uncover 2
     setbit
-    // smart_contracts/base_d_asa/contract.py:923
+    // smart_contracts/base_d_asa/contract.py:924
     // performance=arc4.UInt8(performance),
     frame_dig 0
     itob
     extract 7 1
-    // smart_contracts/base_d_asa/contract.py:905-924
+    // smart_contracts/base_d_asa/contract.py:906-925
     // return typ.AssetInfo(
     //     denomination_asset_id=arc4.UInt64(self.denomination_asset_id),
     //     settlement_asset_id=arc4.UInt64(self.settlement_asset_id),
@@ -4604,7 +4605,7 @@ get_asset_info_after_if_else@5:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_account_info(holding_address: bytes) -> bytes:
 get_account_info:
-    // smart_contracts/base_d_asa/contract.py:926-927
+    // smart_contracts/base_d_asa/contract.py:927-928
     // @arc4.abimethod(readonly=True)
     // def get_account_info(self, holding_address: arc4.Address) -> typ.AccountInfo:
     proto 1 1
@@ -4617,7 +4618,7 @@ get_account_info:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/base_d_asa/contract.py:941
+    // smart_contracts/base_d_asa/contract.py:942
     // return self.account[holding_address]
     box_get
     assert // check self.account entry exists
@@ -4626,11 +4627,11 @@ get_account_info:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_time_events() -> bytes:
 get_time_events:
-    // smart_contracts/base_d_asa/contract.py:943-944
+    // smart_contracts/base_d_asa/contract.py:944-945
     // @arc4.abimethod(readonly=True)
     // def get_time_events(self) -> typ.TimeEvents:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:951
+    // smart_contracts/base_d_asa/contract.py:952
     // time_events = typ.TimeEvents()
     bytec 32 // 0x0000
     // smart_contracts/base_d_asa/contract.py:101
@@ -4641,10 +4642,10 @@ get_time_events:
     assert // check self.status exists
     intc_3 // 100
     ==
-    // smart_contracts/base_d_asa/contract.py:952
+    // smart_contracts/base_d_asa/contract.py:953
     // if self.status_is_active():
     bz get_time_events_after_if_else@2
-    // smart_contracts/base_d_asa/contract.py:953
+    // smart_contracts/base_d_asa/contract.py:954
     // time_events = self.time_events.value.copy()
     bytec 27 // 0x74696d654576656e7473
     box_get
@@ -4653,7 +4654,7 @@ get_time_events:
     assert // check self.time_events exists
 
 get_time_events_after_if_else@2:
-    // smart_contracts/base_d_asa/contract.py:954
+    // smart_contracts/base_d_asa/contract.py:955
     // return time_events
     frame_dig 0
     swap
@@ -4662,25 +4663,25 @@ get_time_events_after_if_else@2:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_secondary_market_schedule() -> bytes:
 get_secondary_market_schedule:
-    // smart_contracts/base_d_asa/contract.py:956-957
+    // smart_contracts/base_d_asa/contract.py:957-958
     // @arc4.abimethod(readonly=True)
     // def get_secondary_market_schedule(self) -> typ.TimeEvents:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:965
+    // smart_contracts/base_d_asa/contract.py:966
     // arc4.UInt64(self.secondary_market_opening_date),
     intc_0 // 0
     bytec 15 // "secondary_market_opening_date"
     app_global_get_ex
     assert // check self.secondary_market_opening_date exists
     itob
-    // smart_contracts/base_d_asa/contract.py:966
+    // smart_contracts/base_d_asa/contract.py:967
     // arc4.UInt64(self.secondary_market_closure_date),
     intc_0 // 0
     bytec 16 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
     itob
-    // smart_contracts/base_d_asa/contract.py:964-967
+    // smart_contracts/base_d_asa/contract.py:965-968
     // return typ.TimeEvents(
     //     arc4.UInt64(self.secondary_market_opening_date),
     //     arc4.UInt64(self.secondary_market_closure_date),
@@ -4694,11 +4695,11 @@ get_secondary_market_schedule:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_asset_metadata() -> bytes:
 get_asset_metadata:
-    // smart_contracts/base_d_asa/contract.py:969-970
+    // smart_contracts/base_d_asa/contract.py:970-971
     // @arc4.abimethod(readonly=True)
     // def get_asset_metadata(self) -> typ.AssetMetadata:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:977
+    // smart_contracts/base_d_asa/contract.py:978
     // return typ.AssetMetadata(self.metadata)
     intc_0 // 0
     bytec 25 // "metadata"
