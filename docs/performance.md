@@ -23,7 +23,7 @@ The D-ASA **MAY** define a *grace period* \\([GRP]\\) (`uint64`).
 
 The *grace period* **MUST** be defined as UNIX time, in seconds.
 
-In case of non-continuous *day-count conventions* (ID<`255`, see [Day-Count Conventions](./day-count-convention.md)
+In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
 section), the *grace period* **MUST** be multiples of a day, in seconds (`86400`).
 
 The *grace period* **MAY** be set using the `asset_config` method as *time period*
@@ -38,10 +38,10 @@ first failed payment.
 
 > 📎 **EXAMPLE**
 >
-> The D-ASA has a *grace period*. A D-ASA coupon payment is triggered on due date,
-> but there is not enough liquidity to pay all the investors. The D-ASA program
-> starts counting the *grace period*, increments a failed payments counter, and
-> waits 3 hours to retry. If the D-ASA payment retrial succeeds within the *grace
+> Let's have a D-ASA with a *grace period*. A D-ASA coupon payment is triggered
+> on due date, but there is not enough liquidity to pay all the investors. The D-ASA
+> program starts counting the *grace period*, increments a failed payments counter,
+> and waits 3 hours to retry. If the D-ASA payment retrial succeeds within the *grace
 > period*, no penalty or fee is applied.
 
 ## Delinquency Period {#delinquency-period}
@@ -54,7 +54,7 @@ The D-ASA **MAY** define a *delinquency period* \\([DQP]\\) (`uint64`).
 
 The *delinquency period* **MUST** be defined as UNIX time, in seconds.
 
-In case of non-continuous *day-count conventions* (ID<`255`, see [Day-Count Conventions](./day-count-convention.md)
+In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
 section), the *delinquency period* **MUST** be multiples of a day, in seconds (`86400`).
 
 The *delinquency period* **MAY** be set using the `asset_config` method as *time
@@ -67,16 +67,13 @@ period* with:
 - The *delinquency period* **MUST** be anchored \\([ANX]\\) to the *time event*
 of the first failed payment or at the end of the *grace period* (if any).
 
-The *delinquency* status **MAY** be set with the **OPTIONAL** `set_delinquency_status`
-method.
-
 > 📎 **EXAMPLE**
 >
-> The D-ASA has a *delinquency period*. A D-ASA coupon payment is triggered on due
-> date, but there is not enough liquidity to pay all the investors. The D-ASA program
-> starts counting the *delinquency period*, increments a failed payments counter,
-> and waits 3 hours to retry. If the D-ASA payment retrial succeeds within the *delinquency
-> period*, a penalty or fee is applied.
+> Let's have a D-ASA with a *delinquency period*. A D-ASA coupon payment is triggered
+> on due date, but there is not enough liquidity to pay all the investors. The D-ASA
+> program starts counting the *delinquency period*, increments a failed payments
+> counter, and waits 3 hours to retry. If the D-ASA payment retrial succeeds within
+> the *delinquency period*, a penalty or fee is applied.
 
 ## Default {#default}
 

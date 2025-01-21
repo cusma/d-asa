@@ -1,6 +1,34 @@
 # Time Events {#time-events}
 
-The D-ASA **MUST** define *time events* as `uint64[]` array, where:
+> D-ASA *time events* are time on which contractual events are due or on which cyclic
+> events begin or end.
+
+## Primary Distribution {#primary-distribution}
+
+> Debt instruments can be distributed on the primary market during the primary distribution.
+
+> The opening and closure dates define the primary distribution duration.
+
+The D-ASA **MUST** have a *primary opening* (`uint64`) and *closure date* (`uint64`).
+
+## Issuance {#issuance}
+
+> Debt instruments start accruing interest on the issuance date.
+
+The D-ASA **MUST** have an *issuance date* \\([IED]\\) (`uint64`).
+
+## Maturity {#maturity}
+
+> Debt instruments may have a maturity date, on which the principal is repaid and
+> the contract obligations expire.
+
+> Debt instruments may have a fixed or variable maturity date.
+
+The D-ASA **MAY** have a *maturity date* \\([MD]\\) (`uint64`).
+
+## Time Events array
+
+The D-ASA **MUST** define *time events* \\([TEV]\\) as `uint64[]` array, where:
 
 - The length of the array **MUST** be:
 
@@ -19,19 +47,19 @@ the time at which the D-ASA primary distribution closes;
 D-ASA starts to accrue interest on the principal;
 
 - If the D-ASA has a **defined** number of *coupons*, the next `K`-elements **MUST**
-be the *coupon due dates* (`uint64[K]`): times at which the D-ASA can pay coupons;
+be the *coupon due dates* \\([IP]\\) (`uint64[K]`): times at which the D-ASA can
+pay coupons;
 
 - If the D-ASA **has** a *maturity date*, the last element **MUST** be the *maturity
 date* (`uint64`).
 
 The *time events* **MUST** be sorted in strictly ascending order.
 
-The *time events* **SHOULD** be defined as UNIX time, in seconds.
+The *time events* **MUST** be defined as UNIX time, in seconds.
 
-In the case of *time events* defined in UNIX time and non-continuous *day-count
-conventions* (ID<`255`, see [Day-Count Conventions](./day-count-convention.md) section),
-the *time periods* between subsequent events **MUST** be multiples of a day, in
-seconds (`86400`).
+In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
+section), the *time periods* between subsequent events **MUST** be multiples of a
+day, in seconds (`86400`)[^1].
 
 The *time events* **MUST** be set using the `asset_config` method.
 
@@ -98,3 +126,9 @@ The *time events* **MUST** be set using the `asset_config` method.
 > ```text
 > uint64[] = [1701388800, 1702598400, 1704067200]
 > ```
+
+---
+
+[^1]: This applies to any kind of time event (e.g., principal and interest payments,
+primary and secondary market dates, early repayments options, interest updates,
+etc.)

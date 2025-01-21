@@ -1,20 +1,30 @@
 # Fixed Coupon Bond
 
-| Property                | Option                    |
-|-------------------------|---------------------------|
-| Denomination            | On-chain (ASA)            |
-| Principal repayment     | At maturity               |
-| Early repayment options | No                        |
-| Interest                | Fixed                     |
-| Coupons                 | Yes (Fixed)               |
-| Time Schedule           | Fixed (Events)            |
-| Day-Count Convention    | Actual/Actual, Continuous |
-| Primary Distribution    | Direct placement          |
-| Primary Market          | Placed at nominal value   |
-| Transfer Agent          | Trustless                 |
-| Payment Agent           | Trustless                 |
-| Secondary Market        | Yes                       |
-| Default                 | Manual (Trustee)          |
+| Contract                | ACTUS        | Option                   |
+|-------------------------|--------------|--------------------------|
+| Type                    | \\([CT]\\)   | \\([PAM]\\)              |
+| Denomination            | \\([CUR]\\)  | ASA                      |
+| Settlement              | \\([CURS]\\) | ASA                      |
+| Early repayment options |              | No                       |
+| Early repayment penalty | \\([PYTP]\\) | -                        |
+| Interest                | \\([IPNR]\\) | Fixed                    |
+| Coupons                 |              | Yes (Fixed)              |
+| Time Schedule           |              | Fixed (Events)           |
+| Maturity Date           | \\([MD]\\)   | Yes (Fixed)              |
+| Principal repayment     |              | At maturity              |
+| Day-Count Convention    | \\([IPCD]\\) | \\([AA]\\) or Continuous |
+| Calendar                | \\([CLDR]\\) | \\([NC]\\)               |
+| Grace Period            | \\([GRP]\\)  | No                       |
+| Delinquency Period      | \\([DQP]\\)  | No                       |
+| Performance             | \\([PRF]\\)  | Manual default (Trustee) |
+
+| Execution            | Option                  |
+|----------------------|-------------------------|
+| Primary Distribution | Direct placement        |
+| Primary Market       | Placed at nominal value |
+| Transfer Agent       | Trustless               |
+| Payment Agent        | Trustless, On-chain     |
+| Secondary Market     | Yes                     |
 
 ## Payment Agent
 
@@ -29,6 +39,6 @@ any) have been paid to all the investors.
 D-ASA units **cannot** be transferred until all the pending due coupon payments
 for the sender and receiver (if any) have been executed.
 
-## Default
+## Performance
 
-Called manually by the trustee.
+No grace period. No delinquency period. Default called manually by the trustee.

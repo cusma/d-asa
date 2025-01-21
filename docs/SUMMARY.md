@@ -26,6 +26,7 @@
     - [Time Periods](./time-periods.md)
     - [Variable Time Schedule](./variable-time-schedule.md)
   - [Day-Count Convention](./day-count-convention.md)
+  - [Performance](./performance.md)
   - [Metadata](./metadata.md)
 - [Ownership]()
   - [D-ASA Units](./units.md)

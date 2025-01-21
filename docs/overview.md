@@ -30,8 +30,9 @@ cash flows and transfers.
 
 ## ACTUS compliance
 
-ACTUS still presents some limitations with respect to blockchain-based implementations.
+<a href="https://www.actusfrf.org/">ACTUS</a> still presents some limitations with
+respect to blockchain-based implementations.
 
-ACTUS compliance is **RECOMMENDED** (but not mandatory).
+Therefore, ACTUS compliance is **RECOMMENDED** but not mandatory.
 
-ACTUS limitations are usually marked with a footnote.
+ACTUS limitations are usually marked with footnotes.

@@ -22,11 +22,9 @@ The *secondary market opening date* **MUST NOT** be earlier than the *issuance d
 
 The *secondary market closure date* **MUST NOT** be later than the *maturity date*.
 
-The *secondary market time events* **SHOULD** be defined as UNIX time, in seconds.
-
-If *secondary market time events* are defined in UNIX time with non-continuous *day-count
-conventions* (ID<`255`), then *time periods* between subsequent events **MUST**
-be multiples of a day (in seconds).
+In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
+section), the *time periods* between subsequent events **MUST** be multiples of a
+day, in seconds (`86400`).
 
 The *secondary market time events* **MUST** be set using the `set_secondary_time_events`
 method.

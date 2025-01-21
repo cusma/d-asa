@@ -1,20 +1,30 @@
 # Perpetual Bond
 
-| Property                | Option                     |
-|-------------------------|----------------------------|
-| Denomination            | On-chain (ASA)             |
-| Principal repayment     | Not callable               |
-| Early repayment options | No                         |
-| Interest                | Variable (Interest Oracle) |
-| Coupons                 | Yes (Perpetual)            |
-| Time Schedule           | Fixed (Events, Periods)    |
-| Day-Count Convention    | Actual/Actual, Continuous  |
-| Primary Distribution    | Direct placement           |
-| Primary Market          | Placed at nominal value    |
-| Transfer Agent          | Trustless                  |
-| Payment Agent           | Trustless                  |
-| Secondary Market        | Yes                        |
-| Default                 | Manual (Trustee)           |
+| Contract                | ACTUS        | Option                     |
+|-------------------------|--------------|----------------------------|
+| Type                    | \\([CT]\\)   | \\([PBN]\\)                |
+| Denomination            | \\([CUR]\\)  | ASA                        |
+| Settlement              | \\([CURS]\\) | ASA                        |
+| Early repayment options |              | No                         |
+| Early repayment penalty | \\([PYTP]\\) | -                          |
+| Interest                | \\([IPNR]\\) | Variable (Interest Oracle) |
+| Coupons                 |              | Yes (Perpetual)            |
+| Time Schedule           |              | Fixed (Events, Periods)    |
+| Maturity Date           | \\([MD]\\)   | No                         |
+| Principal repayment     |              | Not callable               |
+| Day-Count Convention    | \\([IPCD]\\) | \\([AA]\\) or Continuous   |
+| Calendar                | \\([CLDR]\\) | \\([NC]\\)                 |
+| Grace Period            | \\([GRP]\\)  | No                         |
+| Delinquency Period      | \\([DQP]\\)  | No                         |
+| Performance             | \\([PRF]\\)  | Manual default (Trustee)   |
+
+| Execution            | Option                  |
+|----------------------|-------------------------|
+| Primary Distribution | Direct placement        |
+| Primary Market       | Placed at nominal value |
+| Transfer Agent       | Trustless               |
+| Payment Agent        | Trustless, On-chain     |
+| Secondary Market     | Yes                     |
 
 ## Payment Agent
 
@@ -36,6 +46,6 @@ Updated by the interest oracle.
 Interest rate **cannot** be updated until all the previous due coupons (if any)
 have been paid to all the investors.
 
-## Default
+## Performance
 
-Called manually by the trustee.
+No grace period. No delinquency period. Default called manually by the trustee.

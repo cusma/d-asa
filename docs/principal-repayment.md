@@ -8,7 +8,7 @@ If the D-ASA has coupons, the *principal* **MUST NOT** be paid if there is any d
 coupon still to be paid.
 
 In the case of an on-chain payment agent, the D-ASA **MUST** repay the *principal*
-to the Lander’s Payment Addresses.
+to the Investor’s Payment Addresses.
 
 ## Bullet Schedule
 
@@ -72,6 +72,10 @@ The *principal* **MUST** be repaid along with *coupons*, according to the *amort
 rates*, using the `pay_coupon` method.
 
 The D-ASA *unit value* **MUST** be updated according to the *outstanding principal.*
+
+It is **RECOMMENDED** to use an ACTUS *interest calculation base* \\([IPCB]\\).
+
+> A reference implementation **SHOULD** calculate interest on the outstanding principal.
 
 > A reference implementation **SHOULD** restrict the amortizing rates updatability.
 

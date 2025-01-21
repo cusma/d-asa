@@ -11,8 +11,8 @@ It provides the interfaces for arranging the asset, configuring its role-based a
 control, issuing and distributing it on the primary market, executing cash flows,
 exchanging it on the secondary market, and querying information about the debt instrument.
 
-The D-ASA standard conforms, at the best effort[^1], to the *Algorithmic Contract
-Types Unified Standards* (<a href="https://www.actusfrf.org/">ACTUS</a>).
+The specification provides recommendations to conform, at the best effort[^1], to
+the *Algorithmic Contract Types Unified Standards* (<a href="https://www.actusfrf.org/">ACTUS</a>).
 
 The specification allows the tokenization of various debt instruments, such as bonds,
 loans, commercial papers, mortgages, etc. A [reference implementation](./reference-implementation.md)
@@ -36,7 +36,7 @@ The D-ASA source and documentation are released under the [AGPL-3.0 license](./l
 
 ---
 
-[^1]: ACTUS presents some limitations with respect to blockchain-based implementations.
+[^1]: ACTUS compliance is recommended but not mandatory.
 
 [^2]: At the current stage, the D-ASA reference implementation does not guarantee
 compliance with ACTUS reference implementation.

@@ -2,8 +2,8 @@
 
 > Debt instruments cash flows may be settled in a currency different from the denomination.
 
-The D-ASA **MUST** define either in an on-chain or off-chain *settlement asset*
-\\([CURS]\\)[^1] to regulate the cash flows.
+The D-ASA **MUST** define either an on-chain or off-chain *settlement asset* \\([CURS]\\)[^1]
+to regulate the cash flows.
 
 The *settlement asset identifier* (`uint64`) **MUST** be set using the `asset_config`
 method.

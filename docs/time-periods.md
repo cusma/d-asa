@@ -1,20 +1,30 @@
 # Time Periods {#time-periods}
 
-> D-ASA time periods can be used to define recurring time events.
+> D-ASA time periods can be used to define recurring (or "cyclic") events.
 
-The D-ASA **MAY** define *time periods* as `(uint64,uint64)[]` array, where:
+> D-ASA time periods start on (are "anchored" to) *time events*.
+
+The D-ASA **MAY** define *time periods* \\([CL]\\) as `(uint64,uint64)[]` array,
+where:
 
 - The first element of the tuple defines the *time period duration* (`uint64`).
 It **MUST** be strictly greater than `0`;
 
 - The second element of the tuple defines the *time period repetitions* (`uint64`).
-It **MUST** be `0` if *repetitions* are **unlimited**.
+It **MUST** be `0` if *repetitions* are **unlimited**;
 
-The *time periods* **SHOULD** be defined as UNIX time, in seconds.
+The *time periods* **MUST** be anchored \\([ANX]\\) to a *time event* (see [Time
+Events](./time-events.md) section).
 
-In the case of *time periods* defined in UNIX time and non-continuous *day-count
-conventions* (ID<`255`, see Day-Count Conventions section), the *time periods*
-**MUST** be multiples of a day, in seconds (`86400`).
+> 📎 **EXAMPLE**
+>
+> A *time periods* defines periodic interest payments anchored to (starting from)
+> the *issuance date*.
+
+The *time periods* **MUST** be defined as UNIX time, in seconds.
+
+In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
+section), the *time periods* **MUST** be multiples of a day, in seconds (`86400`).
 
 The *time periods* **MAY** be set using the `asset_config` method.
 

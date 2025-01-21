@@ -3,23 +3,47 @@
 > Debt instruments could have early repayment options to repay the principal to
 > investors (partially or totally) before maturity.
 
+> Debt instrument with defined maturity date may terminate earlier if the full principal
+> redemption happens earlier than maturity.
+
 If the debt instrument has early repayment options, the D-ASA **MUST** implement
-the **OPTIONAL** `set_early_repayment_time_events` and `early_repayment` methods.
+the **OPTIONAL** `set_early_repayment_time_events` \\([PP]\\) and `early_repayment`
+methods.
 
 The early repayment options **MAY** repay the *principal* partially or totally.
 
 The early repayment options **MAY** repay the *principal* to all or some Lenders.
 
 In the case of an on-chain payment agent, the D-ASA **MUST** repay the *principal*
-to the Lander Payment Addresses.
+to the Investor Payment Addresses.
 
 In case of early repayment options, the D-ASA units associated with the early repaid
 principal **MUST** be removed from Lenders’ Accounts and circulation.
 
-> The implementation **SHOULD** manage:
->
-> - The callability options;
-> - The accrued interest.
+## Penalties
+
+The D-ASA **MAY** define a *penalty type* \\([PYTP]\\) for the early repayment option.
+
+The *penalty type* **MUST** be identified with one of the following enumerated IDs
+(`uint8`):
+
+| ID    |            Name            | ACTUS Acronym | Description                                                                                            |
+|:------|:--------------------------:|---------------|:-------------------------------------------------------------------------------------------------------|
+| `0`   |         No Penalty         | \\([N]\\)     | No penalty applies                                                                                     |
+| `1`   |       Fixed Penalty        | \\([A]\\)     | A fixed amount applies as penalty                                                                      |
+| `2`   |      Relative Penalty      | \\([R]\\)     | A penalty relative to the notional outstanding applies                                                 |
+| `3`   | Interest Rate Differential | \\([I]\\)     | A penalty based on the current interest rate differential relative to the notional outstanding applies |
+| `255` |       Custom Penalty       | -             | Custom penalty                                                                                         |
+
+The D-ASA **MAY** define a *penalty rate* \\([PYRT]\\) (`uint64`) for the amount
+of the penalty.
+
+> The *penalty rate* is either the absolute amount or the rate of the penalty.
+
+The *penalty type* and the *penalty rate* **MAY** be set using the **OPTIONAL**
+`set_asset_metadata` method (see [Metadata](./metadata.md) section).
+
+> The implementation **SHOULD** manage the accrued interest on early repayments.
 
 > 📎 **EXAMPLE**
 >
@@ -48,11 +72,9 @@ The *early repayment start date* **MUST NOT** be earlier than the *issuance date
 
 The *early repayment end date* **MUST NOT** be later than the *maturity date*.
 
-The *early repayment time events* **SHOULD** be defined as UNIX time, in seconds.
-
-If *early repayment time events* are defined in UNIX time with non-continuous *day-count
-conventions* (ID<`255`), the *time periods* between subsequent events **MUST**
-be multiples of a day, in seconds.
+In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
+section), the *time periods* between subsequent events **MUST** be multiples of a
+day, in seconds (`86400`).
 
 The *early repayment time events* **MUST** be set with the `set_early_repayment_time_events`
 method.
