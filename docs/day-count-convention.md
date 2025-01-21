@@ -4,19 +4,21 @@
 > convention</a> to calculate the amount of accrued interest when the next coupon
 > payment is less than a full coupon period away.
 
-The D-ASA **MUST** specify one *day-count convention*.
+The D-ASA **MUST** specify one *day-count convention* \\([IPCD]\\) (`uint8`).
 
-The *day-count convention* **MUST** be identified with one of the following enumerate
+The *day-count convention* **MUST** be identified with one of the following enumerated
 IDs (`uint8`):
 
-| ID    |     Name      | Daily interest calculation description                                 |
-|:------|:-------------:|:-----------------------------------------------------------------------|
-| `10`  |    30/360     | Using a 360-day year and 30-day months                                 |
-| `30`  |    30/365     | Using a 365-day year and 30-day months                                 |
-| `50`  |  Actual/360   | Using a 360-day year and the actual number of days in each time period |
-| `70`  |  Actual/365   | Using a 365-day year and the actual number of days in each time period |
-| `100` | Actual/Actual | Using the actual number of days in each time period                    |
-| `255` |  Continuous   | Using the actual number of time units in each time period              |
+| ID    |     Name      | ACTUS Acronym      | Daily interest calculation description                                                                                   |
+|:------|:-------------:|--------------------|:-------------------------------------------------------------------------------------------------------------------------|
+| `0`   | Actual/Actual | \\([AA]\\)         | Year fractions accrue on the basis of the actual number of days per month and per year in the respective period          |
+| `1`   |  Actual/360   | \\([A360]\\)       | Year fractions accrue on the basis of the actual number of days per month and 360 days per year in the respective period |
+| `2`   |  Actual/365   | \\([A365]\\)       | Year fractions accrue on the basis of the actual number of days per month and 365 days per year in the respective period |
+| `3`   |  30/360 ISDA  | \\([30E360ISDA]\\) | Year fractions accrue on the basis of 30 days per month and 360 days per year in the respective period (ISDA method)     |
+| `4`   |    30/360     | \\([30E360]\\)     | Year fractions accrue on the basis of 30 days per month and 360 days per year in the respective period                   |
+| `5`   |    28/366     | \\([28E336]\\)     | Year fractions accrue on the basis of 28 days per month and 366 days per year in the respective period                   |
+| `6`   |    30/365     | -                  | Year fractions accrue on the basis of 30 days per month and 365 days per year in the respective period                   |
+| `255` |  Continuous   | -                  | Accrue on the basis of the actual number of time units in the respective time period                                     |
 
 The *day-count convention* defines the *day-count factor* as a fraction of:
 
