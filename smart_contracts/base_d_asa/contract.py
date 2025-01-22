@@ -16,6 +16,7 @@ from algopy import (
     urange,
 )
 
+from .. import abi_types as typ
 from .. import constants as cst
 from .. import errors as err
 from .. import types as typ
@@ -40,6 +41,7 @@ class BaseDAsa(RoleBasedAccessControl):
 
         # Asset Configuration
         self.denomination_asset_id = UInt64()
+        self.settlement_asset_id = UInt64()
         self.unit_value = UInt64()
         self.day_count_convention = UInt64()
 
@@ -99,7 +101,7 @@ class BaseDAsa(RoleBasedAccessControl):
 
     @subroutine
     def assert_denomination_asset(self, denomination_asset_id: UInt64) -> None:
-        # The reference implementation has on-chain payment agent with ASA
+        # The reference implementation has on-chain denomination with ASA
         assert (
             denomination_asset_id != UInt64(0) and Asset(denomination_asset_id).creator
         ), err.INVALID_DENOMINATION
@@ -107,8 +109,20 @@ class BaseDAsa(RoleBasedAccessControl):
     @subroutine
     def set_denomination_asset(self, denomination_asset_id: UInt64) -> None:
         self.denomination_asset_id = denomination_asset_id
+
+    @subroutine
+    def assert_settlement_asset(self, settlement_asset_id: UInt64) -> None:
+        # The reference implementation settlement asset is the denomination asset
+        assert (
+            settlement_asset_id == self.denomination_asset_id
+        ), err.INVALID_SETTLEMENT_ASSET
+
+    @subroutine
+    def set_settlement_asset(self, settlement_asset_id: UInt64) -> None:
+        self.settlement_asset_id = settlement_asset_id
+        # The reference implementation has on-chain settlement with ASA
         itxn.AssetTransfer(
-            xfer_asset=self.denomination_asset_id,
+            xfer_asset=self.settlement_asset_id,
             asset_receiver=Global.current_application_address,
             asset_amount=0,
             fee=Global.min_txn_fee,
@@ -224,7 +238,7 @@ class BaseDAsa(RoleBasedAccessControl):
     def is_payment_executable(self, holding_address: arc4.Address) -> bool:
         return (
             self.account[holding_address].payment_address.native.is_opted_in(
-                Asset(self.denomination_asset_id)
+                Asset(self.settlement_asset_id)
             )
             and not self.account[holding_address].suspended.native
         )
@@ -232,16 +246,14 @@ class BaseDAsa(RoleBasedAccessControl):
     @subroutine
     def assert_enough_funds(self, payment_amount: UInt64) -> None:
         assert (
-            Asset(self.denomination_asset_id).balance(
-                Global.current_application_address
-            )
+            Asset(self.settlement_asset_id).balance(Global.current_application_address)
             >= payment_amount
         ), err.NOT_ENOUGH_FUNDS
 
     @subroutine
     def pay(self, receiver: arc4.Address, amount: UInt64) -> None:
         itxn.AssetTransfer(
-            xfer_asset=self.denomination_asset_id,
+            xfer_asset=self.settlement_asset_id,
             asset_receiver=receiver.native,
             asset_amount=amount,
             fee=Global.min_txn_fee,
@@ -392,6 +404,7 @@ class BaseDAsa(RoleBasedAccessControl):
     def asset_config(
         self,
         denomination_asset_id: arc4.UInt64,
+        settlement_asset_id: arc4.UInt64,
         principal: arc4.UInt64,
         minimum_denomination: arc4.UInt64,
         day_count_convention: arc4.UInt8,
@@ -405,6 +418,7 @@ class BaseDAsa(RoleBasedAccessControl):
 
         Args:
             denomination_asset_id: Denomination asset identifier
+            settlement_asset_id: Settlement asset identifier
             principal: Principal, expressed in denomination asset
             minimum_denomination: Minimum denomination, expressed in denomination asset
             day_count_convention: Day-count convention for interests calculation
@@ -421,6 +435,11 @@ class BaseDAsa(RoleBasedAccessControl):
             INVALID_TIME_EVENTS_LENGTH: Time events length is invalid
             INVALID_TIME: Time events must be set in the future
             INVALID_SORTING: Time events are not sorted correctly
+            INVALID_TIME_PERIOD_DURATION: Time period durations must be greater than zero
+            INVALID_SETTLEMENT_ASSET: Different settlement asset not supported, must be equal to denomination asset
+            INVALID_TIME_PERIODS: Time periods not properly set
+            INVALID_TIME_PERIOD_REPETITIONS: Time period repetitions not properly set
+            INVALID_COUPON_RATES: Coupon rates not properly set
         """
         self.assert_caller_is_arranger()
         assert self.status == cfg.STATUS_EMPTY, err.ALREADY_CONFIGURED
@@ -428,6 +447,10 @@ class BaseDAsa(RoleBasedAccessControl):
         # Set Denomination Asset
         self.assert_denomination_asset(denomination_asset_id.native)
         self.set_denomination_asset(denomination_asset_id.native)
+
+        # Set Denomination Asset
+        self.assert_settlement_asset(settlement_asset_id.native)
+        self.set_settlement_asset(settlement_asset_id.native)
 
         # Set Principal and Minimum Denomination
         assert (
@@ -710,7 +733,7 @@ class BaseDAsa(RoleBasedAccessControl):
             DEFAULTED: Defaulted
             SUSPENDED: Suspended
             INVALID_HOLDING_ADDRESS: Invalid account holding address
-            ZERO_UNITS: Can not distribute zero units
+            ZERO_UNITS: Cannot distribute zero units
             OVER_DISTRIBUTION: Insufficient remaining D-ASA units
             PRIMARY_DISTRIBUTION_CLOSED: Primary distribution is closed
         """
@@ -794,12 +817,13 @@ class BaseDAsa(RoleBasedAccessControl):
         Get D-ASA info
 
         Returns:
-            Denomination Asset ID, Outstanding principal, Unit nominal value, Day-count convention, Interest rate, Total
-            supply, Circulating supply, Primary Distribution Opening Date, Primary Distribution Closure Date, Issuance
-            Date, Maturity Date, Suspended, Defaulted
+            Denomination asset ID, Settlement asset ID, Outstanding principal, Unit nominal value, Day-count convention,
+            Interest rate, Total supply, Circulating supply, Primary distribution opening date, Primary distribution
+            closure date, Issuance date, Maturity date, Suspended, Defaulted
         """
         return typ.AssetInfo(
             denomination_asset_id=arc4.UInt64(self.denomination_asset_id),
+            settlement_asset_id=arc4.UInt64(self.settlement_asset_id),
             outstanding_principal=arc4.UInt64(self.circulating_units * self.unit_value),
             unit_value=arc4.UInt64(self.unit_value),
             day_count_convention=arc4.UInt8(self.day_count_convention),
@@ -827,7 +851,7 @@ class BaseDAsa(RoleBasedAccessControl):
             holding_address: Account Holding Address
 
         Returns:
-            Payment Address, D-ASA units, Unit value, Paid coupons, Suspended
+            Payment Address, D-ASA units, Unit nominal value in denomination asset, Paid coupons, Suspended
 
         Raises:
             INVALID_HOLDING_ADDRESS: Invalid account holding address
@@ -850,6 +874,12 @@ class BaseDAsa(RoleBasedAccessControl):
 
     @arc4.abimethod(readonly=True)
     def get_secondary_market_schedule(self) -> typ.TimeEvents:
+        """
+        Get secondary market schedule
+
+        Returns:
+            Secondary market schedule
+        """
         return typ.TimeEvents(
             arc4.UInt64(self.secondary_market_opening_date),
             arc4.UInt64(self.secondary_market_closure_date),
@@ -857,4 +887,10 @@ class BaseDAsa(RoleBasedAccessControl):
 
     @arc4.abimethod(readonly=True)
     def get_asset_metadata(self) -> typ.AssetMetadata:
+        """
+        Get D-ASA metadata
+
+        Returns:
+            Asset metadata
+        """
         return typ.AssetMetadata(self.metadata)

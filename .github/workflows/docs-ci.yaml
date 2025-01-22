@@ -22,23 +22,15 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Setup mdBook
-        uses: peaceiris/actions-mdbook@v2
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: filter
         with:
-          mdbook-version: '0.4.43'
+          filters: |
+            docs:
+              - 'docs/**'
+              - 'README.md'
 
-      - name: Build docs
-        run: mdbook build
-
-      - name: Test docs
-        run: mdbook test
-
-      - name: Check markdown linting
-        uses: pre-commit/action@v3.0.1
-        with:
-          extra_args: markdownlint
-
-      - name: Check trailing whitespaces
-        uses: pre-commit/action@v3.0.1
-        with:
-          extra_args: trailing-whitespace
+      - name: Docs CI actions
+        if: steps.filter.outputs.docs == 'true'
+        uses: ./.github/actions/docs-ci

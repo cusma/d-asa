@@ -83,6 +83,7 @@ def fixed_coupon_bond_cfg(
 ) -> utils.DAsaConfig:
     return utils.DAsaConfig(
         denomination_asset_id=currency.id,
+        settlement_asset_id=currency.id,
         principal=PRINCIPAL,
         minimum_denomination=MINIMUM_DENOMINATION,
         day_count_convention=day_count_convention,

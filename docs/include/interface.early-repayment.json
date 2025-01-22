@@ -21,7 +21,7 @@
   ],
   "returns": {
     "type": "(uint64, uint64, byte[])",
-    "desc": "Paid principal amount, Payment timestamp, Payment information"
+    "desc": "Paid principal amount in denomination asset, Payment timestamp, Payment information"
   },
   "errors": [
     {

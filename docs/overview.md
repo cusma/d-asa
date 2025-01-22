@@ -15,5 +15,15 @@ Application to:
 - Query D-ASA information (e.g. due coupons, next coupon due date, etc.).
 
 This specification also provides the interfaces to comply with regulatory requirements,
-such as: defining a role-based access control, suspending D-ASA operations completely
+such as defining a role-based access control, suspending D-ASA operations completely
 or for specific accounts, managing default processes, etc.
+
+The contents are structured on four functional layers:
+
+1. *Trust Model*: this layer defines the application role-based access
+control model to manage the fixed income contract and comply with regulatory frameworks;
+1. *Contract*: this layer provides the algorithmic definitions of the debt instrument
+(data model, attributes, and cash flows);
+1. *Ownership*: this layer defines the tokenization of the contract;
+1. *Execution*: this layer defines the execution of the contract, both the distribution,
+cash flows and transfers.

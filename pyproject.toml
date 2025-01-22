@@ -1,7 +1,7 @@
 [tool.poetry]
 package-mode = false
 name = "d-asa"
-version = "0.2.0"
+version = "0.3.1"
 description = "Debt Algorand Standard Application"
 license = "AGPL-3.0"
 authors = ["cusma <cosimo.bassi@gmail.com>"]
@@ -15,20 +15,20 @@ keywords = ["algorand", "blockchain", "debt", "finance", "tokenization"]
 python = "^3.12"
 algokit-utils = "^2.4.0"
 python-dotenv = "^1.0.0"
-algorand-python = "^2.3.0"
+algorand-python = "^2.4.1"
 algorand-python-testing = "^0.4.1"
 
 [tool.poetry.group.dev.dependencies]
 algokit-client-generator = "^1.1.7"
 black = {extras = ["d"], version = "^24.10.0"}
-ruff = "^0.8.5"
+ruff = "^0.9.1"
 mypy = "==1.11.2"
 pytest = "^8.3.4"
 pytest-cov = "^6.0.0"
 pytest-sugar = "^1.0.0"
 pip-audit = "^2.7.3"
 pre-commit = "^4.0.1"
-puyapy = "^4.0.0"
+puyapy = "^4.1.1"
 
 [build-system]
 requires = ["poetry-core"]

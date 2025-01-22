@@ -1,0 +1,27 @@
+name: Docs CI action
+description: 'Lint docs, build and test mdBook'
+runs:
+  using: "composite"
+  steps:
+    - name: Setup mdBook
+      uses: peaceiris/actions-mdbook@v2
+      with:
+        mdbook-version: '0.4.43'
+
+    - name: Build docs
+      shell: bash
+      run: mdbook build
+
+    - name: Test docs
+      shell: bash
+      run: mdbook test
+
+    - name: Check markdown linting
+      uses: pre-commit/action@v3.0.1
+      with:
+        extra_args: markdownlint
+
+    - name: Check trailing whitespaces
+      uses: pre-commit/action@v3.0.1
+      with:
+        extra_args: trailing-whitespace

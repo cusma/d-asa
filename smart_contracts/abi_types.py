@@ -13,6 +13,7 @@ class AssetInfo(arc4.Struct, kw_only=True):
     """D-ASA Info"""
 
     denomination_asset_id: arc4.UInt64
+    settlement_asset_id: arc4.UInt64
     outstanding_principal: arc4.UInt64
     unit_value: arc4.UInt64
     day_count_convention: arc4.UInt8
