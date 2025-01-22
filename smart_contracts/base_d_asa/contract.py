@@ -19,7 +19,6 @@ from algopy import (
 from .. import abi_types as typ
 from .. import constants as cst
 from .. import errors as err
-from .. import types as typ
 from ..rbac.contract import RoleBasedAccessControl
 from . import config as cfg
 

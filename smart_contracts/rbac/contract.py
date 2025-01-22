@@ -10,9 +10,9 @@ from algopy import (
     subroutine,
 )
 
+from .. import abi_types as typ
 from .. import constants as cst
 from .. import errors as err
-from .. import types as typ
 
 
 class RoleBasedAccessControl(ARC4Contract):

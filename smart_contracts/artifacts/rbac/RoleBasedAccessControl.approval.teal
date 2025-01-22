@@ -12,10 +12,10 @@ main_after_if_else@2:
 
 // smart_contracts.rbac.contract.RoleBasedAccessControl.__init__() -> void:
 __init__:
-    // smart_contracts/rbac/contract.py:29
+    // smart_contracts/rbac/contract.py:19
     // def __init__(self) -> None:
     proto 0 0
-    // smart_contracts/rbac/contract.py:30-31
+    // smart_contracts/rbac/contract.py:20-21
     // # Role Based Access Control
     // self.arranger = GlobalState(Account(), key=cst.PREFIX_ID_ARRANGER)
     pushbytes 0x52323023
@@ -26,7 +26,7 @@ __init__:
 
 // smart_contracts.rbac.contract.RoleBasedAccessControl.__puya_arc4_router__() -> uint64:
 __puya_arc4_router__:
-    // smart_contracts/rbac/contract.py:28
+    // smart_contracts/rbac/contract.py:18
     // class RoleBasedAccessControl(ARC4Contract):
     proto 0 1
     txn NumAppArgs
@@ -40,7 +40,7 @@ __puya_arc4_router__:
     retsub
 
 __puya_arc4_router___after_if_else@6:
-    // smart_contracts/rbac/contract.py:28
+    // smart_contracts/rbac/contract.py:18
     // class RoleBasedAccessControl(ARC4Contract):
     pushint 0 // 0
     retsub
