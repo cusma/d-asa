@@ -1,0 +1,46 @@
+#pragma version 10
+
+smart_contracts.rbac.contract.RoleBasedAccessControl.approval_program:
+    txn ApplicationID
+    bnz main_after_if_else@2
+    callsub __init__
+
+main_after_if_else@2:
+    callsub __puya_arc4_router__
+    return
+
+
+// smart_contracts.rbac.contract.RoleBasedAccessControl.__init__() -> void:
+__init__:
+    // smart_contracts/rbac/contract.py:29
+    // def __init__(self) -> None:
+    proto 0 0
+    // smart_contracts/rbac/contract.py:30-31
+    // # Role Based Access Control
+    // self.arranger = GlobalState(Account(), key=cst.PREFIX_ID_ARRANGER)
+    pushbytes 0x52323023
+    global ZeroAddress
+    app_global_put
+    retsub
+
+
+// smart_contracts.rbac.contract.RoleBasedAccessControl.__puya_arc4_router__() -> uint64:
+__puya_arc4_router__:
+    // smart_contracts/rbac/contract.py:28
+    // class RoleBasedAccessControl(ARC4Contract):
+    proto 0 1
+    txn NumAppArgs
+    bnz __puya_arc4_router___after_if_else@6
+    txn OnCompletion
+    bnz __puya_arc4_router___after_if_else@6
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    pushint 1 // 1
+    retsub
+
+__puya_arc4_router___after_if_else@6:
+    // smart_contracts/rbac/contract.py:28
+    // class RoleBasedAccessControl(ARC4Contract):
+    pushint 0 // 0
+    retsub

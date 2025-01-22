@@ -1,0 +1,160 @@
+{
+  "version": 3,
+  "sources": [
+    "../../rbac/contract.py"
+  ],
+  "mappings": ";;;;;;;;;;;;;AA4BA;;;AAEmD;;;;;;AAAf;;AAA5B;;AAHR;;;AAAA;;AAAA;;;AAAA;;AAAA;;;;;;;;;;AAAA;;AAAA",
+  "op_pc_offset": 0,
+  "pc_events": {
+    "1": {
+      "subroutine": "smart_contracts.rbac.contract.RoleBasedAccessControl.approval_program",
+      "params": {},
+      "block": "smart_contracts.rbac.contract.RoleBasedAccessControl.approval_program",
+      "stack_in": [],
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "3": {
+      "op": "bnz main_after_if_else@2",
+      "stack_out": []
+    },
+    "6": {
+      "callsub": "smart_contracts.rbac.contract.RoleBasedAccessControl.__init__",
+      "op": "callsub __init__"
+    },
+    "9": {
+      "block": "main_after_if_else@2",
+      "stack_in": [],
+      "callsub": "smart_contracts.rbac.contract.RoleBasedAccessControl.__puya_arc4_router__",
+      "op": "callsub __puya_arc4_router__",
+      "defined_out": [
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0"
+      ]
+    },
+    "12": {
+      "op": "return",
+      "stack_out": []
+    },
+    "13": {
+      "subroutine": "smart_contracts.rbac.contract.RoleBasedAccessControl.__init__",
+      "params": {},
+      "block": "__init__",
+      "stack_in": [],
+      "op": "proto 0 0"
+    },
+    "16": {
+      "op": "pushbytes 0x52323023"
+    },
+    "22": {
+      "op": "global ZeroAddress",
+      "defined_out": [
+        "0x52323023",
+        "new_state_value%0#0"
+      ],
+      "stack_out": [
+        "0x52323023",
+        "new_state_value%0#0"
+      ]
+    },
+    "24": {
+      "op": "app_global_put",
+      "stack_out": []
+    },
+    "25": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "26": {
+      "subroutine": "smart_contracts.rbac.contract.RoleBasedAccessControl.__puya_arc4_router__",
+      "params": {},
+      "block": "__puya_arc4_router__",
+      "stack_in": [],
+      "op": "proto 0 1"
+    },
+    "29": {
+      "op": "txn NumAppArgs",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "31": {
+      "op": "bnz __puya_arc4_router___after_if_else@6",
+      "stack_out": []
+    },
+    "34": {
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "tmp%2#0"
+      ]
+    },
+    "36": {
+      "op": "bnz __puya_arc4_router___after_if_else@6",
+      "stack_out": []
+    },
+    "39": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "tmp%3#0"
+      ]
+    },
+    "41": {
+      "op": "!",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "42": {
+      "error": "can only call when creating",
+      "op": "assert // can only call when creating",
+      "stack_out": []
+    },
+    "43": {
+      "op": "pushint 1 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "45": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "46": {
+      "block": "__puya_arc4_router___after_if_else@6",
+      "stack_in": [],
+      "op": "pushint 0 // 0",
+      "defined_out": [
+        "0"
+      ],
+      "stack_out": [
+        "0"
+      ]
+    },
+    "48": {
+      "retsub": true,
+      "op": "retsub"
+    }
+  }
+}
