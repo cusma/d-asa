@@ -5,9 +5,9 @@
   "op_pc_offset": 0,
   "pc_events": {
     "1": {
-      "subroutine": "algopy.arc4.ARC4Contract.clear_state_program",
+      "subroutine": "smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.clear_state_program",
       "params": {},
-      "block": "main",
+      "block": "smart_contracts.fixed_coupon_bond.contract.FixedCouponBond.clear_state_program",
       "stack_in": [],
       "op": "pushint 1 // 1",
       "defined_out": [
