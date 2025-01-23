@@ -53,8 +53,8 @@ Investors \\([CPID]\\) own D-ASA accounts, characterized by a pair of Algorand A
 The Payment Address **MAY** be different from the Holding Address.
 
 > D-ASA units can be in custody with a third party or temporarily deposited on an
-> order book (Holding Address). At the same time payments are always executed towards
-> the lender (on the Payment Address).
+> order book (Holding Address). At the same time, payments are always executed towards
+> the investor (on the Payment Address).
 
 > The right to open and close investor accounts can be granted to different entities,
 > such as KYC providers or banks.

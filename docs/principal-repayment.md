@@ -93,6 +93,6 @@ It is **RECOMMENDED** to use an ACTUS *interest calculation base* \\([IPCB]\\).
 > Let’s have a D-ASA denominated in EUR, with a *principal* of 1M EUR and a *minimum
 > denomination* of 1,000 EUR. The D-ASA originally had 1,000 *total units* (worth
 > 1,000 EUR each) in circulation. A partial repayment of 500k EUR (50% of the original
-> principal) must be executed pro rata to all lenders. A single amortizing rate
+> principal) must be executed pro-rata to all investors. A single amortizing rate
 > of 5,000 bps is used. After the partial repayment, the D-ASA still has 1000 circulating
 > units (worth 500 EUR each).

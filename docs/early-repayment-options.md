@@ -12,13 +12,13 @@ methods.
 
 The early repayment options **MAY** repay the *principal* partially or totally.
 
-The early repayment options **MAY** repay the *principal* to all or some Lenders.
+The early repayment options **MAY** repay the *principal* to all or some Investors.
 
 In the case of an on-chain payment agent, the D-ASA **MUST** repay the *principal*
 to the Investor Payment Addresses.
 
 In case of early repayment options, the D-ASA units associated with the early repaid
-principal **MUST** be removed from Lenders’ Accounts and circulation.
+principal **MUST** be removed from Investors’ Accounts and circulation.
 
 ## Penalties
 
@@ -49,7 +49,7 @@ The *penalty type* and the *penalty rate* **MAY** be set using the **OPTIONAL**
 >
 > Let’s have a D-ASA denominated in EUR, with a *principal* of 1M EUR and a *minimum
 > denomination* of 1,000 EUR. The D-ASA originally had 1,000 *total units* in circulation.
-> An early repayment of 500k EUR (equal to 500 units) is executed for some Lenders.
+> An early repayment of 500k EUR (equal to 500 units) is executed for some Investors.
 > The D-ASA now has 500 circulating units (worth 1,000 EUR each), while 500 early
 > repaid units are removed from circulation.
 

@@ -110,7 +110,7 @@ fail if it has pending coupon payments.
 >
 > Let's have a D-ASA with `4` coupons. The 2nd coupon is due. The D-ASA units are
 > accruing the interest of the 3rd coupon. Coupon payments are not executed synchronously
-> for all the Lenders. The 2nd coupon payment is executed for Lender A, while Lender
-> B is still waiting for the payment settlement. The accrued interest calculation
-> succeeds for Investor A and fails for Lender B until the 2nd coupon payment is
+> for all the Investors. The 2nd coupon payment is executed for Investor A, while
+> Investor B is still waiting for the payment settlement. The accrued interest calculation
+> succeeds for Investor A and fails for Investor B until the 2nd coupon payment is
 > settled.
