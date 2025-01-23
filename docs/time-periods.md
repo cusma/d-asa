@@ -16,11 +16,6 @@ It **MUST** be `0` if *repetitions* are **unlimited**;
 The *time periods* **MUST** be anchored \\([ANX]\\) to a *time event* (see [Time
 Events](./time-events.md) section).
 
-> 📎 **EXAMPLE**
->
-> A *time periods* defines periodic interest payments anchored to (starting from)
-> the *issuance date*.
-
 The *time periods* **MUST** be defined as UNIX time, in seconds.
 
 In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
@@ -60,3 +55,32 @@ events*.
 >
 > The sum of the 4 coupon *time period durations* must be smaller than the time
 > period between the *issuance date* and the *maturity date*.
+
+If the D-ASA has an **undefined** number of *coupons*, then the *coupon due dates*
+\\([IP]\\) **MUST** be defined with a *time period* `(uint64,uint64)`.
+
+The first coupon due date \\([IPANX]\\) occurs on *issuance date* plus the *time
+period duration* \\([IPCL]\\) and the interest payment \\([IPPNT]\\) can be executed[^1].
+
+> 📎 **EXAMPLE**
+>
+> A D-ASA whose primary distribution lasts from December 1st, 2023 00:00:00 GMT+0
+> to December 15th, 2023 00:00:00 GMT+0, is issued on January 1st, 2024 00:00:00
+> GMT+0 and no maturity, with perpetual coupons maturing every 365 days, has the
+> following *time events* array (UNIX times):
+>
+> ```text
+> uint64[] = [1701388800, 1702598400, 1704067200]
+> ```
+>
+> and the following *time period*:
+>
+> ```text
+> (uint64, uint64) = [31536000, 0]
+> ```
+>
+> The fist coupon due date \\(([IPANX]\\)) is `1704067200 + 31536000` (UNIX time).
+
+---
+
+[^1]: The D-ASA supports just interest payments at the end of each coupon period.

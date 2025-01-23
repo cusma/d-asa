@@ -6,6 +6,10 @@
 > - *Early repayment options*
 > - *Coupon payments*
 
+> D-ASA cash flows might not be executed synchronously for all the Investors. The
+> execution of a given cash flow could last a few blocks, depending on the number
+> of payees.
+
 > D-ASA supports both on-chain and off-chain payment agents, depending on the settlement
 > asset (see [Settlement](./settlement.md) section).
 

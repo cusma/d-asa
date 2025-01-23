@@ -46,9 +46,9 @@ the time at which the D-ASA primary distribution closes;
 - The third element **MUST** be the *issuance date* (`uint64`): the time at which
 D-ASA starts to accrue interest on the principal;
 
-- If the D-ASA has a **defined** number of *coupons*, the next `K`-elements **MUST**
-be the *coupon due dates* \\([IP]\\) (`uint64[K]`): times at which the D-ASA can
-pay coupons;
+- If the D-ASA has a **defined** number of *coupons*, then the next `K`-elements
+**MUST** be the *coupon due dates* \\([IP]\\) (`uint64[K]`): times at which the
+coupons mature and the interest payment \\([IPPNT]\\) can be executed[^1];
 
 - If the D-ASA **has** a *maturity date*, the last element **MUST** be the *maturity
 date* (`uint64`).
@@ -57,9 +57,9 @@ The *time events* **MUST** be sorted in strictly ascending order.
 
 The *time events* **MUST** be defined as UNIX time, in seconds.
 
-In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
-section), the *time periods* between subsequent events **MUST** be multiples of a
-day, in seconds (`86400`)[^1].
+In the case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count
+Conventions](./day-count-convention.md) section), the *time periods* between subsequent
+events **MUST** be multiples of a day, in seconds (`86400`)[^2].
 
 The *time events* **MUST** be set using the `asset_config` method.
 
@@ -129,6 +129,8 @@ The *time events* **MUST** be set using the `asset_config` method.
 
 ---
 
-[^1]: This applies to any kind of time event (e.g., principal and interest payments,
+[^1]: The D-ASA supports just interest payments at the end of each coupon period.
+
+[^2]: This applies to any kind of time event (e.g., principal and interest payments,
 primary and secondary market dates, early repayments options, interest updates,
 etc.)
