@@ -48,7 +48,8 @@ D-ASA starts to accrue interest on the principal;
 
 - If the D-ASA has a **defined** number of *coupons*, then the next `K`-elements
 **MUST** be the *coupon due dates* \\([IP]\\) (`uint64[K]`): times at which the
-coupons mature and the interest payment \\([IPPNT]\\) can be executed[^1];
+coupons mature and the interest payment \\([IPPNT]\\) can be executed[^1]. The first
+coupon due date corresponds to \\([IPANX]\\).
 
 - If the D-ASA **has** a *maturity date*, the last element **MUST** be the *maturity
 date* (`uint64`).

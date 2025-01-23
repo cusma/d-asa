@@ -4,9 +4,6 @@
 
 The *principal* **MUST** be repaid according to a *principal repayment schedule*.
 
-If the D-ASA has coupons, the *principal* **MUST NOT** be paid if there is any due
-coupon still to be paid.
-
 In the case of an on-chain payment agent, the D-ASA **MUST** repay the *principal*
 to the Investor’s Payment Addresses.
 
@@ -14,6 +11,9 @@ to the Investor’s Payment Addresses.
 
 If the *principal repayment schedule* is *bullet*, the principal **MUST** be paid
 entirely at the *maturity date* using the `pay_principal` method.
+
+If the D-ASA has coupons, the *principal* **MUST NOT** be paid if there is any due
+coupon still to be paid.
 
 ## Amortizing Schedule
 
@@ -68,8 +68,9 @@ method.
 
 The updated *amortizing rates* **MUST NOT** modify past amortizing rates.
 
-The *principal* **MUST** be repaid along with *coupons*, according to the *amortizing
-rates*, using the `pay_coupon` method.
+The *principal* **MUST** be repaid along with the **defined** number of *coupons*,
+according to the *amortizing rates*, using the `pay_coupon` method. The first coupon
+due date corresponds to \\([PRANX]\\).
 
 The D-ASA *unit value* **MUST** be updated according to the *outstanding principal.*
 
