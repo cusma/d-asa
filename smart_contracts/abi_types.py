@@ -7,7 +7,6 @@ TimeEvents: TypeAlias = arc4.DynamicArray[arc4.UInt64]
 TimePeriod: TypeAlias = arc4.Tuple[arc4.UInt64, arc4.UInt64]
 TimePeriods: TypeAlias = arc4.DynamicArray[TimePeriod]
 ProspectusHash: TypeAlias = arc4.StaticArray[arc4.Byte, Literal[32]]
-ProspectusURL: TypeAlias = arc4.DynamicBytes
 
 
 class AssetInfo(arc4.Struct, kw_only=True):
@@ -39,7 +38,7 @@ class AssetMetadata(arc4.Struct, kw_only=True):
     prepayment_effect: arc4.UInt8
     penalty_type: arc4.UInt8
     prospectus_hash: ProspectusHash
-    prospectus_url: ProspectusURL
+    prospectus_url: arc4.String
 
 
 class AccountInfo(arc4.Struct, kw_only=True):
