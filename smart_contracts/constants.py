@@ -3,6 +3,10 @@ from typing import Final
 # Conversions
 BPS: Final[int] = 10_000
 
+# Contract Types
+CT_PAM: Final[int] = 0
+CT_PBN: Final[int] = 255  # FIXME: Once ACTUS defines it
+
 # Day-count Conventions
 DAY_2_SEC: Final[int] = 24 * 3_600
 DCC_A_A: Final[int] = 0
@@ -13,6 +17,30 @@ DCC_30_360: Final[int] = 4
 DCC_28_336: Final[int] = 5
 DCC_30_365: Final[int] = 6
 DCC_CONT: Final[int] = 255
+
+# Calendar
+CLDR_NC: Final[int] = 0
+CLDR_MF: Final[int] = 1
+CLDR_CUST: Final[int] = 255
+
+# Business Day Convention
+BDC_NOS: Final[int] = 0
+
+# End of Month Convention
+EOMC_SD: Final[int] = 0
+
+# Prepayment Effect
+PPEF_N: Final[int] = 0
+PPEF_A: Final[int] = 1
+PPEF_M: Final[int] = 2
+PPEF_CUS: Final[int] = 255
+
+# Penalty Type
+PYTP_N: Final[int] = 0
+PYTP_A: Final[int] = 1
+PYTP_R: Final[int] = 2
+PYTP_I: Final[int] = 3
+PYTP_CUS: Final[int] = 255
 
 # Contract Performance
 PRF_PERFORMANT: Final[int] = 0
