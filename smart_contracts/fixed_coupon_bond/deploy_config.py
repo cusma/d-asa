@@ -43,8 +43,8 @@ def deploy(
                     end_of_month_convention=sc_cst.EOMC_SD,
                     prepayment_effect=sc_cst.PPEF_N,
                     penalty_type=sc_cst.PYTP_N,
-                    prospectus_hash=bytes(0),
-                    prospectus_url=b"Fixed Coupon Bond Prospectus",
+                    prospectus_hash=bytes(32),
+                    prospectus_url="Fixed Coupon Bond Prospectus",
                 ),
             )
         ),
