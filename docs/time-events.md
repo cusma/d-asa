@@ -26,6 +26,9 @@ The D-ASA **MUST** have an *issuance date* \\([IED]\\) (`uint64`).
 
 The D-ASA **MAY** have a *maturity date* \\([MD]\\) (`uint64`).
 
+The *maturity date* **MAY** be updated in case of early repayment options (see
+[Early Repayment Options](./early-repayment-options.md) section).
+
 ## Time Events array
 
 The D-ASA **MUST** define *time events* \\([TEV]\\) as `uint64[]` array, where:
