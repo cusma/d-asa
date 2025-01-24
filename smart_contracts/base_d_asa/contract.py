@@ -460,10 +460,10 @@ class BaseDAsa(ARC4Contract):
 
         Args:
             arranger: D-ASA Arranger Address
-            metadata: D-ASA metadata digest (e.g. prospectus digest)
+            metadata: D-ASA metadata
         """
         self.arranger.value = arranger.native
-        self.metadata = metadata.native
+        self.metadata = metadata.bytes
 
     @arc4.baremethod(allow_actions=["UpdateApplication"])
     def asset_update(self) -> None:
@@ -973,6 +973,7 @@ class BaseDAsa(ARC4Contract):
         Get D-ASA metadata
 
         Returns:
-            Asset metadata
+            Contract type, Calendar, Business day convention, End of month convention, Early repayment effect, Early
+            repayment penalty type, Prospectus hash, Prospectus URL
         """
-        return typ.AssetMetadata(self.metadata)
+        return typ.AssetMetadata.from_bytes(self.metadata)
