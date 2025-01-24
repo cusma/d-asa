@@ -13,7 +13,7 @@
 > D-ASA supports both on-chain and off-chain payment agents, depending on the settlement
 > asset (see [Settlement](./settlement.md) section).
 
-> In a reference implementation of an on-chain payment agent, the AVM fees (ALGO)
+> For reference implementations using on-chain payment agents, the AVM fees (ALGO)
 > for the cash flows execution **SHOULD** be paid by who triggers the cash flows.
 
 > A reference implementation of an on-chain payment agent **SHOULD NOT** require
