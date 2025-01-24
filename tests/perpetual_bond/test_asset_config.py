@@ -64,7 +64,8 @@ def test_pass_asset_config(
 
     # Time Schedule
     assert expected_time_events == perpetual_bond_cfg.time_events
-    # FIXME: assert expected_time_periods == perpetual_bond_cfg.time_periods, algosdk has a bug ARC4 type decoding
+    # FIXME: algosdk has a bug ARC4 type decoding: https://github.com/algorand/py-algorand-sdk/issues/355
+    # assert expected_time_periods == perpetual_bond_cfg.time_periods
     assert not expected_time_periods[0][1]
     assert (
         state.primary_distribution_opening_date
