@@ -4,7 +4,7 @@
   "readonly": true,
   "args": [],
   "returns": {
-    "type": "byte[]",
-    "desc": "Asset metadata"
+    "type": "(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],byte[])",
+    "desc": "Contract type, Calendar, Business day convention, End of month convention, Early repayment effect, Early repayment penalty type, Prospectus hash, Prospectus URL"
   }
 }
