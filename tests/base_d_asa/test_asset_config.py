@@ -148,7 +148,7 @@ def test_fail_invalid_day_count_convention(
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> None:
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
-    wrong_d_asa_cfg.day_count_convention = 0
+    wrong_d_asa_cfg.day_count_convention = sc_cst.DCC_CONT - 1
     with pytest.raises(LogicError, match=err.INVALID_DAY_COUNT_CONVENTION):
         base_d_asa_client_empty.asset_config(
             **wrong_d_asa_cfg.dictify(),

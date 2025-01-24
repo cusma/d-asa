@@ -2,7 +2,7 @@
 
 > Debt instruments cash flows may be settled in a currency different from the denomination.
 
-The D-ASA **MUST** define either in an on-chain or off-chain *settlement asset*
+The D-ASA **MUST** define either an on-chain or off-chain *settlement asset* \\([CURS]\\)[^1]
 to regulate the cash flows.
 
 The *settlement asset identifier* (`uint64`) **MUST** be set using the `asset_config`
@@ -42,3 +42,8 @@ The *settlement asset* **MUST** use the decimal digits specified by the <a href=
 >
 > - Regulates payments’ approval conditions (e.g. a coupon is due);
 > - Notarizes the amounts and timestamps of payments settled off-chain.
+
+---
+
+[^1]: ACTUS only allows ISO 4217 currency identifiers, therefore an on-chain settlement
+is not supported by ACTUS.

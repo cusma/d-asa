@@ -42,6 +42,21 @@ class DAsaConfig:
 
 
 @dataclass
+class DAsaMetadata:
+    contract_type: int
+    calendar: int = sc_cst.CLDR_NC
+    business_day_convention: int = sc_cst.BDC_NOS
+    end_of_month_convention: int = sc_cst.EOMC_SD
+    prepayment_effect: int = sc_cst.PPEF_N
+    penalty_type: int = sc_cst.PYTP_N
+    prospectus_hash: bytes = bytes(32)
+    prospectus_url: str = ""
+
+    def dictify(self) -> dict[str, int | bytes | str]:
+        return asdict(self)  # type: ignore
+
+
+@dataclass
 class Currency:
     id: int
     total: int

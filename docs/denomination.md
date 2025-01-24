@@ -4,7 +4,7 @@
 > are calculated.
 
 The D-ASA **MUST** be denominated either in an on-chain or off-chain *denomination
-asset*.
+asset* \\([CUR]\\)[^1].
 
 The *denomination asset identifier* (`uint64`) **MUST** be set using the `asset_config`
 method.
@@ -24,3 +24,8 @@ The *denomination asset identifier* **MUST** the <a href="https://en.wikipedia.o
 
 The *denomination asset* **MUST** use the decimal digits specified by the <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO
 4217</a>.
+
+---
+
+[^1]: ACTUS only allows ISO 4217 currency identifiers, therefore an on-chain denomination
+is not supported by ACTUS.

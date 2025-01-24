@@ -1,12 +1,12 @@
-from typing import TypeAlias
+from typing import Literal, TypeAlias
 
 from algopy import arc4
 
-AssetMetadata: TypeAlias = arc4.DynamicBytes
 CouponRates: TypeAlias = arc4.DynamicArray[arc4.UInt16]
 TimeEvents: TypeAlias = arc4.DynamicArray[arc4.UInt64]
 TimePeriod: TypeAlias = arc4.Tuple[arc4.UInt64, arc4.UInt64]
 TimePeriods: TypeAlias = arc4.DynamicArray[TimePeriod]
+ProspectusHash: TypeAlias = arc4.StaticArray[arc4.Byte, Literal[32]]
 
 
 class AssetInfo(arc4.Struct, kw_only=True):
@@ -25,7 +25,20 @@ class AssetInfo(arc4.Struct, kw_only=True):
     issuance_date: arc4.UInt64
     maturity_date: arc4.UInt64
     suspended: arc4.Bool
-    defaulted: arc4.Bool
+    performance: arc4.UInt8
+
+
+class AssetMetadata(arc4.Struct, kw_only=True):
+    """D-ASA Metadata"""
+
+    contract_type: arc4.UInt8
+    calendar: arc4.UInt8
+    business_day_convention: arc4.UInt8
+    end_of_month_convention: arc4.UInt8
+    prepayment_effect: arc4.UInt8
+    penalty_type: arc4.UInt8
+    prospectus_hash: ProspectusHash
+    prospectus_url: arc4.String
 
 
 class AccountInfo(arc4.Struct, kw_only=True):

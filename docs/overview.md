@@ -27,3 +27,12 @@ control model to manage the fixed income contract and comply with regulatory fra
 1. *Ownership*: this layer defines the tokenization of the contract;
 1. *Execution*: this layer defines the execution of the contract, both the distribution,
 cash flows and transfers.
+
+## ACTUS compliance
+
+<a href="https://www.actusfrf.org/">ACTUS</a> still presents some limitations with
+respect to blockchain-based implementations.
+
+Therefore, ACTUS compliance is **RECOMMENDED** but not mandatory.
+
+ACTUS limitations are usually marked with footnotes.

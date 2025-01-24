@@ -6,7 +6,7 @@ GLOBAL_UINTS: Final[int] = 17
 LOCAL_BYTES: Final[int] = 0
 LOCAL_UINTS: Final[int] = 0
 
-# Status
+# Status  # TODO: Use Contract Performance instead
 STATUS_EMPTY: Final[int] = 0
 STATUS_ACTIVE: Final[int] = 100
 STATUS_ENDED: Final[int] = 200

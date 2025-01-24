@@ -5,6 +5,8 @@ import algokit_utils
 from algosdk.v2client.algod import AlgodClient
 from algosdk.v2client.indexer import IndexerClient
 
+from smart_contracts import constants as sc_cst
+
 logger = logging.getLogger(__name__)
 
 
@@ -17,6 +19,7 @@ def deploy(
 ) -> None:
     from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
         AssetCreateArgs,
+        AssetMetadata,
         DeployCreate,
         FixedCouponBondClient,
     )
@@ -33,7 +36,16 @@ def deploy(
         create_args=DeployCreate(
             args=AssetCreateArgs(
                 arranger=os.environ["ARRANGER_ADDRESS"],
-                metadata=b"Fixed Coupon Bond Prospectus",
+                metadata=AssetMetadata(
+                    contract_type=sc_cst.CT_PAM,
+                    calendar=sc_cst.CLDR_NC,
+                    business_day_convention=sc_cst.BDC_NOS,
+                    end_of_month_convention=sc_cst.EOMC_SD,
+                    prepayment_effect=sc_cst.PPEF_N,
+                    penalty_type=sc_cst.PYTP_N,
+                    prospectus_hash=bytes(32),
+                    prospectus_url="Fixed Coupon Bond Prospectus",
+                ),
             )
         ),
     )

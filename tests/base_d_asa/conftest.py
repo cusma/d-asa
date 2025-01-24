@@ -53,6 +53,11 @@ def time_events(
     ]
 
 
+@pytest.fixture(scope="session")
+def asset_metadata() -> utils.DAsaMetadata:
+    return utils.DAsaMetadata(contract_type=sc_cst.CT_PAM)
+
+
 @pytest.fixture(scope="function")
 def base_d_asa_cfg(
     currency: utils.Currency,

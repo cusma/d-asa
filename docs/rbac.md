@@ -22,7 +22,7 @@ Where `||` denotes concatenation.
 > Issuers are individuals, companies, institutions, governments, or other entities
 > who borrow capital by issuing a debt.
 
-An Issuer is an entity that owes a debt issued as D-ASA.
+An Issuer \\([CRID]\\) is an entity that owes a debt issued as D-ASA.
 
 The Issuer role **MUST** be identified with the reserved ID `10`.
 
@@ -45,7 +45,7 @@ The Arranger **MAY** configure the D-ASA *role-based access control* with the **
 > Investors are lenders providing capital to borrowers with the expectation of a
 > financial return, defined by debt instruments.
 
-Investors own D-ASA accounts, characterized by a pair of Algorand Addresses:
+Investors \\([CPID]\\) own D-ASA accounts, characterized by a pair of Algorand Addresses:
 
 - *Holding Address*: address that owns D-ASA units with the right to future payments;
 - *Payment Address*: address that receives D-ASA payments.
@@ -53,8 +53,8 @@ Investors own D-ASA accounts, characterized by a pair of Algorand Addresses:
 The Payment Address **MAY** be different from the Holding Address.
 
 > D-ASA units can be in custody with a third party or temporarily deposited on an
-> order book (Holding Address). At the same time payments are always executed towards
-> the lender (on the Payment Address).
+> order book (Holding Address). At the same time, payments are always executed towards
+> the investor (on the Payment Address).
 
 > The right to open and close investor accounts can be granted to different entities,
 > such as KYC providers or banks.

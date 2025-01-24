@@ -4,9 +4,44 @@
   "readonly": false,
   "args": [
     {
-      "type": "byte[]",
-      "name": "metadata",
-      "desc": "Asset metadata"
+      "type": "uint8",
+      "name": "contract_type",
+      "desc": "Contract type"
+    },
+    {
+      "type": "uint8",
+      "name": "calendar",
+      "desc": "Calendar [default 0]"
+    },
+    {
+      "type": "uint8",
+      "name": "business_day_convention",
+      "desc": "Business day convention [default 0]"
+    },
+    {
+      "type": "uint8",
+      "name": "end_of_month_convention",
+      "desc": "End of month convention [default 0]"
+    },
+    {
+      "type": "uint8",
+      "name": "prepayment_effect",
+      "desc": "Early repayment effect [default 0]"
+    },
+    {
+      "type": "uint8",
+      "name": "penalty_type",
+      "desc": "Early repayment penalty type [default 0]"
+    },
+    {
+      "type": "byte[32]",
+      "name": "prospectus_hash",
+      "desc": "Prospectus hash"
+    },
+    {
+      "type": "string",
+      "name": "prospectus_url",
+      "desc": "Prospectus URL"
     }
   ],
   "returns": {

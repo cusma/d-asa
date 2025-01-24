@@ -66,8 +66,8 @@ The D-ASA *fungible units* **MUST** have the same *value* and *executed payments
 
 > 📎 **EXAMPLE**
 >
-> Let’s have a D-ASA with 4 coupons. Lenders A and B are holding 10 D-ASA units
-> each. The 1st coupon is due. Coupon payments are not executed synchronously for
-> all the Lenders. The coupon payment is executed for Lender A, while Lender B is
-> still waiting for the payment settlement. Lender A units are temporarily non-fungible
-> with Lender B units until the 1st coupon is paid for both.
+> Let’s have a D-ASA with 4 coupons. Investors A and B are holding 10 D-ASA units
+> each. The 1st coupon is due. Coupon payments might not be executed synchronously
+> for all the Investors. The coupon payment is executed for Investor A, while Investor
+> B is still waiting for the payment settlement. Investor A units are temporarily
+> non-fungible with Investor B units until the 1st coupon is paid for both.

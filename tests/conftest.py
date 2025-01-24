@@ -103,11 +103,6 @@ def oscar(algorand_client: AlgorandClient) -> AddressAndSigner:
     return account
 
 
-@pytest.fixture(scope="session")
-def asset_metadata() -> bytes:
-    return b"Prospectus of a very good bond"
-
-
 @pytest.fixture(scope="function")
 def currency(algorand_client: AlgorandClient, bank: AddressAndSigner) -> utils.Currency:
     txn_result = algorand_client.send.asset_create(

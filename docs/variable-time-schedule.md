@@ -10,7 +10,8 @@ method.
 
 The updated *time events* **MUST NOT** modify past events.
 
-> A reference implementation **SHOULD** restrict the time events updatability.
+> A reference implementation **SHOULD** restrict the time events updatability according
+> to the optionalities of the agreement.
 
 > 📎 **EXAMPLE**
 >

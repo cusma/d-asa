@@ -11,7 +11,7 @@ points</a>* (*bps*).
 
 ## Interest Rate {#interest-rate}
 
-The D-ASA **MUST** define an *interest rate* (`uint16`).
+The D-ASA **MUST** define a *nominal interest rate* \\([IPNR]\\) (`uint16`).
 
 ## Coupons {#coupons}
 
@@ -28,7 +28,8 @@ The D-ASA **MUST** define the number of *total coupons* `K` (`uint64`):
 
 > Debt instruments can pay coupons with fixed or variable interest rates.
 
-The D-ASA **MAY** define the *coupon rates* as `uint16[]` array, where:
+The D-ASA **MAY** define the *coupon rates* \\([ARRATE]\\) as `uint16[]` array,
+where:
 
 - The length of the array **MUST** be `K`, equal to the *total coupons*;
 - The `K`\-elements of the array are the *coupon rates*, expressed in *bps*.
@@ -68,6 +69,9 @@ any due coupon still to be paid.
 The *coupon rates* **MAY** be updated using the **OPTIONAL** `update_coupon_rates`
 method.
 
+The *coupon rates* **MUST NOT** be updated if there is any due coupon still to be
+paid.
+
 The updated *coupon rates* **MUST NOT** modify past coupon rates.
 
 > A reference implementation **SHOULD** properly restrict the coupon rate updatability.
@@ -86,8 +90,8 @@ The updated *coupon rates* **MUST NOT** modify past coupon rates.
 
 > Debt instruments may accrue interest over time.
 
-The D-ASA *units* **MAY** accrue interest, according to the *day-count convention*
-(see [Day-Count Convention](./day-count-convention.md) section).
+The D-ASA *units* **MAY** accrue interest \\([IPAC]\\), according to the *day-count
+convention* (see [Day-Count Convention](./day-count-convention.md) section).
 
 If the D-ASA has coupons, the *units* accrued interest **MUST** be calculated with
 respect to the latest coupon due date.
@@ -106,6 +110,7 @@ fail if it has pending coupon payments.
 >
 > Let's have a D-ASA with `4` coupons. The 2nd coupon is due. The D-ASA units are
 > accruing the interest of the 3rd coupon. Coupon payments are not executed synchronously
-> for all the Lenders. The 2nd coupon payment is executed for Lender A, while Lender
-> B is still waiting for the payment settlement. The accrued interest calculation
-> succeeds for Lander A and fails for Lender B until the 2nd coupon payment is settled.
+> for all the Investors. The 2nd coupon payment is executed for Investor A, while
+> Investor B is still waiting for the payment settlement. The accrued interest calculation
+> succeeds for Investor A and fails for Investor B until the 2nd coupon payment is
+> settled.

@@ -331,6 +331,10 @@ class BaseDAsa(ARC4Contract):
         ).submit()
 
     @subroutine
+    def outstanding_principal(self) -> UInt64:
+        return self.circulating_units * self.unit_value
+
+    @subroutine
     def account_units_value(
         self, holding_address: arc4.Address, units: UInt64
     ) -> UInt64:
@@ -456,10 +460,10 @@ class BaseDAsa(ARC4Contract):
 
         Args:
             arranger: D-ASA Arranger Address
-            metadata: D-ASA metadata digest (e.g. prospectus digest)
+            metadata: D-ASA metadata
         """
         self.arranger.value = arranger.native
-        self.metadata = metadata.native
+        self.metadata = metadata.bytes
 
     @arc4.baremethod(allow_actions=["UpdateApplication"])
     def asset_update(self) -> None:
@@ -890,12 +894,19 @@ class BaseDAsa(ARC4Contract):
         Returns:
             Denomination asset ID, Settlement asset ID, Outstanding principal, Unit nominal value, Day-count convention,
             Interest rate, Total supply, Circulating supply, Primary distribution opening date, Primary distribution
-            closure date, Issuance date, Maturity date, Suspended, Defaulted
+            closure date, Issuance date, Maturity date, Suspended, Performance
         """
+        performance = UInt64(cst.PRF_PERFORMANT)
+        if Global.latest_timestamp > self.maturity_date > 0:
+            performance = UInt64(cst.PRF_MATURED)
+        # The reference implementation has no grace or delinquency periods
+        if self.defaulted:
+            performance = UInt64(cst.PRF_DEFAULTED)
+
         return typ.AssetInfo(
             denomination_asset_id=arc4.UInt64(self.denomination_asset_id),
             settlement_asset_id=arc4.UInt64(self.settlement_asset_id),
-            outstanding_principal=arc4.UInt64(self.circulating_units * self.unit_value),
+            outstanding_principal=arc4.UInt64(self.outstanding_principal()),
             unit_value=arc4.UInt64(self.unit_value),
             day_count_convention=arc4.UInt8(self.day_count_convention),
             interest_rate=arc4.UInt16(self.interest_rate),
@@ -910,7 +921,7 @@ class BaseDAsa(ARC4Contract):
             issuance_date=arc4.UInt64(self.issuance_date),
             maturity_date=arc4.UInt64(self.maturity_date),
             suspended=arc4.Bool(bool(self.suspended)),
-            defaulted=arc4.Bool(bool(self.defaulted)),
+            performance=arc4.UInt8(performance),
         )
 
     @arc4.abimethod(readonly=True)
@@ -962,6 +973,7 @@ class BaseDAsa(ARC4Contract):
         Get D-ASA metadata
 
         Returns:
-            Asset metadata
+            Contract type, Calendar, Business day convention, End of month convention, Early repayment effect, Early
+            repayment penalty type, Prospectus hash, Prospectus URL
         """
-        return typ.AssetMetadata(self.metadata)
+        return typ.AssetMetadata.from_bytes(self.metadata)

@@ -1,12 +1,17 @@
 {
-  "name": "set_early_repayment_time_events",
-  "desc": "Set early repayment schedule",
+  "name": "set_early_repayment_option",
+  "desc": "Set early repayment schedule and eventual penalty rate",
   "readonly": false,
   "args": [
     {
       "type": "uint64[]",
-      "name": "early_repayment_time_events",
+      "name": "time_events",
       "desc": "Early repayment time events (strictly ascending order)"
+    },
+    {
+      "type": "uint64",
+      "name": "penalty_rate",
+      "desc": "Early repayment penalty rate (absolute or relative), if any"
     }
   ],
   "returns": {
