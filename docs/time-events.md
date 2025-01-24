@@ -49,10 +49,14 @@ the time at which the D-ASA primary distribution closes;
 - The third element **MUST** be the *issuance date* (`uint64`): the time at which
 D-ASA starts to accrue interest on the principal;
 
-- If the D-ASA has a **defined** number of *coupons*, then the next `K`-elements
+- If the D-ASA has a **fixed** number of *coupons*, then the next `K`-elements
 **MUST** be the *coupon due dates* \\([IP]\\) (`uint64[K]`): times at which the
 coupons mature and the interest payment \\([IPPNT]\\) can be executed[^1]. The first
 coupon due date corresponds to \\([IPANX]\\).
+
+- If the D-ASA has **unlimited** number of *coupons*, then `K` **MUST** be `0` and
+*coupons due dates* \\([IP]\\) are managed with *time periods* (see [Time Periods](./time-periods.md#unlimited-time-schedule)
+section).
 
 - If the D-ASA **has** a *maturity date*, the last element **MUST** be the *maturity
 date* (`uint64`).
