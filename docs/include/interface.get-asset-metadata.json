@@ -4,7 +4,7 @@
   "readonly": true,
   "args": [],
   "returns": {
-    "type": "(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],byte[])",
+    "type": "(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)",
     "desc": "Contract type, Calendar, Business day convention, End of month convention, Early repayment effect, Early repayment penalty type, Prospectus hash, Prospectus URL"
   }
 }
