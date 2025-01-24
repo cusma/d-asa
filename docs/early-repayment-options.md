@@ -49,7 +49,7 @@ The updated *early repayment time events* **MUST NOT** modify past events.
 An early repayment option could have different *prepayment effects* \\([PPEF]\\):
 
 - It **MAY** repay the *principal* partially or totally, to all or some Investors
-(see [Early Repayment](./early-repayment.md) section);
+before the *maturity date* (see [Early Repayment](./early-repayment.md) section);
 
 - It **MAY** reduce the *maturity date* (see [Variable Time Schedule](./variable-time-schedule.md)
 section).
@@ -57,11 +57,12 @@ section).
 The *prepayment effect* **MUST** be identified with one of the following enumerated
 IDs (`uint8`):
 
-| ID  |                 Name                 | ACTUS Acronym | Description                                                                                     |
-|:----|:------------------------------------:|---------------|:------------------------------------------------------------------------------------------------|
-| `0` |            No Prepayment             | \\([N]\\)     | Prepayment is not allowed under the agreement                                                   |
-| `1` | Prepayment Reduces Redemption Amount | \\([A]\\)     | Prepayment is allowed and reduces the redemption amount for the remaining period up to maturity |
-| `2` |     Prepayment Reduces Maturity      | \\([M]\\)     | Prepayment is allowed and reduces the maturity                                                  |
+| ID    |                 Name                 | ACTUS Acronym | Description                                                                                     |
+|:------|:------------------------------------:|---------------|:------------------------------------------------------------------------------------------------|
+| `0`   |            No Prepayment             | \\([N]\\)     | Prepayment is not allowed under the agreement                                                   |
+| `1`   | Prepayment Reduces Redemption Amount | \\([A]\\)     | Prepayment is allowed and reduces the redemption amount for the remaining period up to maturity |
+| `2`   |     Prepayment Reduces Maturity      | \\([M]\\)     | Prepayment is allowed and reduces the maturity                                                  |
+| `255` |                Custom                | -             | Prepayment is allowed and the effect is custom                                                  |
 
 The *prepayment effect* **MAY** be set using the **OPTIONAL** `set_asset_metadata`
 method (see [Metadata](./metadata.md) section).
@@ -83,7 +84,7 @@ The *penalty type* **MUST** be identified with one of the following enumerated I
 | `1`   |       Fixed Penalty        | \\([A]\\)     | A fixed amount applies as penalty                                                                      |
 | `2`   |      Relative Penalty      | \\([R]\\)     | A penalty relative to the notional outstanding applies                                                 |
 | `3`   | Interest Rate Differential | \\([I]\\)     | A penalty based on the current interest rate differential relative to the notional outstanding applies |
-| `255` |       Custom Penalty       | -             | Custom penalty                                                                                         |
+| `255` |           Custom           | -             | Custom penalty                                                                                         |
 
 The *penalty type* **MAY** be set using the **OPTIONAL** `set_asset_metadata` method
 (see [Metadata](./metadata.md) section).
