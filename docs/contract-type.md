@@ -7,12 +7,11 @@
 > The ACTUS taxonomy reduces the majority of all financial contracts to a defined
 > set of 32 generalized cash flow exchange patterns, called contract types.
 
-The D-ASA **MAY** define an informative *contract type* \\([CT]\\).
+It is **RECOMMENDED** to classify the D-ASA with an ACTUS *contract type* \\([CT]\\)
+(`uint8`) (see the <a href="https://github.com/actusfrf/actus-dictionary/blob/master/actus-dictionary-taxonomy.json">ACTUS
+taxonomy</a>).
 
-It is **RECOMMENDED** to classify the D-ASA *contract type* according to the <a href="https://github.com/actusfrf/actus-dictionary/blob/master/actus-dictionary-taxonomy.json">ACTUS
-taxonomy</a>.
-
-The ACTUS *contract type* **MUST** have the following properties:
+The *contract type* **MUST** have the following properties:
 
 - `family`: Basic
 - `class`: Fixed Income
