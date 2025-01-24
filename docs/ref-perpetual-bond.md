@@ -5,18 +5,18 @@
 | Type                    | \\([CT]\\)   | \\([PBN]\\)                |
 | Denomination            | \\([CUR]\\)  | ASA                        |
 | Settlement              | \\([CURS]\\) | ASA                        |
-| Early repayment options |              | No                         |
-| Early repayment penalty | \\([PYTP]\\) | -                          |
 | Interest                | \\([IPNR]\\) | Variable (Interest Oracle) |
-| Coupons                 |              | Yes (Perpetual)            |
-| Time Schedule           |              | Fixed (Events, Periods)    |
+| Coupons                 | \\([IP]\\)   | Yes (Perpetual)            |
+| Time Schedule           | \\([EVT]\\)  | Events, Periods (Fixed)    |
 | Maturity Date           | \\([MD]\\)   | No                         |
-| Principal repayment     |              | Not callable               |
+| Principal Redemption    | \\([PR]\\)   | Not Callable               |
+| Early Repayment Options | \\([PPEF]\\) | \\([N]\\)                  |
+| Early Repayment Penalty | \\([PYTP]\\) | -                          |
 | Day-Count Convention    | \\([IPCD]\\) | \\([AA]\\) or Continuous   |
 | Calendar                | \\([CLDR]\\) | \\([NC]\\)                 |
+| Performance             | \\([PRF]\\)  | Manual Default (Trustee)   |
 | Grace Period            | \\([GRP]\\)  | No                         |
 | Delinquency Period      | \\([DQP]\\)  | No                         |
-| Performance             | \\([PRF]\\)  | Manual default (Trustee)   |
 
 | Execution            | Option                  |
 |----------------------|-------------------------|
@@ -30,6 +30,9 @@
 
 Payments are trustless (i.e., can be triggered by anyone), as long as payments'
 conditions are met (e.g., the payment is due).
+
+AVM fees (ALGO) for the execution of the cash flows are paid by who triggers the
+cash flow.
 
 A coupon payment **cannot** be executed until all the previous due coupons (if
 any) have been paid to all the investors.

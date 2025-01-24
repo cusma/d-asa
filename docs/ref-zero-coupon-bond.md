@@ -5,18 +5,18 @@
 | Type                    | \\([CT]\\)   | \\([PAM]\\)              |
 | Denomination            | \\([CUR]\\)  | ASA                      |
 | Settlement              | \\([CURS]\\) | ASA                      |
-| Early repayment options |              | No                       |
-| Early repayment penalty | \\([PYTP]\\) | -                        |
-| Interest                | \\([IPNR]\\) | Fixed                    |
-| Coupons                 |              | No                       |
-| Time Schedule           |              | Fixed (Events)           |
+| Interest                | \\([IPNR]\\) | Fixed (Discount)         |
+| Coupons                 | \\([IP]\\)   | No                       |
+| Time Schedule           | \\([EVT]\\)  | Events (Fixed)           |
 | Maturity Date           | \\([MD]\\)   | Yes (Fixed)              |
-| Principal repayment     |              | At maturity              |
+| Principal Redemption    | \\([PR]\\)   | At Maturity              |
+| Early Repayment Options | \\([PPEF]\\) | \\([N]\\)                |
+| Early Repayment Penalty | \\([PYTP]\\) | -                        |
 | Day-Count Convention    | \\([IPCD]\\) | \\([AA]\\) or Continuous |
 | Calendar                | \\([CLDR]\\) | \\([NC]\\)               |
+| Performance             | \\([PRF]\\)  | Manual Default (Trustee) |
 | Grace Period            | \\([GRP]\\)  | No                       |
 | Delinquency Period      | \\([DQP]\\)  | No                       |
-| Performance             | \\([PRF]\\)  | Manual default (Trustee) |
 
 | Execution            | Option              |
 |----------------------|---------------------|
@@ -30,6 +30,9 @@
 
 Payments are trustless (i.e., can be triggered by anyone), as long as payments'
 conditions are met (e.g., the payment is due).
+
+AVM fees (ALGO) for the execution of the cash flows are paid by who triggers the
+cash flow.
 
 ## Performance
 
