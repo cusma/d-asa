@@ -14,6 +14,8 @@
 | Early Repayment Penalty | \\([PYTP]\\) | -                        |
 | Day-Count Convention    | \\([IPCD]\\) | \\([AA]\\) or Continuous |
 | Calendar                | \\([CLDR]\\) | \\([NC]\\)               |
+| Business Day Convention | \\([BDC]\\)  | -                        |
+| End of Month Convention | \\([EOMC]\\) | -                        |
 | Performance             | \\([PRF]\\)  | Manual Default (Trustee) |
 | Grace Period            | \\([GRP]\\)  | No                       |
 | Delinquency Period      | \\([DQP]\\)  | No                       |
