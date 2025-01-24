@@ -54,7 +54,7 @@
   - [Set Default Status](./interface-set-default-status.md)
   - [Set Amortizing Rates](./interface-set-amortizing-rates.md)
   - [Set Secondary Time Events](./interface-set-secondary-time-events.md)
-  - [Set Early Repayment Time Events](./interface-set-early-repayment-time-events.md)
+  - [Set Early Repayment Option](./interface-set-early-repayment-option.md)
   - [Primary Distribution](./interface-primary-distribution.md)
   - [Pay Principal](./interface-pay-principal.md)
   - [Pay Coupon](./interface-pay-coupon.md)

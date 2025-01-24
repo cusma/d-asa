@@ -1,7 +1,7 @@
-# Set Early Repayment Time Events
+# Set Early Repayment Option
 
 ```json
-{{#include ./include/interface.set-early-repayment-time-events.json}}
+{{#include ./include/interface.set-early-repayment-option.json}}
 ```
 
 The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an authorized
@@ -21,7 +21,7 @@ are not sorted in strictly ascending order.
 The call **MUST** fail with the `INVALID_EARLY_REPAYMENT_START_DATE` error code
 if the *early repayment start date* is earlier than the *issuance date*.
 
-The call **MUST** fail with the `INVALID_EARLY_REPAYMENT_EDN_DATE` error code if
+The call **MUST** fail with the `INVALID_EARLY_REPAYMENT_END_DATE` error code if
 the *early repayment end date* is later than the *maturity date*.
 
 The call **MUST** fail with the `INVALID_PAST_EVENT` error code if a past event

@@ -7,7 +7,7 @@
 > redemption happens earlier than maturity.
 
 If the debt instrument has early repayment options, the D-ASA **MUST** implement
-the **OPTIONAL** `set_early_repayment_time_events` method.
+the **OPTIONAL** `set_early_repayment_option` method.
 
 ## Early Repayment Schedule
 
@@ -72,10 +72,10 @@ method (see [Metadata](./metadata.md) section).
 
 > Debt instruments may have a penalty as a consequence of an early repayment option.
 
-The D-ASA **MAY** define a *penalty type* \\([PYTP]\\) for the early repayment options.
+The D-ASA **MAY** define a *penalty type* \\([PYTP]\\) (`uint8`) for the early repayment
+options.
 
-The *penalty type* **MUST** be identified with one of the following enumerated IDs
-(`uint8`):
+The *penalty type* **MUST** be identified with one of the following enumerated IDs:
 
 | ID    |            Name            | ACTUS Acronym | Description                                                                                            |
 |:------|:--------------------------:|---------------|:-------------------------------------------------------------------------------------------------------|
@@ -85,10 +85,13 @@ The *penalty type* **MUST** be identified with one of the following enumerated I
 | `3`   | Interest Rate Differential | \\([I]\\)     | A penalty based on the current interest rate differential relative to the notional outstanding applies |
 | `255` |       Custom Penalty       | -             | Custom penalty                                                                                         |
 
-The D-ASA **MAY** define a *penalty rate* \\([PYRT]\\) (`uint64`) for the amount
-of the penalty.
+The *penalty type* **MAY** be set using the **OPTIONAL** `set_asset_metadata` method
+(see [Metadata](./metadata.md) section).
+
+If the debt instrument has a *penalty type* with `ID>0`, the D-ASA **MUST** define
+a *penalty rate* \\([PYRT]\\) (`uint64`) for the amount of the penalty.
 
 > The *penalty rate* is either the absolute amount or the rate of the penalty.
 
-The *penalty type* and the *penalty rate* **MAY** be set using the **OPTIONAL**
-`set_asset_metadata` method (see [Metadata](./metadata.md) section).
+The *penalty rate* **MAY** be set using the **OPTIONAL** `set_early_repayment_option`
+method (see [Metadata](./metadata.md) section).
