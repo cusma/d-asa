@@ -156,7 +156,7 @@ main_after_if_else@2:
     // ):
     txn NumAppArgs
     bz main_bare_routing@28
-    pushbytess 0x4fd6a3cc 0x8cf14b51 0x80e51e9f 0x44363d49 0x67db4f20 0xf6a96c8d 0x229b706f 0x63f99589 0xd3a4d6ab 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x1460a966 0xed02759f 0xfad2173e 0x08efea35 0xddcec07b // method "asset_transfer(address,address,uint64)uint64", method "pay_coupon(address,byte[])(uint64,uint64,byte[])", method "update_interest_rate(uint64)uint64", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_payment_amount(address)(uint64,uint64)", method "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)", method "get_time_periods()(uint64,uint64)[]", method "asset_create(address,byte[])void", method "asset_config(uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()byte[]"
+    pushbytess 0x4fd6a3cc 0x8cf14b51 0x80e51e9f 0x44363d49 0x67db4f20 0xf6a96c8d 0x229b706f 0x904ef91d 0xd3a4d6ab 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x1460a966 0xed02759f 0xfad2173e 0x08efea35 0xfdf9c8dd // method "asset_transfer(address,address,uint64)uint64", method "pay_coupon(address,byte[])(uint64,uint64,byte[])", method "update_interest_rate(uint64)uint64", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_payment_amount(address)(uint64,uint64)", method "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)", method "get_time_periods()(uint64,uint64)[]", method "asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],byte[]))void", method "asset_config(uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],byte[])"
     txna ApplicationArgs 0
     match main_asset_transfer_route@5 main_pay_coupon_route@6 main_update_interest_rate_route@7 main_get_account_units_current_value_route@8 main_get_payment_amount_route@9 main_get_coupons_status_route@10 main_get_time_periods_route@11 main_asset_create_route@12 main_asset_config_route@13 main_set_secondary_time_events_route@14 main_assign_role_route@15 main_revoke_role_route@16 main_open_account_route@17 main_close_account_route@18 main_primary_distribution_route@19 main_set_asset_suspension_route@20 main_set_account_suspension_route@21 main_set_default_status_route@22 main_get_asset_info_route@23 main_get_account_info_route@24 main_get_time_events_route@25 main_get_secondary_market_schedule_route@26 main_get_asset_metadata_route@27
 
@@ -2371,11 +2371,9 @@ asset_create:
     frame_dig -2
     app_global_put
     // smart_contracts/base_d_asa/contract.py:466
-    // self.metadata = metadata.native
-    frame_dig -1
-    extract 2 0
+    // self.metadata = metadata.bytes
     bytec 25 // "metadata"
-    swap
+    frame_dig -1
     app_global_put
     retsub
 
@@ -4699,18 +4697,12 @@ get_asset_metadata:
     // @arc4.abimethod(readonly=True)
     // def get_asset_metadata(self) -> typ.AssetMetadata:
     proto 0 1
-    // smart_contracts/base_d_asa/contract.py:978
-    // return typ.AssetMetadata(self.metadata)
+    // smart_contracts/base_d_asa/contract.py:979
+    // return typ.AssetMetadata.from_bytes(self.metadata)
     intc_0 // 0
     bytec 25 // "metadata"
     app_global_get_ex
     assert // check self.metadata exists
-    dup
-    len
-    itob
-    extract 6 2
-    swap
-    concat
     retsub
 
 
