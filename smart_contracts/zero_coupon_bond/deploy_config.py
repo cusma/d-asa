@@ -20,6 +20,8 @@ def deploy(
     from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
         AssetCreateArgs,
         AssetMetadata,
+        AssetUpdateArgs,
+        Deploy,
         DeployCreate,
         ZeroCouponBondClient,
     )
@@ -32,10 +34,24 @@ def deploy(
 
     app_client.deploy(
         on_schema_break=algokit_utils.OnSchemaBreak.AppendApp,
-        on_update=algokit_utils.OnUpdate.UpdateApp,
+        on_update=algokit_utils.OnUpdate.AppendApp,  # FIXME: Go back to UpdateApp
         create_args=DeployCreate(
             args=AssetCreateArgs(
                 arranger=os.environ["ARRANGER_ADDRESS"],
+                metadata=AssetMetadata(
+                    contract_type=sc_cst.CT_PAM,
+                    calendar=sc_cst.CLDR_NC,
+                    business_day_convention=sc_cst.BDC_NOS,
+                    end_of_month_convention=sc_cst.EOMC_SD,
+                    prepayment_effect=sc_cst.PPEF_N,
+                    penalty_type=sc_cst.PYTP_N,
+                    prospectus_hash=bytes(32),
+                    prospectus_url="Zero Coupon Bond Prospectus",
+                ),
+            )
+        ),
+        update_args=Deploy(
+            args=AssetUpdateArgs(
                 metadata=AssetMetadata(
                     contract_type=sc_cst.CT_PAM,
                     calendar=sc_cst.CLDR_NC,
