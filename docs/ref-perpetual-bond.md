@@ -3,6 +3,7 @@
 | Contract                | ACTUS        | Option                     |
 |-------------------------|--------------|----------------------------|
 | Type                    | \\([CT]\\)   | \\([PBN]\\)                |
+| ID                      | \\([CID]\\)  | D-ASA App ID               |
 | Denomination            | \\([CUR]\\)  | ASA                        |
 | Settlement              | \\([CURS]\\) | ASA                        |
 | Interest                | \\([IPNR]\\) | Variable (Interest Oracle) |

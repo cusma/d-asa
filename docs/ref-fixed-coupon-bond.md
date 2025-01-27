@@ -3,6 +3,7 @@
 | Contract                | ACTUS        | Option                   |
 |-------------------------|--------------|--------------------------|
 | Type                    | \\([CT]\\)   | \\([PAM]\\)              |
+| ID                      | \\([CID]\\)  | D-ASA App ID             |
 | Denomination            | \\([CUR]\\)  | ASA                      |
 | Settlement              | \\([CURS]\\) | ASA                      |
 | Interest                | \\([IPNR]\\) | Fixed                    |
