@@ -1,4 +1,4 @@
-# Roles {#roles}
+# Roles
 
 > D-ASA defines custom roles and permissions for the entities involved in the debt
 > instrument.
@@ -19,7 +19,7 @@ Where `||` denotes concatenation.
 > Let’s have a D-ASA role ID `42` associated with the Algorand Address `XYZ`. The
 > corresponding role key is `42#XYZ`.
 
-## Issuer (Borrower) {#issuer-(borrower)}
+## Issuer (Borrower)
 
 > Issuers are individuals, companies, institutions, governments, or other entities
 > who borrow capital by issuing a debt.
@@ -28,7 +28,7 @@ An Issuer \\([CRID]\\) is an entity that owes a debt issued as D-ASA.
 
 The Issuer role **MUST** be identified with the reserved ID `1` \\([RPL]\\).
 
-## Arranger {#arranger}
+## Arranger
 
 > Arrangers are legal entities authorized to arrange debt instruments on behalf
 > of the issuers.
@@ -42,7 +42,7 @@ The Arranger **SHALL** configure the D-ASA using the `asset_config` method.
 The Arranger **MAY** configure the D-ASA *role-based access control* with the **OPTIONAL**
 `assign_role` and `revoke_role` methods.
 
-## Investor (Lender) {#investor-(lender)}
+## Investor (Lender)
 
 > Investors are lenders providing capital to borrowers with the expectation of a
 > financial return, defined by debt instruments.
@@ -77,20 +77,20 @@ The D-ASA accounts **SHALL** be opened using the `open_account` method.
 The D-ASA accounts **MUST NOT** be opened if the D-ASA is suspended (see [Suspension](./rbac.md#suspension)
 section).
 
-The D-ASA accounts **MUST NOT** be opened if the D-ASA is in default (see [Default](./performance.md#default-default)
+The D-ASA accounts **MUST NOT** be opened if the D-ASA is in default (see [Default](./performance.md#default)
 section).
 
 ### Close Account
 
 The D-ASA accounts **MAY** be closed using the `close_account` method.
 
-The D-ASA accounts **MUST NOT** be closed if the D-ASA is in default (see [Default](./performance.md#default-default)
+The D-ASA accounts **MUST NOT** be closed if the D-ASA is in default (see [Default](./performance.md#default)
 section).
 
 ## Oracles
 
-> Debt instruments may rely on external data, such as interest rates, etc., provided
-> by trusted oracles.
+> Debt instruments may rely on external data, such as interest rates, covenant breaches,
+> etc., provided by trusted oracles.
 
 An Oracle \\([MOC]\\) is an external entity that provides trusted data to the D-ASA.
 

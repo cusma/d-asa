@@ -1,4 +1,4 @@
-# Time Schedule {#time-schedule}
+# Time Schedule
 
 > Debt instruments may have fixed or variable time schedule (e.g., variable coupon
 > due date, etc.).

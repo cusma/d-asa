@@ -75,7 +75,7 @@ of the first failed payment or at the end of the *grace period* (if any).
 > counter, and waits 3 hours to retry. If the D-ASA payment retrial succeeds within
 > the *delinquency period*, a penalty or fee is applied.
 
-## Default {#default}
+## Default
 
 > Default is the ultimate failure to pay the lenders according to the payment obligations.
 > When this happens, the creditors have the right to declare default to the debtors.
