@@ -1,5 +1,7 @@
 # Variable Rates
 
+> ⚠️This section may still be subject to major changes and reviews.
+
 > Debt instruments may have variable interest rates, based on external data oracles.
 
 If the debt instrument has *variable interest rates*, the D-ASA **MAY** implement
