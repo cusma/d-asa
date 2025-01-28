@@ -20,7 +20,7 @@ def test_pass_update(
     updated_metadata = deepcopy(asset_metadata)
     updated_metadata.prospectus_url = "Updated Prospectus"
     base_d_asa_client_active.update_asset_update(
-        metadata=AssetMetadata(**asset_metadata.dictify())
+        metadata=AssetMetadata(**updated_metadata.dictify())
     )
     metadata = base_d_asa_client_active.get_asset_metadata().return_value
     assert metadata.prospectus_url == updated_metadata.prospectus_url
