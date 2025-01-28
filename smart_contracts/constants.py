@@ -51,6 +51,7 @@ PRF_MATURED: Final[int] = 4
 PRF_TERMINATED: Final[int] = 5
 
 # Role IDs
+ROLE_BORROWER: Final[int] = 1
 ROLE_ARRANGER: Final[int] = 20
 ROLE_LENDER: Final[int] = 30
 ROLE_ACCOUNT_MANAGER: Final[int] = 40
