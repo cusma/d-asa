@@ -8,17 +8,18 @@ from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
     PerpetualBondClient,
 )
 from smart_contracts.base_d_asa import config as sc_cfg
-from tests.utils import DAsaMetadata
+
+from .conftest import PROSPECTUS_URL
 
 
 def test_pass_asset_create(
-    asset_metadata: DAsaMetadata,
+    asset_metadata: AssetMetadata,
     arranger: AddressAndSigner,
     perpetual_bond_client_void: PerpetualBondClient,
 ) -> None:
     perpetual_bond_client_void.create_asset_create(
         arranger=arranger.address,
-        metadata=AssetMetadata(**asset_metadata.dictify()),
+        metadata=asset_metadata,
     )
 
     state = perpetual_bond_client_void.get_global_state()
@@ -53,7 +54,7 @@ def test_pass_asset_create(
             sc_cst.PPEF_N,
             sc_cst.PYTP_N,
             bytes(32),
-            "",
+            PROSPECTUS_URL,
         ]
     )
 
