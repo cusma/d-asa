@@ -1,16 +1,15 @@
 # Fixed Coupon Bond
 
-| Contract                | ACTUS        | Option                   |
+## Contract Data Model
+
+| Property                | ACTUS        | Option                   |
 |-------------------------|--------------|--------------------------|
 | Type                    | \\([CT]\\)   | \\([PAM]\\)              |
 | ID                      | \\([CID]\\)  | D-ASA App ID             |
 | Denomination            | \\([CUR]\\)  | ASA                      |
 | Settlement              | \\([CURS]\\) | ASA                      |
 | Interest                | \\([IPNR]\\) | Fixed                    |
-| Coupons                 | \\([IP]\\)   | Yes (Fixed)              |
 | Time Schedule           | \\([EVT]\\)  | Events (Fixed)           |
-| Maturity Date           | \\([MD]\\)   | Yes (Fixed)              |
-| Principal Redemption    | \\([PR]\\)   | At Maturity              |
 | Early Repayment Options | \\([PPEF]\\) | \\([N]\\)                |
 | Early Repayment Penalty | \\([PYTP]\\) | -                        |
 | Day-Count Convention    | \\([IPCD]\\) | \\([AA]\\) or Continuous |
@@ -20,6 +19,16 @@
 | Performance             | \\([PRF]\\)  | Manual Default (Trustee) |
 | Grace Period            | \\([GRP]\\)  | No                       |
 | Delinquency Period      | \\([DQP]\\)  | No                       |
+
+## Contract Events
+
+| Event                | ACTUS        | Option      |
+|----------------------|--------------|-------------|
+| Coupons              | \\([IP]\\)   | Yes (Fixed) |
+| Maturity Date        | \\([MD]\\)   | Yes (Fixed) |
+| Principal Redemption | \\([PR]\\)   | At Maturity |
+
+## Contract Execution
 
 | Execution            | Option                  |
 |----------------------|-------------------------|
