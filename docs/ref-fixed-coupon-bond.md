@@ -22,11 +22,14 @@
 
 ## Contract Events
 
-| Event                | ACTUS        | Option      |
-|----------------------|--------------|-------------|
-| Coupons              | \\([IP]\\)   | Yes (Fixed) |
-| Maturity Date        | \\([MD]\\)   | Yes (Fixed) |
-| Principal Redemption | \\([PR]\\)   | At Maturity |
+| Event                | ACTUS       | Option      |
+|----------------------|-------------|-------------|
+| Coupon Payments      | \\([IP]\\)  | Yes (Fixed) |
+| Known Rate Updates   | \\([RR]\\)  | -           |
+| Unknown Rate Updates | \\([RRF]\\) | -           |
+| Maturity Date        | \\([MD]\\)  | Yes (Fixed) |
+| Principal Repayment  | \\([PR]\\)  | At Maturity |
+| Early Repayment      | \\([PP]\\)  | -           |
 
 ## Contract Execution
 

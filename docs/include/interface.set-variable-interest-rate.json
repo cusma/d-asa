@@ -1,0 +1,54 @@
+{
+  "name": "set_variable_interest_rate",
+  "desc": "Set D-ASA variable interest rate",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint16",
+      "name": "spread",
+      "desc": "Spread in bps"
+    },
+    {
+      "type": "uint16",
+      "name": "life_cap",
+      "desc": "Rate life cap in bps"
+    },
+    {
+      "type": "uint16",
+      "name": "life_floor",
+      "desc": "Rate life floor in bps"
+    },
+    {
+      "type": "uint16",
+      "name": "period_cap",
+      "desc": "Rate period cap in bps"
+    },
+    {
+      "type": "uint16",
+      "name": "period_floor",
+      "desc": "Rate period floor in bps"
+    },
+    {
+      "type": "uint64",
+      "name": "fixing_period",
+      "desc": "Rate fixing period (UNIX time)"
+    }
+  ],
+  "returns": {
+    "type": "void"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Asset operations are suspended"
+    }
+  ]
+}
