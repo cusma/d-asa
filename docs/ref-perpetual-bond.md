@@ -1,15 +1,15 @@
 # Perpetual Bond
 
-| Contract                | ACTUS        | Option                     |
+## Contract Data Model
+
+| Property                | ACTUS        | Option                     |
 |-------------------------|--------------|----------------------------|
 | Type                    | \\([CT]\\)   | \\([PBN]\\)                |
+| ID                      | \\([CID]\\)  | D-ASA App ID               |
 | Denomination            | \\([CUR]\\)  | ASA                        |
 | Settlement              | \\([CURS]\\) | ASA                        |
 | Interest                | \\([IPNR]\\) | Variable (Interest Oracle) |
-| Coupons                 | \\([IP]\\)   | Yes (Perpetual)            |
 | Time Schedule           | \\([EVT]\\)  | Events, Periods (Fixed)    |
-| Maturity Date           | \\([MD]\\)   | No                         |
-| Principal Redemption    | \\([PR]\\)   | Not Callable               |
 | Early Repayment Options | \\([PPEF]\\) | \\([N]\\)                  |
 | Early Repayment Penalty | \\([PYTP]\\) | -                          |
 | Day-Count Convention    | \\([IPCD]\\) | \\([AA]\\) or Continuous   |
@@ -19,6 +19,19 @@
 | Performance             | \\([PRF]\\)  | Manual Default (Trustee)   |
 | Grace Period            | \\([GRP]\\)  | No                         |
 | Delinquency Period      | \\([DQP]\\)  | No                         |
+
+## Contract Events
+
+| Event                | ACTUS       | Option          |
+|----------------------|-------------|-----------------|
+| Coupon Payments      | \\([IP]\\)  | Yes (Perpetual) |
+| Known Rate Updates   | \\([RR]\\)  | -               |
+| Unknown Rate Updates | \\([RRF]\\) | -               |
+| Maturity Date        | \\([MD]\\)  | No              |
+| Principal Repayment  | \\([PR]\\)  | No              |
+| Early Repayment      | \\([PP]\\)  | -               |
+
+## Contract Execution
 
 | Execution            | Option                  |
 |----------------------|-------------------------|

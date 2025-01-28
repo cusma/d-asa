@@ -17,7 +17,10 @@ from algosdk.v2client.algod import AlgodClient
 from algosdk.v2client.indexer import IndexerClient
 
 from smart_contracts import constants as sc_cst
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import BaseDAsaClient
+from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    AssetMetadata,
+    BaseDAsaClient,
+)
 from tests import utils
 from tests.conftest import (
     APR,
@@ -32,6 +35,7 @@ from tests.conftest import (
 )
 
 TOTAL_ASA_FUNDS: Final[int] = PRINCIPAL * (sc_cst.BPS + APR) // sc_cst.BPS
+PROSPECTUS_URL: Final[str] = "Base D-ASA Prospectus"
 
 
 @pytest.fixture(scope="function")
@@ -54,8 +58,17 @@ def time_events(
 
 
 @pytest.fixture(scope="session")
-def asset_metadata() -> utils.DAsaMetadata:
-    return utils.DAsaMetadata(contract_type=sc_cst.CT_PAM)
+def asset_metadata() -> AssetMetadata:
+    return AssetMetadata(
+        contract_type=sc_cst.CT_PAM,
+        calendar=sc_cst.CLDR_NC,
+        business_day_convention=sc_cst.BDC_NOS,
+        end_of_month_convention=sc_cst.EOMC_SD,
+        prepayment_effect=sc_cst.PPEF_N,
+        penalty_type=sc_cst.PYTP_N,
+        prospectus_hash=bytes(32),
+        prospectus_url=PROSPECTUS_URL,
+    )
 
 
 @pytest.fixture(scope="function")
@@ -101,7 +114,7 @@ def base_d_asa_client_void(
 def base_d_asa_client_empty(
     algorand_client: AlgorandClient,
     arranger: AddressAndSigner,
-    asset_metadata: bytes,
+    asset_metadata: AssetMetadata,
     base_d_asa_client_void: BaseDAsaClient,
 ) -> BaseDAsaClient:
     base_d_asa_client_void.create_asset_create(

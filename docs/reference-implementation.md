@@ -3,6 +3,9 @@
 > ⚠️The reference implementations have not been audited. Do not use this code for
 > real products. The author declines all responsibility.
 
+> ⚠️The reference implementation does not guarantee compliance with ACTUS reference
+> implementation.
+
 The reference implementation provides the following features:
 
 - RBAC:
@@ -13,10 +16,16 @@ The reference implementation provides the following features:
   - Authority: can suspend accounts or the whole asset
   - Interest Oracle: can update the interest rate in case of variable rates
 
-- Denomination:
-  - ASA
+- Types:
+  - Zero Coupon Bond
+  - Fixed Coupon Bond
+  - Perpetual Bond
 
-- Payment Agent:
+- Denomination:
+  - On-chain (ASA)
+  - Off-chain
+
+- Payment Agent (Settlement):
   - On-chain (ASA)
 
 - Day-count conventions:
@@ -29,7 +38,7 @@ The reference implementation provides the following features:
 
 - Secondary market
 
-- Notarize metadata (e.g. prospectus)
+- Notarize metadata (e.g., prospectus, etc.)
 
 - Updatable program (restricted to the Arranger)
 
@@ -37,7 +46,7 @@ The reference implementation provides the following features:
 
 D-ASA examples deployed on TestNet:
 
-| Payoff                                          | App ID                                                                        | App Spec                                                                                                                             |
+| Type                                            | App ID                                                                        | App Spec                                                                                                                             |
 |-------------------------------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
 | [Zero Coupon Bond](./ref-zero-coupon-bond.md)   | <a href="https://lora.algokit.io/testnet/application/732462799">732462799</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/zero_coupon_bond/ZeroCouponBond.arc32.json">ARC-32</a>   |
 | [Fixed Coupon Bond](./ref-fixed-coupon-bond.md) | <a href="https://lora.algokit.io/testnet/application/732462811">732462811</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/fixed_coupon_bond/FixedCouponBond.arc32.json">ARC-32</a> |

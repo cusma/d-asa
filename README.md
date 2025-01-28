@@ -6,7 +6,7 @@ Documentation: https://cusma.github.io/d-asa/
 
 D-ASA examples deployed on TestNet:
 
-| Payoff            | App ID                                                             | App Spec                                                                                                                  |
+| Type              | App ID                                                             | App Spec                                                                                                                  |
 |-------------------|--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
 | Zero Coupon Bond] | [732462799](https://lora.algokit.io/testnet/application/732462799) | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/zero_coupon_bond/ZeroCouponBond.arc32.json)   |
 | Fixed Coupon Bond | [732462811](https://lora.algokit.io/testnet/application/732462811) | [ARC-32](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/fixed_coupon_bond/FixedCouponBond.arc32.json) |

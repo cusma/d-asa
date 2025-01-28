@@ -18,6 +18,7 @@ from algosdk.v2client.indexer import IndexerClient
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
+    AssetMetadata,
     ZeroCouponBondClient,
 )
 from tests import utils
@@ -34,6 +35,8 @@ from tests.conftest import (
 
 MATURITY_DELAY: Final[int] = 366 * sc_cst.DAY_2_SEC
 TOTAL_ASA_FUNDS: Final[int] = PRINCIPAL * (sc_cst.BPS + APR) // sc_cst.BPS
+
+PROSPECTUS_URL: Final[str] = "Zero Coupon Bond Prospectus"
 
 
 @pytest.fixture(scope="function")
@@ -56,8 +59,17 @@ def time_events(
 
 
 @pytest.fixture(scope="session")
-def asset_metadata() -> utils.DAsaMetadata:
-    return utils.DAsaMetadata(contract_type=sc_cst.CT_PAM)
+def asset_metadata() -> AssetMetadata:
+    return AssetMetadata(
+        contract_type=sc_cst.CT_PAM,
+        calendar=sc_cst.CLDR_NC,
+        business_day_convention=sc_cst.BDC_NOS,
+        end_of_month_convention=sc_cst.EOMC_SD,
+        prepayment_effect=sc_cst.PPEF_N,
+        penalty_type=sc_cst.PYTP_N,
+        prospectus_hash=bytes(32),
+        prospectus_url="Zero Coupon Bond Prospectus",
+    )
 
 
 @pytest.fixture(scope="function")

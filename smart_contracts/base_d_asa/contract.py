@@ -465,8 +465,8 @@ class BaseDAsa(ARC4Contract):
         self.arranger.value = arranger.native
         self.metadata = metadata.bytes
 
-    @arc4.baremethod(allow_actions=["UpdateApplication"])
-    def asset_update(self) -> None:
+    @arc4.abimethod(allow_actions=["UpdateApplication"])
+    def asset_update(self, metadata: typ.AssetMetadata) -> None:
         """
         Update D-ASA application.
         """
@@ -474,6 +474,7 @@ class BaseDAsa(ARC4Contract):
         # Other implementations may disable D-ASA application updatability or change its authorizations.
         # ⚠️ WARNING: Application updates must be executed VERY carefully, as they might introduce breaking changes.
         self.assert_caller_is_arranger()
+        self.metadata = metadata.bytes
 
     @arc4.abimethod
     def asset_config(

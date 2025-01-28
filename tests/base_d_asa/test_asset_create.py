@@ -8,16 +8,17 @@ from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     BaseDAsaClient,
 )
 from smart_contracts.base_d_asa import config as sc_cfg
-from tests.utils import DAsaMetadata
+
+from .conftest import PROSPECTUS_URL
 
 
 def test_pass_asset_create(
-    asset_metadata: DAsaMetadata,
+    asset_metadata: AssetMetadata,
     arranger: AddressAndSigner,
     base_d_asa_client_void: BaseDAsaClient,
 ) -> None:
     base_d_asa_client_void.create_asset_create(
-        arranger=arranger.address, metadata=AssetMetadata(**asset_metadata.dictify())
+        arranger=arranger.address, metadata=asset_metadata
     )
 
     state = base_d_asa_client_void.get_global_state()
@@ -52,7 +53,7 @@ def test_pass_asset_create(
             sc_cst.PPEF_N,
             sc_cst.PYTP_N,
             bytes(32),
-            "",
+            PROSPECTUS_URL,
         ]
     )
 

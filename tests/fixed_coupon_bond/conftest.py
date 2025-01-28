@@ -18,6 +18,7 @@ from algosdk.v2client.indexer import IndexerClient
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
+    AssetMetadata,
     FixedCouponBondClient,
 )
 from smart_contracts.fixed_coupon_bond import config as sc_cfg
@@ -44,6 +45,8 @@ INTEREST_RATE = sum(COUPON_RATES)
 COUPON_PERIOD: Final[int] = 30 * sc_cst.DAY_2_SEC
 
 TOTAL_ASA_FUNDS: Final[int] = PRINCIPAL * (sc_cst.BPS + INTEREST_RATE) // sc_cst.BPS
+
+PROSPECTUS_URL: Final[str] = "Fixed Coupon Bond Prospectus"
 
 
 @pytest.fixture(scope="session")
@@ -75,8 +78,17 @@ def time_events(
 
 
 @pytest.fixture(scope="session")
-def asset_metadata() -> utils.DAsaMetadata:
-    return utils.DAsaMetadata(contract_type=sc_cst.CT_PAM)
+def asset_metadata() -> AssetMetadata:
+    return AssetMetadata(
+        contract_type=sc_cst.CT_PAM,
+        calendar=sc_cst.CLDR_NC,
+        business_day_convention=sc_cst.BDC_NOS,
+        end_of_month_convention=sc_cst.EOMC_SD,
+        prepayment_effect=sc_cst.PPEF_N,
+        penalty_type=sc_cst.PYTP_N,
+        prospectus_hash=bytes(32),
+        prospectus_url=PROSPECTUS_URL,
+    )
 
 
 @pytest.fixture(scope="function")
@@ -123,7 +135,7 @@ def fixed_coupon_bond_client_void(
 def fixed_coupon_bond_client_empty(
     algorand_client: AlgorandClient,
     arranger: AddressAndSigner,
-    asset_metadata: bytes,
+    asset_metadata: AssetMetadata,
     fixed_coupon_bond_client_void: FixedCouponBondClient,
 ) -> FixedCouponBondClient:
     fixed_coupon_bond_client_void.create_asset_create(
