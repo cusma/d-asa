@@ -216,7 +216,7 @@ class BaseDAsa(ARC4Contract):
 
     @subroutine
     def assert_interest_rate(self, interest_rate: UInt64) -> None:
-        # This subroutine must be used after the principal discount has been
+        # This subroutine must be used after the principal discount has been set
         if not self.principal_discount:
             assert interest_rate > UInt64(0), err.INVALID_INTEREST_RATE
 
