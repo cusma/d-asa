@@ -67,7 +67,7 @@ def test_at_half_period(
     print(value.__dict__)
     assert (
         value.accrued_interest
-        == (account_a.principal * state.interest_rate // 2) // sc_cst.BPS
+        == (account_a.principal * state.principal_discount // 2) // sc_cst.BPS
     )
 
 
