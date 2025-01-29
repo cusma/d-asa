@@ -2631,7 +2631,7 @@ asset_config_bool_merge@18:
     btoi
     frame_bury 2
     // smart_contracts/base_d_asa/contract.py:219-220
-    // # This subroutine must be used after the principal discount has been
+    // # This subroutine must be used after the principal discount has been set
     // if not self.principal_discount:
     intc_0 // 0
     bytec 21 // "principal_discount"
