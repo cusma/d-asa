@@ -34,7 +34,7 @@ def deploy(
 
     app_client.deploy(
         on_schema_break=algokit_utils.OnSchemaBreak.AppendApp,
-        on_update=algokit_utils.OnUpdate.AppendApp,  # FIXME: Go back to UpdateApp
+        on_update=algokit_utils.OnUpdate.UpdateApp,
         create_args=DeployCreate(
             args=AssetCreateArgs(
                 arranger=os.environ["ARRANGER_ADDRESS"],

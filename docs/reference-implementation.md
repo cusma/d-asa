@@ -48,9 +48,9 @@ D-ASA examples deployed on TestNet:
 
 | Type                                            | App ID                                                                        | App Spec                                                                                                                             |
 |-------------------------------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| [Zero Coupon Bond](./ref-zero-coupon-bond.md)   | <a href="https://lora.algokit.io/testnet/application/732462799">732462799</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/zero_coupon_bond/ZeroCouponBond.arc32.json">ARC-32</a>   |
-| [Fixed Coupon Bond](./ref-fixed-coupon-bond.md) | <a href="https://lora.algokit.io/testnet/application/732462811">732462811</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/fixed_coupon_bond/FixedCouponBond.arc32.json">ARC-32</a> |
-| [Perpetual Bond](./ref-perpetual-bond.md)       | <a href="https://lora.algokit.io/testnet/application/732462812">732462812</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/perpetual_bond/PerpetualBond.arc32.json">ARC-32</a>      |
+| [Zero Coupon Bond](./ref-zero-coupon-bond.md)   | <a href="https://lora.algokit.io/testnet/application/733108734">733108734</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/zero_coupon_bond/ZeroCouponBond.arc32.json">ARC-32</a>   |
+| [Fixed Coupon Bond](./ref-fixed-coupon-bond.md) | <a href="https://lora.algokit.io/testnet/application/733108735">733108735</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/fixed_coupon_bond/FixedCouponBond.arc32.json">ARC-32</a> |
+| [Perpetual Bond](./ref-perpetual-bond.md)       | <a href="https://lora.algokit.io/testnet/application/733108736">733108736</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/perpetual_bond/PerpetualBond.arc32.json">ARC-32</a>      |
 
 1. Download the App Spec JSON file;
 1. Navigate to the <a href="https://lora.algokit.io/testnet/app-lab">Lora App Lab</a>;

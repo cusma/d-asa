@@ -19,6 +19,11 @@
       "desc": "Principal, expressed in denomination asset"
     },
     {
+      "type": "uint16",
+      "name": "principal_discount",
+      "desc": "Discount on principal in bps"
+    },
+    {
       "type": "uint64",
       "name": "minimum_denomination",
       "desc": "Minimum denomination, expressed in denomination asset"

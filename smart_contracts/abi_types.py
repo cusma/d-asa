@@ -17,6 +17,7 @@ class AssetInfo(arc4.Struct, kw_only=True):
     outstanding_principal: arc4.UInt64
     unit_value: arc4.UInt64
     day_count_convention: arc4.UInt8
+    principal_discount: arc4.UInt16
     interest_rate: arc4.UInt16
     total_supply: arc4.UInt64
     circulating_supply: arc4.UInt64

@@ -2,23 +2,24 @@
 
 ## Contract Data Model
 
-| Property                | ACTUS        | Option                   |
-|-------------------------|--------------|--------------------------|
-| Type                    | \\([CT]\\)   | \\([PAM]\\)              |
-| ID                      | \\([CID]\\)  | D-ASA App ID             |
-| Denomination            | \\([CUR]\\)  | ASA                      |
-| Settlement              | \\([CURS]\\) | ASA                      |
-| Interest                | \\([IPNR]\\) | Fixed                    |
-| Time Schedule           | \\([EVT]\\)  | Events (Fixed)           |
-| Early Repayment Options | \\([PPEF]\\) | \\([N]\\)                |
-| Early Repayment Penalty | \\([PYTP]\\) | -                        |
-| Day-Count Convention    | \\([IPCD]\\) | \\([AA]\\) or Continuous |
-| Calendar                | \\([CLDR]\\) | \\([NC]\\)               |
-| Business Day Convention | \\([BDC]\\)  | -                        |
-| End of Month Convention | \\([EOMC]\\) | -                        |
-| Performance             | \\([PRF]\\)  | Manual Default (Trustee) |
-| Grace Period            | \\([GRP]\\)  | No                       |
-| Delinquency Period      | \\([DQP]\\)  | No                       |
+| Property                | ACTUS         | Option                   |
+|-------------------------|---------------|--------------------------|
+| Type                    | \\([CT]\\)    | \\([PAM]\\)              |
+| ID                      | \\([CID]\\)   | D-ASA App ID             |
+| Denomination            | \\([CUR]\\)   | ASA                      |
+| Settlement              | \\([CURS]\\)  | ASA                      |
+| Interest                | \\([IPNR]\\)  | Fixed                    |
+| Principal Discount      | \\([PDIED]\\) | -                        |
+| Time Schedule           | \\([EVT]\\)   | Events (Fixed)           |
+| Early Repayment Options | \\([PPEF]\\)  | \\([N]\\)                |
+| Early Repayment Penalty | \\([PYTP]\\)  | -                        |
+| Day-Count Convention    | \\([IPCD]\\)  | \\([AA]\\) or Continuous |
+| Calendar                | \\([CLDR]\\)  | \\([NC]\\)               |
+| Business Day Convention | \\([BDC]\\)   | -                        |
+| End of Month Convention | \\([EOMC]\\)  | -                        |
+| Performance             | \\([PRF]\\)   | Manual Default (Trustee) |
+| Grace Period            | \\([GRP]\\)   | No                       |
+| Delinquency Period      | \\([DQP]\\)   | No                       |
 
 ## Contract Events
 

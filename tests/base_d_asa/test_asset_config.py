@@ -41,12 +41,13 @@ def test_pass_asset_config(
     assert state.unit_value == base_d_asa_cfg.minimum_denomination
     assert state.day_count_convention == base_d_asa_cfg.day_count_convention
 
-    # Supply
+    # Principal and Supply
     assert (
         state.total_units
         == base_d_asa_cfg.principal // base_d_asa_cfg.minimum_denomination
     )
     assert not state.circulating_units
+    assert not state.principal_discount
 
     # Interest Rate
     assert state.interest_rate == base_d_asa_cfg.interest_rate

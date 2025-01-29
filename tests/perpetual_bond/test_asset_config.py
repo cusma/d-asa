@@ -47,12 +47,13 @@ def test_pass_asset_config(
     assert state.unit_value == perpetual_bond_cfg.minimum_denomination
     assert state.day_count_convention == perpetual_bond_cfg.day_count_convention
 
-    # Supply
+    # Principal and Supply
     assert (
         state.total_units
         == perpetual_bond_cfg.principal // perpetual_bond_cfg.minimum_denomination
     )
     assert not state.circulating_units
+    assert not state.principal_discount
 
     # Interest Rate
     assert state.interest_rate == perpetual_bond_cfg.interest_rate

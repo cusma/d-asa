@@ -58,9 +58,10 @@ def test_pass_asset_create(
         ]
     )
 
-    # Supply
+    # Principal and Supply
     assert not state.total_units
     assert not state.circulating_units
+    assert not state.principal_discount
 
     # Coupons
     assert not state.total_coupons

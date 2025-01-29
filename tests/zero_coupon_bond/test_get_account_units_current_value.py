@@ -33,7 +33,7 @@ def test_account_units_value_during_primary(
     print(value.__dict__)
     assert (
         value.units_value
-        == account.principal * (sc_cst.BPS - state.interest_rate) // sc_cst.BPS
+        == account.principal * (sc_cst.BPS - state.principal_discount) // sc_cst.BPS
     )
     assert value.accrued_interest == 0
     assert not value.day_count_factor[0]
@@ -72,7 +72,7 @@ def test_account_units_value_at_issuance(
 
     assert (
         value.units_value
-        == account.principal * (sc_cst.BPS - state.interest_rate) // sc_cst.BPS
+        == account.principal * (sc_cst.BPS - state.principal_discount) // sc_cst.BPS
     )
     assert value.accrued_interest == 0
     assert value.day_count_factor[0] == 0
