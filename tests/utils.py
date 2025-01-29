@@ -26,6 +26,7 @@ class DAsaConfig:
     denomination_asset_id: int
     settlement_asset_id: int
     principal: int
+    principal_discount: int
     minimum_denomination: int
     day_count_convention: int
     interest_rate: int
