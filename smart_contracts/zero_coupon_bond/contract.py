@@ -26,7 +26,7 @@ class ZeroCouponBond(
     ),
 ):
     """
-    Zero Coupon Bond, placed at discount, fixed interest rate, principal at maturity.
+    Zero Coupon Bond, placed at discount, principal at maturity.
     """
 
     def __init__(self) -> None:
@@ -65,7 +65,7 @@ class ZeroCouponBond(
         principal_period = day_count_factor.denominator.native
         return (
             self.account_units_value(holding_address, units)
-            * self.interest_rate
+            * self.principal_discount
             * accrued_period
             // (
                 cst.BPS * principal_period
@@ -190,7 +190,7 @@ class ZeroCouponBond(
             holding_address, units.native
         )
         account_units_discount = (
-            account_units_nominal_value * self.interest_rate // cst.BPS
+            account_units_nominal_value * self.principal_discount // cst.BPS
         )
 
         # Value during primary distribution
@@ -241,12 +241,10 @@ class ZeroCouponBond(
             INVALID_PAYMENT_INDEX: Invalid 1-based payment index
         """
         self.assert_valid_holding_address(holding_address)
-        interest_amount = UInt64()
         principal_amount = UInt64()
         if self.status_is_active():
             principal_amount = self.account_total_units_value(holding_address)
-            interest_amount = principal_amount * self.interest_rate // cst.BPS
         return typ.PaymentAmounts(
-            interest=arc4.UInt64(interest_amount),
+            interest=arc4.UInt64(0),
             principal=arc4.UInt64(principal_amount),
         )
