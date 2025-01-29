@@ -102,6 +102,7 @@ def fixed_coupon_bond_cfg(
         denomination_asset_id=currency.id,
         settlement_asset_id=currency.id,
         principal=PRINCIPAL,
+        principal_discount=0,
         minimum_denomination=MINIMUM_DENOMINATION,
         day_count_convention=day_count_convention,
         interest_rate=INTEREST_RATE,
