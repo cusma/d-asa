@@ -69,6 +69,9 @@ class BaseDAsa(ARC4Contract):
         self.total_units = UInt64()
         self.circulating_units = UInt64()
 
+        # Principal
+        self.principal_discount = UInt64()
+
         # Interest
         self.interest_rate = UInt64()
 
@@ -213,7 +216,9 @@ class BaseDAsa(ARC4Contract):
 
     @subroutine
     def assert_interest_rate(self, interest_rate: UInt64) -> None:
-        assert interest_rate > UInt64(0), err.INVALID_INTEREST_RATE
+        # This subroutine must be used after the principal discount has been
+        if not self.principal_discount:
+            assert interest_rate > UInt64(0), err.INVALID_INTEREST_RATE
 
     @subroutine
     def set_interest_rate(self, interest_rate: UInt64) -> None:
@@ -482,6 +487,7 @@ class BaseDAsa(ARC4Contract):
         denomination_asset_id: arc4.UInt64,
         settlement_asset_id: arc4.UInt64,
         principal: arc4.UInt64,
+        principal_discount: arc4.UInt64,
         minimum_denomination: arc4.UInt64,
         day_count_convention: arc4.UInt8,
         interest_rate: arc4.UInt16,
@@ -496,6 +502,7 @@ class BaseDAsa(ARC4Contract):
             denomination_asset_id: Denomination asset identifier
             settlement_asset_id: Settlement asset identifier
             principal: Principal, expressed in denomination asset
+            principal_discount: Principal discount in bps
             minimum_denomination: Minimum denomination, expressed in denomination asset
             day_count_convention: Day-count convention for interests calculation
             interest_rate: Interest rate in bps
@@ -534,6 +541,7 @@ class BaseDAsa(ARC4Contract):
         ), err.INVALID_MINIMUM_DENOMINATION
         self.unit_value = minimum_denomination.native
         self.total_units = principal.native // minimum_denomination.native
+        self.principal_discount = principal_discount.native
 
         # Set Day-Count Convention
         self.assert_day_count_convention(day_count_convention.native)
@@ -910,6 +918,7 @@ class BaseDAsa(ARC4Contract):
             outstanding_principal=arc4.UInt64(self.outstanding_principal()),
             unit_value=arc4.UInt64(self.unit_value),
             day_count_convention=arc4.UInt8(self.day_count_convention),
+            principal_discount=arc4.UInt16(self.principal_discount),
             interest_rate=arc4.UInt16(self.interest_rate),
             total_supply=arc4.UInt64(self.total_units),
             circulating_supply=arc4.UInt64(self.circulating_units),
