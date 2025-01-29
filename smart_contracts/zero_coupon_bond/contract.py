@@ -39,6 +39,11 @@ class ZeroCouponBond(
         assert Txn.local_num_uint == cfg.LOCAL_UINTS, err.WRONG_LOCAL_UINTS
 
     @subroutine
+    def assert_interest_rate(self, interest_rate: UInt64) -> None:
+        # This subroutine must be used after the principal discount has been set
+        assert interest_rate == UInt64(0), err.INVALID_INTEREST_RATE
+
+    @subroutine
     def day_count_factor(self) -> typ.DayCountFactor:
         # The reference implementation supports only the Actual/Actual and Continuous day-count conventions
         accrued_period = Global.latest_timestamp - self.issuance_date
