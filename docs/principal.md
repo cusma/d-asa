@@ -1,9 +1,9 @@
-# Principal (Par) {#principal-(par)}
+# Principal {#principal}
 
 > Debt instruments principal is the amount of capital borrowed and used as a base
 > for calculating interest.
 
-The D-ASA **MAY** define the *principal* \\([NT]\\) (`uint64`)*,* expressed in the
+The D-ASA **MAY** define the *principal* \\([NT]\\) (`uint64`), expressed in the
 *denomination asset*.
 
 If the D-ASA has a *principal*, it **MUST** define a *minimum denomination* (`uint64`),
@@ -17,7 +17,26 @@ method.
 If the D-ASA has no defined *principal*, the *principal* and the *minimum denomination*
 **MUST** be set to `0`.
 
+## Discount
+
+> Debt instruments principal may be placed at discount on issuance.
+
+The D-ASA **MAY** define a *discount* rate \\([PDIED]\\) (`uint16`) in *bps* to
+apply to the principal on the issuance.
+
+The *discount* **MUST** be set using the `asset_config` method.
+
+> 📎 **EXAMPLE**
+>
+> Let’s have a D-ASA denominated in EUR, with a principal of 1M EUR paid at maturity
+> and a minimum denomination of 1,000 EUR. The D-ASA has a principal discount of
+> 200 bps (2%) at the issuance. Each D-ASA unit is sold on the primary market at
+> 980 EUR and will redeem 1,000 EUR of principal at maturity.
+
 ## Amortization
+
+> Debt instruments principal may be amortized until maturity, according to an amortization
+> schedule.
 
 If the debt instrument has *principal amortization*, the D-ASA **MUST** define the
 *amortization rates* as `uint16[]` array, where:
