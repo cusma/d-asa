@@ -11,7 +11,7 @@
 > of payees.
 
 > Although a single block proposer could order transactions in a block, in a healthy
-> network, block proposers are selected randomly by the Algorand consensus. Therefore,
+> network block proposers are selected randomly by the Algorand consensus. Therefore,
 > order of payments in a block is random and unbiased, with no systematic advantage
 > or precedence of a payee with respect to others.
 

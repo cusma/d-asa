@@ -31,9 +31,11 @@ The *discount* **MUST** be set using the `asset_config` method.
 > Let’s have a D-ASA denominated in EUR, with a principal of 1M EUR paid at maturity
 > and a minimum denomination of 1,000 EUR. The D-ASA has a principal discount of
 > 200 bps (2%) at the issuance. Each D-ASA unit is sold on the primary market at
-> 980 EUR and will redeem 1,000 EUR of principal at maturity.
+> 980 EUR and will be redeemed for 1,000 EUR of principal at maturity.
 
 ## Amortization
+
+> ⚠️This section is still subject to major changes and reviews.
 
 > Debt instruments principal may be amortized until maturity, according to an amortization
 > schedule.
@@ -41,18 +43,22 @@ The *discount* **MUST** be set using the `asset_config` method.
 If the debt instrument has *principal amortization*, the D-ASA **MUST** define the
 *amortization rates* as `uint16[]` array, where:
 
-- The length of the array is `N=K+1`, with `K` equal to the **fixed** *total coupons*;
+- The length of the array is `N=K+1`, with `K` equal to the **fixed** *total coupons*
+(see [Coupons](./interests.md#coupons) section);
 
 - The first `K`elements of the array are the *amortizing rates* associated with
 *coupon* payments;
 
-- The last element of the array is the *amortization rate* associated with *principal*
-payment;
+- The last element of the array is the *amortization rate* associated with *outstanding
+principal* payment at *maturity date*;
 
 - The elements of the array are expressed in *<a href="https://en.wikipedia.org/wiki/Basis_point">basis
 points</a>* (*bps*);
 
 - The sum of all the *amortization rates* is equal to `10,000` *bps*.
+
+The *amortization rates* define the amount of principal \\([PRNXT]\\) paid at the
+next payment date.
 
 > 📎 **EXAMPLE**
 >

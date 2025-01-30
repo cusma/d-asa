@@ -1,11 +1,24 @@
 # Variable Rates
 
-> ⚠️This section may still be subject to major changes and reviews.
+> ⚠️This section is still subject to major changes and reviews.
 
 > Debt instruments may have variable interest rates, based on external data oracles.
 
 If the debt instrument has *variable interest rates*, the D-ASA **MAY** implement
 the **OPTIONAL** `set_variable_interest` method.
+
+## Interest Update Dates
+
+The D-ASA **MUST** define *interest update dates* of known \\([RRF]\\) or unknown
+\\([RR]\\) with respect to:
+
+- *time events* if the D-ASA has **fixed** number of *coupons* (see [Time
+Events](./time-events.md#time-events-array) section);
+
+- *time periods* if the D-ASA has **undefined** number of *coupons* (see [Time
+Periods](./time-periods.md#unlimited-time-schedule) section).
+
+The first *interest update date* corresponds to \\([RRANX]\\).
 
 ## Spread
 
@@ -30,7 +43,7 @@ spread* to `0`.
 > Debt instruments may define limitations to the interest rate variability, either
 > over the whole contract lifespan or over specific periods.
 
-### Life
+### Life Caps
 
 The D-ASA **MAY** define a *life cap* \\([RRLC]\\) (`uint16`) in *bps* to apply
 to the variable *interest rate*.
@@ -47,7 +60,7 @@ cap* to `0`.
 If the debt instrument has no *life floor*, then the D-ASA **MUST** set the *life
 floor* to `0`.
 
-### Period
+### Period Caps
 
 The D-ASA **MAY** define a *period cap* \\([RRPC]\\) (`uint16`) in *bps* to apply
 to the variable *interest rate*.
