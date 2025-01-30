@@ -5,15 +5,22 @@ from algokit_utils import (
     AlgorandClient,
     AssetOptInParams,
     AssetTransferParams,
-    OnCompleteCallParameters,
     SigningAccount,
 )
 from algokit_utils.config import config
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    AssetConfigArgs,
+    AssetCreateArgs,
     AssetMetadata,
+    AssignRoleArgs,
     BaseDAsaClient,
+    BaseDAsaFactory,
+    OpenAccountArgs,
+    PrimaryDistributionArgs,
+    SetAssetSuspensionArgs,
+    SetSecondaryTimeEventsArgs,
 )
 from tests import utils
 from tests.conftest import (
@@ -84,38 +91,28 @@ def base_d_asa_cfg(
 
 
 @pytest.fixture(scope="function")
-def base_d_asa_client_void(
-    algorand: AlgorandClient, arranger: SigningAccount
-) -> BaseDAsaClient:
-    config.configure(
-        debug=False,
-        # trace_all=True,
-    )
-
-    client = BaseDAsaClient(
-        algorand.client.algod,
-        creator=arranger.address,
-        signer=arranger.signer,
-        indexer_client=algorand.client.indexer,
-    )
-    return client
-
-
-@pytest.fixture(scope="function")
 def base_d_asa_client_empty(
     algorand: AlgorandClient,
     arranger: SigningAccount,
     asset_metadata: AssetMetadata,
-    base_d_asa_client_void: BaseDAsaClient,
 ) -> BaseDAsaClient:
-    base_d_asa_client_void.create_asset_create(
-        arranger=arranger.address, metadata=asset_metadata
+    config.configure(
+        debug=False,
+        populate_app_call_resources=True,
+        # trace_all=True,
+    )
+
+    factory = algorand.client.get_typed_app_factory(
+        BaseDAsaFactory, default_sender=arranger.address, default_signer=arranger.signer
+    )
+    client, _ = factory.send.create.asset_create(
+        AssetCreateArgs(arranger=arranger.address, metadata=asset_metadata)
     )
     algorand.account.ensure_funded_from_environment(
-        account_to_fund=base_d_asa_client_void.app_address,
+        account_to_fund=client.app_address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
-    return base_d_asa_client_void
+    return client
 
 
 @pytest.fixture(scope="function")
@@ -132,13 +129,12 @@ def account_manager(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
-    base_d_asa_client_empty.assign_role(
-        role_address=account.address,
-        role=account.role_id(),
-        config=role_config,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(base_d_asa_client_empty.app_id, account.box_id)]
-        ),
+    base_d_asa_client_empty.send.assign_role(
+        AssignRoleArgs(
+            role_address=account.address,
+            role=account.role_id(),
+            config=role_config,
+        )
     )
     return account
 
@@ -157,13 +153,12 @@ def authority(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
-    base_d_asa_client_empty.assign_role(
-        role_address=account.address,
-        role=account.role_id(),
-        config=role_config,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(base_d_asa_client_empty.app_id, account.box_id)]
-        ),
+    base_d_asa_client_empty.send.assign_role(
+        AssignRoleArgs(
+            role_address=account.address,
+            role=account.role_id(),
+            config=role_config,
+        )
     )
     return account
 
@@ -175,15 +170,8 @@ def base_d_asa_client_active(
     base_d_asa_cfg: utils.DAsaConfig,
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> BaseDAsaClient:
-    base_d_asa_client_empty.asset_config(
-        **base_d_asa_cfg.dictify(),
-        transaction_parameters=OnCompleteCallParameters(
-            foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-            boxes=[
-                (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-            ],
-        ),
+    base_d_asa_client_empty.send.asset_config(
+        AssetConfigArgs(**base_d_asa_cfg.dictify())
     )
 
     algorand.send.asset_transfer(
@@ -210,17 +198,16 @@ def primary_dealer(
         account_to_fund=account.address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
-    state = base_d_asa_client_active.get_global_state()
+    state = base_d_asa_client_active.send.get_global_state()
     role_config = utils.set_role_config(
         state.primary_distribution_opening_date, state.primary_distribution_closure_date
     )
-    base_d_asa_client_active.assign_role(
-        role_address=account.address,
-        role=account.role_id(),
-        config=role_config,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(base_d_asa_client_active.app_id, account.box_id)]
-        ),
+    base_d_asa_client_active.send.assign_role(
+        AssignRoleArgs(
+            role_address=account.address,
+            role=account.role_id(),
+            config=role_config,
+        )
     )
     return account
 
@@ -248,19 +235,11 @@ def account_factory(
             )
         )
 
-        base_d_asa_client.open_account(
-            holding_address=account.address,
-            payment_address=account.address,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=account_manager.signer,
-                boxes=[
-                    (base_d_asa_client.app_id, account_manager.box_id),
-                    (
-                        base_d_asa_client.app_id,
-                        utils.DAsaAccount.box_id_from_address(account.address),
-                    ),
-                ],
-            ),
+        base_d_asa_client.send.open_account(
+            OpenAccountArgs(
+                holding_address=account.address,
+                payment_address=account.address,
+            )
         )
         return utils.DAsaAccount(
             d_asa_client=base_d_asa_client,
@@ -275,9 +254,11 @@ def account_factory(
 def base_d_asa_client_primary(
     base_d_asa_client_active: BaseDAsaClient,
 ) -> BaseDAsaClient:
-    state = base_d_asa_client_active.get_global_state()
-    base_d_asa_client_active.set_secondary_time_events(
-        secondary_market_time_events=[state.issuance_date, state.maturity_date],
+    state = base_d_asa_client_active.state.global_state.get_all()
+    base_d_asa_client_active.send.set_secondary_time_events(
+        SetSecondaryTimeEventsArgs(
+            secondary_market_time_events=[state.issuance_date, state.maturity_date]
+        )
     )
     utils.time_warp(state.primary_distribution_opening_date)
     return base_d_asa_client_active
@@ -291,16 +272,11 @@ def account_with_units_factory(
 ) -> Callable[..., utils.DAsaAccount]:
     def _factory(*, units: int = INITIAL_D_ASA_UNITS) -> utils.DAsaAccount:
         account = account_factory(base_d_asa_client_primary)
-        base_d_asa_client_primary.primary_distribution(
-            holding_address=account.holding_address,
-            units=units,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=primary_dealer.signer,
-                boxes=[
-                    (base_d_asa_client_primary.app_id, primary_dealer.box_id),
-                    (base_d_asa_client_primary.app_id, account.box_id),
-                ],
-            ),
+        base_d_asa_client_primary.send.primary_distribution(
+            PrimaryDistributionArgs(
+                holding_address=account.holding_address,
+                units=units,
+            )
         )
         return account
 
@@ -318,7 +294,7 @@ def account_a(
 def base_d_asa_client_ongoing(
     base_d_asa_client_primary: BaseDAsaClient,
 ) -> BaseDAsaClient:
-    state = base_d_asa_client_primary.get_global_state()
+    state = base_d_asa_client_primary.state.global_state.get_all()
     utils.time_warp(state.issuance_date)
     return base_d_asa_client_primary
 
@@ -327,11 +303,7 @@ def base_d_asa_client_ongoing(
 def base_d_asa_client_suspended(
     authority: utils.DAsaAuthority, base_d_asa_client_ongoing: BaseDAsaClient
 ) -> BaseDAsaClient:
-    base_d_asa_client_ongoing.set_asset_suspension(
-        suspended=True,
-        transaction_parameters=OnCompleteCallParameters(
-            signer=authority.signer,
-            boxes=[(base_d_asa_client_ongoing.app_id, authority.box_id)],
-        ),
+    base_d_asa_client_ongoing.send.set_asset_suspension(
+        SetAssetSuspensionArgs(suspended=True),
     )
     return base_d_asa_client_ongoing
