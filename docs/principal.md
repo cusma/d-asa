@@ -49,8 +49,8 @@ If the debt instrument has *principal amortization*, the D-ASA **MUST** define t
 - The first `K`elements of the array are the *amortizing rates* associated with
 *coupon* payments;
 
-- The last element of the array is the *amortization rate* associated with *principal*
-payment;
+- The last element of the array is the *amortization rate* associated with *outstanding
+principal* payment at *maturity date*;
 
 - The elements of the array are expressed in *<a href="https://en.wikipedia.org/wiki/Basis_point">basis
 points</a>* (*bps*);
