@@ -35,9 +35,9 @@ PROSPECTUS_URL: Final[str] = "Zero Coupon Bond Prospectus"
 
 @pytest.fixture(scope="function")
 def time_events(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
 ) -> utils.TimeEvents:
-    current_ts = utils.get_latest_timestamp(algorand_client.client.algod)
+    current_ts = utils.get_latest_timestamp(algorand.client.algod)
     primary_distribution_opening = current_ts + PRIMARY_DISTRIBUTION_DELAY
     primary_distribution_closure = (
         primary_distribution_opening + PRIMARY_DISTRIBUTION_DURATION
@@ -88,7 +88,7 @@ def zero_coupon_bond_cfg(
 
 @pytest.fixture(scope="function")
 def zero_coupon_bond_client_void(
-    algorand_client: AlgorandClient, arranger: SigningAccount
+    algorand: AlgorandClient, arranger: SigningAccount
 ) -> ZeroCouponBondClient:
     config.configure(
         debug=False,
@@ -96,17 +96,17 @@ def zero_coupon_bond_client_void(
     )
 
     client = ZeroCouponBondClient(
-        algorand_client.client.algod,
+        algorand.client.algod,
         creator=arranger.address,
         signer=arranger.signer,
-        indexer_client=algorand_client.client.indexer,
+        indexer_client=algorand.client.indexer,
     )
     return client
 
 
 @pytest.fixture(scope="function")
 def zero_coupon_bond_client_empty(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     arranger: SigningAccount,
     asset_metadata: AssetMetadata,
     zero_coupon_bond_client_void: ZeroCouponBondClient,
@@ -114,7 +114,7 @@ def zero_coupon_bond_client_empty(
     zero_coupon_bond_client_void.create_asset_create(
         arranger=arranger.address, metadata=asset_metadata
     )
-    algorand_client.account.ensure_funded_from_environment(
+    algorand.account.ensure_funded_from_environment(
         account_to_fund=zero_coupon_bond_client_void.app_address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
@@ -123,14 +123,14 @@ def zero_coupon_bond_client_empty(
 
 @pytest.fixture(scope="function")
 def account_manager(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     zero_coupon_bond_cfg: utils.DAsaConfig,
     zero_coupon_bond_client_empty: ZeroCouponBondClient,
 ) -> utils.DAsaAccountManager:
-    account = algorand_client.account.random()
+    account = algorand.account.random()
     account = utils.DAsaAccountManager(private_key=account.private_key)
 
-    algorand_client.account.ensure_funded_from_environment(
+    algorand.account.ensure_funded_from_environment(
         account_to_fund=account.address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
@@ -148,14 +148,14 @@ def account_manager(
 
 @pytest.fixture(scope="function")
 def authority(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     zero_coupon_bond_cfg: utils.DAsaConfig,
     zero_coupon_bond_client_empty: ZeroCouponBondClient,
 ) -> utils.DAsaAuthority:
-    account = algorand_client.account.random()
+    account = algorand.account.random()
     account = utils.DAsaAuthority(private_key=account.private_key)
 
-    algorand_client.account.ensure_funded_from_environment(
+    algorand.account.ensure_funded_from_environment(
         account_to_fund=account.address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
@@ -173,7 +173,7 @@ def authority(
 
 @pytest.fixture(scope="function")
 def zero_coupon_bond_client_active(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     bank: SigningAccount,
     zero_coupon_bond_cfg: utils.DAsaConfig,
     zero_coupon_bond_client_empty: ZeroCouponBondClient,
@@ -189,7 +189,7 @@ def zero_coupon_bond_client_active(
         ),
     )
 
-    algorand_client.send.asset_transfer(
+    algorand.send.asset_transfer(
         AssetTransferParams(
             asset_id=zero_coupon_bond_cfg.denomination_asset_id,
             amount=TOTAL_ASA_FUNDS,
@@ -204,13 +204,13 @@ def zero_coupon_bond_client_active(
 
 @pytest.fixture(scope="function")
 def primary_dealer(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     zero_coupon_bond_client_active: ZeroCouponBondClient,
 ) -> utils.DAsaPrimaryDealer:
-    account = algorand_client.account.random()
+    account = algorand.account.random()
     account = utils.DAsaPrimaryDealer(private_key=account.private_key)
 
-    algorand_client.account.ensure_funded_from_environment(
+    algorand.account.ensure_funded_from_environment(
         account_to_fund=account.address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
@@ -231,20 +231,20 @@ def primary_dealer(
 
 @pytest.fixture(scope="function")
 def account_factory(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     bank: SigningAccount,
     currency: utils.Currency,
     account_manager: utils.DAsaAccountManager,
 ) -> Callable[..., utils.DAsaAccount]:
     def _factory(base_d_asa_client: ZeroCouponBondClient) -> utils.DAsaAccount:
-        account = algorand_client.account.random()
+        account = algorand.account.random()
 
-        algorand_client.account.ensure_funded_from_environment(
+        algorand.account.ensure_funded_from_environment(
             account_to_fund=account.address,
             min_spending_balance=INITIAL_ALGO_FUNDS,
         )
 
-        algorand_client.send.asset_opt_in(
+        algorand.send.asset_opt_in(
             AssetOptInParams(
                 asset_id=currency.id,
                 sender=account.address,

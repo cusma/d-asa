@@ -9,7 +9,7 @@ from tests.utils import DAsaAccount, DAsaConfig, time_warp
 
 
 def test_all_due_coupons_paid(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     fixed_coupon_bond_cfg: DAsaConfig,
     account_a: DAsaAccount,
     account_b: DAsaAccount,

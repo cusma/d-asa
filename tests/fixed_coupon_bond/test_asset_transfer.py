@@ -398,7 +398,7 @@ def test_fail_pending_coupon_payment() -> None:
 
 
 def test_fail_not_fungible(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     fixed_coupon_bond_cfg: DAsaConfig,
     fixed_coupon_bond_client_primary: FixedCouponBondClient,
     account_with_units_factory: Callable[..., DAsaAccount],

@@ -18,7 +18,7 @@ def test_count_due_coupons_before_issuance(
 
 
 def test_count_due_coupons_ongoing(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     arranger: SigningAccount,
     perpetual_bond_cfg: DAsaConfig,
     perpetual_bond_client_ongoing: PerpetualBondClient,

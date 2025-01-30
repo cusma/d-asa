@@ -22,7 +22,7 @@ from tests.utils import (
 
 
 def test_pass_pay_principal(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     currency: Currency,
     account_with_coupons_factory: Callable[..., DAsaAccount],
     fixed_coupon_bond_client_primary: FixedCouponBondClient,
@@ -168,7 +168,7 @@ def test_fail_not_mature(
 
 
 def test_fail_pending_coupon_payment(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     fixed_coupon_bond_cfg: DAsaConfig,
     account_with_coupons_factory: Callable[..., DAsaAccount],
     fixed_coupon_bond_client_primary: FixedCouponBondClient,

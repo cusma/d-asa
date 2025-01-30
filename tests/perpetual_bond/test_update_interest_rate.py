@@ -23,7 +23,7 @@ INTEREST_RATE_INCREASE: Final[int] = 100  # BPS equal to 1%
 
 
 def test_pass_primary_distribution(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     interest_oracle: DAsaInterestOracle,
     perpetual_bond_client_primary: PerpetualBondClient,
 ) -> None:
@@ -86,7 +86,7 @@ def test_pass_after_issuance(
 
 
 def test_fail_unauthorized(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     oscar: SigningAccount,
     perpetual_bond_client_primary: PerpetualBondClient,
 ) -> None:

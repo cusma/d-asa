@@ -9,7 +9,7 @@ from .conftest import DUE_COUPONS
 
 
 def test_all_due_coupons_paid(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     perpetual_bond_cfg: DAsaConfig,
     account_a: DAsaAccount,
     account_b: DAsaAccount,

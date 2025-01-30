@@ -20,7 +20,7 @@ from tests.utils import (
 
 
 def test_pass_pay_principal(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     currency: Currency,
     account_a: DAsaAccount,
     zero_coupon_bond_client_at_maturity: ZeroCouponBondClient,

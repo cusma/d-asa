@@ -18,7 +18,7 @@ from .conftest import DUE_COUPONS
 
 
 def test_pass_pay_coupon(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     currency: Currency,
     perpetual_bond_cfg: DAsaConfig,
     account_a: DAsaAccount,
@@ -245,7 +245,7 @@ def test_fail_no_units(
 
 
 def test_fail_no_due_coupon(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     perpetual_bond_cfg: DAsaConfig,
     account_a: DAsaAccount,
     perpetual_bond_client_ongoing: PerpetualBondClient,

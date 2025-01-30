@@ -21,7 +21,7 @@ def test_next_coupon_due_date_before_issuance(
 
 
 def test_next_coupon_due_date_ongoing(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     arranger: SigningAccount,
     perpetual_bond_cfg: DAsaConfig,
     perpetual_bond_client_ongoing: PerpetualBondClient,

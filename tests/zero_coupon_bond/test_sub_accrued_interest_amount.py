@@ -12,7 +12,7 @@ TEST_UNITS: Final[int] = 3
 
 
 def test_at_issuance(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     account_a: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:
@@ -37,7 +37,7 @@ def test_at_issuance(
 
 
 def test_at_half_period(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     account_a: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:
@@ -71,7 +71,7 @@ def test_at_half_period(
 
 
 def test_on_maturity_date(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     account_a: DAsaAccount,
     zero_coupon_bond_client_at_maturity: ZeroCouponBondClient,
 ) -> None:

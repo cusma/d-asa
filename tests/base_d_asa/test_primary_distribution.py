@@ -72,7 +72,7 @@ def test_pass_primary_distribution(
 
 
 def test_fail_primary_distribution_closed(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     base_d_asa_client_primary: BaseDAsaClient,
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
@@ -80,7 +80,7 @@ def test_fail_primary_distribution_closed(
     state = base_d_asa_client_primary.get_global_state()
     time_warp(state.primary_distribution_closure_date)
     assert (
-        get_latest_timestamp(algorand_client.client.algod)
+        get_latest_timestamp(algorand.client.algod)
         >= state.primary_distribution_closure_date
     )
 

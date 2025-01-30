@@ -14,7 +14,7 @@ TEST_UNITS: Final[int] = 3
 
 
 def test_from_issuance(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     account_a: DAsaAccount,
     perpetual_bond_client_ongoing: PerpetualBondClient,
 ) -> None:
@@ -52,7 +52,7 @@ def test_from_issuance(
 
 def test_from_latest_coupon_due_date(
     currency: Currency,
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     account_a: DAsaAccount,
     perpetual_bond_client_ongoing: PerpetualBondClient,
 ) -> None:

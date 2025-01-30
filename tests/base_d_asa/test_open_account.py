@@ -16,12 +16,12 @@ ACCOUNT_TEST_UNITS: Final[int] = 7
 
 
 def test_pass_open_account(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     base_d_asa_client_empty: BaseDAsaClient,
     account_manager: DAsaAccountManager,
 ) -> None:
-    holding = algorand_client.account.random()
-    payment = algorand_client.account.random()
+    holding = algorand.account.random()
+    payment = algorand.account.random()
 
     base_d_asa_client_empty.open_account(
         holding_address=holding.address,
@@ -58,12 +58,12 @@ def test_pass_open_account(
 
 
 def test_fail_unauthorized_caller(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     oscar: SigningAccount,
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> None:
-    holding = algorand_client.account.random()
-    payment = algorand_client.account.random()
+    holding = algorand.account.random()
+    payment = algorand.account.random()
 
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         base_d_asa_client_empty.open_account(
@@ -94,12 +94,12 @@ def test_fail_defaulted_status() -> None:
 
 
 def test_fail_suspended(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     account_manager: DAsaAccountManager,
     base_d_asa_client_suspended: BaseDAsaClient,
 ) -> None:
-    holding = algorand_client.account.random()
-    payment = algorand_client.account.random()
+    holding = algorand.account.random()
+    payment = algorand.account.random()
 
     with pytest.raises(LogicError, match=err.SUSPENDED):
         base_d_asa_client_suspended.open_account(

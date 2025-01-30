@@ -18,7 +18,7 @@ from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
 
 
 def test_pass_pay_coupon(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     currency: Currency,
     fixed_coupon_bond_cfg: DAsaConfig,
     account_a: DAsaAccount,
@@ -329,7 +329,7 @@ def test_fail_no_units(
 
 
 def test_fail_no_due_coupon(
-    algorand_client: AlgorandClient,
+    algorand: AlgorandClient,
     fixed_coupon_bond_cfg: DAsaConfig,
     account_a: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,

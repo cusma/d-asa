@@ -35,16 +35,16 @@ INITIAL_D_ASA_UNITS: Final[int] = 100
 
 
 @pytest.fixture(scope="session")
-def algorand_client() -> AlgorandClient:
+def algorand() -> AlgorandClient:
     client = AlgorandClient.default_localnet()
     client.set_suggested_params_timeout(0)
     return client
 
 
 @pytest.fixture(scope="session")
-def arranger(algorand_client: AlgorandClient) -> SigningAccount:
-    account = algorand_client.account.random()
-    algorand_client.account.ensure_funded_from_environment(
+def arranger(algorand: AlgorandClient) -> SigningAccount:
+    account = algorand.account.random()
+    algorand.account.ensure_funded_from_environment(
         account_to_fund=account.address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
@@ -52,9 +52,9 @@ def arranger(algorand_client: AlgorandClient) -> SigningAccount:
 
 
 @pytest.fixture(scope="session")
-def bank(algorand_client: AlgorandClient) -> SigningAccount:
-    account = algorand_client.account.random()
-    algorand_client.account.ensure_funded_from_environment(
+def bank(algorand: AlgorandClient) -> SigningAccount:
+    account = algorand.account.random()
+    algorand.account.ensure_funded_from_environment(
         account_to_fund=account.address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
@@ -62,9 +62,9 @@ def bank(algorand_client: AlgorandClient) -> SigningAccount:
 
 
 @pytest.fixture(scope="session")
-def oscar(algorand_client: AlgorandClient) -> SigningAccount:
-    account = algorand_client.account.random()
-    algorand_client.account.ensure_funded_from_environment(
+def oscar(algorand: AlgorandClient) -> SigningAccount:
+    account = algorand.account.random()
+    algorand.account.ensure_funded_from_environment(
         account_to_fund=account.address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
@@ -72,8 +72,8 @@ def oscar(algorand_client: AlgorandClient) -> SigningAccount:
 
 
 @pytest.fixture(scope="function")
-def currency(algorand_client: AlgorandClient, bank: SigningAccount) -> utils.Currency:
-    currency_id = algorand_client.send.asset_create(
+def currency(algorand: AlgorandClient, bank: SigningAccount) -> utils.Currency:
+    currency_id = algorand.send.asset_create(
         AssetCreateParams(
             sender=bank.address,
             signer=bank.signer,
