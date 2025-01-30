@@ -11,7 +11,9 @@ points</a>* (*bps*).
 
 ## Interest Rate
 
-The D-ASA **MUST** define a *nominal interest rate* \\([IPNR]\\) (`uint16`).
+The D-ASA **MAY** define a nominal *interest rate* \\([IPNR]\\) (`uint16`).
+
+The *interest rate* **MUST** be set using the `asset_config` method.
 
 ## Coupons
 
