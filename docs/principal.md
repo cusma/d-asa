@@ -57,6 +57,9 @@ points</a>* (*bps*);
 
 - The sum of all the *amortization rates* is equal to `10,000` *bps*.
 
+The *amortization rates* define the amount of principal \\([PRNXT]\\) paid at the
+next payment date.
+
 > 📎 **EXAMPLE**
 >
 > A D-ASA with 5 coupons and even principal amortizing rates has the following amortizing
