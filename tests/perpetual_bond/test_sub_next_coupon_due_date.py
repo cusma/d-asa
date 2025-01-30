@@ -1,5 +1,4 @@
-from algokit_utils.beta.account_manager import AddressAndSigner
-from algokit_utils.beta.algorand_client import AlgorandClient
+from algokit_utils import AlgorandClient, SigningAccount
 
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
     PerpetualBondClient,
@@ -23,7 +22,7 @@ def test_next_coupon_due_date_before_issuance(
 
 def test_next_coupon_due_date_ongoing(
     algorand_client: AlgorandClient,
-    arranger: AddressAndSigner,
+    arranger: SigningAccount,
     perpetual_bond_cfg: DAsaConfig,
     perpetual_bond_client_ongoing: PerpetualBondClient,
 ) -> None:

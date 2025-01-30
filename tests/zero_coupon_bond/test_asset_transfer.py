@@ -1,8 +1,7 @@
 from typing import Callable
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
+from algokit_utils import LogicError, OnCompleteCallParameters, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -211,7 +210,7 @@ def test_fail_secondary_market_not_open_yet(
 
 
 def test_fail_unauthorized(
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     account_a: DAsaAccount,
     account_b: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
@@ -265,7 +264,7 @@ def test_fail_suspended(
 
 
 def test_fail_invalid_sender(
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     account_a: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:
@@ -293,7 +292,7 @@ def test_fail_invalid_sender(
 
 
 def test_fail_invalid_receiver(
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     account_a: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:

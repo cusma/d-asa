@@ -1,7 +1,6 @@
 from typing import Final
 
-from algokit_utils import OnCompleteCallParameters
-from algokit_utils.beta.algorand_client import AlgorandClient
+from algokit_utils import AlgorandClient, OnCompleteCallParameters
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (

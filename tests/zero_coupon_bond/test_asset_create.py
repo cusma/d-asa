@@ -1,4 +1,4 @@
-from algokit_utils.beta.account_manager import AddressAndSigner
+from algokit_utils import SigningAccount
 from algosdk.abi import ArrayStaticType, ByteType, StringType, TupleType, UintType
 from algosdk.encoding import encode_address
 
@@ -14,7 +14,7 @@ from .conftest import PROSPECTUS_URL
 
 def test_pass_asset_create(
     asset_metadata: AssetMetadata,
-    arranger: AddressAndSigner,
+    arranger: SigningAccount,
     zero_coupon_bond_client_void: ZeroCouponBondClient,
 ) -> None:
     zero_coupon_bond_client_void.create_asset_create(

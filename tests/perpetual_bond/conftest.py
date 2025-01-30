@@ -2,19 +2,13 @@ from typing import Callable, Final
 
 import pytest
 from algokit_utils import (
-    EnsureBalanceParameters,
-    OnCompleteCallParameters,
-    ensure_funded,
-)
-from algokit_utils.beta.account_manager import AddressAndSigner
-from algokit_utils.beta.algorand_client import (
     AlgorandClient,
     AssetOptInParams,
     AssetTransferParams,
+    OnCompleteCallParameters,
+    SigningAccount,
 )
 from algokit_utils.config import config
-from algosdk.v2client.algod import AlgodClient
-from algosdk.v2client.indexer import IndexerClient
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
@@ -42,10 +36,8 @@ PROSPECTUS_URL: Final[str] = "Perpetual Bond Prospectus"
 
 
 @pytest.fixture(scope="function")
-def time_events(
-    algod_client: AlgodClient,
-) -> utils.TimeEvents:
-    current_ts = utils.get_latest_timestamp(algod_client)
+def time_events(algorand_client: AlgorandClient) -> utils.TimeEvents:
+    current_ts = utils.get_latest_timestamp(algorand_client.client.algod)
     primary_distribution_opening = current_ts + PRIMARY_DISTRIBUTION_DELAY
     primary_distribution_closure = (
         primary_distribution_opening + PRIMARY_DISTRIBUTION_DURATION
@@ -94,9 +86,7 @@ def perpetual_bond_cfg(
 
 @pytest.fixture(scope="function")
 def perpetual_bond_client_void(
-    algod_client: AlgodClient,
-    indexer_client: IndexerClient,
-    arranger: AddressAndSigner,
+    algorand_client: AlgorandClient, arranger: SigningAccount
 ) -> PerpetualBondClient:
     config.configure(
         debug=False,
@@ -104,10 +94,10 @@ def perpetual_bond_client_void(
     )
 
     client = PerpetualBondClient(
-        algod_client,
+        algorand_client.client.algod,
         creator=arranger.address,
         signer=arranger.signer,
-        indexer_client=indexer_client,
+        indexer_client=algorand_client.client.indexer,
     )
     return client
 
@@ -115,19 +105,16 @@ def perpetual_bond_client_void(
 @pytest.fixture(scope="function")
 def perpetual_bond_client_empty(
     algorand_client: AlgorandClient,
-    arranger: AddressAndSigner,
+    arranger: SigningAccount,
     asset_metadata: AssetMetadata,
     perpetual_bond_client_void: PerpetualBondClient,
 ) -> PerpetualBondClient:
     perpetual_bond_client_void.create_asset_create(
         arranger=arranger.address, metadata=asset_metadata
     )
-    ensure_funded(
-        algorand_client.client.algod,
-        EnsureBalanceParameters(
-            account_to_fund=perpetual_bond_client_void.app_address,
-            min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-        ),
+    algorand_client.account.ensure_funded_from_environment(
+        account_to_fund=perpetual_bond_client_void.app_address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     return perpetual_bond_client_void
 
@@ -139,14 +126,11 @@ def account_manager(
     perpetual_bond_client_empty: PerpetualBondClient,
 ) -> utils.DAsaAccountManager:
     account = algorand_client.account.random()
-    account = utils.DAsaAccountManager(address=account.address, signer=account.signer)
+    account = utils.DAsaAccountManager(private_key=account.private_key)
 
-    ensure_funded(
-        algorand_client.client.algod,
-        EnsureBalanceParameters(
-            account_to_fund=account.address,
-            min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-        ),
+    algorand_client.account.ensure_funded_from_environment(
+        account_to_fund=account.address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
     perpetual_bond_client_empty.assign_role(
@@ -167,14 +151,11 @@ def trustee(
     perpetual_bond_client_empty: PerpetualBondClient,
 ) -> utils.DAsaTrustee:
     account = algorand_client.account.random()
-    account = utils.DAsaTrustee(address=account.address, signer=account.signer)
+    account = utils.DAsaTrustee(private_key=account.private_key)
 
-    ensure_funded(
-        algorand_client.client.algod,
-        EnsureBalanceParameters(
-            account_to_fund=account.address,
-            min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-        ),
+    algorand_client.account.ensure_funded_from_environment(
+        account_to_fund=account.address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
     perpetual_bond_client_empty.assign_role(
@@ -195,14 +176,11 @@ def authority(
     perpetual_bond_client_empty: PerpetualBondClient,
 ) -> utils.DAsaAuthority:
     account = algorand_client.account.random()
-    account = utils.DAsaAuthority(address=account.address, signer=account.signer)
+    account = utils.DAsaAuthority(private_key=account.private_key)
 
-    ensure_funded(
-        algorand_client.client.algod,
-        EnsureBalanceParameters(
-            account_to_fund=account.address,
-            min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-        ),
+    algorand_client.account.ensure_funded_from_environment(
+        account_to_fund=account.address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
     perpetual_bond_client_empty.assign_role(
@@ -223,14 +201,11 @@ def interest_oracle(
     perpetual_bond_client_empty: PerpetualBondClient,
 ) -> utils.DAsaInterestOracle:
     account = algorand_client.account.random()
-    account = utils.DAsaInterestOracle(address=account.address, signer=account.signer)
+    account = utils.DAsaInterestOracle(private_key=account.private_key)
 
-    ensure_funded(
-        algorand_client.client.algod,
-        EnsureBalanceParameters(
-            account_to_fund=account.address,
-            min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-        ),
+    algorand_client.account.ensure_funded_from_environment(
+        account_to_fund=account.address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
     perpetual_bond_client_empty.assign_role(
@@ -247,7 +222,7 @@ def interest_oracle(
 @pytest.fixture(scope="function")
 def perpetual_bond_client_active(
     algorand_client: AlgorandClient,
-    bank: AddressAndSigner,
+    bank: SigningAccount,
     perpetual_bond_cfg: utils.DAsaConfig,
     perpetual_bond_client_empty: PerpetualBondClient,
 ) -> PerpetualBondClient:
@@ -282,14 +257,11 @@ def primary_dealer(
     perpetual_bond_client_active: PerpetualBondClient,
 ) -> utils.DAsaPrimaryDealer:
     account = algorand_client.account.random()
-    account = utils.DAsaPrimaryDealer(address=account.address, signer=account.signer)
+    account = utils.DAsaPrimaryDealer(private_key=account.private_key)
 
-    ensure_funded(
-        algorand_client.client.algod,
-        EnsureBalanceParameters(
-            account_to_fund=account.address,
-            min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-        ),
+    algorand_client.account.ensure_funded_from_environment(
+        account_to_fund=account.address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     state = perpetual_bond_client_active.get_global_state()
     role_config = utils.set_role_config(
@@ -309,19 +281,16 @@ def primary_dealer(
 @pytest.fixture(scope="function")
 def account_factory(
     algorand_client: AlgorandClient,
-    bank: AddressAndSigner,
+    bank: SigningAccount,
     currency: utils.Currency,
     account_manager: utils.DAsaAccountManager,
 ) -> Callable[..., utils.DAsaAccount]:
     def _factory(perpetual_bond_client: PerpetualBondClient) -> utils.DAsaAccount:
         account = algorand_client.account.random()
 
-        ensure_funded(
-            algorand_client.client.algod,
-            EnsureBalanceParameters(
-                account_to_fund=account.address,
-                min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-            ),
+        algorand_client.account.ensure_funded_from_environment(
+            account_to_fund=account.address,
+            min_spending_balance=INITIAL_ALGO_FUNDS,
         )
 
         algorand_client.send.asset_opt_in(
@@ -349,7 +318,7 @@ def account_factory(
         return utils.DAsaAccount(
             d_asa_client=perpetual_bond_client,
             holding_address=account.address,
-            signer=account.signer,
+            private_key=account.private_key,
         )
 
     return _factory

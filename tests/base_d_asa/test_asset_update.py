@@ -1,8 +1,7 @@
 from copy import deepcopy
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
+from algokit_utils import LogicError, OnCompleteCallParameters, SigningAccount
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
@@ -25,7 +24,7 @@ def test_pass_update(
 
 def test_fail_unauthorized(
     asset_metadata: AssetMetadata,
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     base_d_asa_client_active: BaseDAsaClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):

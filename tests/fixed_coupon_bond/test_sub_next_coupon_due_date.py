@@ -1,6 +1,4 @@
-from algokit_utils import OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
-from algokit_utils.beta.algorand_client import AlgorandClient
+from algokit_utils import AlgorandClient, OnCompleteCallParameters, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
@@ -30,7 +28,7 @@ def test_next_coupon_due_date_before_issuance(
 
 def test_next_coupon_due_date_ongoing(
     algorand_client: AlgorandClient,
-    arranger: AddressAndSigner,
+    arranger: SigningAccount,
     fixed_coupon_bond_cfg: DAsaConfig,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:

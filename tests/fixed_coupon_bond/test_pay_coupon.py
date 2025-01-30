@@ -1,9 +1,12 @@
 from typing import Callable
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
-from algokit_utils.beta.algorand_client import AlgorandClient
+from algokit_utils import (
+    AlgorandClient,
+    LogicError,
+    OnCompleteCallParameters,
+    SigningAccount,
+)
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -274,7 +277,7 @@ def test_fail_suspended() -> None:
 
 
 def test_fail_invalid_holding_address(
-    oscar: AddressAndSigner, fixed_coupon_bond_client_at_maturity: FixedCouponBondClient
+    oscar: SigningAccount, fixed_coupon_bond_client_at_maturity: FixedCouponBondClient
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_at_maturity.pay_coupon(

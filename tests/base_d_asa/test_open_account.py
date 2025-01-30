@@ -1,9 +1,12 @@
 from typing import Final
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
-from algokit_utils.beta.algorand_client import AlgorandClient
+from algokit_utils import (
+    AlgorandClient,
+    LogicError,
+    OnCompleteCallParameters,
+    SigningAccount,
+)
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import BaseDAsaClient
@@ -56,7 +59,7 @@ def test_pass_open_account(
 
 def test_fail_unauthorized_caller(
     algorand_client: AlgorandClient,
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> None:
     holding = algorand_client.account.random()

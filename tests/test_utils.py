@@ -1,4 +1,4 @@
-from algokit_utils.beta.algorand_client import AlgorandClient
+from algokit_utils import AlgorandClient
 
 from tests.utils import get_last_round, get_latest_timestamp, round_warp, time_warp
 

@@ -1,9 +1,12 @@
 from typing import Callable, Final
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
-from algokit_utils.beta.algorand_client import AlgorandClient
+from algokit_utils import (
+    AlgorandClient,
+    LogicError,
+    OnCompleteCallParameters,
+    SigningAccount,
+)
 from algosdk.encoding import decode_address
 
 from smart_contracts import constants as sc_cst
@@ -84,7 +87,7 @@ def test_pass_after_issuance(
 
 def test_fail_unauthorized(
     algorand_client: AlgorandClient,
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     perpetual_bond_client_primary: PerpetualBondClient,
 ) -> None:
     interest_rate = perpetual_bond_client_primary.get_global_state().interest_rate

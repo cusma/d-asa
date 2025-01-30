@@ -1,6 +1,5 @@
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
+from algokit_utils import LogicError, OnCompleteCallParameters, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -29,7 +28,7 @@ def test_pass_set_secondary_time_events(
 
 
 def test_fail_unauthorized_caller(
-    oscar: AddressAndSigner, base_d_asa_client_active: BaseDAsaClient
+    oscar: SigningAccount, base_d_asa_client_active: BaseDAsaClient
 ) -> None:
     state = base_d_asa_client_active.get_global_state()
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):

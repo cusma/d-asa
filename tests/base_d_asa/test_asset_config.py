@@ -1,8 +1,7 @@
 from copy import deepcopy
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
+from algokit_utils import LogicError, OnCompleteCallParameters, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -87,7 +86,7 @@ def test_pass_asset_config(
 
 
 def test_fail_unauthorized(
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     base_d_asa_cfg: DAsaConfig,
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> None:

@@ -1,5 +1,4 @@
-from algokit_utils import OnCompleteCallParameters
-from algokit_utils.beta.algorand_client import AlgorandClient
+from algokit_utils import AlgorandClient, OnCompleteCallParameters
 
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
     PerpetualBondClient,

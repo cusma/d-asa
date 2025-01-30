@@ -1,8 +1,7 @@
 from typing import Callable, Final
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
+from algokit_utils import LogicError, OnCompleteCallParameters, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -61,7 +60,7 @@ def test_pass_not_configured(
 
 
 def test_fail_invalid_holding_address(
-    oscar: AddressAndSigner, zero_coupon_bond_client_primary: FixedCouponBondClient
+    oscar: SigningAccount, zero_coupon_bond_client_primary: FixedCouponBondClient
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         zero_coupon_bond_client_primary.get_payment_amount(
