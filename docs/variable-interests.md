@@ -1,6 +1,6 @@
 # Variable Rates
 
-> ⚠️This section may still be subject to major changes and reviews.
+> ⚠️This section is still subject to major changes and reviews.
 
 > Debt instruments may have variable interest rates, based on external data oracles.
 
