@@ -1,9 +1,9 @@
-# Time Events {#time-events}
+# Time Events
 
 > D-ASA *time events* are time on which contractual events are due or on which cyclic
 > events begin or end.
 
-## Primary Distribution {#primary-distribution}
+## Primary Distribution
 
 > Debt instruments can be distributed on the primary market during the primary distribution.
 
@@ -11,13 +11,13 @@
 
 The D-ASA **MUST** have a *primary opening* (`uint64`) and *closure date* (`uint64`).
 
-## Issuance {#issuance}
+## Issuance
 
 > Debt instruments start accruing interest on the issuance date.
 
 The D-ASA **MUST** have an *issuance date* \\([IED]\\) (`uint64`).
 
-## Maturity {#maturity}
+## Maturity
 
 > Debt instruments may have a maturity date, on which the principal is repaid and
 > the contract obligations expire.
@@ -29,7 +29,7 @@ The D-ASA **MAY** have a *maturity date* \\([MD]\\) (`uint64`).
 The *maturity date* **MAY** be updated in case of early repayment options (see
 [Early Repayment Options](./early-repayment-options.md) section).
 
-## Time Events array
+## Time Events Array
 
 The D-ASA **MUST** define *time events* \\([TEV]\\) as `uint64[]` array, where:
 

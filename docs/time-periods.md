@@ -1,4 +1,4 @@
-# Time Periods {#time-periods}
+# Time Periods
 
 > D-ASA time periods can be used to define recurring (or "cyclic") events.
 
@@ -56,7 +56,7 @@ events*.
 > The sum of the 4 coupon *time period durations* must be smaller than the time
 > period between the *issuance date* and the *maturity date*.
 
-## Unlimited time schedule
+## Unlimited Time Schedule
 
 If the D-ASA has an **undefined** number of *coupons*, then the *coupon due dates*
 \\([IP]\\) **MUST** be defined with a *time period* `(uint64,uint64)`.
