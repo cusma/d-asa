@@ -18,7 +18,7 @@
 - [Contract]()
   - [Type](./contract-type.md)
   - [Denomination](./denomination.md)
-  - [Principal (Par)](./principal.md)
+  - [Principal](./principal.md)
   - [Interests](./interests.md)
     - [Variable Interests](./variable-interests.md)
   - [Time Schedule](./time-schedule.md)
