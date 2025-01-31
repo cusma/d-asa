@@ -5,6 +5,8 @@ from algokit_utils import OnCompleteCallParameters
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
+    GetAccountUnitsCurrentValueArgs,
+    PayCouponArgs,
 )
 from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
@@ -22,17 +24,12 @@ def test_pass_get_account_units_current_value(
 ) -> None:
     account = account_with_units_factory(units=D_ASA_TEST_UNITS)
 
-    value = fixed_coupon_bond_client_primary.get_account_units_current_value(
-        holding_address=account.holding_address,
-        units=D_ASA_TEST_UNITS,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[
-                (fixed_coupon_bond_client_primary.app_id, account.box_id),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-            ]
+    value = fixed_coupon_bond_client_primary.send.get_account_units_current_value(
+        GetAccountUnitsCurrentValueArgs(
+            holding_address=account.holding_address,
+            units=D_ASA_TEST_UNITS,
         ),
-    ).return_value
+    ).abi_return
     print("Initial units' value:")
     print(value.__dict__)
     assert (
@@ -50,43 +47,21 @@ def test_pass_get_account_units_current_value(
         coupon_period_fraction = 10
         time_warp(next_due_date + coupon_period // coupon_period_fraction)
         if coupon <= fixed_coupon_bond_cfg.total_coupons:
-            fixed_coupon_bond_client_primary.pay_coupon(
-                holding_address=account.holding_address,
-                payment_info=b"",
-                transaction_parameters=OnCompleteCallParameters(
-                    foreign_assets=[currency.id],
-                    accounts=[account.payment_address],
-                    boxes=[
-                        (fixed_coupon_bond_client_primary.app_id, account.box_id),
-                        (
-                            fixed_coupon_bond_client_primary.app_id,
-                            sc_cst.BOX_ID_COUPON_RATES,
-                        ),
-                        (
-                            fixed_coupon_bond_client_primary.app_id,
-                            sc_cst.BOX_ID_TIME_EVENTS,
-                        ),
-                    ],
-                ),
+            fixed_coupon_bond_client_primary.send.pay_coupon(
+                PayCouponArgs(
+                    holding_address=account.holding_address,
+                    payment_info=b"",
+                )
             )
 
-        units_value = fixed_coupon_bond_client_primary.get_account_units_current_value(
-            holding_address=account.holding_address,
-            units=D_ASA_TEST_UNITS,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ],
-            ),
-        ).return_value
+        units_value = (
+            fixed_coupon_bond_client_primary.send.get_account_units_current_value(
+                GetAccountUnitsCurrentValueArgs(
+                    holding_address=account.holding_address,
+                    units=D_ASA_TEST_UNITS,
+                ),
+            ).abi_return
+        )
         print(f"Units' value after {coupon} coupon due date:")
         print(units_value.__dict__)
         assert (
