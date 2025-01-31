@@ -33,6 +33,20 @@ TOTAL_ASA_FUNDS: Final[int] = PRINCIPAL * (sc_cst.BPS + APR) // sc_cst.BPS
 PROSPECTUS_URL: Final[str] = "Zero Coupon Bond Prospectus"
 
 
+@pytest.fixture(scope="session")
+def asset_metadata() -> AssetMetadata:
+    return AssetMetadata(
+        contract_type=sc_cst.CT_PAM,
+        calendar=sc_cst.CLDR_NC,
+        business_day_convention=sc_cst.BDC_NOS,
+        end_of_month_convention=sc_cst.EOMC_SD,
+        prepayment_effect=sc_cst.PPEF_N,
+        penalty_type=sc_cst.PYTP_N,
+        prospectus_hash=bytes(32),
+        prospectus_url=PROSPECTUS_URL,
+    )
+
+
 @pytest.fixture(scope="function")
 def time_events(
     algorand: AlgorandClient,
@@ -50,20 +64,6 @@ def time_events(
         issuance_date,
         maturity_date,
     ]
-
-
-@pytest.fixture(scope="session")
-def asset_metadata() -> AssetMetadata:
-    return AssetMetadata(
-        contract_type=sc_cst.CT_PAM,
-        calendar=sc_cst.CLDR_NC,
-        business_day_convention=sc_cst.BDC_NOS,
-        end_of_month_convention=sc_cst.EOMC_SD,
-        prepayment_effect=sc_cst.PPEF_N,
-        penalty_type=sc_cst.PYTP_N,
-        prospectus_hash=bytes(32),
-        prospectus_url=PROSPECTUS_URL,
-    )
 
 
 @pytest.fixture(scope="function")

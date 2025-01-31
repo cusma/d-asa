@@ -44,6 +44,20 @@ PROSPECTUS_URL: Final[str] = "Fixed Coupon Bond Prospectus"
 
 
 @pytest.fixture(scope="session")
+def asset_metadata() -> AssetMetadata:
+    return AssetMetadata(
+        contract_type=sc_cst.CT_PAM,
+        calendar=sc_cst.CLDR_NC,
+        business_day_convention=sc_cst.BDC_NOS,
+        end_of_month_convention=sc_cst.EOMC_SD,
+        prepayment_effect=sc_cst.PPEF_N,
+        penalty_type=sc_cst.PYTP_N,
+        prospectus_hash=bytes(32),
+        prospectus_url=PROSPECTUS_URL,
+    )
+
+
+@pytest.fixture(scope="session")
 def coupon_rates() -> utils.CouponRates:
     return COUPON_RATES
 
@@ -67,20 +81,6 @@ def time_events(algorand: AlgorandClient) -> utils.TimeEvents:
         *coupon_dates,
         maturity_date,
     ]
-
-
-@pytest.fixture(scope="session")
-def asset_metadata() -> AssetMetadata:
-    return AssetMetadata(
-        contract_type=sc_cst.CT_PAM,
-        calendar=sc_cst.CLDR_NC,
-        business_day_convention=sc_cst.BDC_NOS,
-        end_of_month_convention=sc_cst.EOMC_SD,
-        prepayment_effect=sc_cst.PPEF_N,
-        penalty_type=sc_cst.PYTP_N,
-        prospectus_hash=bytes(32),
-        prospectus_url=PROSPECTUS_URL,
-    )
 
 
 @pytest.fixture(scope="function")
