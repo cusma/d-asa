@@ -17,6 +17,7 @@ from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     AssignRoleArgs,
     BaseDAsaClient,
     BaseDAsaFactory,
+    CommonAppCallParams,
     OpenAccountArgs,
     PrimaryDistributionArgs,
     SetAssetSuspensionArgs,
@@ -198,7 +199,7 @@ def primary_dealer(
         account_to_fund=account.address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
-    state = base_d_asa_client_active.send.get_global_state()
+    state = base_d_asa_client_active.state.global_state
     role_config = utils.set_role_config(
         state.primary_distribution_opening_date, state.primary_distribution_closure_date
     )
@@ -254,10 +255,13 @@ def account_factory(
 def base_d_asa_client_primary(
     base_d_asa_client_active: BaseDAsaClient,
 ) -> BaseDAsaClient:
-    state = base_d_asa_client_active.state.global_state.get_all()
+    state = base_d_asa_client_active.state.global_state
     base_d_asa_client_active.send.set_secondary_time_events(
-        SetSecondaryTimeEventsArgs(
-            secondary_market_time_events=[state.issuance_date, state.maturity_date]
+        args=SetSecondaryTimeEventsArgs(
+            secondary_market_time_events=[
+                state.issuance_date,
+                state.maturity_date,
+            ]
         )
     )
     utils.time_warp(state.primary_distribution_opening_date)
@@ -294,7 +298,7 @@ def account_a(
 def base_d_asa_client_ongoing(
     base_d_asa_client_primary: BaseDAsaClient,
 ) -> BaseDAsaClient:
-    state = base_d_asa_client_primary.state.global_state.get_all()
+    state = base_d_asa_client_primary.state.global_state
     utils.time_warp(state.issuance_date)
     return base_d_asa_client_primary
 
@@ -305,5 +309,8 @@ def base_d_asa_client_suspended(
 ) -> BaseDAsaClient:
     base_d_asa_client_ongoing.send.set_asset_suspension(
         SetAssetSuspensionArgs(suspended=True),
+        params=CommonAppCallParams(
+            sender=authority.address,
+        ),
     )
     return base_d_asa_client_ongoing

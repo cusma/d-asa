@@ -3,8 +3,6 @@ from typing import Callable, Final
 import pytest
 from algokit_utils import (
     AlgorandClient,
-    LogicError,
-    OnCompleteCallParameters,
     SigningAccount,
 )
 from algosdk.encoding import decode_address
@@ -91,7 +89,7 @@ def test_fail_unauthorized(
     perpetual_bond_client_primary: PerpetualBondClient,
 ) -> None:
     interest_rate = perpetual_bond_client_primary.get_global_state().interest_rate
-    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
+    with pytest.raises(Exception, match=err.UNAUTHORIZED):
         perpetual_bond_client_primary.update_interest_rate(
             interest_rate=interest_rate + INTEREST_RATE_INCREASE,
             transaction_parameters=OnCompleteCallParameters(
@@ -147,7 +145,7 @@ def test_fail_pending_coupon_payment(
             ),
         )
 
-        with pytest.raises(LogicError, match=err.PENDING_COUPON_PAYMENT):
+        with pytest.raises(Exception, match=err.PENDING_COUPON_PAYMENT):
             perpetual_bond_client_ongoing.update_interest_rate(
                 interest_rate=interest_rate + INTEREST_RATE_INCREASE,
                 transaction_parameters=OnCompleteCallParameters(

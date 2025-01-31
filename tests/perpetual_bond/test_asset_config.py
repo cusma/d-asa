@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
+from algokit_utils import OnCompleteCallParameters
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -98,7 +98,7 @@ def test_fail_invalid_time_events_length(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(perpetual_bond_cfg)
     wrong_d_asa_cfg.time_events = [*perpetual_bond_cfg.time_events, 0]
-    with pytest.raises(LogicError, match=err.INVALID_TIME_EVENTS_LENGTH):
+    with pytest.raises(Exception, match=err.INVALID_TIME_EVENTS_LENGTH):
         perpetual_bond_client_empty.asset_config(
             **wrong_d_asa_cfg.dictify(),
             transaction_parameters=OnCompleteCallParameters(
@@ -118,7 +118,7 @@ def test_fail_invalid_time_periods(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(perpetual_bond_cfg)
     wrong_d_asa_cfg.time_periods = [*perpetual_bond_cfg.time_periods, (1, 1)]
-    with pytest.raises(LogicError, match=err.INVALID_TIME_PERIODS):
+    with pytest.raises(Exception, match=err.INVALID_TIME_PERIODS):
         perpetual_bond_client_empty.asset_config(
             **wrong_d_asa_cfg.dictify(),
             transaction_parameters=OnCompleteCallParameters(
@@ -138,7 +138,7 @@ def test_fail_invalid_time_period_durations(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(perpetual_bond_cfg)
     wrong_d_asa_cfg.time_periods[0] = (0, 1)
-    with pytest.raises(LogicError, match=err.INVALID_TIME_PERIOD_DURATION):
+    with pytest.raises(Exception, match=err.INVALID_TIME_PERIOD_DURATION):
         perpetual_bond_client_empty.asset_config(
             **wrong_d_asa_cfg.dictify(),
             transaction_parameters=OnCompleteCallParameters(
@@ -158,7 +158,7 @@ def test_fail_invalid_time_period_repetitions(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(perpetual_bond_cfg)
     wrong_d_asa_cfg.time_periods[0] = (1, 1)
-    with pytest.raises(LogicError, match=err.INVALID_TIME_PERIOD_REPETITIONS):
+    with pytest.raises(Exception, match=err.INVALID_TIME_PERIOD_REPETITIONS):
         perpetual_bond_client_empty.asset_config(
             **wrong_d_asa_cfg.dictify(),
             transaction_parameters=OnCompleteCallParameters(

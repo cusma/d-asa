@@ -1,5 +1,5 @@
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters, SigningAccount
+from algokit_utils import OnCompleteCallParameters, SigningAccount
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import BaseDAsaClient
@@ -27,7 +27,7 @@ def test_pass_set_asset_suspension(
 def test_fail_unauthorized(
     oscar: SigningAccount, base_d_asa_client_active: BaseDAsaClient
 ) -> None:
-    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
+    with pytest.raises(Exception, match=err.UNAUTHORIZED):
         base_d_asa_client_active.set_asset_suspension(
             suspended=True,
             transaction_parameters=OnCompleteCallParameters(

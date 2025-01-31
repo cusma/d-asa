@@ -1,10 +1,11 @@
 import pytest
-from algokit_utils import LogicError, SigningAccount
+from algokit_utils import SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     AssetMetadata,
+    AssetUpdateArgs,
     BaseDAsaClient,
     CommonAppCallParams,
 )
@@ -25,7 +26,9 @@ def test_pass_update(
         prospectus_hash=bytes(32),
         prospectus_url="Updated Prospectus",
     )
-    base_d_asa_client_active.send.asset_update(metadata=updated_metadata)
+    base_d_asa_client_active.send.update.asset_update(
+        args=AssetUpdateArgs(metadata=updated_metadata)
+    )
     metadata = base_d_asa_client_active.send.get_asset_metadata().abi_return
     assert metadata.prospectus_url == updated_metadata.prospectus_url
 
@@ -35,10 +38,12 @@ def test_fail_unauthorized(
     oscar: SigningAccount,
     base_d_asa_client_active: BaseDAsaClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
-        base_d_asa_client_active.send.asset_update(
-            metadata=asset_metadata,
-            transaction_parameters=CommonAppCallParams(
-                sender=oscar.address, signer=oscar.signer
-            ),
+    # NOTE: This is now identified as a runtime error not a LogicError, because the error messages comes
+    # directly from the ARC56 source.
+    # see contets of the arc56 file for more details. This is also consistent with the behaviour on the utils-ts
+    # https://github.com/algorandfoundation/algokit-utils-ts/blob/b1392427938594404b70148f6309363ca77b1b55/src/types/app-client.ts#L956
+    with pytest.raises(Exception, match=err.UNAUTHORIZED):
+        base_d_asa_client_active.send.update.asset_update(
+            args=AssetUpdateArgs(metadata=asset_metadata),
+            params=CommonAppCallParams(sender=oscar.address, signer=oscar.signer),
         )

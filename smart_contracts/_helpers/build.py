@@ -30,7 +30,7 @@ def build(output_dir: Path, contract_path: Path) -> Path:
             "python",
             contract_path.absolute(),
             f"--out-dir={output_dir}",
-            "--output-arc32",
+            "--output-arc56",
             "--output-source-map",
         ],
         stdout=subprocess.PIPE,
@@ -40,12 +40,12 @@ def build(output_dir: Path, contract_path: Path) -> Path:
     if build_result.returncode:
         raise Exception(f"Could not build contract:\n{build_result.stdout}")
 
-    app_spec_file_names = [file.name for file in output_dir.glob("*.arc32.json")]
+    app_spec_file_names = [file.name for file in output_dir.glob("*.arc56.json")]
     app_spec_file_name = None
     for app_spec_file_name in app_spec_file_names:
         if app_spec_file_name is None:
             logger.warning(
-                "No '*.arc32.json' file found (likely a logic signature being compiled). Skipping client generation."
+                "No '*.arc56.json' file found (likely a logic signature being compiled). Skipping client generation."
             )
             continue
         print(app_spec_file_name)

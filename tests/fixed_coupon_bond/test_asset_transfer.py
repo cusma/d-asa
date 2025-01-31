@@ -3,8 +3,6 @@ from typing import Callable
 import pytest
 from algokit_utils import (
     AlgorandClient,
-    LogicError,
-    OnCompleteCallParameters,
     SigningAccount,
 )
 
@@ -208,7 +206,7 @@ def test_fail_secondary_market_not_open_yet(
     account_a: DAsaAccount,
     account_b: DAsaAccount,
 ) -> None:
-    with pytest.raises(LogicError, match=err.SECONDARY_MARKET_CLOSED):
+    with pytest.raises(Exception, match=err.SECONDARY_MARKET_CLOSED):
         fixed_coupon_bond_client_primary.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=account_b.holding_address,
@@ -240,7 +238,7 @@ def test_fail_unauthorized(
     account_b: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
+    with pytest.raises(Exception, match=err.UNAUTHORIZED):
         fixed_coupon_bond_client_ongoing.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=account_b.holding_address,
@@ -268,7 +266,7 @@ def test_fail_suspended(
     account_b: DAsaAccount,
     fixed_coupon_bond_client_suspended: FixedCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.SUSPENDED):
+    with pytest.raises(Exception, match=err.SUSPENDED):
         fixed_coupon_bond_client_suspended.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=account_b.holding_address,
@@ -296,7 +294,7 @@ def test_fail_invalid_sender(
     account_a: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_ongoing.asset_transfer(
             sender_holding_address=oscar.address,
             receiver_holding_address=account_a.holding_address,
@@ -327,7 +325,7 @@ def test_fail_invalid_receiver(
     account_a: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_ongoing.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=oscar.address,
@@ -370,7 +368,7 @@ def test_fail_over_transfer(
     account_b: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.OVER_TRANSFER):
+    with pytest.raises(Exception, match=err.OVER_TRANSFER):
         fixed_coupon_bond_client_ongoing.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=account_b.holding_address,
@@ -423,7 +421,7 @@ def test_fail_not_fungible(
         ),
     )
 
-    with pytest.raises(LogicError, match=err.NON_FUNGIBLE_UNITS):
+    with pytest.raises(Exception, match=err.NON_FUNGIBLE_UNITS):
         fixed_coupon_bond_client_primary.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=account_b.holding_address,
