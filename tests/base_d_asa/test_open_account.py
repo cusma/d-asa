@@ -105,7 +105,7 @@ def test_fail_invalid_holding_address(
     account_manager: DAsaAccountManager,
     account_a: DAsaAccount,
 ) -> None:
-    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS) as exc_info:
+    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
         base_d_asa_client_empty.send.open_account(
             OpenAccountArgs(
                 holding_address=account_a.holding_address,

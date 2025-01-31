@@ -7,7 +7,10 @@ from algokit_utils import (
 )
 
 from smart_contracts import errors as err
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import BaseDAsaClient
+from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    BaseDAsaClient,
+    CommonAppCallParams,
+)
 from tests.utils import (
     DAsaAccount,
     DAsaAuthority,
@@ -25,22 +28,18 @@ def test_pass_primary_distribution(
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
-    state = base_d_asa_client_primary.get_global_state()
+    state = base_d_asa_client_primary.state.global_state
     assert state.circulating_units == 0
 
-    remaining_units = base_d_asa_client_primary.primary_distribution(
+    remaining_units = base_d_asa_client_primary.send.primary_distribution(
         holding_address=account.holding_address,
         units=ACCOUNT_TEST_UNITS,
-        transaction_parameters=OnCompleteCallParameters(
-            signer=primary_dealer.signer,
-            boxes=[
-                (base_d_asa_client_primary.app_id, primary_dealer.box_id),
-                (base_d_asa_client_primary.app_id, account.box_id),
-            ],
+        params=CommonAppCallParams(
+            sender=primary_dealer.address,
         ),
-    ).return_value
+    ).abi_return
 
-    state = base_d_asa_client_primary.get_global_state()
+    state = base_d_asa_client_primary.state.global_state
     assert state.circulating_units == ACCOUNT_TEST_UNITS
     assert remaining_units == state.total_units - state.circulating_units
     # TODO: assert not state.paid_coupon_units
@@ -48,19 +47,15 @@ def test_pass_primary_distribution(
     assert account.units == ACCOUNT_TEST_UNITS
     assert account.paid_coupons == 0
 
-    remaining_units = base_d_asa_client_primary.primary_distribution(
+    remaining_units = base_d_asa_client_primary.send.primary_distribution(
         holding_address=account.holding_address,
         units=ACCOUNT_TEST_UNITS,
-        transaction_parameters=OnCompleteCallParameters(
-            signer=primary_dealer.signer,
-            boxes=[
-                (base_d_asa_client_primary.app_id, primary_dealer.box_id),
-                (base_d_asa_client_primary.app_id, account.box_id),
-            ],
+        params=CommonAppCallParams(
+            sender=primary_dealer.address,
         ),
-    ).return_value
+    ).abi_return
 
-    state = base_d_asa_client_primary.get_global_state()
+    state = base_d_asa_client_primary.state.global_state
     assert state.circulating_units == 2 * ACCOUNT_TEST_UNITS
     assert remaining_units == state.total_units - state.circulating_units
     # TODO: assert not state.paid_coupon_units
@@ -75,7 +70,7 @@ def test_fail_primary_distribution_closed(
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
-    state = base_d_asa_client_primary.get_global_state()
+    state = base_d_asa_client_primary.state.global_state
     time_warp(state.primary_distribution_closure_date)
     assert (
         get_latest_timestamp(algorand.client.algod)
@@ -83,12 +78,9 @@ def test_fail_primary_distribution_closed(
     )
 
     with pytest.raises(Exception, match=err.PRIMARY_DISTRIBUTION_CLOSED):
-        base_d_asa_client_primary.primary_distribution(
+        base_d_asa_client_primary.send.primary_distribution(
             holding_address=account.holding_address,
             units=ACCOUNT_TEST_UNITS,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(base_d_asa_client_primary.app_id, account.box_id)]
-            ),
         )
 
 
@@ -99,18 +91,11 @@ def test_fail_unauthorized(
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
     with pytest.raises(Exception, match=err.UNAUTHORIZED):
-        base_d_asa_client_primary.primary_distribution(
+        base_d_asa_client_primary.send.primary_distribution(
             holding_address=account.holding_address,
             units=ACCOUNT_TEST_UNITS,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=oscar.signer,
-                boxes=[
-                    (
-                        base_d_asa_client_primary.app_id,
-                        DAsaPrimaryDealer.box_id_from_address(oscar.address),
-                    ),
-                    (base_d_asa_client_primary.app_id, account.box_id),
-                ],
+            params=CommonAppCallParams(
+                sender=oscar.address,
             ),
         )
 
@@ -130,23 +115,18 @@ def test_fail_suspended(
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
-    base_d_asa_client_primary.set_asset_suspension(
+    base_d_asa_client_primary.send.set_asset_suspension(
         suspended=True,
-        transaction_parameters=OnCompleteCallParameters(
-            signer=authority.signer,
-            boxes=[(base_d_asa_client_primary.app_id, authority.box_id)],
+        params=CommonAppCallParams(
+            sender=authority.address,
         ),
     )
     with pytest.raises(Exception, match=err.SUSPENDED):
-        base_d_asa_client_primary.primary_distribution(
+        base_d_asa_client_primary.send.primary_distribution(
             holding_address=account.holding_address,
             units=ACCOUNT_TEST_UNITS,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=primary_dealer.signer,
-                boxes=[
-                    (base_d_asa_client_primary.app_id, primary_dealer.box_id),
-                    (base_d_asa_client_primary.app_id, account.box_id),
-                ],
+            params=CommonAppCallParams(
+                sender=primary_dealer.address,
             ),
         )
 
@@ -158,15 +138,11 @@ def test_fail_zero_units(
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
     with pytest.raises(Exception, match=err.ZERO_UNITS):
-        base_d_asa_client_primary.primary_distribution(
+        base_d_asa_client_primary.send.primary_distribution(
             holding_address=account.holding_address,
             units=0,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=primary_dealer.signer,
-                boxes=[
-                    (base_d_asa_client_primary.app_id, primary_dealer.box_id),
-                    (base_d_asa_client_primary.app_id, account.box_id),
-                ],
+            params=CommonAppCallParams(
+                sender=primary_dealer.address,
             ),
         )
 
@@ -177,17 +153,13 @@ def test_fail_over_distribution(
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
-    state = base_d_asa_client_primary.get_global_state()
+    state = base_d_asa_client_primary.state.global_state
 
     with pytest.raises(Exception, match=err.OVER_DISTRIBUTION):
-        base_d_asa_client_primary.primary_distribution(
+        base_d_asa_client_primary.send.primary_distribution(
             holding_address=account.holding_address,
             units=state.total_units + 1,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=primary_dealer.signer,
-                boxes=[
-                    (base_d_asa_client_primary.app_id, primary_dealer.box_id),
-                    (base_d_asa_client_primary.app_id, account.box_id),
-                ],
+            params=CommonAppCallParams(
+                sender=primary_dealer.address,
             ),
         )
