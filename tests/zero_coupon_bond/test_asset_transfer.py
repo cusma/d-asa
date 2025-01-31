@@ -1,7 +1,7 @@
 from typing import Callable
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters, SigningAccount
+from algokit_utils import OnCompleteCallParameters, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -186,7 +186,7 @@ def test_fail_secondary_market_not_open_yet(
     account_a: DAsaAccount,
     account_b: DAsaAccount,
 ) -> None:
-    with pytest.raises(LogicError, match=err.SECONDARY_MARKET_CLOSED):
+    with pytest.raises(Exception, match=err.SECONDARY_MARKET_CLOSED):
         zero_coupon_bond_client_primary.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=account_b.holding_address,
@@ -215,7 +215,7 @@ def test_fail_unauthorized(
     account_b: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
+    with pytest.raises(Exception, match=err.UNAUTHORIZED):
         zero_coupon_bond_client_ongoing.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=account_b.holding_address,
@@ -240,7 +240,7 @@ def test_fail_suspended(
     account_b: DAsaAccount,
     zero_coupon_bond_client_suspended: ZeroCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.SUSPENDED):
+    with pytest.raises(Exception, match=err.SUSPENDED):
         zero_coupon_bond_client_suspended.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=account_b.holding_address,
@@ -268,7 +268,7 @@ def test_fail_invalid_sender(
     account_a: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
         zero_coupon_bond_client_ongoing.asset_transfer(
             sender_holding_address=oscar.address,
             receiver_holding_address=account_a.holding_address,
@@ -296,7 +296,7 @@ def test_fail_invalid_receiver(
     account_a: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
         zero_coupon_bond_client_ongoing.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=oscar.address,
@@ -336,7 +336,7 @@ def test_fail_over_transfer(
     account_b: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.OVER_TRANSFER):
+    with pytest.raises(Exception, match=err.OVER_TRANSFER):
         zero_coupon_bond_client_ongoing.asset_transfer(
             sender_holding_address=account_a.holding_address,
             receiver_holding_address=account_b.holding_address,

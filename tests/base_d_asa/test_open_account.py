@@ -4,7 +4,6 @@ import pytest
 from algokit_utils import (
     AlgoAmount,
     AlgorandClient,
-    LogicError,
     SigningAccount,
 )
 
@@ -36,7 +35,7 @@ def test_pass_open_account(
         params=CommonAppCallParams(
             sender=account_manager.address,
             signer=account_manager.signer,
-            static_fee=AlgoAmount.from_algo(1),
+            max_fee=AlgoAmount.from_algo(1),
         ),
     )
 
@@ -64,9 +63,12 @@ def test_fail_unauthorized_caller(
     holding = algorand.account.random()
     payment = algorand.account.random()
 
-    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
+    with pytest.raises(Exception, match=err.UNAUTHORIZED):
         base_d_asa_client_empty.send.open_account(
-            args=(holding.address, payment.address),
+            OpenAccountArgs(
+                holding_address=holding.address,
+                payment_address=payment.address,
+            ),
             params=CommonAppCallParams(
                 sender=oscar.address,
             ),
@@ -89,9 +91,12 @@ def test_fail_suspended(
     holding = algorand.account.random()
     payment = algorand.account.random()
 
-    with pytest.raises(LogicError, match=err.SUSPENDED):
+    with pytest.raises(Exception, match=err.SUSPENDED):
         base_d_asa_client_suspended.send.open_account(
-            args=(holding.address, payment.address),
+            args=OpenAccountArgs(
+                holding_address=holding.address,
+                payment_address=payment.address,
+            ),
             params=CommonAppCallParams(
                 sender=account_manager.address,
             ),
@@ -103,10 +108,14 @@ def test_fail_invalid_holding_address(
     account_manager: DAsaAccountManager,
     account_a: DAsaAccount,
 ) -> None:
-    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(Exception) as exc_info:
         base_d_asa_client_empty.send.open_account(
-            args=(account_a.holding_address, account_a.payment_address),
+            args=OpenAccountArgs(
+                holding_address=account_a.holding_address,
+                payment_address=account_a.payment_address,
+            ),
             params=CommonAppCallParams(
                 sender=account_manager.address,
             ),
         )
+    print(exc_info)

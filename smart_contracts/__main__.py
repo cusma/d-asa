@@ -44,12 +44,12 @@ def main(action: str, contract_name: str | None = None) -> None:
                     (
                         file.name
                         for file in output_dir.iterdir()
-                        if file.is_file() and file.suffixes == [".arc32", ".json"]
+                        if file.is_file() and file.suffixes == [".arc56", ".json"]
                     ),
                     None,
                 )
                 if app_spec_file_name is None:
-                    raise Exception("Could not deploy app, .arc32.json file not found")
+                    raise Exception("Could not deploy app, .arc56.json file not found")
                 app_spec_path = output_dir / app_spec_file_name
                 if contract.deploy:
                     logger.info(f"Deploying app {contract.name}")

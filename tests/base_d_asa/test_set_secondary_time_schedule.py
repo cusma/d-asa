@@ -1,5 +1,5 @@
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters, SigningAccount
+from algokit_utils import OnCompleteCallParameters, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -31,7 +31,7 @@ def test_fail_unauthorized_caller(
     oscar: SigningAccount, base_d_asa_client_active: BaseDAsaClient
 ) -> None:
     state = base_d_asa_client_active.get_global_state()
-    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
+    with pytest.raises(Exception, match=err.UNAUTHORIZED):
         base_d_asa_client_active.set_secondary_time_events(
             secondary_market_time_events=[state.issuance_date, state.maturity_date],
             transaction_parameters=OnCompleteCallParameters(signer=oscar.signer),
@@ -49,7 +49,7 @@ def test_fail_defaulted_status() -> None:
 def test_fail_invalid_time_events_length(
     base_d_asa_client_active: BaseDAsaClient,
 ) -> None:
-    with pytest.raises(LogicError, match=err.INVALID_TIME_EVENTS_LENGTH):
+    with pytest.raises(Exception, match=err.INVALID_TIME_EVENTS_LENGTH):
         base_d_asa_client_active.set_secondary_time_events(
             secondary_market_time_events=[],
         )
@@ -57,7 +57,7 @@ def test_fail_invalid_time_events_length(
 
 def test_fail_invalid_sorting(base_d_asa_client_active: BaseDAsaClient) -> None:
     state = base_d_asa_client_active.get_global_state()
-    with pytest.raises(LogicError, match=err.INVALID_SORTING):
+    with pytest.raises(Exception, match=err.INVALID_SORTING):
         base_d_asa_client_active.set_secondary_time_events(
             secondary_market_time_events=[state.maturity_date, state.issuance_date],
         )
@@ -70,7 +70,7 @@ def test_invalid_secondary_opening_date(
     base_d_asa_client_active: BaseDAsaClient,
 ) -> None:
     state = base_d_asa_client_active.get_global_state()
-    with pytest.raises(LogicError, match=err.INVALID_SECONDARY_OPENING_DATE):
+    with pytest.raises(Exception, match=err.INVALID_SECONDARY_OPENING_DATE):
         base_d_asa_client_active.set_secondary_time_events(
             secondary_market_time_events=[
                 state.issuance_date - 1 * sc_cst.DAY_2_SEC,
@@ -83,7 +83,7 @@ def test_invalid_secondary_closure_date(
     base_d_asa_client_active: BaseDAsaClient,
 ) -> None:
     state = base_d_asa_client_active.get_global_state()
-    with pytest.raises(LogicError, match=err.INVALID_SECONDARY_CLOSURE_DATE):
+    with pytest.raises(Exception, match=err.INVALID_SECONDARY_CLOSURE_DATE):
         base_d_asa_client_active.set_secondary_time_events(
             secondary_market_time_events=[
                 state.issuance_date,

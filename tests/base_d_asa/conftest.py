@@ -255,16 +255,16 @@ def account_factory(
 def base_d_asa_client_primary(
     base_d_asa_client_active: BaseDAsaClient,
 ) -> BaseDAsaClient:
-    state = base_d_asa_client_active.state.global_state.get_all()
+    state = base_d_asa_client_active.state.global_state
     base_d_asa_client_active.send.set_secondary_time_events(
         args=SetSecondaryTimeEventsArgs(
             secondary_market_time_events=[
-                state["issuance_date"],
-                state["maturity_date"],
+                state.issuance_date,
+                state.maturity_date,
             ]
         )
     )
-    utils.time_warp(state["primary_distribution_opening_date"])
+    utils.time_warp(state.primary_distribution_opening_date)
     return base_d_asa_client_active
 
 
@@ -298,8 +298,8 @@ def account_a(
 def base_d_asa_client_ongoing(
     base_d_asa_client_primary: BaseDAsaClient,
 ) -> BaseDAsaClient:
-    state = base_d_asa_client_primary.state.global_state.get_all()
-    utils.time_warp(state["issuance_date"])
+    state = base_d_asa_client_primary.state.global_state
+    utils.time_warp(state.issuance_date)
     return base_d_asa_client_primary
 
 

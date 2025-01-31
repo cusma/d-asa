@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
+from algokit_utils import OnCompleteCallParameters
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -110,7 +110,7 @@ def test_fail_invalid_time_events_length(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(fixed_coupon_bond_cfg)
     wrong_d_asa_cfg.time_events = [*fixed_coupon_bond_cfg.time_events, 0]
-    with pytest.raises(LogicError, match=err.INVALID_TIME_EVENTS_LENGTH):
+    with pytest.raises(Exception, match=err.INVALID_TIME_EVENTS_LENGTH):
         fixed_coupon_bond_client_empty.asset_config(
             **wrong_d_asa_cfg.dictify(),
             transaction_parameters=OnCompleteCallParameters(
@@ -129,7 +129,7 @@ def test_fail_invalid_time(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(fixed_coupon_bond_cfg)
     wrong_d_asa_cfg.time_events[0] = 0
-    with pytest.raises(LogicError, match=err.INVALID_TIME):
+    with pytest.raises(Exception, match=err.INVALID_TIME):
         fixed_coupon_bond_client_empty.asset_config(
             **wrong_d_asa_cfg.dictify(),
             transaction_parameters=OnCompleteCallParameters(
@@ -148,7 +148,7 @@ def test_fail_invalid_sorting(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(fixed_coupon_bond_cfg)
     wrong_d_asa_cfg.time_events[-1] = fixed_coupon_bond_cfg.time_events[-2]
-    with pytest.raises(LogicError, match=err.INVALID_SORTING):
+    with pytest.raises(Exception, match=err.INVALID_SORTING):
         fixed_coupon_bond_client_empty.asset_config(
             **wrong_d_asa_cfg.dictify(),
             transaction_parameters=OnCompleteCallParameters(
@@ -162,7 +162,7 @@ def test_fail_invalid_sorting(
 
     wrong_d_asa_cfg = deepcopy(fixed_coupon_bond_cfg)
     wrong_d_asa_cfg.time_events[0] = fixed_coupon_bond_cfg.time_events[-1]
-    with pytest.raises(LogicError, match=err.INVALID_SORTING):
+    with pytest.raises(Exception, match=err.INVALID_SORTING):
         fixed_coupon_bond_client_empty.asset_config(
             **wrong_d_asa_cfg.dictify(),
             transaction_parameters=OnCompleteCallParameters(
