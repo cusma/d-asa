@@ -6,7 +6,9 @@ from algopy import (
     Global,
     GlobalState,
     Txn,
+    UInt64,
     arc4,
+    op,
     subroutine,
 )
 
@@ -88,3 +90,112 @@ class RoleBasedAccessControl(ARC4Contract):
             <= Global.latest_timestamp
             <= self.interest_oracle[caller].role_validity_end
         ), err.UNAUTHORIZED
+
+    @arc4.abimethod
+    def assign_role(
+        self, role_address: arc4.Address, role: arc4.UInt8, config: arc4.DynamicBytes
+    ) -> arc4.UInt64:
+        """
+        Assign a role to an address
+
+        Args:
+            role_address: Account Role Address
+            role: Role identifier
+            config: Role configuration (Optional)
+
+        Returns:
+            Timestamp of the role assignment
+
+        Raises:
+            UNAUTHORIZED: Not authorized
+            DEFAULTED: Defaulted
+            INVALID_ROLE: Invalid role identifier
+            INVALID_ROLE_ADDRESS: Invalid account role address
+        """
+        self.assert_caller_is_arranger()
+        assert role.native in (
+            UInt64(cst.ROLE_ARRANGER),
+            UInt64(cst.ROLE_ACCOUNT_MANAGER),
+            UInt64(cst.ROLE_PRIMARY_DEALER),
+            UInt64(cst.ROLE_TRUSTEE),
+            UInt64(cst.ROLE_AUTHORITY),
+            UInt64(cst.ROLE_INTEREST_ORACLE),
+        ), err.INVALID_ROLE
+        match role.native:
+            case UInt64(cst.ROLE_ARRANGER):
+                self.arranger.value = role_address.native
+            case UInt64(cst.ROLE_ACCOUNT_MANAGER):
+                assert (
+                    role_address not in self.account_manager
+                ), err.INVALID_ROLE_ADDRESS
+                self.account_manager[role_address] = typ.RoleConfig.from_bytes(
+                    config.native
+                )
+            case UInt64(cst.ROLE_PRIMARY_DEALER):
+                assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
+                self.primary_dealer[role_address] = typ.RoleConfig.from_bytes(
+                    config.native
+                )
+            case UInt64(cst.ROLE_TRUSTEE):
+                assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
+                self.trustee[role_address] = typ.RoleConfig.from_bytes(config.native)
+            case UInt64(cst.ROLE_AUTHORITY):
+                assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
+                self.authority[role_address] = typ.RoleConfig.from_bytes(config.native)
+            case UInt64(cst.ROLE_INTEREST_ORACLE):
+                assert (
+                    role_address not in self.interest_oracle
+                ), err.INVALID_ROLE_ADDRESS
+                self.interest_oracle[role_address] = typ.RoleConfig.from_bytes(
+                    config.native
+                )
+            case _:
+                op.err()
+        return arc4.UInt64(Global.latest_timestamp)
+
+    @arc4.abimethod
+    def revoke_role(self, role_address: arc4.Address, role: arc4.UInt8) -> arc4.UInt64:
+        """
+        Revoke a role from an address
+
+        Args:
+            role_address: Account Role Address
+            role: Role identifier
+
+        Returns:
+            Timestamp of the role revocation
+
+        Raises:
+            UNAUTHORIZED: Not authorized
+            DEFAULTED: Defaulted
+            INVALID_ROLE: Invalid role identifier
+            INVALID_ROLE_ADDRESS: Invalid account role address
+        """
+        self.assert_caller_is_arranger()
+        assert role.native in (
+            UInt64(cst.ROLE_ACCOUNT_MANAGER),
+            UInt64(cst.ROLE_PRIMARY_DEALER),
+            UInt64(cst.ROLE_TRUSTEE),
+            UInt64(cst.ROLE_AUTHORITY),
+            UInt64(cst.ROLE_INTEREST_ORACLE),
+        ), err.INVALID_ROLE
+        match role.native:
+            # Arranger role can not be revoked (just rotated)
+            case UInt64(cst.ROLE_ACCOUNT_MANAGER):
+                assert role_address in self.account_manager, err.INVALID_ROLE_ADDRESS
+                op.Box.delete(cst.PREFIX_ID_ACCOUNT_MANAGER + role_address.bytes)
+            case UInt64(cst.ROLE_PRIMARY_DEALER):
+                assert role_address in self.primary_dealer, err.INVALID_ROLE_ADDRESS
+                op.Box.delete(cst.PREFIX_ID_PRIMARY_DEALER + role_address.bytes)
+            case UInt64(cst.ROLE_TRUSTEE):
+                assert role_address in self.trustee, err.INVALID_ROLE_ADDRESS
+                op.Box.delete(cst.PREFIX_ID_TRUSTEE + role_address.bytes)
+            case UInt64(cst.ROLE_AUTHORITY):
+                assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
+                op.Box.delete(cst.PREFIX_ID_AUTHORITY + role_address.bytes)
+            case UInt64(cst.ROLE_INTEREST_ORACLE):
+                assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
+                op.Box.delete(cst.PREFIX_ID_INTEREST_ORACLE + role_address.bytes)
+            case _:
+                op.err()
+        return arc4.UInt64(Global.latest_timestamp)

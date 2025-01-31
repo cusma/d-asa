@@ -3,7 +3,7 @@
   "sources": [
     "../../rbac/contract.py"
   ],
-  "mappings": ";;;;;;;;;;;;;AAkBA;;;AAEmD;;;;;;AAAf;;AAA5B;;AAHR;;;AAAA;;AAAA;;;AAAA;;AAAA;;;;;;;;;;AAAA;;AAAA",
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAoBA;;;AAEmD;AAAf;;AAA5B;;AAHR;;;AAAA;;AAAA;;;AAAA;;;;;;;;;;;;AAAA;;;AAAA;;;;;;AAAA;AAAA;AA0EK;;AAAA;AAAA;AAAA;;AAAA;AA1EL;;;AAAA;;;AAAA;;;AA0EK;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AA8DA;;AAAA;AAAA;AAAA;;AAAA;AAxIL;;;AAAA;;;AAwIK;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAxIL;;AAAA;;;;;;;;;AAAA;AAAA;AA0EA;;;AAqBQ;;;AACO;;AAAA;AAAA;AACH;;AADG;AAAA;;;AAAA;;AAEH;AAFG;AAAA;;;AAAA;;AAGH;AAHG;AAAA;;;AAAA;;AAIH;;AAJG;AAAA;;;AAAA;;AAKH;;AALG;AAAA;;;AAAA;;AAMH;;AANG;AAAA;;;;;;;;AAAP;AASS;;AAEA;AAOA;AAKA;;;;;AAfT;;AAAA;;;;;;;;;;;;;;AA6BQ;AA3BA;AAAA;;AAAA;;;;AAGwB;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AADJ;AAII;;AAAA;;;AADJ;;;;AAI2B;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAP;AAEI;;AAAA;;;AADJ;;;;AAI2B;;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAP;AACuD;;AAAA;;;AAAvD;;;;AAE2B;;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAP;AACyD;;AAAA;;;AAAzD;;;;AAGwB;;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AADJ;AAII;;AAAA;;;AADJ;AAKW;;AAAZ;AAAP;AAAA;AAlHR;;;AAEe;;AAAc;AAAA;AAAA;AAAA;AAAd;AAAP;;AAkHR;;;AAkBQ;;;AACO;;AAAA;AAAA;AACH;AADG;AAAA;;;AAAA;;AAEH;AAFG;AAAA;;;AAAA;;AAGH;;AAHG;AAAA;;;AAAA;;AAIH;;AAJG;AAAA;;;AAAA;;AAKH;;AALG;AAAA;;;;;;;;AAAP;AASS;AAGA;AAGA;;;;;AART;;AAAA;;;;;;;;;;;;AAkBQ;AAfuB;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;;;;AAEuB;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;;;;AAEuB;;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;;;;AAEuB;;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;;;;AAEuB;;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;AAGW;;AAAZ;AAAP;AAAA",
   "op_pc_offset": 0,
   "pc_events": {
     "1": {
@@ -11,6 +11,12 @@
       "params": {},
       "block": "smart_contracts.rbac.contract.RoleBasedAccessControl.approval_program",
       "stack_in": [],
+      "op": "intcblock 0 1 40 50"
+    },
+    "7": {
+      "op": "bytecblock 0x52323023 0x151f7c75 0x52343023 0x52353023 0x52363023 0x52373023 0x52383023"
+    },
+    "44": {
       "op": "txn ApplicationID",
       "defined_out": [
         "tmp%0#0"
@@ -19,15 +25,15 @@
         "tmp%0#0"
       ]
     },
-    "3": {
+    "46": {
       "op": "bnz main_after_if_else@2",
       "stack_out": []
     },
-    "6": {
+    "49": {
       "callsub": "smart_contracts.rbac.contract.RoleBasedAccessControl.__init__",
       "op": "callsub __init__"
     },
-    "9": {
+    "52": {
       "block": "main_after_if_else@2",
       "stack_in": [],
       "callsub": "smart_contracts.rbac.contract.RoleBasedAccessControl.__puya_arc4_router__",
@@ -39,21 +45,21 @@
         "tmp%1#0"
       ]
     },
-    "12": {
+    "55": {
       "op": "return",
       "stack_out": []
     },
-    "13": {
+    "56": {
       "subroutine": "smart_contracts.rbac.contract.RoleBasedAccessControl.__init__",
       "params": {},
       "block": "__init__",
       "stack_in": [],
       "op": "proto 0 0"
     },
-    "16": {
-      "op": "pushbytes 0x52323023"
+    "59": {
+      "op": "bytec_0 // 0x52323023"
     },
-    "22": {
+    "60": {
       "op": "global ZeroAddress",
       "defined_out": [
         "0x52323023",
@@ -64,22 +70,22 @@
         "new_state_value%0#0"
       ]
     },
-    "24": {
+    "62": {
       "op": "app_global_put",
       "stack_out": []
     },
-    "25": {
+    "63": {
       "retsub": true,
       "op": "retsub"
     },
-    "26": {
+    "64": {
       "subroutine": "smart_contracts.rbac.contract.RoleBasedAccessControl.__puya_arc4_router__",
       "params": {},
       "block": "__puya_arc4_router__",
       "stack_in": [],
       "op": "proto 0 1"
     },
-    "29": {
+    "67": {
       "op": "txn NumAppArgs",
       "defined_out": [
         "tmp%0#0"
@@ -88,33 +94,55 @@
         "tmp%0#0"
       ]
     },
-    "31": {
-      "op": "bnz __puya_arc4_router___after_if_else@6",
+    "69": {
+      "op": "bz __puya_arc4_router___bare_routing@6",
       "stack_out": []
     },
-    "34": {
+    "72": {
+      "op": "pushbytess 0xfef74567 0xb8fc1390 // method \"assign_role(address,uint8,byte[])uint64\", method \"revoke_role(address,uint8)uint64\""
+    },
+    "84": {
+      "op": "txna ApplicationArgs 0",
+      "defined_out": [
+        "Method(assign_role(address,uint8,byte[])uint64)",
+        "Method(revoke_role(address,uint8)uint64)",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "Method(assign_role(address,uint8,byte[])uint64)",
+        "Method(revoke_role(address,uint8)uint64)",
+        "tmp%2#0"
+      ]
+    },
+    "87": {
+      "op": "match __puya_arc4_router___assign_role_route@2 __puya_arc4_router___revoke_role_route@3",
+      "stack_out": []
+    },
+    "93": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0"
+      ],
+      "stack_out": [
+        "0"
+      ]
+    },
+    "94": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "95": {
+      "block": "__puya_arc4_router___assign_role_route@2",
+      "stack_in": [],
       "op": "txn OnCompletion",
       "defined_out": [
-        "tmp%2#0"
-      ],
-      "stack_out": [
-        "tmp%2#0"
-      ]
-    },
-    "36": {
-      "op": "bnz __puya_arc4_router___after_if_else@6",
-      "stack_out": []
-    },
-    "39": {
-      "op": "txn ApplicationID",
-      "defined_out": [
         "tmp%3#0"
       ],
       "stack_out": [
         "tmp%3#0"
       ]
     },
-    "41": {
+    "97": {
       "op": "!",
       "defined_out": [
         "tmp%4#0"
@@ -123,13 +151,245 @@
         "tmp%4#0"
       ]
     },
-    "42": {
+    "98": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "99": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%5#0"
+      ],
+      "stack_out": [
+        "tmp%5#0"
+      ]
+    },
+    "101": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "102": {
+      "op": "txna ApplicationArgs 1"
+    },
+    "105": {
+      "op": "txna ApplicationArgs 2"
+    },
+    "108": {
+      "op": "txna ApplicationArgs 3",
+      "defined_out": [
+        "tmp%7#0",
+        "tmp%8#0",
+        "tmp%9#0"
+      ],
+      "stack_out": [
+        "tmp%7#0",
+        "tmp%8#0",
+        "tmp%9#0"
+      ]
+    },
+    "111": {
+      "callsub": "smart_contracts.rbac.contract.RoleBasedAccessControl.assign_role",
+      "op": "callsub assign_role",
+      "defined_out": [
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "tmp%10#0"
+      ]
+    },
+    "114": {
+      "op": "bytec_1 // 0x151f7c75",
+      "defined_out": [
+        "0x151f7c75",
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "tmp%10#0",
+        "0x151f7c75"
+      ]
+    },
+    "115": {
+      "op": "swap",
+      "stack_out": [
+        "0x151f7c75",
+        "tmp%10#0"
+      ]
+    },
+    "116": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%11#0"
+      ],
+      "stack_out": [
+        "tmp%11#0"
+      ]
+    },
+    "117": {
+      "op": "log",
+      "stack_out": []
+    },
+    "118": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "119": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "120": {
+      "block": "__puya_arc4_router___revoke_role_route@3",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%12#0"
+      ],
+      "stack_out": [
+        "tmp%12#0"
+      ]
+    },
+    "122": {
+      "op": "!",
+      "defined_out": [
+        "tmp%13#0"
+      ],
+      "stack_out": [
+        "tmp%13#0"
+      ]
+    },
+    "123": {
+      "error": "OnCompletion is not NoOp",
+      "op": "assert // OnCompletion is not NoOp",
+      "stack_out": []
+    },
+    "124": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%14#0"
+      ],
+      "stack_out": [
+        "tmp%14#0"
+      ]
+    },
+    "126": {
+      "error": "can only call when not creating",
+      "op": "assert // can only call when not creating",
+      "stack_out": []
+    },
+    "127": {
+      "op": "txna ApplicationArgs 1"
+    },
+    "130": {
+      "op": "txna ApplicationArgs 2",
+      "defined_out": [
+        "tmp%16#0",
+        "tmp%17#0"
+      ],
+      "stack_out": [
+        "tmp%16#0",
+        "tmp%17#0"
+      ]
+    },
+    "133": {
+      "callsub": "smart_contracts.rbac.contract.RoleBasedAccessControl.revoke_role",
+      "op": "callsub revoke_role",
+      "defined_out": [
+        "tmp%18#0"
+      ],
+      "stack_out": [
+        "tmp%18#0"
+      ]
+    },
+    "136": {
+      "op": "bytec_1 // 0x151f7c75",
+      "defined_out": [
+        "0x151f7c75",
+        "tmp%18#0"
+      ],
+      "stack_out": [
+        "tmp%18#0",
+        "0x151f7c75"
+      ]
+    },
+    "137": {
+      "op": "swap",
+      "stack_out": [
+        "0x151f7c75",
+        "tmp%18#0"
+      ]
+    },
+    "138": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%19#0"
+      ],
+      "stack_out": [
+        "tmp%19#0"
+      ]
+    },
+    "139": {
+      "op": "log",
+      "stack_out": []
+    },
+    "140": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "141": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "142": {
+      "block": "__puya_arc4_router___bare_routing@6",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%20#0"
+      ],
+      "stack_out": [
+        "tmp%20#0"
+      ]
+    },
+    "144": {
+      "op": "bnz __puya_arc4_router___after_if_else@10",
+      "stack_out": []
+    },
+    "147": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%21#0"
+      ],
+      "stack_out": [
+        "tmp%21#0"
+      ]
+    },
+    "149": {
+      "op": "!",
+      "defined_out": [
+        "tmp%22#0"
+      ],
+      "stack_out": [
+        "tmp%22#0"
+      ]
+    },
+    "150": {
       "error": "can only call when creating",
       "op": "assert // can only call when creating",
       "stack_out": []
     },
-    "43": {
-      "op": "pushint 1 // 1",
+    "151": {
+      "op": "intc_1 // 1",
       "defined_out": [
         "1"
       ],
@@ -137,14 +397,14 @@
         "1"
       ]
     },
-    "45": {
+    "152": {
       "retsub": true,
       "op": "retsub"
     },
-    "46": {
-      "block": "__puya_arc4_router___after_if_else@6",
+    "153": {
+      "block": "__puya_arc4_router___after_if_else@10",
       "stack_in": [],
-      "op": "pushint 0 // 0",
+      "op": "intc_0 // 0",
       "defined_out": [
         "0"
       ],
@@ -152,7 +412,1988 @@
         "0"
       ]
     },
-    "48": {
+    "154": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "155": {
+      "subroutine": "smart_contracts.rbac.contract.RoleBasedAccessControl.assign_role",
+      "params": {
+        "role_address#0": "bytes",
+        "role#0": "bytes",
+        "config#0": "bytes"
+      },
+      "block": "assign_role",
+      "stack_in": [],
+      "op": "proto 3 1"
+    },
+    "158": {
+      "callsub": "smart_contracts.rbac.contract.RoleBasedAccessControl.assert_caller_is_arranger",
+      "op": "callsub assert_caller_is_arranger"
+    },
+    "161": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "role#0 (copy)"
+      ],
+      "stack_out": [
+        "role#0 (copy)"
+      ]
+    },
+    "163": {
+      "op": "btoi",
+      "defined_out": [
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "164": {
+      "op": "dup",
+      "defined_out": [
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "165": {
+      "op": "pushint 20 // 20",
+      "defined_out": [
+        "20",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "20"
+      ]
+    },
+    "167": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%0#0"
+      ]
+    },
+    "168": {
+      "op": "bnz assign_role_bool_true@6",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "171": {
+      "op": "frame_dig 0",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "173": {
+      "op": "intc_2 // 40",
+      "defined_out": [
+        "40",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "40"
+      ]
+    },
+    "174": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%1#0"
+      ]
+    },
+    "175": {
+      "op": "bnz assign_role_bool_true@6",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "178": {
+      "op": "frame_dig 0",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "180": {
+      "op": "intc_3 // 50",
+      "defined_out": [
+        "50",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "50"
+      ]
+    },
+    "181": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%2#0"
+      ]
+    },
+    "182": {
+      "op": "bnz assign_role_bool_true@6",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "185": {
+      "op": "frame_dig 0",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "187": {
+      "op": "pushint 60 // 60",
+      "defined_out": [
+        "60",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "60"
+      ]
+    },
+    "189": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%3#0"
+      ]
+    },
+    "190": {
+      "op": "bnz assign_role_bool_true@6",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "193": {
+      "op": "frame_dig 0",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "195": {
+      "op": "pushint 70 // 70",
+      "defined_out": [
+        "70",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "70"
+      ]
+    },
+    "197": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%4#0"
+      ]
+    },
+    "198": {
+      "op": "bnz assign_role_bool_true@6",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "201": {
+      "op": "frame_dig 0",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "203": {
+      "op": "pushint 80 // 80",
+      "defined_out": [
+        "80",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "80"
+      ]
+    },
+    "205": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%5#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%5#0"
+      ]
+    },
+    "206": {
+      "op": "bz assign_role_bool_false@7",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "209": {
+      "block": "assign_role_bool_true@6",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "or_result%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "or_result%0#0"
+      ]
+    },
+    "210": {
+      "op": "b assign_role_bool_merge@8"
+    },
+    "213": {
+      "block": "assign_role_bool_false@7",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "or_result%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "or_result%0#0"
+      ]
+    },
+    "214": {
+      "block": "assign_role_bool_merge@8",
+      "stack_in": [
+        "awst_tmp%0#0",
+        "or_result%0#0"
+      ],
+      "error": "Invalid role identifier",
+      "op": "assert // Invalid role identifier",
+      "defined_out": [],
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "215": {
+      "op": "pushint 20 // 20",
+      "defined_out": [
+        "20"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "20"
+      ]
+    },
+    "217": {
+      "op": "intc_2 // 40",
+      "defined_out": [
+        "20",
+        "40"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "20",
+        "40"
+      ]
+    },
+    "218": {
+      "op": "intc_3 // 50",
+      "defined_out": [
+        "20",
+        "40",
+        "50"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "20",
+        "40",
+        "50"
+      ]
+    },
+    "219": {
+      "op": "pushints 60 70 80 // 60, 70, 80",
+      "defined_out": [
+        "20",
+        "40",
+        "50",
+        "60",
+        "70",
+        "80"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "20",
+        "40",
+        "50",
+        "60",
+        "70",
+        "80"
+      ]
+    },
+    "224": {
+      "op": "frame_dig 0",
+      "defined_out": [
+        "20",
+        "40",
+        "50",
+        "60",
+        "70",
+        "80",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "20",
+        "40",
+        "50",
+        "60",
+        "70",
+        "80",
+        "awst_tmp%0#0"
+      ]
+    },
+    "226": {
+      "op": "match assign_role_switch_case_0@9 assign_role_switch_case_1@10 assign_role_switch_case_2@11 assign_role_switch_case_3@12 assign_role_switch_case_4@13 assign_role_switch_case_5@14",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "240": {
+      "op": "err"
+    },
+    "241": {
+      "block": "assign_role_switch_case_0@9",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec_0 // 0x52323023",
+      "defined_out": [
+        "0x52323023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52323023"
+      ]
+    },
+    "242": {
+      "op": "frame_dig -3",
+      "defined_out": [
+        "0x52323023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52323023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "244": {
+      "op": "app_global_put",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "245": {
+      "op": "b assign_role_switch_case_next@16"
+    },
+    "248": {
+      "block": "assign_role_switch_case_1@10",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec_2 // 0x52343023",
+      "defined_out": [
+        "0x52343023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52343023"
+      ]
+    },
+    "249": {
+      "op": "frame_dig -3",
+      "defined_out": [
+        "0x52343023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52343023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "251": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%7#0"
+      ]
+    },
+    "252": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%7#0",
+        "tmp%7#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%7#0",
+        "tmp%7#0 (copy)"
+      ]
+    },
+    "253": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%0#0",
+        "maybe_value%0#0",
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%7#0",
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "254": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%7#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "256": {
+      "op": "!",
+      "defined_out": [
+        "tmp%7#0",
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%7#0",
+        "tmp%8#0"
+      ]
+    },
+    "257": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%7#0"
+      ]
+    },
+    "258": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "config#0 (copy)",
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%7#0",
+        "config#0 (copy)"
+      ]
+    },
+    "260": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "new_box_value%0#0",
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%7#0",
+        "new_box_value%0#0"
+      ]
+    },
+    "263": {
+      "op": "box_put",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "264": {
+      "op": "b assign_role_switch_case_next@16"
+    },
+    "267": {
+      "block": "assign_role_switch_case_2@11",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec_3 // 0x52353023",
+      "defined_out": [
+        "0x52353023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52353023"
+      ]
+    },
+    "268": {
+      "op": "frame_dig -3",
+      "defined_out": [
+        "0x52353023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52353023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "270": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0"
+      ]
+    },
+    "271": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%10#0",
+        "tmp%10#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0",
+        "tmp%10#0 (copy)"
+      ]
+    },
+    "272": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%1#0",
+        "maybe_value%1#0",
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0",
+        "maybe_value%1#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "273": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "275": {
+      "op": "!",
+      "defined_out": [
+        "tmp%10#0",
+        "tmp%11#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0",
+        "tmp%11#0"
+      ]
+    },
+    "276": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0"
+      ]
+    },
+    "277": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "config#0 (copy)",
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0",
+        "config#0 (copy)"
+      ]
+    },
+    "279": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "new_box_value%1#0",
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0",
+        "new_box_value%1#0"
+      ]
+    },
+    "282": {
+      "op": "box_put",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "283": {
+      "op": "b assign_role_switch_case_next@16"
+    },
+    "286": {
+      "block": "assign_role_switch_case_3@12",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec 4 // 0x52363023",
+      "defined_out": [
+        "0x52363023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52363023"
+      ]
+    },
+    "288": {
+      "op": "frame_dig -3",
+      "defined_out": [
+        "0x52363023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52363023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "290": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%13#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%13#0"
+      ]
+    },
+    "291": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%13#0",
+        "tmp%13#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%13#0",
+        "tmp%13#0 (copy)"
+      ]
+    },
+    "292": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%2#0",
+        "maybe_value%2#0",
+        "tmp%13#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%13#0",
+        "maybe_value%2#0",
+        "maybe_exists%2#0"
+      ]
+    },
+    "293": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%13#0",
+        "maybe_exists%2#0"
+      ]
+    },
+    "295": {
+      "op": "!",
+      "defined_out": [
+        "tmp%13#0",
+        "tmp%14#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%13#0",
+        "tmp%14#0"
+      ]
+    },
+    "296": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%13#0"
+      ]
+    },
+    "297": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "config#0 (copy)",
+        "tmp%13#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%13#0",
+        "config#0 (copy)"
+      ]
+    },
+    "299": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "new_box_value%2#0",
+        "tmp%13#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%13#0",
+        "new_box_value%2#0"
+      ]
+    },
+    "302": {
+      "op": "box_put",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "303": {
+      "op": "b assign_role_switch_case_next@16"
+    },
+    "306": {
+      "block": "assign_role_switch_case_4@13",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec 5 // 0x52373023",
+      "defined_out": [
+        "0x52373023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52373023"
+      ]
+    },
+    "308": {
+      "op": "frame_dig -3",
+      "defined_out": [
+        "0x52373023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52373023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "310": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%16#0"
+      ]
+    },
+    "311": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%16#0",
+        "tmp%16#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%16#0",
+        "tmp%16#0 (copy)"
+      ]
+    },
+    "312": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%3#0",
+        "maybe_value%3#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%16#0",
+        "maybe_value%3#0",
+        "maybe_exists%3#0"
+      ]
+    },
+    "313": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%16#0",
+        "maybe_exists%3#0"
+      ]
+    },
+    "315": {
+      "op": "!",
+      "defined_out": [
+        "tmp%16#0",
+        "tmp%17#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%16#0",
+        "tmp%17#0"
+      ]
+    },
+    "316": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%16#0"
+      ]
+    },
+    "317": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "config#0 (copy)",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%16#0",
+        "config#0 (copy)"
+      ]
+    },
+    "319": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "new_box_value%3#0",
+        "tmp%16#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%16#0",
+        "new_box_value%3#0"
+      ]
+    },
+    "322": {
+      "op": "box_put",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "323": {
+      "op": "b assign_role_switch_case_next@16"
+    },
+    "326": {
+      "block": "assign_role_switch_case_5@14",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec 6 // 0x52383023",
+      "defined_out": [
+        "0x52383023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52383023"
+      ]
+    },
+    "328": {
+      "op": "frame_dig -3",
+      "defined_out": [
+        "0x52383023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52383023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "330": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%19#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%19#0"
+      ]
+    },
+    "331": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%19#0",
+        "tmp%19#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%19#0",
+        "tmp%19#0 (copy)"
+      ]
+    },
+    "332": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%4#0",
+        "maybe_value%4#0",
+        "tmp%19#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%19#0",
+        "maybe_value%4#0",
+        "maybe_exists%4#0"
+      ]
+    },
+    "333": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%19#0",
+        "maybe_exists%4#0"
+      ]
+    },
+    "335": {
+      "op": "!",
+      "defined_out": [
+        "tmp%19#0",
+        "tmp%20#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%19#0",
+        "tmp%20#0"
+      ]
+    },
+    "336": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%19#0"
+      ]
+    },
+    "337": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "config#0 (copy)",
+        "tmp%19#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%19#0",
+        "config#0 (copy)"
+      ]
+    },
+    "339": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "new_box_value%4#0",
+        "tmp%19#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%19#0",
+        "new_box_value%4#0"
+      ]
+    },
+    "342": {
+      "op": "box_put",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "343": {
+      "block": "assign_role_switch_case_next@16",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "global LatestTimestamp",
+      "defined_out": [
+        "to_encode%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "to_encode%0#0"
+      ]
+    },
+    "345": {
+      "op": "itob",
+      "defined_out": [
+        "val_as_bytes%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "val_as_bytes%0#0"
+      ]
+    },
+    "346": {
+      "op": "swap"
+    },
+    "347": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "348": {
+      "subroutine": "smart_contracts.rbac.contract.RoleBasedAccessControl.assert_caller_is_arranger",
+      "params": {},
+      "block": "assert_caller_is_arranger",
+      "stack_in": [],
+      "op": "proto 0 0"
+    },
+    "351": {
+      "op": "txn Sender",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "353": {
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "0"
+      ]
+    },
+    "354": {
+      "op": "bytec_0 // 0x52323023",
+      "defined_out": [
+        "0",
+        "0x52323023",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "0",
+        "0x52323023"
+      ]
+    },
+    "355": {
+      "op": "app_global_get_ex",
+      "defined_out": [
+        "maybe_exists%0#0",
+        "maybe_value%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "356": {
+      "error": "check self.arranger exists",
+      "op": "assert // check self.arranger exists",
+      "stack_out": [
+        "tmp%0#0",
+        "maybe_value%0#0"
+      ]
+    },
+    "357": {
+      "op": "==",
+      "defined_out": [
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "tmp%1#0"
+      ]
+    },
+    "358": {
+      "error": "Not authorized",
+      "op": "assert // Not authorized",
+      "stack_out": []
+    },
+    "359": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "360": {
+      "subroutine": "smart_contracts.rbac.contract.RoleBasedAccessControl.revoke_role",
+      "params": {
+        "role_address#0": "bytes",
+        "role#0": "bytes"
+      },
+      "block": "revoke_role",
+      "stack_in": [],
+      "op": "proto 2 1"
+    },
+    "363": {
+      "callsub": "smart_contracts.rbac.contract.RoleBasedAccessControl.assert_caller_is_arranger",
+      "op": "callsub assert_caller_is_arranger"
+    },
+    "366": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "role#0 (copy)"
+      ],
+      "stack_out": [
+        "role#0 (copy)"
+      ]
+    },
+    "368": {
+      "op": "btoi",
+      "defined_out": [
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "369": {
+      "op": "dup",
+      "defined_out": [
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "370": {
+      "op": "intc_2 // 40",
+      "defined_out": [
+        "40",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "40"
+      ]
+    },
+    "371": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%0#0"
+      ]
+    },
+    "372": {
+      "op": "bnz revoke_role_bool_true@5",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "375": {
+      "op": "frame_dig 0",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "377": {
+      "op": "intc_3 // 50",
+      "defined_out": [
+        "50",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "50"
+      ]
+    },
+    "378": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%1#0"
+      ]
+    },
+    "379": {
+      "op": "bnz revoke_role_bool_true@5",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "382": {
+      "op": "frame_dig 0",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "384": {
+      "op": "pushint 60 // 60",
+      "defined_out": [
+        "60",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "60"
+      ]
+    },
+    "386": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%2#0"
+      ]
+    },
+    "387": {
+      "op": "bnz revoke_role_bool_true@5",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "390": {
+      "op": "frame_dig 0",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "392": {
+      "op": "pushint 70 // 70",
+      "defined_out": [
+        "70",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "70"
+      ]
+    },
+    "394": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%3#0"
+      ]
+    },
+    "395": {
+      "op": "bnz revoke_role_bool_true@5",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "398": {
+      "op": "frame_dig 0",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0"
+      ]
+    },
+    "400": {
+      "op": "pushint 80 // 80",
+      "defined_out": [
+        "80",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "awst_tmp%0#0",
+        "80"
+      ]
+    },
+    "402": {
+      "op": "==",
+      "defined_out": [
+        "awst_tmp%0#0",
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%4#0"
+      ]
+    },
+    "403": {
+      "op": "bz revoke_role_bool_false@6",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "406": {
+      "block": "revoke_role_bool_true@5",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "or_result%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "or_result%0#0"
+      ]
+    },
+    "407": {
+      "op": "b revoke_role_bool_merge@7"
+    },
+    "410": {
+      "block": "revoke_role_bool_false@6",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "intc_0 // 0",
+      "defined_out": [
+        "or_result%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "or_result%0#0"
+      ]
+    },
+    "411": {
+      "block": "revoke_role_bool_merge@7",
+      "stack_in": [
+        "awst_tmp%0#0",
+        "or_result%0#0"
+      ],
+      "error": "Invalid role identifier",
+      "op": "assert // Invalid role identifier",
+      "defined_out": [],
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "412": {
+      "op": "intc_2 // 40",
+      "defined_out": [
+        "40"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "40"
+      ]
+    },
+    "413": {
+      "op": "intc_3 // 50",
+      "defined_out": [
+        "40",
+        "50"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "40",
+        "50"
+      ]
+    },
+    "414": {
+      "op": "pushints 60 70 80 // 60, 70, 80",
+      "defined_out": [
+        "40",
+        "50",
+        "60",
+        "70",
+        "80"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "40",
+        "50",
+        "60",
+        "70",
+        "80"
+      ]
+    },
+    "419": {
+      "op": "frame_dig 0",
+      "defined_out": [
+        "40",
+        "50",
+        "60",
+        "70",
+        "80",
+        "awst_tmp%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "40",
+        "50",
+        "60",
+        "70",
+        "80",
+        "awst_tmp%0#0"
+      ]
+    },
+    "421": {
+      "op": "match revoke_role_switch_case_0@8 revoke_role_switch_case_1@9 revoke_role_switch_case_2@10 revoke_role_switch_case_3@11 revoke_role_switch_case_4@12",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "433": {
+      "op": "err"
+    },
+    "434": {
+      "block": "revoke_role_switch_case_0@8",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec_2 // 0x52343023",
+      "defined_out": [
+        "0x52343023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52343023"
+      ]
+    },
+    "435": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "0x52343023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52343023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "437": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%6#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%6#0"
+      ]
+    },
+    "438": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%6#0",
+        "tmp%6#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%6#0",
+        "tmp%6#0 (copy)"
+      ]
+    },
+    "439": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%0#0",
+        "maybe_value%0#0",
+        "tmp%6#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%6#0",
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "440": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%6#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "442": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%6#0"
+      ]
+    },
+    "443": {
+      "op": "box_del",
+      "defined_out": [
+        "{box_del}"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "{box_del}"
+      ]
+    },
+    "444": {
+      "op": "pop",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "445": {
+      "op": "b revoke_role_switch_case_next@14"
+    },
+    "448": {
+      "block": "revoke_role_switch_case_1@9",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec_3 // 0x52353023",
+      "defined_out": [
+        "0x52353023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52353023"
+      ]
+    },
+    "449": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "0x52353023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52353023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "451": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%8#0"
+      ]
+    },
+    "452": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%8#0",
+        "tmp%8#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%8#0",
+        "tmp%8#0 (copy)"
+      ]
+    },
+    "453": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%1#0",
+        "maybe_value%1#0",
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%8#0",
+        "maybe_value%1#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "454": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%8#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "456": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%8#0"
+      ]
+    },
+    "457": {
+      "op": "box_del",
+      "defined_out": [
+        "{box_del}"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "{box_del}"
+      ]
+    },
+    "458": {
+      "op": "pop",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "459": {
+      "op": "b revoke_role_switch_case_next@14"
+    },
+    "462": {
+      "block": "revoke_role_switch_case_2@10",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec 4 // 0x52363023",
+      "defined_out": [
+        "0x52363023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52363023"
+      ]
+    },
+    "464": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "0x52363023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52363023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "466": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0"
+      ]
+    },
+    "467": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%10#0",
+        "tmp%10#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0",
+        "tmp%10#0 (copy)"
+      ]
+    },
+    "468": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%2#0",
+        "maybe_value%2#0",
+        "tmp%10#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0",
+        "maybe_value%2#0",
+        "maybe_exists%2#0"
+      ]
+    },
+    "469": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0",
+        "maybe_exists%2#0"
+      ]
+    },
+    "471": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%10#0"
+      ]
+    },
+    "472": {
+      "op": "box_del",
+      "defined_out": [
+        "{box_del}"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "{box_del}"
+      ]
+    },
+    "473": {
+      "op": "pop",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "474": {
+      "op": "b revoke_role_switch_case_next@14"
+    },
+    "477": {
+      "block": "revoke_role_switch_case_3@11",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec 5 // 0x52373023",
+      "defined_out": [
+        "0x52373023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52373023"
+      ]
+    },
+    "479": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "0x52373023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52373023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "481": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%12#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%12#0"
+      ]
+    },
+    "482": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%12#0",
+        "tmp%12#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%12#0",
+        "tmp%12#0 (copy)"
+      ]
+    },
+    "483": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%3#0",
+        "maybe_value%3#0",
+        "tmp%12#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%12#0",
+        "maybe_value%3#0",
+        "maybe_exists%3#0"
+      ]
+    },
+    "484": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%12#0",
+        "maybe_exists%3#0"
+      ]
+    },
+    "486": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%12#0"
+      ]
+    },
+    "487": {
+      "op": "box_del",
+      "defined_out": [
+        "{box_del}"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "{box_del}"
+      ]
+    },
+    "488": {
+      "op": "pop",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "489": {
+      "op": "b revoke_role_switch_case_next@14"
+    },
+    "492": {
+      "block": "revoke_role_switch_case_4@12",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "bytec 6 // 0x52383023",
+      "defined_out": [
+        "0x52383023"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52383023"
+      ]
+    },
+    "494": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "0x52383023",
+        "role_address#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "0x52383023",
+        "role_address#0 (copy)"
+      ]
+    },
+    "496": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%14#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%14#0"
+      ]
+    },
+    "497": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%14#0",
+        "tmp%14#0 (copy)"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%14#0",
+        "tmp%14#0 (copy)"
+      ]
+    },
+    "498": {
+      "op": "box_len",
+      "defined_out": [
+        "maybe_exists%4#0",
+        "maybe_value%4#0",
+        "tmp%14#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%14#0",
+        "maybe_value%4#0",
+        "maybe_exists%4#0"
+      ]
+    },
+    "499": {
+      "op": "bury 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%14#0",
+        "maybe_exists%4#0"
+      ]
+    },
+    "501": {
+      "error": "Invalid account role address",
+      "op": "assert // Invalid account role address",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "tmp%14#0"
+      ]
+    },
+    "502": {
+      "op": "box_del",
+      "defined_out": [
+        "{box_del}"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "{box_del}"
+      ]
+    },
+    "503": {
+      "op": "pop",
+      "stack_out": [
+        "awst_tmp%0#0"
+      ]
+    },
+    "504": {
+      "block": "revoke_role_switch_case_next@14",
+      "stack_in": [
+        "awst_tmp%0#0"
+      ],
+      "op": "global LatestTimestamp",
+      "defined_out": [
+        "to_encode%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "to_encode%0#0"
+      ]
+    },
+    "506": {
+      "op": "itob",
+      "defined_out": [
+        "val_as_bytes%0#0"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "val_as_bytes%0#0"
+      ]
+    },
+    "507": {
+      "op": "swap"
+    },
+    "508": {
       "retsub": true,
       "op": "retsub"
     }
