@@ -28,14 +28,12 @@ def test_pass_open_account(
     payment = algorand.account.random()
 
     base_d_asa_client_empty.send.open_account(
-        args=OpenAccountArgs(
+        OpenAccountArgs(
             holding_address=holding.address,
             payment_address=payment.address,
         ),
         params=CommonAppCallParams(
             sender=account_manager.address,
-            signer=account_manager.signer,
-            max_fee=AlgoAmount.from_algo(1),
         ),
     )
 
@@ -44,7 +42,7 @@ def test_pass_open_account(
             holding_address=holding.address,
         ),
         params=CommonAppCallParams(
-            signer=account_manager.signer,
+            sender=account_manager.address,
         ),
     ).abi_return
 
@@ -93,7 +91,7 @@ def test_fail_suspended(
 
     with pytest.raises(Exception, match=err.SUSPENDED):
         base_d_asa_client_suspended.send.open_account(
-            args=OpenAccountArgs(
+            OpenAccountArgs(
                 holding_address=holding.address,
                 payment_address=payment.address,
             ),
@@ -108,9 +106,9 @@ def test_fail_invalid_holding_address(
     account_manager: DAsaAccountManager,
     account_a: DAsaAccount,
 ) -> None:
-    with pytest.raises(Exception) as exc_info:
+    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS) as exc_info:
         base_d_asa_client_empty.send.open_account(
-            args=OpenAccountArgs(
+            OpenAccountArgs(
                 holding_address=account_a.holding_address,
                 payment_address=account_a.payment_address,
             ),
@@ -118,4 +116,3 @@ def test_fail_invalid_holding_address(
                 sender=account_manager.address,
             ),
         )
-    print(exc_info)
