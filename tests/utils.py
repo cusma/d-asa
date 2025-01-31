@@ -5,7 +5,6 @@ from typing import Optional, TypeAlias
 from algokit_utils import (
     AlgoAmount,
     AlgorandClient,
-    OnCompleteCallParameters,
     PaymentParams,
     SigningAccount,
 )
@@ -16,15 +15,21 @@ from algosdk.transaction import SuggestedParams
 from algosdk.v2client.algod import AlgodClient
 
 from smart_contracts import constants as sc_cst
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import BaseDAsaClient
+from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    BaseDAsaClient,
+    GetAccountInfoArgs,
+)
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
+    GetAccountInfoArgs,
 )
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
     PerpetualBondClient,
+    GetAccountInfoArgs,
 )
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
     ZeroCouponBondClient,
+    GetAccountInfoArgs,
 )
 
 COUPON_PER_OP_UP_TXN = 10  # This parameter is empirical and depends on the complexity of `count_due_coupons` subroutine
@@ -76,11 +81,11 @@ class DAsaAccountManager(SigningAccount):
         return sc_cst.ROLE_ACCOUNT_MANAGER
 
     @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
+    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
         return cls.role_box_prefix() + decode_address(address)
 
     @property
-    def box_id(self) -> bytes:
+    def box_id(self) -> bytes:  # TODO: Remove
         return self.role_box_prefix() + decode_address(self.address)
 
 
@@ -95,11 +100,11 @@ class DAsaPrimaryDealer(SigningAccount):
         return sc_cst.ROLE_PRIMARY_DEALER
 
     @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
+    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
         return cls.role_box_prefix() + decode_address(address)
 
     @property
-    def box_id(self) -> bytes:
+    def box_id(self) -> bytes:  # TODO: Remove
         return self.role_box_prefix() + decode_address(self.address)
 
 
@@ -114,11 +119,11 @@ class DAsaTrustee(SigningAccount):
         return sc_cst.ROLE_TRUSTEE
 
     @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
+    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
         return cls.role_box_prefix() + decode_address(address)
 
     @property
-    def box_id(self) -> bytes:
+    def box_id(self) -> bytes:  # TODO: Remove
         return self.role_box_prefix() + decode_address(self.address)
 
 
@@ -133,11 +138,11 @@ class DAsaAuthority(SigningAccount):
         return sc_cst.ROLE_AUTHORITY
 
     @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
+    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
         return cls.role_box_prefix() + decode_address(address)
 
     @property
-    def box_id(self) -> bytes:
+    def box_id(self) -> bytes:  # TODO: Remove
         return self.role_box_prefix() + decode_address(self.address)
 
 
@@ -152,11 +157,11 @@ class DAsaInterestOracle(SigningAccount):
         return sc_cst.ROLE_INTEREST_ORACLE
 
     @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
+    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
         return cls.role_box_prefix() + decode_address(address)
 
     @property
-    def box_id(self) -> bytes:
+    def box_id(self) -> bytes:  # TODO: Remove
         return self.role_box_prefix() + decode_address(self.address)
 
 
@@ -175,57 +180,44 @@ class DAsaAccount(SigningAccount):
         return sc_cst.PREFIX_ID_ACCOUNT
 
     @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
+    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
         return cls.role_box_prefix() + decode_address(address)
 
     @property
-    def box_id(self) -> bytes:
+    def box_id(self) -> bytes:  # TODO: Remove
         return self.role_box_prefix() + decode_address(self.holding_address)
 
     @property
     def payment_address(self) -> str:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.payment_address
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(
+                holding_address=self.holding_address,
+            )
+        ).abi_return.payment_address
 
     @property
     def units(self) -> int:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.units
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(holding_address=self.holding_address)
+        ).abi_return.units
 
     @property
     def unit_value(self) -> int:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.unit_value
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(holding_address=self.holding_address)
+        ).abi_return.unit_value
 
     @property
     def paid_coupons(self) -> int:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.paid_coupons
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(holding_address=self.holding_address)
+        ).abi_return.paid_coupons
 
     @property
     def suspended(self) -> bool:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.suspended
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(holding_address=self.holding_address)
+        ).abi_return.suspended
 
     @property
     def principal(self) -> int:
