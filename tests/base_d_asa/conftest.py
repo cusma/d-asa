@@ -240,7 +240,8 @@ def account_factory(
             OpenAccountArgs(
                 holding_address=account.address,
                 payment_address=account.address,
-            )
+            ),
+            params=CommonAppCallParams(sender=account_manager.address),
         )
         return utils.DAsaAccount(
             d_asa_client=base_d_asa_client,
@@ -280,7 +281,8 @@ def account_with_units_factory(
             PrimaryDistributionArgs(
                 holding_address=account.holding_address,
                 units=units,
-            )
+            ),
+            params=CommonAppCallParams(sender=primary_dealer.address),
         )
         return account
 
