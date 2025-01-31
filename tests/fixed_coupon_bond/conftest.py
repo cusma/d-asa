@@ -22,6 +22,8 @@ from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import
     PayCouponArgs,
     PrimaryDistributionArgs,
     SetSecondaryTimeEventsArgs,
+    SetDefaultStatusArgs,
+    SetAssetSuspensionArgs,
 )
 from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests import utils
@@ -399,7 +401,8 @@ def fixed_coupon_bond_client_suspended(
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> FixedCouponBondClient:
     fixed_coupon_bond_client_ongoing.send.set_asset_suspension(
-        suspended=True, params=CommonAppCallParams(sender=authority.address)
+        SetAssetSuspensionArgs(suspended=True),
+        params=CommonAppCallParams(sender=authority.address),
     )
     return fixed_coupon_bond_client_ongoing
 
@@ -409,6 +412,7 @@ def fixed_coupon_bond_client_defaulted(
     trustee: utils.DAsaTrustee, fixed_coupon_bond_client_ongoing: FixedCouponBondClient
 ) -> FixedCouponBondClient:
     fixed_coupon_bond_client_ongoing.send.set_default_status(
-        defaulted=True, params=CommonAppCallParams(sender=trustee.address)
+        SetDefaultStatusArgs(defaulted=True),
+        params=CommonAppCallParams(sender=trustee.address),
     )
     return fixed_coupon_bond_client_ongoing
