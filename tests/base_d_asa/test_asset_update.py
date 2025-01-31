@@ -27,7 +27,7 @@ def test_pass_update(
         prospectus_url="Updated Prospectus",
     )
     base_d_asa_client_active.send.update.asset_update(
-        args=AssetUpdateArgs(metadata=updated_metadata)
+        AssetUpdateArgs(metadata=updated_metadata)
     )
     metadata = base_d_asa_client_active.send.get_asset_metadata().abi_return
     assert metadata.prospectus_url == updated_metadata.prospectus_url
@@ -40,6 +40,6 @@ def test_fail_unauthorized(
 ) -> None:
     with pytest.raises(Exception, match=err.UNAUTHORIZED):
         base_d_asa_client_active.send.update.asset_update(
-            args=AssetUpdateArgs(metadata=asset_metadata),
-            params=CommonAppCallParams(sender=oscar.address, signer=oscar.signer),
+            AssetUpdateArgs(metadata=asset_metadata),
+            params=CommonAppCallParams(sender=oscar.address),
         )

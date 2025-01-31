@@ -257,7 +257,7 @@ def base_d_asa_client_primary(
 ) -> BaseDAsaClient:
     state = base_d_asa_client_active.state.global_state
     base_d_asa_client_active.send.set_secondary_time_events(
-        args=SetSecondaryTimeEventsArgs(
+        SetSecondaryTimeEventsArgs(
             secondary_market_time_events=[
                 state.issuance_date,
                 state.maturity_date,

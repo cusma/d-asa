@@ -2,7 +2,6 @@ from typing import Final
 
 import pytest
 from algokit_utils import (
-    AlgoAmount,
     AlgorandClient,
     SigningAccount,
 )
@@ -38,7 +37,7 @@ def test_pass_open_account(
     )
 
     d_asa_account_info = base_d_asa_client_empty.send.get_account_info(
-        args=GetAccountInfoArgs(
+        GetAccountInfoArgs(
             holding_address=holding.address,
         ),
         params=CommonAppCallParams(

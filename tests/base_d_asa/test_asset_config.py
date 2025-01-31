@@ -87,7 +87,7 @@ def test_fail_unauthorized(
     with pytest.raises(Exception, match=err.UNAUTHORIZED):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**base_d_asa_cfg.dictify()),
-            params=CommonAppCallParams(sender=oscar.address, signer=oscar.signer),
+            params=CommonAppCallParams(sender=oscar.address),
         )
 
 
