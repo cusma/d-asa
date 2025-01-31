@@ -35,6 +35,9 @@ jobs:
         id: filter
         with:
           filters: |      
+            rbac:
+              - 'smart_contracts/_helpers/**'
+              - 'smart_contracts/artifacts/rbac/**
             base-d-asa:
               - 'smart_contracts/_helpers/**'
               - 'smart_contracts/artifacts/base_d_asa/**'
@@ -47,6 +50,9 @@ jobs:
             perpetual-bond:
               - 'smart_contracts/_helpers/**'
               - 'smart_contracts/artifacts/perpetual_bond/**'
+            test-rbac:
+              - 'tests/conftest.py'
+              - 'tests/rbac/**'
             test-base-d-asa:
               - 'tests/conftest.py'
               - 'tests/base_d_asa/**'
@@ -59,6 +65,13 @@ jobs:
             test-perpetual-bond:
               - 'tests/conftest.py'
               - 'tests/perpetual_bond/**'
+
+      - name: Run RBAC tests
+        if: steps.filter.outputs.rbac == 'true' || steps.filter.outputs.test-rbac == 'true'
+        shell: bash
+        run: |
+          set -o pipefail
+          algokit project run test tests/rbac
 
       - name: Run Base D-ASA tests
         if: steps.filter.outputs.base-d-asa == 'true' || steps.filter.outputs.test-base-d-asa == 'true'
