@@ -309,8 +309,6 @@ def base_d_asa_client_suspended(
 ) -> BaseDAsaClient:
     base_d_asa_client_ongoing.send.set_asset_suspension(
         SetAssetSuspensionArgs(suspended=True),
-        params=CommonAppCallParams(
-            sender=authority.address,
-        ),
+        params=CommonAppCallParams(sender=authority.address),
     )
     return base_d_asa_client_ongoing
