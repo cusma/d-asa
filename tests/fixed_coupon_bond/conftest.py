@@ -289,9 +289,7 @@ def account_factory(
                 holding_address=account.address,
                 payment_address=account.address,
             ),
-            params=CommonAppCallParams(
-                sender=account_manager.address
-            )
+            params=CommonAppCallParams(sender=account_manager.address),
         )
         return utils.DAsaAccount(
             d_asa_client=fixed_coupon_bond_client,
@@ -308,7 +306,9 @@ def fixed_coupon_bond_client_primary(
 ) -> FixedCouponBondClient:
     state = fixed_coupon_bond_client_active.state.global_state
     fixed_coupon_bond_client_active.send.set_secondary_time_events(
-        SetSecondaryTimeEventsArgs(secondary_market_time_events=[state.issuance_date, state.maturity_date]),
+        SetSecondaryTimeEventsArgs(
+            secondary_market_time_events=[state.issuance_date, state.maturity_date]
+        ),
     )
     utils.time_warp(state.primary_distribution_opening_date)
     return fixed_coupon_bond_client_active
@@ -327,9 +327,7 @@ def account_with_units_factory(
                 holding_address=account.holding_address,
                 units=units,
             ),
-            params=CommonAppCallParams(
-                sender=primary_dealer.address
-            )
+            params=CommonAppCallParams(sender=primary_dealer.address),
         )
         return account
 
@@ -401,10 +399,7 @@ def fixed_coupon_bond_client_suspended(
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> FixedCouponBondClient:
     fixed_coupon_bond_client_ongoing.send.set_asset_suspension(
-        suspended=True,
-        params=CommonAppCallParams(
-            sender=authority.address
-        )
+        suspended=True, params=CommonAppCallParams(sender=authority.address)
     )
     return fixed_coupon_bond_client_ongoing
 
@@ -414,9 +409,6 @@ def fixed_coupon_bond_client_defaulted(
     trustee: utils.DAsaTrustee, fixed_coupon_bond_client_ongoing: FixedCouponBondClient
 ) -> FixedCouponBondClient:
     fixed_coupon_bond_client_ongoing.send.set_default_status(
-        defaulted=True,
-        params=CommonAppCallParams(
-            sender=trustee.address
-        )
+        defaulted=True, params=CommonAppCallParams(sender=trustee.address)
     )
     return fixed_coupon_bond_client_ongoing
