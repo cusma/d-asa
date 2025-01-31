@@ -29,54 +29,54 @@ def test_pass_asset_config(
     expected_time_events = base_d_asa_client_empty.send.get_time_events().abi_return
 
     # Asset Configuration
-    assert state.denomination_asset_id() == currency.id
-    assert state.settlement_asset_id() == state.denomination_asset_id()
-    assert state.unit_value() == base_d_asa_cfg.minimum_denomination
-    assert state.day_count_convention() == base_d_asa_cfg.day_count_convention
+    assert state.denomination_asset_id == currency.id
+    assert state.settlement_asset_id == state.denomination_asset_id
+    assert state.unit_value == base_d_asa_cfg.minimum_denomination
+    assert state.day_count_convention == base_d_asa_cfg.day_count_convention
 
     # Principal and Supply
     assert (
-        state.total_units()
+        state.total_units
         == base_d_asa_cfg.principal // base_d_asa_cfg.minimum_denomination
     )
-    assert not state.circulating_units()
-    assert not state.principal_discount()
+    assert not state.circulating_units
+    assert not state.principal_discount
 
     # Interest Rate
-    assert state.interest_rate() == base_d_asa_cfg.interest_rate
+    assert state.interest_rate == base_d_asa_cfg.interest_rate
 
     # Coupons
     assert expected_coupon_rates == base_d_asa_cfg.coupon_rates
-    assert state.total_coupons() == base_d_asa_cfg.total_coupons
+    assert state.total_coupons == base_d_asa_cfg.total_coupons
 
     # Time Schedule
     assert expected_time_events == base_d_asa_cfg.time_events
     assert (
-        state.primary_distribution_opening_date()
+        state.primary_distribution_opening_date
         == base_d_asa_cfg.time_events[sc_cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX]
         # == time_schedule_limits.primary_distribution_opening_date
     )
     assert (
-        state.primary_distribution_closure_date()
+        state.primary_distribution_closure_date
         == base_d_asa_cfg.time_events[sc_cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX]
         # == time_schedule_limits.primary_distribution_closure_date
     )
     assert (
-        state.issuance_date()
+        state.issuance_date
         == base_d_asa_cfg.time_events[sc_cfg.ISSUANCE_DATE_IDX]
         # == time_schedule_limits.issuance_date
     )
-    assert not state.secondary_market_opening_date()
-    assert not state.secondary_market_closure_date()
+    assert not state.secondary_market_opening_date
+    assert not state.secondary_market_closure_date
     assert (
-        state.maturity_date()
+        state.maturity_date
         == base_d_asa_cfg.time_events[sc_cfg.MATURITY_DATE_IDX]
         # == time_schedule_limits.maturity_date
     )
 
     # Status
-    assert state.status() == sc_cfg.STATUS_ACTIVE
-    assert not state.suspended()
+    assert state.status == sc_cfg.STATUS_ACTIVE
+    assert not state.suspended
 
 
 def test_fail_unauthorized(

@@ -5,6 +5,7 @@ from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     AssetMetadata,
+    AssetUpdateArgs,
     BaseDAsaClient,
     CommonAppCallParams,
 )
@@ -25,7 +26,9 @@ def test_pass_update(
         prospectus_hash=bytes(32),
         prospectus_url="Updated Prospectus",
     )
-    base_d_asa_client_active.send.asset_update(metadata=updated_metadata)
+    base_d_asa_client_active.send.update.asset_update(
+        args=AssetUpdateArgs(metadata=updated_metadata)
+    )
     metadata = base_d_asa_client_active.send.get_asset_metadata().abi_return
     assert metadata.prospectus_url == updated_metadata.prospectus_url
 
@@ -36,9 +39,8 @@ def test_fail_unauthorized(
     base_d_asa_client_active: BaseDAsaClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
-        base_d_asa_client_active.send.asset_update(
-            metadata=asset_metadata,
-            transaction_parameters=CommonAppCallParams(
-                sender=oscar.address, signer=oscar.signer
-            ),
+        base_d_asa_client_active.send.update.asset_update(
+            args=AssetUpdateArgs(metadata=asset_metadata),
+            params=CommonAppCallParams(sender=oscar.address, signer=oscar.signer),
+            compilation_params={},
         )

@@ -2,14 +2,19 @@ from typing import Final
 
 import pytest
 from algokit_utils import (
+    AlgoAmount,
     AlgorandClient,
     LogicError,
-    OnCompleteCallParameters,
     SigningAccount,
 )
 
 from smart_contracts import errors as err
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import BaseDAsaClient
+from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    BaseDAsaClient,
+    CommonAppCallParams,
+    GetAccountInfoArgs,
+    OpenAccountArgs,
+)
 from tests.utils import DAsaAccount, DAsaAccountManager
 
 ACCOUNT_TEST_UNITS: Final[int] = 7
@@ -23,32 +28,26 @@ def test_pass_open_account(
     holding = algorand.account.random()
     payment = algorand.account.random()
 
-    base_d_asa_client_empty.open_account(
-        holding_address=holding.address,
-        payment_address=payment.address,
-        transaction_parameters=OnCompleteCallParameters(
+    base_d_asa_client_empty.send.open_account(
+        args=OpenAccountArgs(
+            holding_address=holding.address,
+            payment_address=payment.address,
+        ),
+        params=CommonAppCallParams(
+            sender=account_manager.address,
             signer=account_manager.signer,
-            boxes=[
-                (base_d_asa_client_empty.app_id, account_manager.box_id),
-                (
-                    base_d_asa_client_empty.app_id,
-                    DAsaAccount.box_id_from_address(holding.address),
-                ),
-            ],
+            static_fee=AlgoAmount.from_algo(1),
         ),
     )
 
-    d_asa_account_info = base_d_asa_client_empty.get_account_info(
-        holding_address=holding.address,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[
-                (
-                    base_d_asa_client_empty.app_id,
-                    DAsaAccount.box_id_from_address(holding.address),
-                )
-            ]
+    d_asa_account_info = base_d_asa_client_empty.send.get_account_info(
+        args=GetAccountInfoArgs(
+            holding_address=holding.address,
         ),
-    ).return_value
+        params=CommonAppCallParams(
+            signer=account_manager.signer,
+        ),
+    ).abi_return
 
     assert d_asa_account_info.payment_address == payment.address
     assert d_asa_account_info.units == 0
@@ -66,21 +65,10 @@ def test_fail_unauthorized_caller(
     payment = algorand.account.random()
 
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
-        base_d_asa_client_empty.open_account(
-            holding_address=holding.address,
-            payment_address=payment.address,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=oscar.signer,
-                boxes=[
-                    (
-                        base_d_asa_client_empty.app_id,
-                        DAsaAccountManager.box_id_from_address(oscar.address),
-                    ),
-                    (
-                        base_d_asa_client_empty.app_id,
-                        DAsaAccount.box_id_from_address(holding.address),
-                    ),
-                ],
+        base_d_asa_client_empty.send.open_account(
+            args=(holding.address, payment.address),
+            params=CommonAppCallParams(
+                sender=oscar.address,
             ),
         )
 
@@ -102,18 +90,10 @@ def test_fail_suspended(
     payment = algorand.account.random()
 
     with pytest.raises(LogicError, match=err.SUSPENDED):
-        base_d_asa_client_suspended.open_account(
-            holding_address=holding.address,
-            payment_address=payment.address,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=account_manager.signer,
-                boxes=[
-                    (base_d_asa_client_suspended.app_id, account_manager.box_id),
-                    (
-                        base_d_asa_client_suspended.app_id,
-                        DAsaAccount.box_id_from_address(holding.address),
-                    ),
-                ],
+        base_d_asa_client_suspended.send.open_account(
+            args=(holding.address, payment.address),
+            params=CommonAppCallParams(
+                sender=account_manager.address,
             ),
         )
 
@@ -124,14 +104,9 @@ def test_fail_invalid_holding_address(
     account_a: DAsaAccount,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
-        base_d_asa_client_empty.open_account(
-            holding_address=account_a.holding_address,
-            payment_address=account_a.payment_address,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=account_manager.signer,
-                boxes=[
-                    (base_d_asa_client_empty.app_id, account_manager.box_id),
-                    (base_d_asa_client_empty.app_id, account_a.box_id),
-                ],
+        base_d_asa_client_empty.send.open_account(
+            args=(account_a.holding_address, account_a.payment_address),
+            params=CommonAppCallParams(
+                sender=account_manager.address,
             ),
         )

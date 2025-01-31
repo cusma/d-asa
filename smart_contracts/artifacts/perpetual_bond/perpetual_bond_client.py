@@ -1396,159 +1396,181 @@ class _GlobalState:
             )
         return typing.cast(GlobalStateValue, converted)
 
+    @property
     def arranger(self) -> bytes:
-            """Get the current value of the arranger key in global_state state"""
-            value = self.app_client.state.global_state.get_value("arranger")
-            if isinstance(value, dict) and "AVMBytes" in self._struct_classes:
-                return self._struct_classes["AVMBytes"](**value)  # type: ignore
-            return typing.cast(bytes, value)
+        """Get the current value of the arranger key in global_state state"""
+        value = self.app_client.state.global_state.get_value("arranger")
+        if isinstance(value, dict) and "AVMBytes" in self._struct_classes:
+            return self._struct_classes["AVMBytes"](**value)  # type: ignore
+        return typing.cast(bytes, value)
 
+    @property
     def circulating_units(self) -> int:
-            """Get the current value of the circulating_units key in global_state state"""
-            value = self.app_client.state.global_state.get_value("circulating_units")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the circulating_units key in global_state state"""
+        value = self.app_client.state.global_state.get_value("circulating_units")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def coupon_period(self) -> int:
-            """Get the current value of the coupon_period key in global_state state"""
-            value = self.app_client.state.global_state.get_value("coupon_period")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the coupon_period key in global_state state"""
+        value = self.app_client.state.global_state.get_value("coupon_period")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def day_count_convention(self) -> int:
-            """Get the current value of the day_count_convention key in global_state state"""
-            value = self.app_client.state.global_state.get_value("day_count_convention")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the day_count_convention key in global_state state"""
+        value = self.app_client.state.global_state.get_value("day_count_convention")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def defaulted(self) -> int:
-            """Get the current value of the defaulted key in global_state state"""
-            value = self.app_client.state.global_state.get_value("defaulted")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the defaulted key in global_state state"""
+        value = self.app_client.state.global_state.get_value("defaulted")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def denomination_asset_id(self) -> int:
-            """Get the current value of the denomination_asset_id key in global_state state"""
-            value = self.app_client.state.global_state.get_value("denomination_asset_id")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the denomination_asset_id key in global_state state"""
+        value = self.app_client.state.global_state.get_value("denomination_asset_id")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def interest_rate(self) -> int:
-            """Get the current value of the interest_rate key in global_state state"""
-            value = self.app_client.state.global_state.get_value("interest_rate")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the interest_rate key in global_state state"""
+        value = self.app_client.state.global_state.get_value("interest_rate")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def issuance_date(self) -> int:
-            """Get the current value of the issuance_date key in global_state state"""
-            value = self.app_client.state.global_state.get_value("issuance_date")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the issuance_date key in global_state state"""
+        value = self.app_client.state.global_state.get_value("issuance_date")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def maturity_date(self) -> int:
-            """Get the current value of the maturity_date key in global_state state"""
-            value = self.app_client.state.global_state.get_value("maturity_date")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the maturity_date key in global_state state"""
+        value = self.app_client.state.global_state.get_value("maturity_date")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def metadata(self) -> bytes:
-            """Get the current value of the metadata key in global_state state"""
-            value = self.app_client.state.global_state.get_value("metadata")
-            if isinstance(value, dict) and "AVMBytes" in self._struct_classes:
-                return self._struct_classes["AVMBytes"](**value)  # type: ignore
-            return typing.cast(bytes, value)
+        """Get the current value of the metadata key in global_state state"""
+        value = self.app_client.state.global_state.get_value("metadata")
+        if isinstance(value, dict) and "AVMBytes" in self._struct_classes:
+            return self._struct_classes["AVMBytes"](**value)  # type: ignore
+        return typing.cast(bytes, value)
 
+    @property
     def paid_coupon_units(self) -> int:
-            """Get the current value of the paid_coupon_units key in global_state state"""
-            value = self.app_client.state.global_state.get_value("paid_coupon_units")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the paid_coupon_units key in global_state state"""
+        value = self.app_client.state.global_state.get_value("paid_coupon_units")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def primary_distribution_closure_date(self) -> int:
-            """Get the current value of the primary_distribution_closure_date key in global_state state"""
-            value = self.app_client.state.global_state.get_value("primary_distribution_closure_date")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the primary_distribution_closure_date key in global_state state"""
+        value = self.app_client.state.global_state.get_value("primary_distribution_closure_date")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def primary_distribution_opening_date(self) -> int:
-            """Get the current value of the primary_distribution_opening_date key in global_state state"""
-            value = self.app_client.state.global_state.get_value("primary_distribution_opening_date")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the primary_distribution_opening_date key in global_state state"""
+        value = self.app_client.state.global_state.get_value("primary_distribution_opening_date")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def principal_discount(self) -> int:
-            """Get the current value of the principal_discount key in global_state state"""
-            value = self.app_client.state.global_state.get_value("principal_discount")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the principal_discount key in global_state state"""
+        value = self.app_client.state.global_state.get_value("principal_discount")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def secondary_market_closure_date(self) -> int:
-            """Get the current value of the secondary_market_closure_date key in global_state state"""
-            value = self.app_client.state.global_state.get_value("secondary_market_closure_date")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the secondary_market_closure_date key in global_state state"""
+        value = self.app_client.state.global_state.get_value("secondary_market_closure_date")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def secondary_market_opening_date(self) -> int:
-            """Get the current value of the secondary_market_opening_date key in global_state state"""
-            value = self.app_client.state.global_state.get_value("secondary_market_opening_date")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the secondary_market_opening_date key in global_state state"""
+        value = self.app_client.state.global_state.get_value("secondary_market_opening_date")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def settlement_asset_id(self) -> int:
-            """Get the current value of the settlement_asset_id key in global_state state"""
-            value = self.app_client.state.global_state.get_value("settlement_asset_id")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the settlement_asset_id key in global_state state"""
+        value = self.app_client.state.global_state.get_value("settlement_asset_id")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def status(self) -> int:
-            """Get the current value of the status key in global_state state"""
-            value = self.app_client.state.global_state.get_value("status")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the status key in global_state state"""
+        value = self.app_client.state.global_state.get_value("status")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def suspended(self) -> int:
-            """Get the current value of the suspended key in global_state state"""
-            value = self.app_client.state.global_state.get_value("suspended")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the suspended key in global_state state"""
+        value = self.app_client.state.global_state.get_value("suspended")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def total_coupons(self) -> int:
-            """Get the current value of the total_coupons key in global_state state"""
-            value = self.app_client.state.global_state.get_value("total_coupons")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the total_coupons key in global_state state"""
+        value = self.app_client.state.global_state.get_value("total_coupons")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def total_units(self) -> int:
-            """Get the current value of the total_units key in global_state state"""
-            value = self.app_client.state.global_state.get_value("total_units")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the total_units key in global_state state"""
+        value = self.app_client.state.global_state.get_value("total_units")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
+    @property
     def unit_value(self) -> int:
-            """Get the current value of the unit_value key in global_state state"""
-            value = self.app_client.state.global_state.get_value("unit_value")
-            if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-                return self._struct_classes["AVMUint64"](**value)  # type: ignore
-            return typing.cast(int, value)
+        """Get the current value of the unit_value key in global_state state"""
+        value = self.app_client.state.global_state.get_value("unit_value")
+        if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
+            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+        return typing.cast(int, value)
 
 class PerpetualBondClient:
     """Client for interacting with PerpetualBond smart contract"""

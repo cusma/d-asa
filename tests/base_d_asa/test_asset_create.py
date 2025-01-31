@@ -29,16 +29,16 @@ def test_pass_asset_create(
     state = base_d_asa_client.state.global_state
 
     # Roles
-    assert encode_address(state.arranger()) == arranger.address
+    assert encode_address(state.arranger) == arranger.address
 
     # Asset Configuration
-    assert not state.denomination_asset_id()
-    assert not state.settlement_asset_id()
-    assert not state.unit_value()
-    assert not state.day_count_convention()
+    assert not state.denomination_asset_id
+    assert not state.settlement_asset_id
+    assert not state.unit_value
+    assert not state.day_count_convention
 
     # Metadata
-    assert state.metadata() == TupleType(
+    assert state.metadata == TupleType(
         [
             UintType(8),  # Contract Type
             UintType(8),  # Calendar
@@ -63,24 +63,24 @@ def test_pass_asset_create(
     )
 
     # Principal and Supply
-    assert not state.total_units()
-    assert not state.circulating_units()
-    assert not state.principal_discount()
+    assert not state.total_units
+    assert not state.circulating_units
+    assert not state.principal_discount
 
     # Coupons
-    assert not state.total_coupons()
+    assert not state.total_coupons
 
     # Time Schedule
-    assert not state.primary_distribution_opening_date()
-    assert not state.primary_distribution_closure_date()
-    assert not state.issuance_date()
-    assert not state.secondary_market_opening_date()
-    assert not state.secondary_market_closure_date()
-    assert not state.maturity_date()
+    assert not state.primary_distribution_opening_date
+    assert not state.primary_distribution_closure_date
+    assert not state.issuance_date
+    assert not state.secondary_market_opening_date
+    assert not state.secondary_market_closure_date
+    assert not state.maturity_date
 
     # Status
-    assert state.status() == sc_cfg.STATUS_EMPTY
-    assert not state.suspended()
+    assert state.status == sc_cfg.STATUS_EMPTY
+    assert not state.suspended
 
 
 def test_fail_invalid_state_schema() -> None:
