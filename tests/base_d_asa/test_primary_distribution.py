@@ -10,6 +10,8 @@ from smart_contracts import errors as err
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     BaseDAsaClient,
     CommonAppCallParams,
+    PrimaryDistributionArgs,
+    SetAssetSuspensionArgs,
 )
 from tests.utils import (
     DAsaAccount,
@@ -32,8 +34,10 @@ def test_pass_primary_distribution(
     assert state.circulating_units == 0
 
     remaining_units = base_d_asa_client_primary.send.primary_distribution(
-        holding_address=account.holding_address,
-        units=ACCOUNT_TEST_UNITS,
+        PrimaryDistributionArgs(
+            holding_address=account.holding_address,
+            units=ACCOUNT_TEST_UNITS,
+        ),
         params=CommonAppCallParams(
             sender=primary_dealer.address,
         ),
@@ -48,8 +52,10 @@ def test_pass_primary_distribution(
     assert account.paid_coupons == 0
 
     remaining_units = base_d_asa_client_primary.send.primary_distribution(
-        holding_address=account.holding_address,
-        units=ACCOUNT_TEST_UNITS,
+        PrimaryDistributionArgs(
+            holding_address=account.holding_address,
+            units=ACCOUNT_TEST_UNITS,
+        ),
         params=CommonAppCallParams(
             sender=primary_dealer.address,
         ),
@@ -79,8 +85,10 @@ def test_fail_primary_distribution_closed(
 
     with pytest.raises(Exception, match=err.PRIMARY_DISTRIBUTION_CLOSED):
         base_d_asa_client_primary.send.primary_distribution(
-            holding_address=account.holding_address,
-            units=ACCOUNT_TEST_UNITS,
+            PrimaryDistributionArgs(
+                holding_address=account.holding_address,
+                units=ACCOUNT_TEST_UNITS,
+            ),
         )
 
 
@@ -92,8 +100,10 @@ def test_fail_unauthorized(
     account = account_factory(base_d_asa_client_primary)
     with pytest.raises(Exception, match=err.UNAUTHORIZED):
         base_d_asa_client_primary.send.primary_distribution(
-            holding_address=account.holding_address,
-            units=ACCOUNT_TEST_UNITS,
+            PrimaryDistributionArgs(
+                holding_address=account.holding_address,
+                units=ACCOUNT_TEST_UNITS,
+            ),
             params=CommonAppCallParams(
                 sender=oscar.address,
             ),
@@ -116,15 +126,19 @@ def test_fail_suspended(
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
     base_d_asa_client_primary.send.set_asset_suspension(
-        suspended=True,
+        SetAssetSuspensionArgs(
+            suspended=True,
+        ),
         params=CommonAppCallParams(
             sender=authority.address,
         ),
     )
     with pytest.raises(Exception, match=err.SUSPENDED):
         base_d_asa_client_primary.send.primary_distribution(
-            holding_address=account.holding_address,
-            units=ACCOUNT_TEST_UNITS,
+            PrimaryDistributionArgs(
+                holding_address=account.holding_address,
+                units=ACCOUNT_TEST_UNITS,
+            ),
             params=CommonAppCallParams(
                 sender=primary_dealer.address,
             ),
@@ -139,8 +153,10 @@ def test_fail_zero_units(
     account = account_factory(base_d_asa_client_primary)
     with pytest.raises(Exception, match=err.ZERO_UNITS):
         base_d_asa_client_primary.send.primary_distribution(
-            holding_address=account.holding_address,
-            units=0,
+            PrimaryDistributionArgs(
+                holding_address=account.holding_address,
+                units=0,
+            ),
             params=CommonAppCallParams(
                 sender=primary_dealer.address,
             ),
@@ -157,8 +173,10 @@ def test_fail_over_distribution(
 
     with pytest.raises(Exception, match=err.OVER_DISTRIBUTION):
         base_d_asa_client_primary.send.primary_distribution(
-            holding_address=account.holding_address,
-            units=state.total_units + 1,
+            PrimaryDistributionArgs(
+                holding_address=account.holding_address,
+                units=state.total_units + 1,
+            ),
             params=CommonAppCallParams(
                 sender=primary_dealer.address,
             ),
