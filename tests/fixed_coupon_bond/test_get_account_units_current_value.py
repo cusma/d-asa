@@ -1,7 +1,5 @@
 from typing import Callable, Final
 
-from algokit_utils import OnCompleteCallParameters
-
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,

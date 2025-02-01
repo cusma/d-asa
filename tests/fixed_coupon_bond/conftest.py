@@ -5,6 +5,7 @@ from algokit_utils import (
     AlgorandClient,
     AssetOptInParams,
     AssetTransferParams,
+    SendParams,
     SigningAccount,
 )
 from algokit_utils.config import config
@@ -364,13 +365,13 @@ def account_with_coupons_factory(
         time_events = fixed_coupon_bond_client_primary.send.get_time_events().abi_return
         utils.time_warp(time_events[sc_cfg.FIRST_COUPON_DATE_IDX + coupons - 1])
         for _ in range(1, coupons + 1):
-            sp = utils.sp_per_coupon(coupons)
             fixed_coupon_bond_client_primary.send.pay_coupon(
                 PayCouponArgs(
                     holding_address=account.holding_address,
                     payment_info=b"",
                 ),
-                # TODO: Manage extra fees for the opcode budget top-up
+                params=CommonAppCallParams(max_fee=utils.max_fee_per_coupon(coupons)),
+                send_params=SendParams(cover_app_call_inner_transaction_fees=True)
             )
         return account
 
