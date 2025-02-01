@@ -11,7 +11,6 @@ from algokit_utils import (
 from algosdk.abi import TupleType, UintType
 from algosdk.constants import min_txn_fee
 from algosdk.encoding import decode_address
-from algosdk.transaction import SuggestedParams
 from algosdk.v2client.algod import AlgodClient
 
 from smart_contracts import constants as sc_cst
@@ -275,21 +274,17 @@ def time_warp(to_timestamp: int) -> None:
     algorand_client.client.algod.set_timestamp_offset(0)
 
 
-def sp_per_coupon(coupon_idx: int) -> SuggestedParams:
+def max_fee_per_coupon(coupon_idx: int) -> AlgoAmount:
     """
-    Set fee credit for opcode budget, based on coupon index to process
+    Compute max fee credit for opcode budget, based on coupon index to process
 
     Args:
         coupon_idx: coupon index to process
 
     Returns:
-
+        Max fee
     """
-    algorand_client = AlgorandClient.default_localnet()
-    sp = algorand_client.get_suggested_params()
-    sp.flat_fee = True
-    sp.fee = math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee
-    return sp
+    return AlgoAmount.from_micro_algos(math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee)
 
 
 def set_role_config(validity_start: int = 0, validity_end: int = 2**64 - 1) -> bytes:
