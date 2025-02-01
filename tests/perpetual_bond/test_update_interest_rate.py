@@ -5,12 +5,11 @@ from algokit_utils import (
     AlgorandClient,
     SigningAccount,
 )
-from algosdk.encoding import decode_address
 
-from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
+from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import PayCouponArgs
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient,
+    PerpetualBondClient, UpdateInterestRateArgs, CommonAppCallParams,
 )
 from tests.utils import Currency, DAsaAccount, DAsaConfig, DAsaInterestOracle, time_warp
 
@@ -25,17 +24,14 @@ def test_pass_primary_distribution(
     interest_oracle: DAsaInterestOracle,
     perpetual_bond_client_primary: PerpetualBondClient,
 ) -> None:
-    interest_rate = perpetual_bond_client_primary.get_global_state().interest_rate
+    interest_rate = perpetual_bond_client_primary.state.global_state.interest_rate
     print(f"Interest rate:\t\t{interest_rate / 100:.2f}%")
-    perpetual_bond_client_primary.update_interest_rate(
-        interest_rate=interest_rate + INTEREST_RATE_INCREASE,
-        transaction_parameters=OnCompleteCallParameters(
-            signer=interest_oracle.signer,
-            boxes=[(perpetual_bond_client_primary.app_id, interest_oracle.box_id)],
-        ),
+    perpetual_bond_client_primary.send.update_interest_rate(
+        UpdateInterestRateArgs(interest_rate=interest_rate + INTEREST_RATE_INCREASE),
+        params=CommonAppCallParams(sender=interest_oracle.address),
     )
     updated_interest_rate = (
-        perpetual_bond_client_primary.get_global_state().interest_rate
+        perpetual_bond_client_primary.state.global_state.interest_rate
     )
     print(f"Interest rate:\t\t{updated_interest_rate / 100:.2f}%")
     assert updated_interest_rate == interest_rate + INTEREST_RATE_INCREASE
@@ -48,7 +44,7 @@ def test_pass_after_issuance(
     account_with_units_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_with_units_factory(units=D_ASA_TEST_UNITS)
-    state = perpetual_bond_client_primary.get_global_state()
+    state = perpetual_bond_client_primary.state.global_state
     issuance_date = state.issuance_date
     coupon_period = state.coupon_period
 
@@ -59,26 +55,20 @@ def test_pass_after_issuance(
         time_warp(coupon_due_date)
 
         # Coupon payment
-        perpetual_bond_client_primary.pay_coupon(
-            holding_address=account.holding_address,
-            payment_info=b"",
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[currency.id],
-                accounts=[account.payment_address],
-                boxes=[(perpetual_bond_client_primary.app_id, account.box_id)],
-            ),
+        perpetual_bond_client_primary.send.pay_coupon(
+            PayCouponArgs(
+                holding_address=account.holding_address,
+                payment_info=b"",
+            )
         )
 
         # Update interest rate
         interest_rate = state.interest_rate
-        perpetual_bond_client_primary.update_interest_rate(
-            interest_rate=interest_rate + INTEREST_RATE_INCREASE,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=interest_oracle.signer,
-                boxes=[(perpetual_bond_client_primary.app_id, interest_oracle.box_id)],
-            ),
+        perpetual_bond_client_primary.send.update_interest_rate(
+            UpdateInterestRateArgs(interest_rate=interest_rate + INTEREST_RATE_INCREASE),
+            params=CommonAppCallParams(sender=interest_oracle.address),
         )
-        state = perpetual_bond_client_primary.get_global_state()
+        state = perpetual_bond_client_primary.state.global_state
         updated_interest_rate = state.interest_rate
         assert updated_interest_rate == interest_rate + INTEREST_RATE_INCREASE
 
@@ -88,20 +78,10 @@ def test_fail_unauthorized(
     oscar: SigningAccount,
     perpetual_bond_client_primary: PerpetualBondClient,
 ) -> None:
-    interest_rate = perpetual_bond_client_primary.get_global_state().interest_rate
+    interest_rate = perpetual_bond_client_primary.state.global_state.interest_rate
     with pytest.raises(Exception, match=err.UNAUTHORIZED):
-        perpetual_bond_client_primary.update_interest_rate(
-            interest_rate=interest_rate + INTEREST_RATE_INCREASE,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=oscar.signer,
-                boxes=[
-                    (
-                        perpetual_bond_client_primary.app_id,
-                        sc_cst.PREFIX_ID_INTEREST_ORACLE
-                        + decode_address(oscar.address),
-                    )
-                ],
-            ),
+        perpetual_bond_client_primary.send.update_interest_rate(
+            UpdateInterestRateArgs(interest_rate=interest_rate + INTEREST_RATE_INCREASE)
         )
 
 
@@ -120,7 +100,7 @@ def test_fail_pending_coupon_payment(
     account_b: DAsaAccount,
     perpetual_bond_client_ongoing: PerpetualBondClient,
 ) -> None:
-    state = perpetual_bond_client_ongoing.get_global_state()
+    state = perpetual_bond_client_ongoing.state.global_state
     issuance_date = state.issuance_date
     coupon_period = state.coupon_period
     interest_rate = state.interest_rate
@@ -135,41 +115,27 @@ def test_fail_pending_coupon_payment(
             first_payee = account_b
             second_payee = account_a
 
-        perpetual_bond_client_ongoing.pay_coupon(
-            holding_address=first_payee.holding_address,
-            payment_info=b"",
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[perpetual_bond_cfg.denomination_asset_id],
-                accounts=[first_payee.payment_address],
-                boxes=[(perpetual_bond_client_ongoing.app_id, first_payee.box_id)],
-            ),
+        perpetual_bond_client_ongoing.send.pay_coupon(
+            PayCouponArgs(
+                holding_address=first_payee.holding_address,
+                payment_info=b"",
+            )
         )
 
         with pytest.raises(Exception, match=err.PENDING_COUPON_PAYMENT):
-            perpetual_bond_client_ongoing.update_interest_rate(
-                interest_rate=interest_rate + INTEREST_RATE_INCREASE,
-                transaction_parameters=OnCompleteCallParameters(
-                    signer=interest_oracle.signer,
-                    boxes=[
-                        (perpetual_bond_client_ongoing.app_id, interest_oracle.box_id)
-                    ],
-                ),
+            perpetual_bond_client_ongoing.send.update_interest_rate(
+                UpdateInterestRateArgs(interest_rate=interest_rate + INTEREST_RATE_INCREASE),
+                params=CommonAppCallParams(sender=interest_oracle.address),
             )
 
-        perpetual_bond_client_ongoing.pay_coupon(
-            holding_address=second_payee.holding_address,
-            payment_info=b"",
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[perpetual_bond_cfg.denomination_asset_id],
-                accounts=[second_payee.payment_address],
-                boxes=[(perpetual_bond_client_ongoing.app_id, second_payee.box_id)],
-            ),
+        perpetual_bond_client_ongoing.send.pay_coupon(
+            PayCouponArgs(
+                holding_address=second_payee.holding_address,
+                payment_info=b"",
+            )
         )
 
-        perpetual_bond_client_ongoing.update_interest_rate(
-            interest_rate=interest_rate + INTEREST_RATE_INCREASE,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=interest_oracle.signer,
-                boxes=[(perpetual_bond_client_ongoing.app_id, interest_oracle.box_id)],
-            ),
+        perpetual_bond_client_ongoing.send.update_interest_rate(
+            UpdateInterestRateArgs(interest_rate=interest_rate + INTEREST_RATE_INCREASE),
+            params=CommonAppCallParams(sender=interest_oracle.address),
         )
