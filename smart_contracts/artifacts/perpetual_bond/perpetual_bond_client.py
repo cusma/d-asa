@@ -47,14 +47,22 @@ def _parse_abi_args(args: typing.Any | None = None) -> list[typing.Any] | None:
         for arg in method_args
     ] if method_args else None
 
-ON_COMPLETE_TYPES = typing.Literal[
-    OnComplete.NoOpOC,
-    OnComplete.UpdateApplicationOC,
-    OnComplete.DeleteApplicationOC,
-    OnComplete.OptInOC,
-    OnComplete.CloseOutOC,
-]
+def _init_dataclass(cls: type, data: dict) -> object:
+    """
+    Recursively instantiate a dataclass of type `cls` from `data`.
 
+    For each field on the dataclass, if the field type is also a dataclass
+    and the corresponding data is a dict, instantiate that field recursively.
+    """
+    field_values = {}
+    for field in dataclasses.fields(cls):
+        field_value = data.get(field.name)
+        # Check if the field expects another dataclass and the value is a dict.
+        if dataclasses.is_dataclass(field.type) and isinstance(field_value, dict):
+            field_values[field.name] = _init_dataclass(field.type, field_value)
+        else:
+            field_values[field.name] = field_value
+    return cls(**field_values)
 
 @dataclasses.dataclass(frozen=True)
 class AccountInfo:
@@ -255,48 +263,6 @@ class AssetUpdateArgs:
     metadata: AssetMetadata
 
 
-@dataclasses.dataclass(frozen=True, kw_only=True)
-class CommonAppCallParams:
-    """Common configuration for app call transaction parameters
-
-    :ivar account_references: List of account addresses to reference
-    :ivar app_references: List of app IDs to reference
-    :ivar asset_references: List of asset IDs to reference
-    :ivar box_references: List of box references to include
-    :ivar extra_fee: Additional fee to add to transaction
-    :ivar lease: Transaction lease value
-    :ivar max_fee: Maximum fee allowed for transaction
-    :ivar note: Arbitrary note for the transaction
-    :ivar rekey_to: Address to rekey account to
-    :ivar sender: Sender address override
-    :ivar signer: Custom transaction signer
-    :ivar static_fee: Fixed fee for transaction
-    :ivar validity_window: Number of rounds valid
-    :ivar first_valid_round: First valid round number
-    :ivar last_valid_round: Last valid round number"""
-
-    account_references: list[str] | None = None
-    app_references: list[int] | None = None
-    asset_references: list[int] | None = None
-    box_references: list[algokit_utils.BoxReference | algokit_utils.BoxIdentifier] | None = None
-    extra_fee: algokit_utils.AlgoAmount | None = None
-    lease: bytes | None = None
-    max_fee: algokit_utils.AlgoAmount | None = None
-    note: bytes | None = None
-    rekey_to: str | None = None
-    sender: str | None = None
-    signer: TransactionSigner | None = None
-    static_fee: algokit_utils.AlgoAmount | None = None
-    validity_window: int | None = None
-    first_valid_round: int | None = None
-    last_valid_round: int | None = None
-
-@dataclasses.dataclass(frozen=True, kw_only=True)
-class CommonAppFactoryCallParams(CommonAppCallParams):
-    """Common configuration for app factory call related transaction parameters"""
-    on_complete: ON_COMPLETE_TYPES | None = None
-
-
 class _PerpetualBondUpdate:
     def __init__(self, app_client: algokit_utils.AppClient):
         self.app_client = app_client
@@ -304,11 +270,11 @@ class _PerpetualBondUpdate:
     def asset_update(
         self,
         args: tuple[AssetMetadata] | AssetUpdateArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppUpdateMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         compilation_params = compilation_params or algokit_utils.AppClientCompilationParams()
         return self.app_client.params.update(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
@@ -328,10 +294,10 @@ class PerpetualBondParams:
     def asset_transfer(
         self,
         args: tuple[str, str, int] | AssetTransferArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "asset_transfer(address,address,uint64)uint64",
@@ -341,10 +307,10 @@ class PerpetualBondParams:
     def pay_coupon(
         self,
         args: tuple[str, bytes | str] | PayCouponArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "pay_coupon(address,byte[])(uint64,uint64,byte[])",
@@ -354,10 +320,10 @@ class PerpetualBondParams:
     def update_interest_rate(
         self,
         args: tuple[int] | UpdateInterestRateArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "update_interest_rate(uint64)uint64",
@@ -367,10 +333,10 @@ class PerpetualBondParams:
     def get_account_units_current_value(
         self,
         args: tuple[str, int] | GetAccountUnitsCurrentValueArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))",
@@ -380,10 +346,10 @@ class PerpetualBondParams:
     def get_payment_amount(
         self,
         args: tuple[str] | GetPaymentAmountArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_payment_amount(address)(uint64,uint64)",
@@ -392,10 +358,10 @@ class PerpetualBondParams:
 
     def get_coupons_status(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)",
@@ -403,10 +369,10 @@ class PerpetualBondParams:
 
     def get_time_periods(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_time_periods()(uint64,uint64)[]",
@@ -415,10 +381,10 @@ class PerpetualBondParams:
     def asset_config(
         self,
         args: tuple[int, int, int, int, int, int, int, list[int], list[int], list[tuple[int, int]]] | AssetConfigArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void",
@@ -428,10 +394,10 @@ class PerpetualBondParams:
     def set_secondary_time_events(
         self,
         args: tuple[list[int]] | SetSecondaryTimeEventsArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_secondary_time_events(uint64[])(uint64,uint64)",
@@ -441,10 +407,10 @@ class PerpetualBondParams:
     def assign_role(
         self,
         args: tuple[str, int, bytes | str] | AssignRoleArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "assign_role(address,uint8,byte[])uint64",
@@ -454,10 +420,10 @@ class PerpetualBondParams:
     def revoke_role(
         self,
         args: tuple[str, int] | RevokeRoleArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "revoke_role(address,uint8)uint64",
@@ -467,10 +433,10 @@ class PerpetualBondParams:
     def open_account(
         self,
         args: tuple[str, str] | OpenAccountArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "open_account(address,address)uint64",
@@ -480,10 +446,10 @@ class PerpetualBondParams:
     def close_account(
         self,
         args: tuple[str] | CloseAccountArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "close_account(address)(uint64,uint64)",
@@ -493,10 +459,10 @@ class PerpetualBondParams:
     def primary_distribution(
         self,
         args: tuple[str, int] | PrimaryDistributionArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "primary_distribution(address,uint64)uint64",
@@ -506,10 +472,10 @@ class PerpetualBondParams:
     def set_asset_suspension(
         self,
         args: tuple[bool] | SetAssetSuspensionArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_asset_suspension(bool)uint64",
@@ -519,10 +485,10 @@ class PerpetualBondParams:
     def set_account_suspension(
         self,
         args: tuple[str, bool] | SetAccountSuspensionArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_account_suspension(address,bool)uint64",
@@ -532,10 +498,10 @@ class PerpetualBondParams:
     def set_default_status(
         self,
         args: tuple[bool] | SetDefaultStatusArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_default_status(bool)void",
@@ -544,10 +510,10 @@ class PerpetualBondParams:
 
     def get_asset_info(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)",
@@ -556,10 +522,10 @@ class PerpetualBondParams:
     def get_account_info(
         self,
         args: tuple[str] | GetAccountInfoArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_account_info(address)(address,uint64,uint64,uint64,bool)",
@@ -568,10 +534,10 @@ class PerpetualBondParams:
 
     def get_time_events(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_time_events()uint64[]",
@@ -579,10 +545,10 @@ class PerpetualBondParams:
 
     def get_secondary_market_schedule(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_secondary_market_schedule()uint64[]",
@@ -590,10 +556,10 @@ class PerpetualBondParams:
 
     def get_asset_metadata(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)",
@@ -602,10 +568,10 @@ class PerpetualBondParams:
     def asset_create(
         self,
         args: tuple[str, AssetMetadata] | AssetCreateArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.AppCallMethodCallParams:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void",
@@ -630,11 +596,11 @@ class _PerpetualBondUpdateTransaction:
     def asset_update(
         self,
         args: tuple[AssetMetadata] | AssetUpdateArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         compilation_params = compilation_params or algokit_utils.AppClientCompilationParams()
         return self.app_client.create_transaction.update(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
@@ -654,10 +620,10 @@ class PerpetualBondCreateTransactionParams:
     def asset_transfer(
         self,
         args: tuple[str, str, int] | AssetTransferArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "asset_transfer(address,address,uint64)uint64",
@@ -667,10 +633,10 @@ class PerpetualBondCreateTransactionParams:
     def pay_coupon(
         self,
         args: tuple[str, bytes | str] | PayCouponArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "pay_coupon(address,byte[])(uint64,uint64,byte[])",
@@ -680,10 +646,10 @@ class PerpetualBondCreateTransactionParams:
     def update_interest_rate(
         self,
         args: tuple[int] | UpdateInterestRateArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "update_interest_rate(uint64)uint64",
@@ -693,10 +659,10 @@ class PerpetualBondCreateTransactionParams:
     def get_account_units_current_value(
         self,
         args: tuple[str, int] | GetAccountUnitsCurrentValueArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))",
@@ -706,10 +672,10 @@ class PerpetualBondCreateTransactionParams:
     def get_payment_amount(
         self,
         args: tuple[str] | GetPaymentAmountArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_payment_amount(address)(uint64,uint64)",
@@ -718,10 +684,10 @@ class PerpetualBondCreateTransactionParams:
 
     def get_coupons_status(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)",
@@ -729,10 +695,10 @@ class PerpetualBondCreateTransactionParams:
 
     def get_time_periods(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_time_periods()(uint64,uint64)[]",
@@ -741,10 +707,10 @@ class PerpetualBondCreateTransactionParams:
     def asset_config(
         self,
         args: tuple[int, int, int, int, int, int, int, list[int], list[int], list[tuple[int, int]]] | AssetConfigArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void",
@@ -754,10 +720,10 @@ class PerpetualBondCreateTransactionParams:
     def set_secondary_time_events(
         self,
         args: tuple[list[int]] | SetSecondaryTimeEventsArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_secondary_time_events(uint64[])(uint64,uint64)",
@@ -767,10 +733,10 @@ class PerpetualBondCreateTransactionParams:
     def assign_role(
         self,
         args: tuple[str, int, bytes | str] | AssignRoleArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "assign_role(address,uint8,byte[])uint64",
@@ -780,10 +746,10 @@ class PerpetualBondCreateTransactionParams:
     def revoke_role(
         self,
         args: tuple[str, int] | RevokeRoleArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "revoke_role(address,uint8)uint64",
@@ -793,10 +759,10 @@ class PerpetualBondCreateTransactionParams:
     def open_account(
         self,
         args: tuple[str, str] | OpenAccountArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "open_account(address,address)uint64",
@@ -806,10 +772,10 @@ class PerpetualBondCreateTransactionParams:
     def close_account(
         self,
         args: tuple[str] | CloseAccountArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "close_account(address)(uint64,uint64)",
@@ -819,10 +785,10 @@ class PerpetualBondCreateTransactionParams:
     def primary_distribution(
         self,
         args: tuple[str, int] | PrimaryDistributionArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "primary_distribution(address,uint64)uint64",
@@ -832,10 +798,10 @@ class PerpetualBondCreateTransactionParams:
     def set_asset_suspension(
         self,
         args: tuple[bool] | SetAssetSuspensionArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_asset_suspension(bool)uint64",
@@ -845,10 +811,10 @@ class PerpetualBondCreateTransactionParams:
     def set_account_suspension(
         self,
         args: tuple[str, bool] | SetAccountSuspensionArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_account_suspension(address,bool)uint64",
@@ -858,10 +824,10 @@ class PerpetualBondCreateTransactionParams:
     def set_default_status(
         self,
         args: tuple[bool] | SetDefaultStatusArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_default_status(bool)void",
@@ -870,10 +836,10 @@ class PerpetualBondCreateTransactionParams:
 
     def get_asset_info(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)",
@@ -882,10 +848,10 @@ class PerpetualBondCreateTransactionParams:
     def get_account_info(
         self,
         args: tuple[str] | GetAccountInfoArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_account_info(address)(address,uint64,uint64,uint64,bool)",
@@ -894,10 +860,10 @@ class PerpetualBondCreateTransactionParams:
 
     def get_time_events(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_time_events()uint64[]",
@@ -905,10 +871,10 @@ class PerpetualBondCreateTransactionParams:
 
     def get_secondary_market_schedule(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_secondary_market_schedule()uint64[]",
@@ -916,10 +882,10 @@ class PerpetualBondCreateTransactionParams:
 
     def get_asset_metadata(
         self,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)",
@@ -928,10 +894,10 @@ class PerpetualBondCreateTransactionParams:
     def asset_create(
         self,
         args: tuple[str, AssetMetadata] | AssetCreateArgs,
-        params: CommonAppCallParams | None = None
+        params: algokit_utils.CommonAppCallParams | None = None
     ) -> algokit_utils.BuiltTransactions:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void",
@@ -956,12 +922,12 @@ class _PerpetualBondUpdateSend:
     def asset_update(
         self,
         args: tuple[AssetMetadata] | AssetUpdateArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[None]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         compilation_params = compilation_params or algokit_utils.AppClientCompilationParams()
         response = self.app_client.send.update(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
@@ -983,11 +949,11 @@ class PerpetualBondSend:
     def asset_transfer(
         self,
         args: tuple[str, str, int] | AssetTransferArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[int]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "asset_transfer(address,address,uint64)uint64",
@@ -999,27 +965,27 @@ class PerpetualBondSend:
     def pay_coupon(
         self,
         args: tuple[str, bytes | str] | PayCouponArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[PaymentResult]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "pay_coupon(address,byte[])(uint64,uint64,byte[])",
             "args": method_args,
         }), send_params=send_params)
-        parsed_response = dataclasses.replace(response, abi_return=PaymentResult(**typing.cast(dict, response.abi_return))) # type: ignore
+        parsed_response = dataclasses.replace(response, abi_return=_init_dataclass(PaymentResult, typing.cast(dict, response.abi_return))) # type: ignore
         return typing.cast(algokit_utils.SendAppTransactionResult[PaymentResult], parsed_response)
 
     def update_interest_rate(
         self,
         args: tuple[int] | UpdateInterestRateArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[int]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "update_interest_rate(uint64)uint64",
@@ -1031,56 +997,56 @@ class PerpetualBondSend:
     def get_account_units_current_value(
         self,
         args: tuple[str, int] | GetAccountUnitsCurrentValueArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[CurrentUnitsValue]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))",
             "args": method_args,
         }), send_params=send_params)
-        parsed_response = dataclasses.replace(response, abi_return=CurrentUnitsValue(**typing.cast(dict, response.abi_return))) # type: ignore
+        parsed_response = dataclasses.replace(response, abi_return=_init_dataclass(CurrentUnitsValue, typing.cast(dict, response.abi_return))) # type: ignore
         return typing.cast(algokit_utils.SendAppTransactionResult[CurrentUnitsValue], parsed_response)
 
     def get_payment_amount(
         self,
         args: tuple[str] | GetPaymentAmountArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[PaymentAmounts]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_payment_amount(address)(uint64,uint64)",
             "args": method_args,
         }), send_params=send_params)
-        parsed_response = dataclasses.replace(response, abi_return=PaymentAmounts(**typing.cast(dict, response.abi_return))) # type: ignore
+        parsed_response = dataclasses.replace(response, abi_return=_init_dataclass(PaymentAmounts, typing.cast(dict, response.abi_return))) # type: ignore
         return typing.cast(algokit_utils.SendAppTransactionResult[PaymentAmounts], parsed_response)
 
     def get_coupons_status(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[CouponsInfo]:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)",
         }), send_params=send_params)
-        parsed_response = dataclasses.replace(response, abi_return=CouponsInfo(**typing.cast(dict, response.abi_return))) # type: ignore
+        parsed_response = dataclasses.replace(response, abi_return=_init_dataclass(CouponsInfo, typing.cast(dict, response.abi_return))) # type: ignore
         return typing.cast(algokit_utils.SendAppTransactionResult[CouponsInfo], parsed_response)
 
     def get_time_periods(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[list[tuple[int, int]]]:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_time_periods()(uint64,uint64)[]",
@@ -1091,11 +1057,11 @@ class PerpetualBondSend:
     def asset_config(
         self,
         args: tuple[int, int, int, int, int, int, int, list[int], list[int], list[tuple[int, int]]] | AssetConfigArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[None]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void",
@@ -1107,27 +1073,27 @@ class PerpetualBondSend:
     def set_secondary_time_events(
         self,
         args: tuple[list[int]] | SetSecondaryTimeEventsArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[SecondaryMarketSchedule]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_secondary_time_events(uint64[])(uint64,uint64)",
             "args": method_args,
         }), send_params=send_params)
-        parsed_response = dataclasses.replace(response, abi_return=SecondaryMarketSchedule(**typing.cast(dict, response.abi_return))) # type: ignore
+        parsed_response = dataclasses.replace(response, abi_return=_init_dataclass(SecondaryMarketSchedule, typing.cast(dict, response.abi_return))) # type: ignore
         return typing.cast(algokit_utils.SendAppTransactionResult[SecondaryMarketSchedule], parsed_response)
 
     def assign_role(
         self,
         args: tuple[str, int, bytes | str] | AssignRoleArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[int]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "assign_role(address,uint8,byte[])uint64",
@@ -1139,11 +1105,11 @@ class PerpetualBondSend:
     def revoke_role(
         self,
         args: tuple[str, int] | RevokeRoleArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[int]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "revoke_role(address,uint8)uint64",
@@ -1155,11 +1121,11 @@ class PerpetualBondSend:
     def open_account(
         self,
         args: tuple[str, str] | OpenAccountArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[int]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "open_account(address,address)uint64",
@@ -1171,11 +1137,11 @@ class PerpetualBondSend:
     def close_account(
         self,
         args: tuple[str] | CloseAccountArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[tuple[int, int]]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "close_account(address)(uint64,uint64)",
@@ -1187,11 +1153,11 @@ class PerpetualBondSend:
     def primary_distribution(
         self,
         args: tuple[str, int] | PrimaryDistributionArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[int]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "primary_distribution(address,uint64)uint64",
@@ -1203,11 +1169,11 @@ class PerpetualBondSend:
     def set_asset_suspension(
         self,
         args: tuple[bool] | SetAssetSuspensionArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[int]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_asset_suspension(bool)uint64",
@@ -1219,11 +1185,11 @@ class PerpetualBondSend:
     def set_account_suspension(
         self,
         args: tuple[str, bool] | SetAccountSuspensionArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[int]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_account_suspension(address,bool)uint64",
@@ -1235,11 +1201,11 @@ class PerpetualBondSend:
     def set_default_status(
         self,
         args: tuple[bool] | SetDefaultStatusArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[None]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "set_default_status(bool)void",
@@ -1250,41 +1216,41 @@ class PerpetualBondSend:
 
     def get_asset_info(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[AssetInfo]:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)",
         }), send_params=send_params)
-        parsed_response = dataclasses.replace(response, abi_return=AssetInfo(**typing.cast(dict, response.abi_return))) # type: ignore
+        parsed_response = dataclasses.replace(response, abi_return=_init_dataclass(AssetInfo, typing.cast(dict, response.abi_return))) # type: ignore
         return typing.cast(algokit_utils.SendAppTransactionResult[AssetInfo], parsed_response)
 
     def get_account_info(
         self,
         args: tuple[str] | GetAccountInfoArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[AccountInfo]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_account_info(address)(address,uint64,uint64,uint64,bool)",
             "args": method_args,
         }), send_params=send_params)
-        parsed_response = dataclasses.replace(response, abi_return=AccountInfo(**typing.cast(dict, response.abi_return))) # type: ignore
+        parsed_response = dataclasses.replace(response, abi_return=_init_dataclass(AccountInfo, typing.cast(dict, response.abi_return))) # type: ignore
         return typing.cast(algokit_utils.SendAppTransactionResult[AccountInfo], parsed_response)
 
     def get_time_events(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[list[int]]:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_time_events()uint64[]",
@@ -1294,11 +1260,11 @@ class PerpetualBondSend:
 
     def get_secondary_market_schedule(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[list[int]]:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_secondary_market_schedule()uint64[]",
@@ -1308,26 +1274,26 @@ class PerpetualBondSend:
 
     def get_asset_metadata(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[AssetMetadata]:
     
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)",
         }), send_params=send_params)
-        parsed_response = dataclasses.replace(response, abi_return=AssetMetadata(**typing.cast(dict, response.abi_return))) # type: ignore
+        parsed_response = dataclasses.replace(response, abi_return=_init_dataclass(AssetMetadata, typing.cast(dict, response.abi_return))) # type: ignore
         return typing.cast(algokit_utils.SendAppTransactionResult[AssetMetadata], parsed_response)
 
     def asset_create(
         self,
         args: tuple[str, AssetMetadata] | AssetCreateArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         send_params: algokit_utils.SendParams | None = None
     ) -> algokit_utils.SendAppTransactionResult[None]:
         method_args = _parse_abi_args(args)
-        params = params or CommonAppCallParams()
+        params = params or algokit_utils.CommonAppCallParams()
         response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void",
@@ -1416,7 +1382,7 @@ class _GlobalState:
             key_info = self.app_client.app_spec.state.keys.global_state.get(key)
             struct_class = self._struct_classes.get(key_info.value_type) if key_info else None
             converted[key] = (
-                struct_class(**value) if struct_class and isinstance(value, dict)
+                _init_dataclass(struct_class, value) if struct_class and isinstance(value, dict)
                 else value
             )
         return typing.cast(GlobalStateValue, converted)
@@ -1426,7 +1392,7 @@ class _GlobalState:
         """Get the current value of the arranger key in global_state state"""
         value = self.app_client.state.global_state.get_value("arranger")
         if isinstance(value, dict) and "AVMBytes" in self._struct_classes:
-            return self._struct_classes["AVMBytes"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMBytes"], value)  # type: ignore
         return typing.cast(bytes, value)
 
     @property
@@ -1434,7 +1400,7 @@ class _GlobalState:
         """Get the current value of the denomination_asset_id key in global_state state"""
         value = self.app_client.state.global_state.get_value("denomination_asset_id")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1442,7 +1408,7 @@ class _GlobalState:
         """Get the current value of the settlement_asset_id key in global_state state"""
         value = self.app_client.state.global_state.get_value("settlement_asset_id")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1450,7 +1416,7 @@ class _GlobalState:
         """Get the current value of the unit_value key in global_state state"""
         value = self.app_client.state.global_state.get_value("unit_value")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1458,7 +1424,7 @@ class _GlobalState:
         """Get the current value of the day_count_convention key in global_state state"""
         value = self.app_client.state.global_state.get_value("day_count_convention")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1466,7 +1432,7 @@ class _GlobalState:
         """Get the current value of the metadata key in global_state state"""
         value = self.app_client.state.global_state.get_value("metadata")
         if isinstance(value, dict) and "AVMBytes" in self._struct_classes:
-            return self._struct_classes["AVMBytes"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMBytes"], value)  # type: ignore
         return typing.cast(bytes, value)
 
     @property
@@ -1474,7 +1440,7 @@ class _GlobalState:
         """Get the current value of the total_units key in global_state state"""
         value = self.app_client.state.global_state.get_value("total_units")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1482,7 +1448,7 @@ class _GlobalState:
         """Get the current value of the circulating_units key in global_state state"""
         value = self.app_client.state.global_state.get_value("circulating_units")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1490,7 +1456,7 @@ class _GlobalState:
         """Get the current value of the principal_discount key in global_state state"""
         value = self.app_client.state.global_state.get_value("principal_discount")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1498,7 +1464,7 @@ class _GlobalState:
         """Get the current value of the interest_rate key in global_state state"""
         value = self.app_client.state.global_state.get_value("interest_rate")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1506,7 +1472,7 @@ class _GlobalState:
         """Get the current value of the total_coupons key in global_state state"""
         value = self.app_client.state.global_state.get_value("total_coupons")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1514,7 +1480,7 @@ class _GlobalState:
         """Get the current value of the primary_distribution_opening_date key in global_state state"""
         value = self.app_client.state.global_state.get_value("primary_distribution_opening_date")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1522,7 +1488,7 @@ class _GlobalState:
         """Get the current value of the primary_distribution_closure_date key in global_state state"""
         value = self.app_client.state.global_state.get_value("primary_distribution_closure_date")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1530,7 +1496,7 @@ class _GlobalState:
         """Get the current value of the issuance_date key in global_state state"""
         value = self.app_client.state.global_state.get_value("issuance_date")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1538,7 +1504,7 @@ class _GlobalState:
         """Get the current value of the secondary_market_opening_date key in global_state state"""
         value = self.app_client.state.global_state.get_value("secondary_market_opening_date")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1546,7 +1512,7 @@ class _GlobalState:
         """Get the current value of the secondary_market_closure_date key in global_state state"""
         value = self.app_client.state.global_state.get_value("secondary_market_closure_date")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1554,7 +1520,7 @@ class _GlobalState:
         """Get the current value of the maturity_date key in global_state state"""
         value = self.app_client.state.global_state.get_value("maturity_date")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1562,7 +1528,7 @@ class _GlobalState:
         """Get the current value of the status key in global_state state"""
         value = self.app_client.state.global_state.get_value("status")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1570,7 +1536,7 @@ class _GlobalState:
         """Get the current value of the suspended key in global_state state"""
         value = self.app_client.state.global_state.get_value("suspended")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1578,7 +1544,7 @@ class _GlobalState:
         """Get the current value of the defaulted key in global_state state"""
         value = self.app_client.state.global_state.get_value("defaulted")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1586,7 +1552,7 @@ class _GlobalState:
         """Get the current value of the coupon_period key in global_state state"""
         value = self.app_client.state.global_state.get_value("coupon_period")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
     @property
@@ -1594,7 +1560,7 @@ class _GlobalState:
         """Get the current value of the paid_coupon_units key in global_state state"""
         value = self.app_client.state.global_state.get_value("paid_coupon_units")
         if isinstance(value, dict) and "AVMUint64" in self._struct_classes:
-            return self._struct_classes["AVMUint64"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["AVMUint64"], value)  # type: ignore
         return typing.cast(int, value)
 
 class _BoxState:
@@ -1618,7 +1584,7 @@ class _BoxState:
             key_info = self.app_client.app_spec.state.keys.box.get(key)
             struct_class = self._struct_classes.get(key_info.value_type) if key_info else None
             converted[key] = (
-                struct_class(**value) if struct_class and isinstance(value, dict)
+                _init_dataclass(struct_class, value) if struct_class and isinstance(value, dict)
                 else value
             )
         return typing.cast(BoxStateValue, converted)
@@ -1628,7 +1594,7 @@ class _BoxState:
         """Get the current value of the coupon_rates key in box state"""
         value = self.app_client.state.box.get_value("coupon_rates")
         if isinstance(value, dict) and "uint16[]" in self._struct_classes:
-            return self._struct_classes["uint16[]"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["uint16[]"], value)  # type: ignore
         return typing.cast(list[int], value)
 
     @property
@@ -1636,7 +1602,7 @@ class _BoxState:
         """Get the current value of the time_events key in box state"""
         value = self.app_client.state.box.get_value("time_events")
         if isinstance(value, dict) and "uint64[]" in self._struct_classes:
-            return self._struct_classes["uint64[]"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["uint64[]"], value)  # type: ignore
         return typing.cast(list[int], value)
 
     @property
@@ -1644,7 +1610,7 @@ class _BoxState:
         """Get the current value of the time_periods key in box state"""
         value = self.app_client.state.box.get_value("time_periods")
         if isinstance(value, dict) and "(uint64,uint64)[]" in self._struct_classes:
-            return self._struct_classes["(uint64,uint64)[]"](**value)  # type: ignore
+            return _init_dataclass(self._struct_classes["(uint64,uint64)[]"], value)  # type: ignore
         return typing.cast(list[tuple[int, int]], value)
 
     @property
@@ -1723,8 +1689,8 @@ class _MapState(typing.Generic[_KeyType, _ValueType]):
         """Get all current values in the map"""
         result = self._state_accessor.get_map(self._map_name)
         if self._struct_class and result:
-            return {k: self._struct_class(**v) if isinstance(v, dict) else v
-                    for k, v in result.items()}
+            return {k: _init_dataclass(self._struct_class, v) if isinstance(v, dict) else v
+                    for k, v in result.items()}  # type: ignore
         return typing.cast(dict[_KeyType, _ValueType], result or {})
 
     def get_value(self, key: _KeyType) -> _ValueType | None:
@@ -1732,7 +1698,7 @@ class _MapState(typing.Generic[_KeyType, _ValueType]):
         key_value = dataclasses.asdict(key) if dataclasses.is_dataclass(key) else key  # type: ignore
         value = self._state_accessor.get_map_value(self._map_name, key_value)
         if value is not None and self._struct_class and isinstance(value, dict):
-            return self._struct_class(**value)
+            return _init_dataclass(self._struct_class, value)  # type: ignore
         return typing.cast(_ValueType | None, value)
 
 
@@ -2226,11 +2192,11 @@ class PerpetualBondFactoryCreateParams:
     def bare(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateParams:
         """Creates an instance using a bare call"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.bare.create(
             algokit_utils.AppFactoryCreateParams(**dataclasses.asdict(params)),
             compilation_params=compilation_params)
@@ -2239,11 +2205,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str, str, int] | AssetTransferArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the asset_transfer(address,address,uint64)uint64 ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2259,11 +2225,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str, bytes | str] | PayCouponArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the pay_coupon(address,byte[])(uint64,uint64,byte[]) ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2279,11 +2245,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[int] | UpdateInterestRateArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the update_interest_rate(uint64)uint64 ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2299,11 +2265,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str, int] | GetAccountUnitsCurrentValueArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64)) ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2319,11 +2285,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str] | GetPaymentAmountArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the get_payment_amount(address)(uint64,uint64) ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2338,11 +2304,11 @@ class PerpetualBondFactoryCreateParams:
     def get_coupons_status(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool) ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2357,11 +2323,11 @@ class PerpetualBondFactoryCreateParams:
     def get_time_periods(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the get_time_periods()(uint64,uint64)[] ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2377,11 +2343,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[int, int, int, int, int, int, int, list[int], list[int], list[tuple[int, int]]] | AssetConfigArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2397,11 +2363,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[list[int]] | SetSecondaryTimeEventsArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the set_secondary_time_events(uint64[])(uint64,uint64) ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2417,11 +2383,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str, int, bytes | str] | AssignRoleArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the assign_role(address,uint8,byte[])uint64 ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2437,11 +2403,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str, int] | RevokeRoleArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the revoke_role(address,uint8)uint64 ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2457,11 +2423,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str, str] | OpenAccountArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the open_account(address,address)uint64 ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2477,11 +2443,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str] | CloseAccountArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the close_account(address)(uint64,uint64) ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2497,11 +2463,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str, int] | PrimaryDistributionArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the primary_distribution(address,uint64)uint64 ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2517,11 +2483,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[bool] | SetAssetSuspensionArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the set_asset_suspension(bool)uint64 ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2537,11 +2503,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str, bool] | SetAccountSuspensionArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the set_account_suspension(address,bool)uint64 ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2557,11 +2523,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[bool] | SetDefaultStatusArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the set_default_status(bool)void ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2576,11 +2542,11 @@ class PerpetualBondFactoryCreateParams:
     def get_asset_info(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8) ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2596,11 +2562,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str] | GetAccountInfoArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the get_account_info(address)(address,uint64,uint64,uint64,bool) ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2615,11 +2581,11 @@ class PerpetualBondFactoryCreateParams:
     def get_time_events(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the get_time_events()uint64[] ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2634,11 +2600,11 @@ class PerpetualBondFactoryCreateParams:
     def get_secondary_market_schedule(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the get_secondary_market_schedule()uint64[] ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2653,11 +2619,11 @@ class PerpetualBondFactoryCreateParams:
     def get_asset_metadata(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string) ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2673,11 +2639,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[str, AssetMetadata] | AssetCreateArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2693,11 +2659,11 @@ class PerpetualBondFactoryCreateParams:
         self,
         args: tuple[AssetMetadata] | AssetUpdateArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> algokit_utils.AppCreateMethodCallParams:
         """Creates a new instance using the asset_update((uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void ABI method"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.create(
             algokit_utils.AppFactoryCreateMethodCallParams(
                 **{
@@ -2718,11 +2684,11 @@ class PerpetualBondFactoryUpdateParams:
     def bare(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         
     ) -> algokit_utils.AppUpdateParams:
         """Updates an instance using a bare call"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.bare.deploy_update(
             algokit_utils.AppFactoryCreateParams(**dataclasses.asdict(params)),
             )
@@ -2736,11 +2702,11 @@ class PerpetualBondFactoryDeleteParams:
     def bare(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         
     ) -> algokit_utils.AppDeleteParams:
         """Deletes an instance using a bare call"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.bare.deploy_delete(
             algokit_utils.AppFactoryCreateParams(**dataclasses.asdict(params)),
             )
@@ -2762,10 +2728,10 @@ class PerpetualBondFactoryCreateTransactionCreate:
 
     def bare(
         self,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
     ) -> Transaction:
         """Creates a new instance using a bare call"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.create_transaction.bare.create(
             algokit_utils.AppFactoryCreateParams(**dataclasses.asdict(params)),
         )
@@ -2788,12 +2754,12 @@ class PerpetualBondFactorySendCreate:
     def bare(
         self,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         send_params: algokit_utils.SendParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None,
     ) -> tuple[PerpetualBondClient, algokit_utils.SendAppCreateTransactionResult]:
         """Creates a new instance using a bare call"""
-        params = params or CommonAppFactoryCallParams()
+        params = params or algokit_utils.CommonAppCallCreateParams()
         result = self.app_factory.send.bare.create(
             algokit_utils.AppFactoryCreateParams(**dataclasses.asdict(params)),
             send_params=send_params,
@@ -2805,12 +2771,12 @@ class PerpetualBondFactorySendCreate:
         self,
         args: tuple[str, AssetMetadata] | AssetCreateArgs,
         *,
-        params: CommonAppFactoryCallParams | None = None,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
         send_params: algokit_utils.SendParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> tuple[PerpetualBondClient, algokit_utils.AppFactoryCreateMethodCallResult[None]]:
             """Creates and sends a transaction using the asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void ABI method"""
-            params = params or CommonAppFactoryCallParams()
+            params = params or algokit_utils.CommonAppCallCreateParams()
             client, result = self.app_factory.send.create(
                 algokit_utils.AppFactoryCreateMethodCallParams(
                     **{
@@ -2846,7 +2812,7 @@ class _PerpetualBondUpdateComposer:
     def asset_update(
         self,
         args: tuple[AssetMetadata] | AssetUpdateArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self.composer._composer.add_app_update_method_call(
@@ -2879,7 +2845,7 @@ class PerpetualBondComposer:
     def asset_transfer(
         self,
         args: tuple[str, str, int] | AssetTransferArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -2898,7 +2864,7 @@ class PerpetualBondComposer:
     def pay_coupon(
         self,
         args: tuple[str, bytes | str] | PayCouponArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -2917,7 +2883,7 @@ class PerpetualBondComposer:
     def update_interest_rate(
         self,
         args: tuple[int] | UpdateInterestRateArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -2936,7 +2902,7 @@ class PerpetualBondComposer:
     def get_account_units_current_value(
         self,
         args: tuple[str, int] | GetAccountUnitsCurrentValueArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -2955,7 +2921,7 @@ class PerpetualBondComposer:
     def get_payment_amount(
         self,
         args: tuple[str] | GetPaymentAmountArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -2973,7 +2939,7 @@ class PerpetualBondComposer:
 
     def get_coupons_status(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -2991,7 +2957,7 @@ class PerpetualBondComposer:
 
     def get_time_periods(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3010,7 +2976,7 @@ class PerpetualBondComposer:
     def asset_config(
         self,
         args: tuple[int, int, int, int, int, int, int, list[int], list[int], list[tuple[int, int]]] | AssetConfigArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3029,7 +2995,7 @@ class PerpetualBondComposer:
     def set_secondary_time_events(
         self,
         args: tuple[list[int]] | SetSecondaryTimeEventsArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3048,7 +3014,7 @@ class PerpetualBondComposer:
     def assign_role(
         self,
         args: tuple[str, int, bytes | str] | AssignRoleArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3067,7 +3033,7 @@ class PerpetualBondComposer:
     def revoke_role(
         self,
         args: tuple[str, int] | RevokeRoleArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3086,7 +3052,7 @@ class PerpetualBondComposer:
     def open_account(
         self,
         args: tuple[str, str] | OpenAccountArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3105,7 +3071,7 @@ class PerpetualBondComposer:
     def close_account(
         self,
         args: tuple[str] | CloseAccountArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3124,7 +3090,7 @@ class PerpetualBondComposer:
     def primary_distribution(
         self,
         args: tuple[str, int] | PrimaryDistributionArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3143,7 +3109,7 @@ class PerpetualBondComposer:
     def set_asset_suspension(
         self,
         args: tuple[bool] | SetAssetSuspensionArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3162,7 +3128,7 @@ class PerpetualBondComposer:
     def set_account_suspension(
         self,
         args: tuple[str, bool] | SetAccountSuspensionArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3181,7 +3147,7 @@ class PerpetualBondComposer:
     def set_default_status(
         self,
         args: tuple[bool] | SetDefaultStatusArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3199,7 +3165,7 @@ class PerpetualBondComposer:
 
     def get_asset_info(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3218,7 +3184,7 @@ class PerpetualBondComposer:
     def get_account_info(
         self,
         args: tuple[str] | GetAccountInfoArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3236,7 +3202,7 @@ class PerpetualBondComposer:
 
     def get_time_events(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3254,7 +3220,7 @@ class PerpetualBondComposer:
 
     def get_secondary_market_schedule(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3272,7 +3238,7 @@ class PerpetualBondComposer:
 
     def get_asset_metadata(
         self,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3291,7 +3257,7 @@ class PerpetualBondComposer:
     def asset_create(
         self,
         args: tuple[str, AssetMetadata] | AssetCreateArgs,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
         compilation_params: algokit_utils.AppClientCompilationParams | None = None
     ) -> "PerpetualBondComposer":
         self._composer.add_app_call_method_call(
@@ -3311,9 +3277,9 @@ class PerpetualBondComposer:
         self,
         *,
         args: list[bytes] | None = None,
-        params: CommonAppCallParams | None = None,
+        params: algokit_utils.CommonAppCallParams | None = None,
     ) -> "PerpetualBondComposer":
-        params=params or CommonAppCallParams()
+        params=params or algokit_utils.CommonAppCallParams()
         self._composer.add_app_call(
             self.client.params.clear_state(
                 algokit_utils.AppClientBareCallParams(
