@@ -20,14 +20,11 @@ from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
 )
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
-    GetAccountInfoArgs,
 )
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    GetAccountInfoArgs,
     PerpetualBondClient,
 )
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
-    GetAccountInfoArgs,
     ZeroCouponBondClient,
 )
 
@@ -253,7 +250,7 @@ def round_warp(to_round: Optional[int] = None) -> None:
                 signer=dispenser.signer,
                 sender=dispenser.address,
                 receiver=dispenser.address,
-                amount=AlgoAmount({"algos": 0}),
+                amount=AlgoAmount.from_algo(0),
             )
         )
 
