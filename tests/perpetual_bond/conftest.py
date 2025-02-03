@@ -5,6 +5,7 @@ from algokit_utils import (
     AlgorandClient,
     AssetOptInParams,
     AssetTransferParams,
+    CommonAppCallParams,
     SigningAccount,
 )
 from algokit_utils.config import config
@@ -15,7 +16,6 @@ from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
     AssetCreateArgs,
     AssetMetadata,
     AssignRoleArgs,
-    CommonAppCallParams,
     OpenAccountArgs,
     PayCouponArgs,
     PerpetualBondClient,
