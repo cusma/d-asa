@@ -1,11 +1,10 @@
 from copy import deepcopy
 
 import pytest
-from algokit_utils import OnCompleteCallParameters
 
-from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
+    AssetConfigArgs,
     ZeroCouponBondClient,
 )
 from smart_contracts.base_d_asa import config as sc_cfg
@@ -13,28 +12,20 @@ from tests.utils import Currency, DAsaConfig
 
 
 def test_pass_asset_config(
+    day_count_convention: int,
     currency: Currency,
     zero_coupon_bond_cfg: DAsaConfig,
     zero_coupon_bond_client_empty: ZeroCouponBondClient,
 ) -> None:
-    zero_coupon_bond_client_empty.asset_config(
-        **zero_coupon_bond_cfg.dictify(),
-        transaction_parameters=OnCompleteCallParameters(
-            foreign_assets=[zero_coupon_bond_cfg.denomination_asset_id],
-            boxes=[
-                (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-            ],
-        ),
+    zero_coupon_bond_client_empty.send.asset_config(
+        AssetConfigArgs(**zero_coupon_bond_cfg.dictify())
     )
 
-    state = zero_coupon_bond_client_empty.get_global_state()
+    state = zero_coupon_bond_client_empty.state.global_state
     expected_coupon_rates = []
-    expected_time_events = zero_coupon_bond_client_empty.get_time_events(
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS)]
-        )
-    ).return_value
+    expected_time_events = (
+        zero_coupon_bond_client_empty.send.get_time_events().abi_return
+    )
 
     # Asset Configuration
     assert state.denomination_asset_id == currency.id
@@ -106,15 +97,8 @@ def test_fail_invalid_time_events_length(
     wrong_d_asa_cfg = deepcopy(zero_coupon_bond_cfg)
     wrong_d_asa_cfg.time_events = [*zero_coupon_bond_cfg.time_events, 0]
     with pytest.raises(Exception, match=err.INVALID_TIME_EVENTS_LENGTH):
-        zero_coupon_bond_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[zero_coupon_bond_cfg.denomination_asset_id],
-                boxes=[
-                    (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        zero_coupon_bond_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
 
@@ -125,15 +109,8 @@ def test_fail_invalid_time(
     wrong_d_asa_cfg = deepcopy(zero_coupon_bond_cfg)
     wrong_d_asa_cfg.time_events[0] = 0
     with pytest.raises(Exception, match=err.INVALID_TIME):
-        zero_coupon_bond_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[zero_coupon_bond_cfg.denomination_asset_id],
-                boxes=[
-                    (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        zero_coupon_bond_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
 
@@ -144,29 +121,15 @@ def test_fail_invalid_sorting(
     wrong_d_asa_cfg = deepcopy(zero_coupon_bond_cfg)
     wrong_d_asa_cfg.time_events[-1] = zero_coupon_bond_cfg.time_events[-2]
     with pytest.raises(Exception, match=err.INVALID_SORTING):
-        zero_coupon_bond_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[zero_coupon_bond_cfg.denomination_asset_id],
-                boxes=[
-                    (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        zero_coupon_bond_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
     wrong_d_asa_cfg = deepcopy(zero_coupon_bond_cfg)
     wrong_d_asa_cfg.time_events[0] = zero_coupon_bond_cfg.time_events[-1]
     with pytest.raises(Exception, match=err.INVALID_SORTING):
-        zero_coupon_bond_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[zero_coupon_bond_cfg.denomination_asset_id],
-                boxes=[
-                    (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        zero_coupon_bond_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
 

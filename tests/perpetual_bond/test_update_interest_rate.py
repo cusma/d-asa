@@ -3,6 +3,7 @@ from typing import Callable, Final
 import pytest
 from algokit_utils import (
     AlgorandClient,
+    CommonAppCallParams,
     SigningAccount,
 )
 
@@ -11,7 +12,6 @@ from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import
     PayCouponArgs,
 )
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    CommonAppCallParams,
     PerpetualBondClient,
     UpdateInterestRateArgs,
 )

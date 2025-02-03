@@ -8,6 +8,8 @@ from algokit_utils import (
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
+    GetAccountInfoArgs,
+    PayPrincipalArgs,
     ZeroCouponBondClient,
 )
 from tests.utils import (
@@ -24,14 +26,13 @@ def test_pass_pay_principal(
     zero_coupon_bond_client_at_maturity: ZeroCouponBondClient,
 ) -> None:
     # Pre payment state
-    pre_payment_state = zero_coupon_bond_client_at_maturity.get_global_state()
+    pre_payment_state = zero_coupon_bond_client_at_maturity.state.global_state
 
-    pre_payment_account_info = zero_coupon_bond_client_at_maturity.get_account_info(
-        holding_address=account_a.holding_address,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(zero_coupon_bond_client_at_maturity.app_id, account_a.box_id)]
-        ),
-    ).return_value
+    pre_payment_account_info = (
+        zero_coupon_bond_client_at_maturity.send.get_account_info(
+            GetAccountInfoArgs(holding_address=account_a.holding_address)
+        ).abi_return
+    )
 
     pre_payment_account_principal = account_a.principal
 
@@ -39,20 +40,17 @@ def test_pass_pay_principal(
     pre_payment_account_units = pre_payment_account_info.units
     pre_payment_circulating_units = pre_payment_state.circulating_units
     assert (
-        get_latest_timestamp(zero_coupon_bond_client_at_maturity.algod_client)
+        get_latest_timestamp(zero_coupon_bond_client_at_maturity.algorand.client.algod)
         >= maturity_date
     )
 
     # Principal payment
-    payment = zero_coupon_bond_client_at_maturity.pay_principal(
-        holding_address=account_a.holding_address,
-        payment_info=b"",
-        transaction_parameters=OnCompleteCallParameters(
-            foreign_assets=[currency.id],
-            accounts=[account_a.payment_address],
-            boxes=[(zero_coupon_bond_client_at_maturity.app_id, account_a.box_id)],
-        ),
-    ).return_value
+    payment = zero_coupon_bond_client_at_maturity.send.pay_principal(
+        PayPrincipalArgs(
+            holding_address=account_a.holding_address,
+            payment_info=b"",
+        )
+    ).abi_return
 
     assert payment.amount == pre_payment_account_principal
     print(
@@ -61,14 +59,13 @@ def test_pass_pay_principal(
     )
 
     # Post payment state
-    post_payment_state = zero_coupon_bond_client_at_maturity.get_global_state()
+    post_payment_state = zero_coupon_bond_client_at_maturity.state.global_state
 
-    post_payment_account_info = zero_coupon_bond_client_at_maturity.get_account_info(
-        holding_address=account_a.holding_address,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(zero_coupon_bond_client_at_maturity.app_id, account_a.box_id)]
-        ),
-    ).return_value
+    post_payment_account_info = (
+        zero_coupon_bond_client_at_maturity.send.get_account_info(
+            GetAccountInfoArgs(holding_address=account_a.holding_address)
+        ).abi_return
+    )
 
     assert (
         post_payment_state.circulating_units
@@ -103,17 +100,11 @@ def test_fail_invalid_holding_address(
     oscar: SigningAccount, zero_coupon_bond_client_at_maturity: ZeroCouponBondClient
 ) -> None:
     with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
-        zero_coupon_bond_client_at_maturity.pay_principal(
-            holding_address=oscar.address,
-            payment_info=b"",
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (
-                        zero_coupon_bond_client_at_maturity.app_id,
-                        DAsaAccount.box_id_from_address(oscar.address),
-                    )
-                ]
-            ),
+        zero_coupon_bond_client_at_maturity.send.pay_principal(
+            PayPrincipalArgs(
+                holding_address=oscar.address,
+                payment_info=b"",
+            )
         )
 
 
@@ -124,12 +115,11 @@ def test_fail_no_units(
     account = account_factory(zero_coupon_bond_client_primary)
 
     with pytest.raises(Exception, match=err.NO_UNITS):
-        zero_coupon_bond_client_primary.pay_principal(
-            holding_address=account.holding_address,
-            payment_info=b"",
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(zero_coupon_bond_client_primary.app_id, account.box_id)]
-            ),
+        zero_coupon_bond_client_primary.send.pay_principal(
+            PayPrincipalArgs(
+                holding_address=account.holding_address,
+                payment_info=b"",
+            )
         )
 
 
@@ -138,10 +128,9 @@ def test_fail_not_mature(
     account_a: DAsaAccount,
 ) -> None:
     with pytest.raises(Exception, match=err.NOT_MATURE):
-        zero_coupon_bond_client_primary.pay_principal(
-            holding_address=account_a.holding_address,
-            payment_info=b"",
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(zero_coupon_bond_client_primary.app_id, account_a.box_id)]
-            ),
+        zero_coupon_bond_client_primary.send.pay_principal(
+            PayPrincipalArgs(
+                holding_address=account_a.holding_address,
+                payment_info=b"",
+            )
         )

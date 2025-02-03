@@ -5,15 +5,23 @@ from algokit_utils import (
     AlgorandClient,
     AssetOptInParams,
     AssetTransferParams,
-    OnCompleteCallParameters,
+    CommonAppCallParams,
     SigningAccount,
 )
 from algokit_utils.config import config
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
+    AssetConfigArgs,
+    AssetCreateArgs,
     AssetMetadata,
+    AssignRoleArgs,
+    OpenAccountArgs,
+    PrimaryDistributionArgs,
+    SetAssetSuspensionArgs,
+    SetSecondaryTimeEventsArgs,
     ZeroCouponBondClient,
+    ZeroCouponBondFactory,
 )
 from tests import utils
 from tests.conftest import (
@@ -87,38 +95,30 @@ def zero_coupon_bond_cfg(
 
 
 @pytest.fixture(scope="function")
-def zero_coupon_bond_client_void(
-    algorand: AlgorandClient, arranger: SigningAccount
-) -> ZeroCouponBondClient:
-    config.configure(
-        debug=False,
-        # trace_all=True,
-    )
-
-    client = ZeroCouponBondClient(
-        algorand.client.algod,
-        creator=arranger.address,
-        signer=arranger.signer,
-        indexer_client=algorand.client.indexer,
-    )
-    return client
-
-
-@pytest.fixture(scope="function")
 def zero_coupon_bond_client_empty(
     algorand: AlgorandClient,
     arranger: SigningAccount,
     asset_metadata: AssetMetadata,
-    zero_coupon_bond_client_void: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    zero_coupon_bond_client_void.create_asset_create(
-        arranger=arranger.address, metadata=asset_metadata
+    config.configure(
+        debug=False,
+        populate_app_call_resources=True,
+        # trace_all=True,
+    )
+
+    factory = algorand.client.get_typed_app_factory(
+        ZeroCouponBondFactory,
+        default_sender=arranger.address,
+        default_signer=arranger.signer,
+    )
+    client, _ = factory.send.create.asset_create(
+        AssetCreateArgs(arranger=arranger.address, metadata=asset_metadata)
     )
     algorand.account.ensure_funded_from_environment(
-        account_to_fund=zero_coupon_bond_client_void.app_address,
+        account_to_fund=client.app_address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
-    return zero_coupon_bond_client_void
+    return client
 
 
 @pytest.fixture(scope="function")
@@ -135,12 +135,11 @@ def account_manager(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
-    zero_coupon_bond_client_empty.assign_role(
-        role_address=account.address,
-        role=account.role_id(),
-        config=role_config,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(zero_coupon_bond_client_empty.app_id, account.box_id)]
+    zero_coupon_bond_client_empty.send.assign_role(
+        AssignRoleArgs(
+            role_address=account.address,
+            role=account.role_id(),
+            config=role_config,
         ),
     )
     return account
@@ -160,12 +159,11 @@ def authority(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
-    zero_coupon_bond_client_empty.assign_role(
-        role_address=account.address,
-        role=account.role_id(),
-        config=role_config,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(zero_coupon_bond_client_empty.app_id, account.box_id)]
+    zero_coupon_bond_client_empty.send.assign_role(
+        AssignRoleArgs(
+            role_address=account.address,
+            role=account.role_id(),
+            config=role_config,
         ),
     )
     return account
@@ -178,15 +176,8 @@ def zero_coupon_bond_client_active(
     zero_coupon_bond_cfg: utils.DAsaConfig,
     zero_coupon_bond_client_empty: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    zero_coupon_bond_client_empty.asset_config(
-        **zero_coupon_bond_cfg.dictify(),
-        transaction_parameters=OnCompleteCallParameters(
-            foreign_assets=[zero_coupon_bond_cfg.denomination_asset_id],
-            boxes=[
-                (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                (zero_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-            ],
-        ),
+    zero_coupon_bond_client_empty.send.asset_config(
+        AssetConfigArgs(**zero_coupon_bond_cfg.dictify()),
     )
 
     algorand.send.asset_transfer(
@@ -214,16 +205,15 @@ def primary_dealer(
         account_to_fund=account.address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
-    state = zero_coupon_bond_client_active.get_global_state()
+    state = zero_coupon_bond_client_active.state.global_state
     role_config = utils.set_role_config(
         state.primary_distribution_opening_date, state.primary_distribution_closure_date
     )
-    zero_coupon_bond_client_active.assign_role(
-        role_address=account.address,
-        role=account.role_id(),
-        config=role_config,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(zero_coupon_bond_client_active.app_id, account.box_id)]
+    zero_coupon_bond_client_active.send.assign_role(
+        AssignRoleArgs(
+            role_address=account.address,
+            role=account.role_id(),
+            config=role_config,
         ),
     )
     return account
@@ -252,19 +242,12 @@ def account_factory(
             )
         )
 
-        base_d_asa_client.open_account(
-            holding_address=account.address,
-            payment_address=account.address,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=account_manager.signer,
-                boxes=[
-                    (base_d_asa_client.app_id, account_manager.box_id),
-                    (
-                        base_d_asa_client.app_id,
-                        utils.DAsaAccount.box_id_from_address(account.address),
-                    ),
-                ],
+        base_d_asa_client.send.open_account(
+            OpenAccountArgs(
+                holding_address=account.address,
+                payment_address=account.address,
             ),
+            params=CommonAppCallParams(sender=account_manager.address),
         )
         return utils.DAsaAccount(
             d_asa_client=base_d_asa_client,
@@ -279,9 +262,11 @@ def account_factory(
 def zero_coupon_bond_client_primary(
     zero_coupon_bond_client_active: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    state = zero_coupon_bond_client_active.get_global_state()
-    zero_coupon_bond_client_active.set_secondary_time_events(
-        secondary_market_time_events=[state.issuance_date, state.maturity_date],
+    state = zero_coupon_bond_client_active.state.global_state
+    zero_coupon_bond_client_active.send.set_secondary_time_events(
+        SetSecondaryTimeEventsArgs(
+            secondary_market_time_events=[state.issuance_date, state.maturity_date]
+        )
     )
     utils.time_warp(state.primary_distribution_opening_date)
     return zero_coupon_bond_client_active
@@ -295,16 +280,12 @@ def account_with_units_factory(
 ) -> Callable[..., utils.DAsaAccount]:
     def _factory(*, units: int = INITIAL_D_ASA_UNITS) -> utils.DAsaAccount:
         account = account_factory(zero_coupon_bond_client_primary)
-        zero_coupon_bond_client_primary.primary_distribution(
-            holding_address=account.holding_address,
-            units=units,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=primary_dealer.signer,
-                boxes=[
-                    (zero_coupon_bond_client_primary.app_id, primary_dealer.box_id),
-                    (zero_coupon_bond_client_primary.app_id, account.box_id),
-                ],
+        zero_coupon_bond_client_primary.send.primary_distribution(
+            PrimaryDistributionArgs(
+                holding_address=account.holding_address,
+                units=units,
             ),
+            params=CommonAppCallParams(sender=primary_dealer.address),
         )
         return account
 
@@ -329,7 +310,7 @@ def account_b(
 def zero_coupon_bond_client_ongoing(
     zero_coupon_bond_client_primary: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    state = zero_coupon_bond_client_primary.get_global_state()
+    state = zero_coupon_bond_client_primary.state.global_state
     utils.time_warp(state.issuance_date)
     return zero_coupon_bond_client_primary
 
@@ -338,7 +319,7 @@ def zero_coupon_bond_client_ongoing(
 def zero_coupon_bond_client_at_maturity(
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    state = zero_coupon_bond_client_ongoing.get_global_state()
+    state = zero_coupon_bond_client_ongoing.state.global_state
     utils.time_warp(state.maturity_date)
     return zero_coupon_bond_client_ongoing
 
@@ -348,11 +329,8 @@ def zero_coupon_bond_client_suspended(
     authority: utils.DAsaAuthority,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    zero_coupon_bond_client_ongoing.set_asset_suspension(
-        suspended=True,
-        transaction_parameters=OnCompleteCallParameters(
-            signer=authority.signer,
-            boxes=[(zero_coupon_bond_client_ongoing.app_id, authority.box_id)],
-        ),
+    zero_coupon_bond_client_ongoing.send.set_asset_suspension(
+        SetAssetSuspensionArgs(suspended=True),
+        params=CommonAppCallParams(sender=authority.address),
     )
     return zero_coupon_bond_client_ongoing
