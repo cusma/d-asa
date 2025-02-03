@@ -11,7 +11,7 @@ from algokit_utils import (
 from smart_contracts import constants as sc_cst
 from tests import utils
 
-INITIAL_ALGO_FUNDS: Final[AlgoAmount] = AlgoAmount({"algos": 10_000})
+INITIAL_ALGO_FUNDS: Final[AlgoAmount] = AlgoAmount.from_algo(10_000)
 
 DENOMINATION_ASA_NAME: Final[str] = "Euro"
 DENOMINATION_ASA_UNIT: Final[str] = "EUR"
