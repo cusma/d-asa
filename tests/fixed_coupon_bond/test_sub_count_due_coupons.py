@@ -1,16 +1,18 @@
-from algokit_utils import SendParams, SigningAccount
+from algokit_utils import SigningAccount
 
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
-    FixedCouponBondClient, CommonAppCallParams,
+    FixedCouponBondClient,
 )
 from smart_contracts.fixed_coupon_bond import config as sc_cfg
-from tests.utils import DAsaConfig, time_warp, max_fee_per_coupon
+from tests.utils import DAsaConfig, time_warp
 
 
 def test_count_due_coupons_before_issuance(
     fixed_coupon_bond_client_primary: FixedCouponBondClient,
 ) -> None:
-    due_coupons = fixed_coupon_bond_client_primary.send.get_coupons_status().abi_return.due_coupons
+    due_coupons = (
+        fixed_coupon_bond_client_primary.send.get_coupons_status().abi_return.due_coupons
+    )
     assert due_coupons == 0
 
 
@@ -36,5 +38,7 @@ def test_count_due_coupons_at_maturity(
     fixed_coupon_bond_cfg: DAsaConfig,
     fixed_coupon_bond_client_at_maturity: FixedCouponBondClient,
 ) -> None:
-    due_coupons = fixed_coupon_bond_client_at_maturity.send.get_coupons_status().abi_return.due_coupons
+    due_coupons = (
+        fixed_coupon_bond_client_at_maturity.send.get_coupons_status().abi_return.due_coupons
+    )
     assert due_coupons == fixed_coupon_bond_cfg.total_coupons

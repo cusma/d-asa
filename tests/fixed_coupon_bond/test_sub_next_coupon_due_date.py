@@ -1,11 +1,10 @@
-from algokit_utils import AlgorandClient, SendParams, SigningAccount
+from algokit_utils import AlgorandClient, SigningAccount
 
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
-    CommonAppCallParams,
     FixedCouponBondClient,
 )
 from smart_contracts.fixed_coupon_bond import config as sc_cfg
-from tests.utils import DAsaConfig, time_warp, max_fee_per_coupon
+from tests.utils import DAsaConfig, time_warp
 
 TIME_LEFT_TO_DUE_DATE = 100  # Seconds
 
@@ -14,7 +13,9 @@ def test_next_coupon_due_date_before_issuance(
     fixed_coupon_bond_client_primary: FixedCouponBondClient,
 ) -> None:
     time_events = fixed_coupon_bond_client_primary.send.get_time_events().abi_return
-    next_coupon_due_date = fixed_coupon_bond_client_primary.send.get_coupons_status().abi_return.next_coupon_due_date
+    next_coupon_due_date = (
+        fixed_coupon_bond_client_primary.send.get_coupons_status().abi_return.next_coupon_due_date
+    )
     assert next_coupon_due_date == time_events[sc_cfg.FIRST_COUPON_DATE_IDX]
 
 
@@ -40,5 +41,7 @@ def test_next_coupon_due_date_ongoing(
 def test_next_coupon_due_date_at_maturity(
     fixed_coupon_bond_client_at_maturity: FixedCouponBondClient,
 ) -> None:
-    next_coupon_due_date = fixed_coupon_bond_client_at_maturity.send.get_coupons_status().abi_return.next_coupon_due_date
+    next_coupon_due_date = (
+        fixed_coupon_bond_client_at_maturity.send.get_coupons_status().abi_return.next_coupon_due_date
+    )
     assert next_coupon_due_date == 0

@@ -1,14 +1,13 @@
 from typing import Callable
 
 import pytest
-from algokit_utils import (
-    AlgorandClient,
-    SigningAccount,
-)
+from algokit_utils import SigningAccount
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
-    FixedCouponBondClient, GetPaymentAmountArgs, PayCouponArgs,
+    FixedCouponBondClient,
+    GetPaymentAmountArgs,
+    PayCouponArgs,
 )
 from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
@@ -28,7 +27,9 @@ def test_pass_pay_coupon(
 
     for coupon in range(1, fixed_coupon_bond_cfg.total_coupons + 1):
         print(f"Coupon {coupon} of {fixed_coupon_bond_cfg.total_coupons}")
-        due_coupons = fixed_coupon_bond_client_ongoing.send.get_coupons_status().abi_return.due_coupons
+        due_coupons = (
+            fixed_coupon_bond_client_ongoing.send.get_coupons_status().abi_return.due_coupons
+        )
         assert due_coupons == coupon - 1
 
         # Pre payment sate
@@ -43,18 +44,24 @@ def test_pass_pay_coupon(
             + account_b_units * pre_payment_account_b_paid_coupons
         )
 
-        account_a_coupon_amount = fixed_coupon_bond_client_ongoing.send.get_payment_amount(
-            GetPaymentAmountArgs(holding_address=account_a.holding_address),
-        ).abi_return.interest
+        account_a_coupon_amount = (
+            fixed_coupon_bond_client_ongoing.send.get_payment_amount(
+                GetPaymentAmountArgs(holding_address=account_a.holding_address),
+            ).abi_return.interest
+        )
 
-        account_b_coupon_amount = fixed_coupon_bond_client_ongoing.send.get_payment_amount(
-            GetPaymentAmountArgs(holding_address=account_b.holding_address),
-        ).abi_return.interest
+        account_b_coupon_amount = (
+            fixed_coupon_bond_client_ongoing.send.get_payment_amount(
+                GetPaymentAmountArgs(holding_address=account_b.holding_address),
+            ).abi_return.interest
+        )
 
         # Coupon reaches due date
         coupon_due_date = time_events[sc_cfg.FIRST_COUPON_DATE_IDX - 1 + coupon]
         time_warp(coupon_due_date)
-        due_coupons = fixed_coupon_bond_client_ongoing.send.get_coupons_status().abi_return.due_coupons
+        due_coupons = (
+            fixed_coupon_bond_client_ongoing.send.get_coupons_status().abi_return.due_coupons
+        )
         assert due_coupons == coupon
 
         # Coupon payment
@@ -114,7 +121,9 @@ def test_pass_pay_multiple_coupons(
 
     time_events = fixed_coupon_bond_client_at_maturity.send.get_time_events().abi_return
 
-    due_coupons = fixed_coupon_bond_client_at_maturity.send.get_coupons_status().abi_return.due_coupons
+    due_coupons = (
+        fixed_coupon_bond_client_at_maturity.send.get_coupons_status().abi_return.due_coupons
+    )
     assert due_coupons == fixed_coupon_bond_cfg.total_coupons
 
     for coupon in range(1, fixed_coupon_bond_cfg.total_coupons + 1):

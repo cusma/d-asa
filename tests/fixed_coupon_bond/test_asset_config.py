@@ -4,8 +4,8 @@ import pytest
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
-    FixedCouponBondClient,
     AssetConfigArgs,
+    FixedCouponBondClient,
 )
 from smart_contracts.base_d_asa import config as sc_cfg
 from tests.utils import Currency, DAsaConfig

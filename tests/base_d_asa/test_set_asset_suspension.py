@@ -1,11 +1,8 @@
 import pytest
-from algokit_utils import SigningAccount
+from algokit_utils import CommonAppCallParams, SigningAccount
 
 from smart_contracts import errors as err
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
-    BaseDAsaClient,
-    CommonAppCallParams,
-)
+from smart_contracts.artifacts.base_d_asa.base_d_asa_client import BaseDAsaClient
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
     SetAssetSuspensionArgs,
 )

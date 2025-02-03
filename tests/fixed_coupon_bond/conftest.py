@@ -5,6 +5,7 @@ from algokit_utils import (
     AlgorandClient,
     AssetOptInParams,
     AssetTransferParams,
+    CommonAppCallParams,
     SendParams,
     SigningAccount,
 )
@@ -12,19 +13,18 @@ from algokit_utils.config import config
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
-    AssetCreateArgs,
     AssetConfigArgs,
+    AssetCreateArgs,
     AssetMetadata,
     AssignRoleArgs,
-    CommonAppCallParams,
     FixedCouponBondClient,
     FixedCouponBondFactory,
     OpenAccountArgs,
     PayCouponArgs,
     PrimaryDistributionArgs,
-    SetSecondaryTimeEventsArgs,
-    SetDefaultStatusArgs,
     SetAssetSuspensionArgs,
+    SetDefaultStatusArgs,
+    SetSecondaryTimeEventsArgs,
 )
 from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests import utils
@@ -371,7 +371,7 @@ def account_with_coupons_factory(
                     payment_info=b"",
                 ),
                 params=CommonAppCallParams(max_fee=utils.max_fee_per_coupon(coupons)),
-                send_params=SendParams(cover_app_call_inner_transaction_fees=True)
+                send_params=SendParams(cover_app_call_inner_transaction_fees=True),
             )
         return account
 

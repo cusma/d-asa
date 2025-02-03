@@ -5,6 +5,7 @@ from algokit_utils import (
     AlgorandClient,
     AssetOptInParams,
     AssetTransferParams,
+    CommonAppCallParams,
     SigningAccount,
 )
 from algokit_utils.config import config
@@ -17,7 +18,6 @@ from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     AssignRoleArgs,
     BaseDAsaClient,
     BaseDAsaFactory,
-    CommonAppCallParams,
     OpenAccountArgs,
     PrimaryDistributionArgs,
     SetAssetSuspensionArgs,

@@ -11,11 +11,19 @@ from algokit_utils.config import config
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
+    AssetConfigArgs,
     AssetCreateArgs,
     AssetMetadata,
+    AssignRoleArgs,
+    CommonAppCallParams,
+    OpenAccountArgs,
+    PayCouponArgs,
     PerpetualBondClient,
-    PerpetualBondFactory, AssignRoleArgs, AssetConfigArgs, OpenAccountArgs, CommonAppCallParams,
-    SetSecondaryTimeEventsArgs, PrimaryDistributionArgs, PayCouponArgs, SetAssetSuspensionArgs, SetDefaultStatusArgs
+    PerpetualBondFactory,
+    PrimaryDistributionArgs,
+    SetAssetSuspensionArgs,
+    SetDefaultStatusArgs,
+    SetSecondaryTimeEventsArgs,
 )
 from tests import utils
 from tests.conftest import (
@@ -99,7 +107,9 @@ def perpetual_bond_client_empty(
     )
 
     factory = algorand.client.get_typed_app_factory(
-        PerpetualBondFactory, default_sender=arranger.address, default_signer=arranger.signer
+        PerpetualBondFactory,
+        default_sender=arranger.address,
+        default_signer=arranger.signer,
     )
     client, _ = factory.send.create.asset_create(
         AssetCreateArgs(arranger=arranger.address, metadata=asset_metadata)
@@ -285,7 +295,7 @@ def account_factory(
                 holding_address=account.address,
                 payment_address=account.address,
             ),
-            params=CommonAppCallParams(sender=account_manager.address)
+            params=CommonAppCallParams(sender=account_manager.address),
         )
         return utils.DAsaAccount(
             d_asa_client=perpetual_bond_client,
@@ -321,7 +331,7 @@ def account_with_units_factory(
                 holding_address=account.holding_address,
                 units=units,
             ),
-            params=CommonAppCallParams(sender=primary_dealer.address)
+            params=CommonAppCallParams(sender=primary_dealer.address),
         )
         return account
 

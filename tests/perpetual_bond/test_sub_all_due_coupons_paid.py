@@ -1,7 +1,8 @@
-from algokit_utils import AlgorandClient, OnCompleteCallParameters
+from algokit_utils import AlgorandClient
 
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient, PayCouponArgs,
+    PayCouponArgs,
+    PerpetualBondClient,
 )
 from tests.utils import DAsaAccount, DAsaConfig, time_warp
 

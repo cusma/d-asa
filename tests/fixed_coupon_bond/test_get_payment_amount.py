@@ -6,7 +6,9 @@ from algokit_utils import SigningAccount
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
-    FixedCouponBondClient, GetPaymentAmountArgs, PayCouponArgs,
+    FixedCouponBondClient,
+    GetPaymentAmountArgs,
+    PayCouponArgs,
 )
 from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
@@ -45,10 +47,7 @@ def test_pass_get_coupon_payment_amount(
         coupon_due_date = time_events[sc_cfg.FIRST_COUPON_DATE_IDX - 1 + coupon]
         time_warp(coupon_due_date)
         fixed_coupon_bond_client_primary.send.pay_coupon(
-            PayCouponArgs(
-                holding_address=account.holding_address,
-                payment_info=b""
-            )
+            PayCouponArgs(holding_address=account.holding_address, payment_info=b"")
         )
 
 

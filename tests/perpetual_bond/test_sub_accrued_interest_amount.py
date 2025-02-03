@@ -1,10 +1,12 @@
 from typing import Final
 
-from algokit_utils import AlgorandClient, OnCompleteCallParameters
+from algokit_utils import AlgorandClient
 
-from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient, GetAccountUnitsCurrentValueArgs, GetPaymentAmountArgs, PayCouponArgs,
+    GetAccountUnitsCurrentValueArgs,
+    GetPaymentAmountArgs,
+    PayCouponArgs,
+    PerpetualBondClient,
 )
 from tests.utils import Currency, DAsaAccount, get_latest_timestamp, time_warp
 
@@ -17,7 +19,9 @@ def test_from_issuance(
     account_a: DAsaAccount,
     perpetual_bond_client_ongoing: PerpetualBondClient,
 ) -> None:
-    current_date = get_latest_timestamp(perpetual_bond_client_ongoing.algorand.client.algod)
+    current_date = get_latest_timestamp(
+        perpetual_bond_client_ongoing.algorand.client.algod
+    )
     next_coupon_due_date = (
         perpetual_bond_client_ongoing.send.get_coupons_status().abi_return.next_coupon_due_date
     )
@@ -32,12 +36,14 @@ def test_from_issuance(
     )
     assert due_coupons == 0
 
-    accrued_interest = perpetual_bond_client_ongoing.send.get_account_units_current_value(
-        GetAccountUnitsCurrentValueArgs(
-            holding_address=account_a.holding_address,
-            units=account_a.units,
-        )
-    ).abi_return.accrued_interest
+    accrued_interest = (
+        perpetual_bond_client_ongoing.send.get_account_units_current_value(
+            GetAccountUnitsCurrentValueArgs(
+                holding_address=account_a.holding_address,
+                units=account_a.units,
+            )
+        ).abi_return.accrued_interest
+    )
 
     coupon_amount = perpetual_bond_client_ongoing.send.get_payment_amount(
         GetPaymentAmountArgs(holding_address=account_a.holding_address)
@@ -55,7 +61,9 @@ def test_from_latest_coupon_due_date(
         perpetual_bond_client_ongoing.send.get_coupons_status().abi_return.next_coupon_due_date
     )
     time_warp(first_coupon_due_date)
-    current_date = get_latest_timestamp(perpetual_bond_client_ongoing.algorand.client.algod)
+    current_date = get_latest_timestamp(
+        perpetual_bond_client_ongoing.algorand.client.algod
+    )
     assert current_date == first_coupon_due_date
     perpetual_bond_client_ongoing.send.pay_coupon(
         PayCouponArgs(
@@ -76,12 +84,14 @@ def test_from_latest_coupon_due_date(
     )
     assert due_coupons == 1
 
-    accrued_interest = perpetual_bond_client_ongoing.send.get_account_units_current_value(
-        GetAccountUnitsCurrentValueArgs(
-            holding_address=account_a.holding_address,
-            units=account_a.units,
-        )
-    ).abi_return.accrued_interest
+    accrued_interest = (
+        perpetual_bond_client_ongoing.send.get_account_units_current_value(
+            GetAccountUnitsCurrentValueArgs(
+                holding_address=account_a.holding_address,
+                units=account_a.units,
+            )
+        ).abi_return.accrued_interest
+    )
 
     coupon_amount = perpetual_bond_client_ongoing.send.get_payment_amount(
         GetPaymentAmountArgs(holding_address=account_a.holding_address)

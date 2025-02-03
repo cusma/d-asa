@@ -1,10 +1,10 @@
 from typing import Callable, Final
 
-from algokit_utils import OnCompleteCallParameters
-
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient, GetAccountUnitsCurrentValueArgs, PayCouponArgs,
+    GetAccountUnitsCurrentValueArgs,
+    PayCouponArgs,
+    PerpetualBondClient,
 )
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
 
@@ -52,12 +52,14 @@ def test_pass_get_account_units_current_value(
                 )
             )
 
-        units_value = perpetual_bond_client_primary.send.get_account_units_current_value(
-            GetAccountUnitsCurrentValueArgs(
-                holding_address=account.holding_address,
-                units=D_ASA_TEST_UNITS,
-            )
-        ).abi_return
+        units_value = (
+            perpetual_bond_client_primary.send.get_account_units_current_value(
+                GetAccountUnitsCurrentValueArgs(
+                    holding_address=account.holding_address,
+                    units=D_ASA_TEST_UNITS,
+                )
+            ).abi_return
+        )
         print(f"Units' value after {coupon} coupon due date:")
         print(units_value.__dict__)
         assert (

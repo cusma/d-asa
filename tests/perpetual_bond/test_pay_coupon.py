@@ -8,7 +8,9 @@ from algokit_utils import (
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient, GetPaymentAmountArgs, PayCouponArgs,
+    GetPaymentAmountArgs,
+    PayCouponArgs,
+    PerpetualBondClient,
 )
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
 

@@ -1,13 +1,16 @@
 from typing import Callable, Final
 
 import pytest
-from algokit_utils import OnCompleteCallParameters, SigningAccount
+from algokit_utils import SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
-from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import PayCouponArgs
+from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
+    PayCouponArgs,
+)
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient, GetPaymentAmountArgs,
+    GetPaymentAmountArgs,
+    PerpetualBondClient,
 )
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
 

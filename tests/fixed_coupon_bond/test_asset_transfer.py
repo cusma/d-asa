@@ -2,7 +2,7 @@ from typing import Callable
 
 import pytest
 from algokit_utils import (
-    AlgorandClient,
+    CommonAppCallParams,
     SigningAccount,
 )
 
@@ -11,7 +11,6 @@ from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import
     AssetTransferArgs,
     FixedCouponBondClient,
     GetAccountUnitsCurrentValueArgs,
-    CommonAppCallParams,
     PayCouponArgs,
 )
 from smart_contracts.base_d_asa import config as sc_cfg

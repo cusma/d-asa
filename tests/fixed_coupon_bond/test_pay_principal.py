@@ -5,7 +5,9 @@ from algokit_utils import SigningAccount
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
-    FixedCouponBondClient, GetAccountInfoArgs, PayPrincipalArgs,
+    FixedCouponBondClient,
+    GetAccountInfoArgs,
+    PayPrincipalArgs,
 )
 from tests.utils import (
     Currency,

@@ -1,4 +1,4 @@
-from algokit_utils import SigningAccount, AlgorandClient
+from algokit_utils import AlgorandClient, SigningAccount
 from algosdk.abi import ArrayStaticType, ByteType, StringType, TupleType, UintType
 from algosdk.encoding import encode_address
 
@@ -6,7 +6,6 @@ from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
     AssetCreateArgs,
     AssetMetadata,
-    PerpetualBondClient,
     PerpetualBondFactory,
 )
 from smart_contracts.base_d_asa import config as sc_cfg

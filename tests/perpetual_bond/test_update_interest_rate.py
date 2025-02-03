@@ -7,9 +7,13 @@ from algokit_utils import (
 )
 
 from smart_contracts import errors as err
-from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import PayCouponArgs
+from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
+    PayCouponArgs,
+)
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient, UpdateInterestRateArgs, CommonAppCallParams,
+    CommonAppCallParams,
+    PerpetualBondClient,
+    UpdateInterestRateArgs,
 )
 from tests.utils import Currency, DAsaAccount, DAsaConfig, DAsaInterestOracle, time_warp
 
@@ -65,7 +69,9 @@ def test_pass_after_issuance(
         # Update interest rate
         interest_rate = state.interest_rate
         perpetual_bond_client_primary.send.update_interest_rate(
-            UpdateInterestRateArgs(interest_rate=interest_rate + INTEREST_RATE_INCREASE),
+            UpdateInterestRateArgs(
+                interest_rate=interest_rate + INTEREST_RATE_INCREASE
+            ),
             params=CommonAppCallParams(sender=interest_oracle.address),
         )
         state = perpetual_bond_client_primary.state.global_state
@@ -124,7 +130,9 @@ def test_fail_pending_coupon_payment(
 
         with pytest.raises(Exception, match=err.PENDING_COUPON_PAYMENT):
             perpetual_bond_client_ongoing.send.update_interest_rate(
-                UpdateInterestRateArgs(interest_rate=interest_rate + INTEREST_RATE_INCREASE),
+                UpdateInterestRateArgs(
+                    interest_rate=interest_rate + INTEREST_RATE_INCREASE
+                ),
                 params=CommonAppCallParams(sender=interest_oracle.address),
             )
 
@@ -136,6 +144,8 @@ def test_fail_pending_coupon_payment(
         )
 
         perpetual_bond_client_ongoing.send.update_interest_rate(
-            UpdateInterestRateArgs(interest_rate=interest_rate + INTEREST_RATE_INCREASE),
+            UpdateInterestRateArgs(
+                interest_rate=interest_rate + INTEREST_RATE_INCREASE
+            ),
             params=CommonAppCallParams(sender=interest_oracle.address),
         )

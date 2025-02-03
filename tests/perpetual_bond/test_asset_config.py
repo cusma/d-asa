@@ -1,12 +1,11 @@
 from copy import deepcopy
 
 import pytest
-from algokit_utils import OnCompleteCallParameters
 
-from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient, AssetConfigArgs,
+    AssetConfigArgs,
+    PerpetualBondClient,
 )
 from smart_contracts.base_d_asa import config as sc_cfg
 from tests.utils import Currency, DAsaConfig
@@ -24,7 +23,9 @@ def test_pass_asset_config(
 
     state = perpetual_bond_client_empty.state.global_state
     expected_time_events = perpetual_bond_client_empty.send.get_time_events().abi_return
-    expected_time_periods = perpetual_bond_client_empty.send.get_time_periods().abi_return
+    expected_time_periods = (
+        perpetual_bond_client_empty.send.get_time_periods().abi_return
+    )
 
     # Asset Configuration
     assert state.denomination_asset_id == currency.id

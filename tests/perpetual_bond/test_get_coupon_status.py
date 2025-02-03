@@ -1,9 +1,8 @@
 from typing import Callable, Final
 
-from algokit_utils import OnCompleteCallParameters
-
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient, PayCouponArgs,
+    PayCouponArgs,
+    PerpetualBondClient,
 )
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
 
@@ -39,7 +38,9 @@ def test_pass_get_coupon_status(
         coupon_period_fraction = 10
         time_warp(coupon_due_date + coupon_period // coupon_period_fraction)
 
-        coupon_status = perpetual_bond_client_primary.send.get_coupons_status().abi_return
+        coupon_status = (
+            perpetual_bond_client_primary.send.get_coupons_status().abi_return
+        )
         print(f"Coupon status after {coupon} coupon due date:")
         print(coupon_status.__dict__)
         assert coupon_status.due_coupons == coupon
@@ -57,7 +58,9 @@ def test_pass_get_coupon_status(
                 payment_info=b"",
             )
         )
-        coupon_status = perpetual_bond_client_primary.send.get_coupons_status().abi_return
+        coupon_status = (
+            perpetual_bond_client_primary.send.get_coupons_status().abi_return
+        )
         print(f"Coupon status after {coupon} coupon payment:")
         print(coupon_status.__dict__)
         assert coupon_status.due_coupons == coupon

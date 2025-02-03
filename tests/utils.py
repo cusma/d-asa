@@ -23,12 +23,12 @@ from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import
     GetAccountInfoArgs,
 )
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
-    PerpetualBondClient,
     GetAccountInfoArgs,
+    PerpetualBondClient,
 )
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
-    ZeroCouponBondClient,
     GetAccountInfoArgs,
+    ZeroCouponBondClient,
 )
 
 COUPON_PER_OP_UP_TXN = 10  # This parameter is empirical and depends on the complexity of `count_due_coupons` subroutine
@@ -284,7 +284,9 @@ def max_fee_per_coupon(coupon_idx: int) -> AlgoAmount:
     Returns:
         Max fee
     """
-    return AlgoAmount.from_micro_algos(math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee)
+    return AlgoAmount.from_micro_algos(
+        math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee
+    )
 
 
 def set_role_config(validity_start: int = 0, validity_end: int = 2**64 - 1) -> bytes:
