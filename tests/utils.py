@@ -10,7 +10,6 @@ from algokit_utils import (
 )
 from algosdk.abi import TupleType, UintType
 from algosdk.constants import min_txn_fee
-from algosdk.encoding import decode_address
 from algosdk.v2client.algod import AlgodClient
 
 from smart_contracts import constants as sc_cst
@@ -69,96 +68,36 @@ class Currency:
 @dataclass(kw_only=True)
 class DAsaAccountManager(SigningAccount):
     @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_ACCOUNT_MANAGER
-
-    @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_ACCOUNT_MANAGER
-
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:  # TODO: Remove
-        return self.role_box_prefix() + decode_address(self.address)
 
 
 @dataclass(kw_only=True)
 class DAsaPrimaryDealer(SigningAccount):
     @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_PRIMARY_DEALER
-
-    @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_PRIMARY_DEALER
-
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:  # TODO: Remove
-        return self.role_box_prefix() + decode_address(self.address)
 
 
 @dataclass(kw_only=True)
 class DAsaTrustee(SigningAccount):
     @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_TRUSTEE
-
-    @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_TRUSTEE
-
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:  # TODO: Remove
-        return self.role_box_prefix() + decode_address(self.address)
 
 
 @dataclass(kw_only=True)
 class DAsaAuthority(SigningAccount):
     @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_AUTHORITY
-
-    @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_AUTHORITY
-
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:  # TODO: Remove
-        return self.role_box_prefix() + decode_address(self.address)
 
 
 @dataclass(kw_only=True)
 class DAsaInterestOracle(SigningAccount):
     @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_INTEREST_ORACLE
-
-    @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_INTEREST_ORACLE
-
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:  # TODO: Remove
-        return self.role_box_prefix() + decode_address(self.address)
 
 
 @dataclass(kw_only=True)
@@ -170,18 +109,6 @@ class DAsaAccount(SigningAccount):
         | FixedCouponBondClient
         | PerpetualBondClient
     )
-
-    @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_ACCOUNT
-
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:  # TODO: Remove
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:  # TODO: Remove
-        return self.role_box_prefix() + decode_address(self.holding_address)
 
     @property
     def payment_address(self) -> str:
