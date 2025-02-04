@@ -29,9 +29,8 @@ def test_pass_get_coupon_status(
     assert not coupon_status.due_coupons
     assert coupon_status.next_coupon_due_date == issuance_date + coupon_period
     assert coupon_status.all_due_coupons_paid
-    # FIXME: app client has a bug in decoding nested struct
-    # assert coupon_status.day_count_factor.numerator == 0
-    # assert coupon_status.day_count_factor.denominator == 0
+    assert coupon_status.day_count_factor.numerator == 0
+    assert coupon_status.day_count_factor.denominator == 0
 
     for coupon in range(1, DUE_COUPONS + 1):
         coupon_due_date = issuance_date + coupon_period * coupon
@@ -46,11 +45,10 @@ def test_pass_get_coupon_status(
         assert coupon_status.due_coupons == coupon
         assert coupon_status.next_coupon_due_date == coupon_due_date + coupon_period
         assert not coupon_status.all_due_coupons_paid
-        # FIXME: app client has a bug in decoding nested struct
-        # assert (
-        #     coupon_status.day_count_factor.numerator
-        #     == coupon_status.day_count_factor.denominator // coupon_period_fraction
-        # )
+        assert (
+            coupon_status.day_count_factor.numerator
+            == coupon_status.day_count_factor.denominator // coupon_period_fraction
+        )
 
         perpetual_bond_client_primary.send.pay_coupon(
             PayCouponArgs(
@@ -66,11 +64,10 @@ def test_pass_get_coupon_status(
         assert coupon_status.due_coupons == coupon
         assert coupon_status.next_coupon_due_date == coupon_due_date + coupon_period
         assert coupon_status.all_due_coupons_paid
-        # FIXME: app client has a bug in decoding nested struct
-        # assert (
-        #     coupon_status.day_count_factor.numerator
-        #     == coupon_status.day_count_factor.denominator // coupon_period_fraction
-        # )
+        assert (
+            coupon_status.day_count_factor.numerator
+            == coupon_status.day_count_factor.denominator // coupon_period_fraction
+        )
 
 
 def test_pass_not_configured(

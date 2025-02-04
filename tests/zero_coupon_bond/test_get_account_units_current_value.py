@@ -30,9 +30,8 @@ def test_account_units_value_during_primary(
         == account.principal * (sc_cst.BPS - state.principal_discount) // sc_cst.BPS
     )
     assert value.accrued_interest == 0
-    # FIXME: app client has a bug in decoding nested struct
-    # assert not value.day_count_factor.numerator
-    # assert not value.day_count_factor.denominator
+    assert not value.day_count_factor.numerator
+    assert not value.day_count_factor.denominator
 
 
 def test_account_units_value_at_issuance(
@@ -67,9 +66,8 @@ def test_account_units_value_at_issuance(
         == account.principal * (sc_cst.BPS - state.principal_discount) // sc_cst.BPS
     )
     assert value.accrued_interest == 0
-    # FIXME: app client has a bug in decoding nested struct
-    # assert value.day_count_factor.numerator == 0
-    # assert value.day_count_factor.denominator == maturity_period
+    assert value.day_count_factor.numerator == 0
+    assert value.day_count_factor.denominator == maturity_period
 
 
 def test_account_units_value_at_maturity(
@@ -95,9 +93,8 @@ def test_account_units_value_at_maturity(
     print(value.__dict__)
     assert value.units_value == account.principal
     assert value.accrued_interest == 0
-    # FIXME: app client has a bug in decoding nested struct
-    # assert value.day_count_factor.numerator == 0
-    # assert value.day_count_factor.denominator == 0
+    assert value.day_count_factor.numerator == 0
+    assert value.day_count_factor.denominator == 0
 
 
 def test_fail_no_primary_distribution() -> None:
