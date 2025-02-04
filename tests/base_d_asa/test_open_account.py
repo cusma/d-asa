@@ -4,6 +4,7 @@ import pytest
 from algokit_utils import (
     AlgorandClient,
     CommonAppCallParams,
+    LogicError,
     SigningAccount,
 )
 
@@ -60,7 +61,7 @@ def test_fail_unauthorized_caller(
     holding = algorand.account.random()
     payment = algorand.account.random()
 
-    with pytest.raises(Exception, match=err.UNAUTHORIZED):
+    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         base_d_asa_client_empty.send.open_account(
             OpenAccountArgs(
                 holding_address=holding.address,
@@ -88,7 +89,7 @@ def test_fail_suspended(
     holding = algorand.account.random()
     payment = algorand.account.random()
 
-    with pytest.raises(Exception, match=err.SUSPENDED):
+    with pytest.raises(LogicError, match=err.SUSPENDED):
         base_d_asa_client_suspended.send.open_account(
             OpenAccountArgs(
                 holding_address=holding.address,
@@ -105,7 +106,7 @@ def test_fail_invalid_holding_address(
     account_manager: DAsaAccountManager,
     account_a: DAsaAccount,
 ) -> None:
-    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         base_d_asa_client_empty.send.open_account(
             OpenAccountArgs(
                 holding_address=account_a.holding_address,

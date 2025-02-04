@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 import pytest
-from algokit_utils import CommonAppCallParams, SigningAccount
+from algokit_utils import CommonAppCallParams, LogicError, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -83,7 +83,7 @@ def test_fail_unauthorized(
     base_d_asa_cfg: DAsaConfig,
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> None:
-    with pytest.raises(Exception, match=err.UNAUTHORIZED):
+    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**base_d_asa_cfg.dictify()),
             params=CommonAppCallParams(sender=oscar.address),
@@ -93,7 +93,7 @@ def test_fail_unauthorized(
 def test_fail_already_configured(
     base_d_asa_cfg: DAsaConfig, base_d_asa_client_active: BaseDAsaClient
 ) -> None:
-    with pytest.raises(Exception, match=err.ALREADY_CONFIGURED):
+    with pytest.raises(LogicError, match=err.ALREADY_CONFIGURED):
         base_d_asa_client_active.send.asset_config(
             AssetConfigArgs(**base_d_asa_cfg.dictify())
         )
@@ -105,7 +105,7 @@ def test_fail_invalid_minimum_denomination(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.minimum_denomination = wrong_d_asa_cfg.minimum_denomination - 1
-    with pytest.raises(Exception, match=err.INVALID_MINIMUM_DENOMINATION):
+    with pytest.raises(LogicError, match=err.INVALID_MINIMUM_DENOMINATION):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
@@ -121,7 +121,7 @@ def test_fail_invalid_day_count_convention(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.day_count_convention = sc_cst.DCC_CONT - 1
-    with pytest.raises(Exception, match=err.INVALID_DAY_COUNT_CONVENTION):
+    with pytest.raises(LogicError, match=err.INVALID_DAY_COUNT_CONVENTION):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
@@ -141,7 +141,7 @@ def test_fail_invalid_time_events_length(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.time_events = [*base_d_asa_cfg.time_events, 0]
-    with pytest.raises(Exception, match=err.INVALID_TIME_EVENTS_LENGTH):
+    with pytest.raises(LogicError, match=err.INVALID_TIME_EVENTS_LENGTH):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
@@ -153,7 +153,7 @@ def test_fail_invalid_time(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.time_events[0] = 0
-    with pytest.raises(Exception, match=err.INVALID_TIME):
+    with pytest.raises(LogicError, match=err.INVALID_TIME):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
@@ -165,14 +165,14 @@ def test_fail_invalid_sorting(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.time_events[-1] = base_d_asa_cfg.time_events[-2]
-    with pytest.raises(Exception, match=err.INVALID_SORTING):
+    with pytest.raises(LogicError, match=err.INVALID_SORTING):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.time_events[0] = base_d_asa_cfg.time_events[-1]
-    with pytest.raises(Exception, match=err.INVALID_SORTING):
+    with pytest.raises(LogicError, match=err.INVALID_SORTING):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
@@ -188,7 +188,7 @@ def test_fail_invalid_settlement_asset(
 ) -> None:
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.settlement_asset_id = wrong_d_asa_cfg.denomination_asset_id + 1
-    with pytest.raises(Exception, match=err.INVALID_SETTLEMENT_ASSET):
+    with pytest.raises(LogicError, match=err.INVALID_SETTLEMENT_ASSET):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )

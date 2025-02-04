@@ -4,6 +4,7 @@ import pytest
 from algokit_utils import (
     AlgorandClient,
     CommonAppCallParams,
+    LogicError,
     SigningAccount,
 )
 
@@ -85,7 +86,7 @@ def test_fail_unauthorized(
     perpetual_bond_client_primary: PerpetualBondClient,
 ) -> None:
     interest_rate = perpetual_bond_client_primary.state.global_state.interest_rate
-    with pytest.raises(Exception, match=err.UNAUTHORIZED):
+    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         perpetual_bond_client_primary.send.update_interest_rate(
             UpdateInterestRateArgs(interest_rate=interest_rate + INTEREST_RATE_INCREASE)
         )
@@ -128,7 +129,7 @@ def test_fail_pending_coupon_payment(
             )
         )
 
-        with pytest.raises(Exception, match=err.PENDING_COUPON_PAYMENT):
+        with pytest.raises(LogicError, match=err.PENDING_COUPON_PAYMENT):
             perpetual_bond_client_ongoing.send.update_interest_rate(
                 UpdateInterestRateArgs(
                     interest_rate=interest_rate + INTEREST_RATE_INCREASE

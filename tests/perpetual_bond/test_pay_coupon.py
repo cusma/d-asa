@@ -3,6 +3,7 @@ from typing import Callable
 import pytest
 from algokit_utils import (
     AlgorandClient,
+    LogicError,
     SigningAccount,
 )
 
@@ -193,7 +194,7 @@ def test_fail_suspended() -> None:
 def test_fail_invalid_holding_address(
     oscar: SigningAccount, perpetual_bond_client_ongoing: PerpetualBondClient
 ) -> None:
-    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         perpetual_bond_client_ongoing.send.pay_coupon(
             PayCouponArgs(
                 holding_address=oscar.address,
@@ -208,7 +209,7 @@ def test_fail_no_units(
 ) -> None:
     account = account_factory(perpetual_bond_client_primary)
 
-    with pytest.raises(Exception, match=err.NO_UNITS):
+    with pytest.raises(LogicError, match=err.NO_UNITS):
         perpetual_bond_client_primary.send.pay_coupon(
             PayCouponArgs(
                 holding_address=account.holding_address,
@@ -226,7 +227,7 @@ def test_fail_no_due_coupon(
     state = perpetual_bond_client_ongoing.state.global_state
 
     for coupon in range(1, DUE_COUPONS + 1):
-        with pytest.raises(Exception, match=err.NO_DUE_COUPON):
+        with pytest.raises(LogicError, match=err.NO_DUE_COUPON):
             perpetual_bond_client_ongoing.send.pay_coupon(
                 PayCouponArgs(
                     holding_address=account_a.holding_address,
@@ -272,7 +273,7 @@ def test_fail_pending_coupon_payment(
 
         coupon_due_date = issuance_date + coupon_period * (coupon + 1)
         time_warp(coupon_due_date)
-        with pytest.raises(Exception, match=err.PENDING_COUPON_PAYMENT):
+        with pytest.raises(LogicError, match=err.PENDING_COUPON_PAYMENT):
             perpetual_bond_client_ongoing.send.pay_coupon(
                 PayCouponArgs(
                     holding_address=first_payee.holding_address,

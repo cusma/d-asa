@@ -3,6 +3,7 @@ from typing import Callable
 import pytest
 from algokit_utils import (
     AlgorandClient,
+    LogicError,
     SigningAccount,
 )
 
@@ -99,7 +100,7 @@ def test_fail_suspended() -> None:
 def test_fail_invalid_holding_address(
     oscar: SigningAccount, zero_coupon_bond_client_at_maturity: ZeroCouponBondClient
 ) -> None:
-    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         zero_coupon_bond_client_at_maturity.send.pay_principal(
             PayPrincipalArgs(
                 holding_address=oscar.address,
@@ -114,7 +115,7 @@ def test_fail_no_units(
 ) -> None:
     account = account_factory(zero_coupon_bond_client_primary)
 
-    with pytest.raises(Exception, match=err.NO_UNITS):
+    with pytest.raises(LogicError, match=err.NO_UNITS):
         zero_coupon_bond_client_primary.send.pay_principal(
             PayPrincipalArgs(
                 holding_address=account.holding_address,
@@ -127,7 +128,7 @@ def test_fail_not_mature(
     zero_coupon_bond_client_primary: ZeroCouponBondClient,
     account_a: DAsaAccount,
 ) -> None:
-    with pytest.raises(Exception, match=err.NOT_MATURE):
+    with pytest.raises(LogicError, match=err.NOT_MATURE):
         zero_coupon_bond_client_primary.send.pay_principal(
             PayPrincipalArgs(
                 holding_address=account_a.holding_address,

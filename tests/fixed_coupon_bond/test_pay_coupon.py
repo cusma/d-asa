@@ -1,7 +1,7 @@
 from typing import Callable
 
 import pytest
-from algokit_utils import SigningAccount
+from algokit_utils import LogicError, SigningAccount
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
@@ -188,7 +188,7 @@ def test_fail_suspended() -> None:
 def test_fail_invalid_holding_address(
     oscar: SigningAccount, fixed_coupon_bond_client_at_maturity: FixedCouponBondClient
 ) -> None:
-    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_at_maturity.send.pay_coupon(
             PayCouponArgs(
                 holding_address=oscar.address,
@@ -203,7 +203,7 @@ def test_fail_no_units(
 ) -> None:
     account = account_factory(fixed_coupon_bond_client_primary)
 
-    with pytest.raises(Exception, match=err.NO_UNITS):
+    with pytest.raises(LogicError, match=err.NO_UNITS):
         fixed_coupon_bond_client_primary.send.pay_coupon(
             PayCouponArgs(
                 holding_address=account.holding_address,
@@ -220,7 +220,7 @@ def test_fail_no_due_coupon(
     time_events = fixed_coupon_bond_client_ongoing.send.get_time_events().abi_return
 
     for coupon in range(1, fixed_coupon_bond_cfg.total_coupons + 1):
-        with pytest.raises(Exception, match=err.NO_DUE_COUPON):
+        with pytest.raises(LogicError, match=err.NO_DUE_COUPON):
             fixed_coupon_bond_client_ongoing.send.pay_coupon(
                 PayCouponArgs(
                     holding_address=account_a.holding_address,
@@ -258,7 +258,7 @@ def test_fail_pending_coupon_payment(
             )
         )
 
-        with pytest.raises(Exception, match=err.PENDING_COUPON_PAYMENT):
+        with pytest.raises(LogicError, match=err.PENDING_COUPON_PAYMENT):
             fixed_coupon_bond_client_at_maturity.send.pay_coupon(
                 PayCouponArgs(
                     holding_address=first_payee.holding_address,

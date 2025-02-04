@@ -4,6 +4,7 @@ import pytest
 from algokit_utils import (
     AlgorandClient,
     CommonAppCallParams,
+    LogicError,
     SigningAccount,
 )
 
@@ -83,7 +84,7 @@ def test_fail_primary_distribution_closed(
         >= state.primary_distribution_closure_date
     )
 
-    with pytest.raises(Exception, match=err.PRIMARY_DISTRIBUTION_CLOSED):
+    with pytest.raises(LogicError, match=err.PRIMARY_DISTRIBUTION_CLOSED):
         base_d_asa_client_primary.send.primary_distribution(
             PrimaryDistributionArgs(
                 holding_address=account.holding_address,
@@ -98,7 +99,7 @@ def test_fail_unauthorized(
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
-    with pytest.raises(Exception, match=err.UNAUTHORIZED):
+    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         base_d_asa_client_primary.send.primary_distribution(
             PrimaryDistributionArgs(
                 holding_address=account.holding_address,
@@ -133,7 +134,7 @@ def test_fail_suspended(
             sender=authority.address,
         ),
     )
-    with pytest.raises(Exception, match=err.SUSPENDED):
+    with pytest.raises(LogicError, match=err.SUSPENDED):
         base_d_asa_client_primary.send.primary_distribution(
             PrimaryDistributionArgs(
                 holding_address=account.holding_address,
@@ -151,7 +152,7 @@ def test_fail_zero_units(
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
-    with pytest.raises(Exception, match=err.ZERO_UNITS):
+    with pytest.raises(LogicError, match=err.ZERO_UNITS):
         base_d_asa_client_primary.send.primary_distribution(
             PrimaryDistributionArgs(
                 holding_address=account.holding_address,
@@ -171,7 +172,7 @@ def test_fail_over_distribution(
     account = account_factory(base_d_asa_client_primary)
     state = base_d_asa_client_primary.state.global_state
 
-    with pytest.raises(Exception, match=err.OVER_DISTRIBUTION):
+    with pytest.raises(LogicError, match=err.OVER_DISTRIBUTION):
         base_d_asa_client_primary.send.primary_distribution(
             PrimaryDistributionArgs(
                 holding_address=account.holding_address,

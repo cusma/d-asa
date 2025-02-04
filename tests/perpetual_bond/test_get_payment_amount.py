@@ -1,7 +1,7 @@
 from typing import Callable, Final
 
 import pytest
-from algokit_utils import SigningAccount
+from algokit_utils import LogicError, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -69,7 +69,7 @@ def test_pass_not_configured(
 def test_fail_invalid_holding_address(
     oscar: SigningAccount, perpetual_bond_client_ongoing: PerpetualBondClient
 ) -> None:
-    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         perpetual_bond_client_ongoing.send.get_payment_amount(
             GetPaymentAmountArgs(holding_address=oscar.address)
         )

@@ -1,7 +1,7 @@
 from typing import Callable
 
 import pytest
-from algokit_utils import SigningAccount
+from algokit_utils import LogicError, SigningAccount
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
@@ -97,7 +97,7 @@ def test_fail_suspended() -> None:
 def test_fail_invalid_holding_address(
     oscar: SigningAccount, fixed_coupon_bond_client_at_maturity: FixedCouponBondClient
 ) -> None:
-    with pytest.raises(Exception, match=err.INVALID_HOLDING_ADDRESS):
+    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_at_maturity.send.pay_principal(
             PayPrincipalArgs(
                 holding_address=oscar.address,
@@ -112,7 +112,7 @@ def test_fail_no_units(
 ) -> None:
     account = account_factory(fixed_coupon_bond_client_primary)
 
-    with pytest.raises(Exception, match=err.NO_UNITS):
+    with pytest.raises(LogicError, match=err.NO_UNITS):
         fixed_coupon_bond_client_primary.send.pay_principal(
             PayPrincipalArgs(
                 holding_address=account.holding_address,
@@ -126,7 +126,7 @@ def test_fail_not_mature(
     fixed_coupon_bond_client_primary: FixedCouponBondClient,
 ) -> None:
     account_all_coupons = account_with_coupons_factory()
-    with pytest.raises(Exception, match=err.NOT_MATURE):
+    with pytest.raises(LogicError, match=err.NOT_MATURE):
         fixed_coupon_bond_client_primary.send.pay_principal(
             PayPrincipalArgs(
                 holding_address=account_all_coupons.holding_address,
@@ -145,7 +145,7 @@ def test_fail_pending_coupon_payment(
     )
     state = fixed_coupon_bond_client_primary.state.global_state
     time_warp(state.maturity_date)
-    with pytest.raises(Exception, match=err.PENDING_COUPON_PAYMENT):
+    with pytest.raises(LogicError, match=err.PENDING_COUPON_PAYMENT):
         fixed_coupon_bond_client_primary.send.pay_principal(
             PayPrincipalArgs(
                 holding_address=account.holding_address,

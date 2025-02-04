@@ -1,5 +1,5 @@
 import pytest
-from algokit_utils import CommonAppCallParams, SigningAccount
+from algokit_utils import CommonAppCallParams, LogicError, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
@@ -37,7 +37,7 @@ def test_fail_unauthorized(
     oscar: SigningAccount,
     base_d_asa_client_active: BaseDAsaClient,
 ) -> None:
-    with pytest.raises(Exception, match=err.UNAUTHORIZED):
+    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         base_d_asa_client_active.send.update.asset_update(
             AssetUpdateArgs(metadata=asset_metadata),
             params=CommonAppCallParams(sender=oscar.address),
