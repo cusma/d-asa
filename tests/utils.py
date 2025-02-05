@@ -208,7 +208,7 @@ def max_fee_per_coupon(coupon_idx: int) -> AlgoAmount:
     Returns:
         Max fee
     """
-    return AlgoAmount.from_micro_algos(
+    return AlgoAmount.from_micro_algo(
         math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee
     )
 
