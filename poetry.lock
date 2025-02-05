@@ -127,27 +127,27 @@ frozenlist = ">=1.1.0"
 
 [[package]]
 name = "algokit-client-generator"
-version = "2.0.0b3"
+version = "2.0.0b4"
 description = "Algorand typed client Generator"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["dev"]
 files = [
-    {file = "algokit_client_generator-2.0.0b3-py3-none-any.whl", hash = "sha256:310c4df15a70164d340d2625f888e402035bcfce69ee45affa3df160c39ef086"},
+    {file = "algokit_client_generator-2.0.0b4-py3-none-any.whl", hash = "sha256:a61c3916aee5a17753d4a37965cad9dfff261eceedcbe533e4c33300630762ae"},
 ]
 
 [package.dependencies]
-algokit-utils = "v3.0.0b4"
+algokit-utils = ">=v3.0.0b5,<4.0.0"
 
 [[package]]
 name = "algokit-utils"
-version = "3.0.0b4"
+version = "3.0.0b5"
 description = "Utilities for Algorand development for use by AlgoKit"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main", "dev"]
 files = [
-    {file = "algokit_utils-3.0.0b4-py3-none-any.whl", hash = "sha256:ff6ad8551d93a8b1babe216c35022deaf142212b148b3dfc82ebd40bf0808ce3"},
+    {file = "algokit_utils-3.0.0b5-py3-none-any.whl", hash = "sha256:2208fe123df98c728dc90038bdf8cf8faec8e098f7e747c4e6fc0b9b9fb5498c"},
 ]
 
 [package.dependencies]
@@ -2255,4 +2255,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "3bff61fb181fcc0cdafb99eb774d9bf13e338674a1b4c1fa3877e9b4b1eecfb5"
+content-hash = "8662a2063f583f80086e9cdcac39f1029b0a29d4b4769200f63fd91f938fa762"
