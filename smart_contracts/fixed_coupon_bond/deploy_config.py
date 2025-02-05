@@ -30,7 +30,6 @@ def deploy() -> None:
         on_schema_break=algokit_utils.OnSchemaBreak.AppendApp,
         on_update=algokit_utils.OnUpdate.UpdateApp,
         create_params=FixedCouponBondMethodCallCreateParams(
-            method="asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void",
             args=AssetCreateArgs(
                 arranger=os.environ["ARRANGER_ADDRESS"],
                 metadata=AssetMetadata(
@@ -46,7 +45,6 @@ def deploy() -> None:
             ),
         ),
         update_params=FixedCouponBondMethodCallUpdateParams(
-            method="asset_update((uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void",
             args=AssetUpdateArgs(
                 metadata=AssetMetadata(
                     contract_type=sc_cst.CT_PAM,
