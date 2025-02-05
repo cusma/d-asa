@@ -59,7 +59,7 @@ def _init_dataclass(cls: type, data: dict) -> object:
         field_value = data.get(field.name)
         # Check if the field expects another dataclass and the value is a dict.
         if dataclasses.is_dataclass(field.type) and isinstance(field_value, dict):
-            field_values[field.name] = _init_dataclass(field.type, field_value)
+            field_values[field.name] = _init_dataclass(typing.cast(type, field.type), field_value)
         else:
             field_values[field.name] = field_value
     return cls(**field_values)
@@ -159,16 +159,28 @@ class AssetTransferArgs:
     receiver_holding_address: str
     units: int
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "asset_transfer(address,address,uint64)uint64"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class PayCouponArgs:
     """Dataclass for pay_coupon arguments"""
     holding_address: str
     payment_info: bytes | str
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "pay_coupon(address,byte[])(uint64,uint64,byte[])"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class UpdateInterestRateArgs:
     """Dataclass for update_interest_rate arguments"""
     interest_rate: int
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "update_interest_rate(uint64)uint64"
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class GetAccountUnitsCurrentValueArgs:
@@ -176,10 +188,18 @@ class GetAccountUnitsCurrentValueArgs:
     holding_address: str
     units: int
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class GetPaymentAmountArgs:
     """Dataclass for get_payment_amount arguments"""
     holding_address: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "get_payment_amount(address)(uint64,uint64)"
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class AssetConfigArgs:
@@ -195,10 +215,18 @@ class AssetConfigArgs:
     time_events: list[int]
     time_periods: list[tuple[int, int]]
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class SetSecondaryTimeEventsArgs:
     """Dataclass for set_secondary_time_events arguments"""
     secondary_market_time_events: list[int]
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "set_secondary_time_events(uint64[])(uint64,uint64)"
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class AssignRoleArgs:
@@ -207,11 +235,19 @@ class AssignRoleArgs:
     role: int
     config: bytes | str
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "assign_role(address,uint8,byte[])uint64"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class RevokeRoleArgs:
     """Dataclass for revoke_role arguments"""
     role_address: str
     role: int
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "revoke_role(address,uint8)uint64"
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class OpenAccountArgs:
@@ -219,10 +255,18 @@ class OpenAccountArgs:
     holding_address: str
     payment_address: str
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "open_account(address,address)uint64"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class CloseAccountArgs:
     """Dataclass for close_account arguments"""
     holding_address: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "close_account(address)(uint64,uint64)"
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class PrimaryDistributionArgs:
@@ -230,10 +274,18 @@ class PrimaryDistributionArgs:
     holding_address: str
     units: int
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "primary_distribution(address,uint64)uint64"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class SetAssetSuspensionArgs:
     """Dataclass for set_asset_suspension arguments"""
     suspended: bool
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "set_asset_suspension(bool)uint64"
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class SetAccountSuspensionArgs:
@@ -241,15 +293,27 @@ class SetAccountSuspensionArgs:
     holding_address: str
     suspended: bool
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "set_account_suspension(address,bool)uint64"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class SetDefaultStatusArgs:
     """Dataclass for set_default_status arguments"""
     defaulted: bool
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "set_default_status(bool)void"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class GetAccountInfoArgs:
     """Dataclass for get_account_info arguments"""
     holding_address: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "get_account_info(address)(address,uint64,uint64,uint64,bool)"
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class AssetCreateArgs:
@@ -257,10 +321,18 @@ class AssetCreateArgs:
     arranger: str
     metadata: AssetMetadata
 
+    @property
+    def abi_method_signature(self) -> str:
+        return "asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void"
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class AssetUpdateArgs:
     """Dataclass for asset_update arguments"""
     metadata: AssetMetadata
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "asset_update((uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void"
 
 
 class _PerpetualBondUpdate:
@@ -2022,18 +2094,20 @@ class PerpetualBondClient:
 @dataclasses.dataclass(frozen=True)
 class PerpetualBondMethodCallCreateParams(
     algokit_utils.AppClientCreateSchema, algokit_utils.BaseAppClientMethodCallParams[
-        tuple[str, AssetMetadata] | AssetCreateArgs,
-        typing.Literal["asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void"],
+        AssetCreateArgs,
+        str | None,
     ]
 ):
     """Parameters for creating PerpetualBond contract using ABI"""
     on_complete: typing.Literal[OnComplete.NoOpOC] | None = None
+    method: str | None = None
 
     def to_algokit_utils_params(self) -> algokit_utils.AppClientMethodCallCreateParams:
         method_args = _parse_abi_args(self.args)
         return algokit_utils.AppClientMethodCallCreateParams(
             **{
                 **self.__dict__,
+                "method": self.method or getattr(self.args, "abi_method_signature", None),
                 "args": method_args,
             }
         )
@@ -2041,18 +2115,20 @@ class PerpetualBondMethodCallCreateParams(
 @dataclasses.dataclass(frozen=True)
 class PerpetualBondMethodCallUpdateParams(
     algokit_utils.BaseAppClientMethodCallParams[
-        tuple[AssetMetadata] | AssetUpdateArgs,
-        typing.Literal["asset_update((uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void"],
+        AssetUpdateArgs,
+        str | None,
     ]
 ):
     """Parameters for calling PerpetualBond contract using ABI"""
     on_complete: typing.Literal[OnComplete.UpdateApplicationOC] | None = None
+    method: str | None = None
 
     def to_algokit_utils_params(self) -> algokit_utils.AppClientMethodCallParams:
         method_args = _parse_abi_args(self.args)
         return algokit_utils.AppClientMethodCallParams(
             **{
                 **self.__dict__,
+                "method": self.method or getattr(self.args, "abi_method_signature", None),
                 "args": method_args,
             }
         )
@@ -2690,7 +2766,7 @@ class PerpetualBondFactoryUpdateParams:
         """Updates an instance using a bare call"""
         params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.bare.deploy_update(
-            algokit_utils.AppFactoryCreateParams(**dataclasses.asdict(params)),
+            algokit_utils.AppClientBareCallParams(**dataclasses.asdict(params)),
             )
 
 class PerpetualBondFactoryDeleteParams:
@@ -2708,7 +2784,7 @@ class PerpetualBondFactoryDeleteParams:
         """Deletes an instance using a bare call"""
         params = params or algokit_utils.CommonAppCallCreateParams()
         return self.app_factory.params.bare.deploy_delete(
-            algokit_utils.AppFactoryCreateParams(**dataclasses.asdict(params)),
+            algokit_utils.AppClientBareCallParams(**dataclasses.asdict(params)),
             )
 
 
