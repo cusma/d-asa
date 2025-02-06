@@ -1,39 +1,31 @@
 from copy import deepcopy
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
+from algokit_utils import CommonAppCallParams, LogicError, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import BaseDAsaClient
+from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    AssetConfigArgs,
+    BaseDAsaClient,
+)
 from smart_contracts.base_d_asa import config as sc_cfg
 from tests.utils import Currency, DAsaConfig
 
 
 def test_pass_asset_config(
+    day_count_convention: int,
     currency: Currency,
     base_d_asa_cfg: DAsaConfig,
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> None:
-    base_d_asa_client_empty.asset_config(
-        **base_d_asa_cfg.dictify(),
-        transaction_parameters=OnCompleteCallParameters(
-            foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-            boxes=[
-                (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-            ],
-        ),
+    base_d_asa_client_empty.send.asset_config(
+        AssetConfigArgs(**base_d_asa_cfg.dictify())
     )
 
-    state = base_d_asa_client_empty.get_global_state()
+    state = base_d_asa_client_empty.state.global_state
     expected_coupon_rates = []
-    expected_time_events = base_d_asa_client_empty.get_time_events(
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS)]
-        )
-    ).return_value
+    expected_time_events = base_d_asa_client_empty.send.get_time_events().abi_return
 
     # Asset Configuration
     assert state.denomination_asset_id == currency.id
@@ -87,21 +79,14 @@ def test_pass_asset_config(
 
 
 def test_fail_unauthorized(
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     base_d_asa_cfg: DAsaConfig,
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
-        base_d_asa_client_empty.asset_config(
-            **base_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                signer=oscar.signer,
-                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-                boxes=[
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        base_d_asa_client_empty.send.asset_config(
+            AssetConfigArgs(**base_d_asa_cfg.dictify()),
+            params=CommonAppCallParams(sender=oscar.address),
         )
 
 
@@ -109,15 +94,8 @@ def test_fail_already_configured(
     base_d_asa_cfg: DAsaConfig, base_d_asa_client_active: BaseDAsaClient
 ) -> None:
     with pytest.raises(LogicError, match=err.ALREADY_CONFIGURED):
-        base_d_asa_client_active.asset_config(
-            **base_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-                boxes=[
-                    (base_d_asa_client_active.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (base_d_asa_client_active.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        base_d_asa_client_active.send.asset_config(
+            AssetConfigArgs(**base_d_asa_cfg.dictify())
         )
 
 
@@ -128,15 +106,8 @@ def test_fail_invalid_minimum_denomination(
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.minimum_denomination = wrong_d_asa_cfg.minimum_denomination - 1
     with pytest.raises(LogicError, match=err.INVALID_MINIMUM_DENOMINATION):
-        base_d_asa_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-                boxes=[
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        base_d_asa_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
 
@@ -151,15 +122,8 @@ def test_fail_invalid_day_count_convention(
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.day_count_convention = sc_cst.DCC_CONT - 1
     with pytest.raises(LogicError, match=err.INVALID_DAY_COUNT_CONVENTION):
-        base_d_asa_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-                boxes=[
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        base_d_asa_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
 
@@ -178,15 +142,8 @@ def test_fail_invalid_time_events_length(
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.time_events = [*base_d_asa_cfg.time_events, 0]
     with pytest.raises(LogicError, match=err.INVALID_TIME_EVENTS_LENGTH):
-        base_d_asa_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-                boxes=[
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        base_d_asa_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
 
@@ -197,15 +154,8 @@ def test_fail_invalid_time(
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.time_events[0] = 0
     with pytest.raises(LogicError, match=err.INVALID_TIME):
-        base_d_asa_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-                boxes=[
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        base_d_asa_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
 
@@ -216,29 +166,15 @@ def test_fail_invalid_sorting(
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.time_events[-1] = base_d_asa_cfg.time_events[-2]
     with pytest.raises(LogicError, match=err.INVALID_SORTING):
-        base_d_asa_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-                boxes=[
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        base_d_asa_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.time_events[0] = base_d_asa_cfg.time_events[-1]
     with pytest.raises(LogicError, match=err.INVALID_SORTING):
-        base_d_asa_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-                boxes=[
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        base_d_asa_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
 
@@ -253,15 +189,8 @@ def test_fail_invalid_settlement_asset(
     wrong_d_asa_cfg = deepcopy(base_d_asa_cfg)
     wrong_d_asa_cfg.settlement_asset_id = wrong_d_asa_cfg.denomination_asset_id + 1
     with pytest.raises(LogicError, match=err.INVALID_SETTLEMENT_ASSET):
-        base_d_asa_client_empty.asset_config(
-            **wrong_d_asa_cfg.dictify(),
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[base_d_asa_cfg.denomination_asset_id],
-                boxes=[
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                    (base_d_asa_client_empty.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-                ],
-            ),
+        base_d_asa_client_empty.send.asset_config(
+            AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
 
 

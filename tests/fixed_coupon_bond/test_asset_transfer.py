@@ -1,14 +1,18 @@
 from typing import Callable
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
-from algokit_utils.beta.algorand_client import AlgorandClient
+from algokit_utils import (
+    CommonAppCallParams,
+    LogicError,
+    SigningAccount,
+)
 
-from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
+    AssetTransferArgs,
     FixedCouponBondClient,
+    GetAccountUnitsCurrentValueArgs,
+    PayCouponArgs,
 )
 from smart_contracts.base_d_asa import config as sc_cfg
 from tests.utils import DAsaAccount, DAsaConfig, time_warp
@@ -45,38 +49,21 @@ def test_pass_asset_transfer(
 
     transfer_1_units = 1
     accrued_interest_1 = (
-        fixed_coupon_bond_client_primary.get_account_units_current_value(
-            holding_address=account_a.holding_address,
-            units=transfer_1_units,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account_a.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ]
-            ),
-        ).return_value.accrued_interest
+        fixed_coupon_bond_client_primary.send.get_account_units_current_value(
+            GetAccountUnitsCurrentValueArgs(
+                holding_address=account_a.holding_address,
+                units=transfer_1_units,
+            )
+        ).abi_return.accrued_interest
     )
-    transferred_value_1 = fixed_coupon_bond_client_primary.asset_transfer(
-        sender_holding_address=account_a.holding_address,
-        receiver_holding_address=account_b.holding_address,
-        units=transfer_1_units,
-        transaction_parameters=OnCompleteCallParameters(
-            signer=account_a.signer,
-            boxes=[
-                (fixed_coupon_bond_client_primary.app_id, account_a.box_id),
-                (fixed_coupon_bond_client_primary.app_id, account_b.box_id),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-            ],
+    transferred_value_1 = fixed_coupon_bond_client_primary.send.asset_transfer(
+        AssetTransferArgs(
+            sender_holding_address=account_a.holding_address,
+            receiver_holding_address=account_b.holding_address,
+            units=transfer_1_units,
         ),
-    ).return_value
+        params=CommonAppCallParams(sender=account_a.address),
+    ).abi_return
 
     post_transfer_1_units_a = account_a.units
     post_transfer_1_units_b = account_b.units
@@ -97,38 +84,21 @@ def test_pass_asset_transfer(
 
     transfer_2_units = 1
     accrued_interest_2 = (
-        fixed_coupon_bond_client_primary.get_account_units_current_value(
-            holding_address=account_a.holding_address,
-            units=transfer_2_units,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account_a.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ]
+        fixed_coupon_bond_client_primary.send.get_account_units_current_value(
+            GetAccountUnitsCurrentValueArgs(
+                holding_address=account_a.holding_address,
+                units=transfer_2_units,
             ),
-        ).return_value.accrued_interest
+        ).abi_return.accrued_interest
     )
-    transferred_value_2 = fixed_coupon_bond_client_primary.asset_transfer(
-        sender_holding_address=account_a.holding_address,
-        receiver_holding_address=account_b.holding_address,
-        units=transfer_2_units,
-        transaction_parameters=OnCompleteCallParameters(
-            signer=account_a.signer,
-            boxes=[
-                (fixed_coupon_bond_client_primary.app_id, account_a.box_id),
-                (fixed_coupon_bond_client_primary.app_id, account_b.box_id),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-            ],
+    transferred_value_2 = fixed_coupon_bond_client_primary.send.asset_transfer(
+        AssetTransferArgs(
+            sender_holding_address=account_a.holding_address,
+            receiver_holding_address=account_b.holding_address,
+            units=transfer_2_units,
         ),
-    ).return_value
+        params=CommonAppCallParams(sender=account_a.address),
+    ).abi_return
 
     post_transfer_2_units_a = account_a.units
     post_transfer_2_units_b = account_b.units
@@ -149,38 +119,21 @@ def test_pass_asset_transfer(
 
     transfer_3_units = 1
     accrued_interest_3 = (
-        fixed_coupon_bond_client_primary.get_account_units_current_value(
-            holding_address=account_a.holding_address,
-            units=transfer_3_units,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account_a.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ]
-            ),
-        ).return_value.accrued_interest
+        fixed_coupon_bond_client_primary.send.get_account_units_current_value(
+            GetAccountUnitsCurrentValueArgs(
+                holding_address=account_a.holding_address,
+                units=transfer_3_units,
+            )
+        ).abi_return.accrued_interest
     )
-    transferred_value_3 = fixed_coupon_bond_client_primary.asset_transfer(
-        sender_holding_address=account_a.holding_address,
-        receiver_holding_address=account_b.holding_address,
-        units=transfer_3_units,
-        transaction_parameters=OnCompleteCallParameters(
-            signer=account_a.signer,
-            boxes=[
-                (fixed_coupon_bond_client_primary.app_id, account_a.box_id),
-                (fixed_coupon_bond_client_primary.app_id, account_b.box_id),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-            ],
+    transferred_value_3 = fixed_coupon_bond_client_primary.send.asset_transfer(
+        AssetTransferArgs(
+            sender_holding_address=account_a.holding_address,
+            receiver_holding_address=account_b.holding_address,
+            units=transfer_3_units,
         ),
-    ).return_value
+        params=CommonAppCallParams(sender=account_a.address),
+    ).abi_return
 
     post_transfer_3_units_a = account_a.units
     post_transfer_3_units_b = account_b.units
@@ -206,25 +159,13 @@ def test_fail_secondary_market_not_open_yet(
     account_b: DAsaAccount,
 ) -> None:
     with pytest.raises(LogicError, match=err.SECONDARY_MARKET_CLOSED):
-        fixed_coupon_bond_client_primary.asset_transfer(
-            sender_holding_address=account_a.holding_address,
-            receiver_holding_address=account_b.holding_address,
-            units=1,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=account_a.signer,
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account_a.box_id),
-                    (fixed_coupon_bond_client_primary.app_id, account_b.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ],
+        fixed_coupon_bond_client_primary.send.asset_transfer(
+            AssetTransferArgs(
+                sender_holding_address=account_a.holding_address,
+                receiver_holding_address=account_b.holding_address,
+                units=1,
             ),
+            params=CommonAppCallParams(sender=account_a.address),
         )
 
 
@@ -232,31 +173,19 @@ def test_fail_secondary_market_not_open_yet(
 
 
 def test_fail_unauthorized(
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     account_a: DAsaAccount,
     account_b: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
-        fixed_coupon_bond_client_ongoing.asset_transfer(
-            sender_holding_address=account_a.holding_address,
-            receiver_holding_address=account_b.holding_address,
-            units=1,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=oscar.signer,
-                boxes=[
-                    (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
-                    (fixed_coupon_bond_client_ongoing.app_id, account_b.box_id),
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ],
+        fixed_coupon_bond_client_ongoing.send.asset_transfer(
+            AssetTransferArgs(
+                sender_holding_address=account_a.holding_address,
+                receiver_holding_address=account_b.holding_address,
+                units=1,
             ),
+            params=CommonAppCallParams(sender=oscar.address),
         )
 
 
@@ -266,87 +195,45 @@ def test_fail_suspended(
     fixed_coupon_bond_client_suspended: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.SUSPENDED):
-        fixed_coupon_bond_client_suspended.asset_transfer(
-            sender_holding_address=account_a.holding_address,
-            receiver_holding_address=account_b.holding_address,
-            units=1,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=account_a.signer,
-                boxes=[
-                    (fixed_coupon_bond_client_suspended.app_id, account_a.box_id),
-                    (fixed_coupon_bond_client_suspended.app_id, account_b.box_id),
-                    (
-                        fixed_coupon_bond_client_suspended.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_suspended.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ],
+        fixed_coupon_bond_client_suspended.send.asset_transfer(
+            AssetTransferArgs(
+                sender_holding_address=account_a.holding_address,
+                receiver_holding_address=account_b.holding_address,
+                units=1,
             ),
+            params=CommonAppCallParams(sender=account_a.address),
         )
 
 
 def test_fail_invalid_sender(
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     account_a: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
-        fixed_coupon_bond_client_ongoing.asset_transfer(
-            sender_holding_address=oscar.address,
-            receiver_holding_address=account_a.holding_address,
-            units=1,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=oscar.signer,
-                boxes=[
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        DAsaAccount.box_id_from_address(oscar.address),
-                    ),
-                    (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ],
+        fixed_coupon_bond_client_ongoing.send.asset_transfer(
+            AssetTransferArgs(
+                sender_holding_address=oscar.address,
+                receiver_holding_address=account_a.holding_address,
+                units=1,
             ),
+            params=CommonAppCallParams(sender=oscar.address),
         )
 
 
 def test_fail_invalid_receiver(
-    oscar: AddressAndSigner,
+    oscar: SigningAccount,
     account_a: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
-        fixed_coupon_bond_client_ongoing.asset_transfer(
-            sender_holding_address=account_a.holding_address,
-            receiver_holding_address=oscar.address,
-            units=1,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=account_a.signer,
-                boxes=[
-                    (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        DAsaAccount.box_id_from_address(oscar.address),
-                    ),
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ],
+        fixed_coupon_bond_client_ongoing.send.asset_transfer(
+            AssetTransferArgs(
+                sender_holding_address=account_a.holding_address,
+                receiver_holding_address=oscar.address,
+                units=1,
             ),
+            params=CommonAppCallParams(sender=account_a.address),
         )
 
 
@@ -368,25 +255,13 @@ def test_fail_over_transfer(
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.OVER_TRANSFER):
-        fixed_coupon_bond_client_ongoing.asset_transfer(
-            sender_holding_address=account_a.holding_address,
-            receiver_holding_address=account_b.holding_address,
-            units=account_a.units + 1,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=account_a.signer,
-                boxes=[
-                    (fixed_coupon_bond_client_ongoing.app_id, account_a.box_id),
-                    (fixed_coupon_bond_client_ongoing.app_id, account_b.box_id),
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_ongoing.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ],
+        fixed_coupon_bond_client_ongoing.send.asset_transfer(
+            AssetTransferArgs(
+                sender_holding_address=account_a.holding_address,
+                receiver_holding_address=account_b.holding_address,
+                units=account_a.units + 1,
             ),
+            params=CommonAppCallParams(sender=account_a.address),
         )
 
 
@@ -395,7 +270,6 @@ def test_fail_pending_coupon_payment() -> None:
 
 
 def test_fail_not_fungible(
-    algorand_client: AlgorandClient,
     fixed_coupon_bond_cfg: DAsaConfig,
     fixed_coupon_bond_client_primary: FixedCouponBondClient,
     account_with_units_factory: Callable[..., DAsaAccount],
@@ -406,38 +280,19 @@ def test_fail_not_fungible(
     coupon_1_date = fixed_coupon_bond_cfg.time_events[sc_cfg.ISSUANCE_DATE_IDX + 1]
     time_warp(coupon_1_date)
 
-    fixed_coupon_bond_client_primary.pay_coupon(
-        holding_address=account_a.holding_address,
-        payment_info=b"",
-        transaction_parameters=OnCompleteCallParameters(
-            foreign_assets=[fixed_coupon_bond_cfg.denomination_asset_id],
-            accounts=[account_a.payment_address],
-            boxes=[
-                (fixed_coupon_bond_client_primary.app_id, account_a.box_id),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_COUPON_RATES),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_TIME_EVENTS),
-            ],
-        ),
+    fixed_coupon_bond_client_primary.send.pay_coupon(
+        PayCouponArgs(
+            holding_address=account_a.holding_address,
+            payment_info=b"",
+        )
     )
 
     with pytest.raises(LogicError, match=err.NON_FUNGIBLE_UNITS):
-        fixed_coupon_bond_client_primary.asset_transfer(
-            sender_holding_address=account_a.holding_address,
-            receiver_holding_address=account_b.holding_address,
-            units=1,
-            transaction_parameters=OnCompleteCallParameters(
-                signer=account_a.signer,
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account_a.box_id),
-                    (fixed_coupon_bond_client_primary.app_id, account_b.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ],
+        fixed_coupon_bond_client_primary.send.asset_transfer(
+            AssetTransferArgs(
+                sender_holding_address=account_a.holding_address,
+                receiver_holding_address=account_b.holding_address,
+                units=1,
             ),
+            params=CommonAppCallParams(sender=account_a.address),
         )
