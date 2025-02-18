@@ -2,24 +2,16 @@ from typing import Final
 
 import pytest
 from algokit_utils import (
-    EnsureBalanceParameters,
-    ensure_funded,
-    get_algod_client,
-    get_default_localnet_config,
-    get_indexer_client,
-)
-from algokit_utils.beta.account_manager import AddressAndSigner
-from algokit_utils.beta.algorand_client import (
+    AlgoAmount,
     AlgorandClient,
     AssetCreateParams,
+    SigningAccount,
 )
-from algosdk.v2client.algod import AlgodClient
-from algosdk.v2client.indexer import IndexerClient
 
 from smart_contracts import constants as sc_cst
 from tests import utils
 
-INITIAL_ALGO_FUNDS: Final[int] = 10_000_000_000  # microALGO
+INITIAL_ALGO_FUNDS: Final[AlgoAmount] = AlgoAmount.from_algo(10_000)
 
 DENOMINATION_ASA_NAME: Final[str] = "Euro"
 DENOMINATION_ASA_UNIT: Final[str] = "EUR"
@@ -43,69 +35,45 @@ INITIAL_D_ASA_UNITS: Final[int] = 100
 
 
 @pytest.fixture(scope="session")
-def algod_client() -> AlgodClient:
-    # by default we are using localnet algod
-    client = get_algod_client(get_default_localnet_config("algod"))
+def algorand() -> AlgorandClient:
+    client = AlgorandClient.default_localnet()
+    client.set_suggested_params_cache_timeout(0)
     return client
 
 
 @pytest.fixture(scope="session")
-def indexer_client() -> IndexerClient:
-    return get_indexer_client(get_default_localnet_config("indexer"))
-
-
-@pytest.fixture(scope="session")
-def algorand_client() -> AlgorandClient:
-    client = AlgorandClient.default_local_net()
-    client.set_suggested_params_timeout(0)
-    return client
-
-
-@pytest.fixture(scope="session")
-def arranger(algorand_client: AlgorandClient) -> AddressAndSigner:
-    account = algorand_client.account.random()
-
-    ensure_funded(
-        algorand_client.client.algod,
-        EnsureBalanceParameters(
-            account_to_fund=account.address,
-            min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-        ),
+def arranger(algorand: AlgorandClient) -> SigningAccount:
+    account = algorand.account.random()
+    algorand.account.ensure_funded_from_environment(
+        account_to_fund=account.address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     return account
 
 
 @pytest.fixture(scope="session")
-def bank(algorand_client: AlgorandClient) -> AddressAndSigner:
-    account = algorand_client.account.random()
-
-    ensure_funded(
-        algorand_client.client.algod,
-        EnsureBalanceParameters(
-            account_to_fund=account.address,
-            min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-        ),
+def bank(algorand: AlgorandClient) -> SigningAccount:
+    account = algorand.account.random()
+    algorand.account.ensure_funded_from_environment(
+        account_to_fund=account.address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     return account
 
 
 @pytest.fixture(scope="session")
-def oscar(algorand_client: AlgorandClient) -> AddressAndSigner:
-    account = algorand_client.account.random()
-
-    ensure_funded(
-        algorand_client.client.algod,
-        EnsureBalanceParameters(
-            account_to_fund=account.address,
-            min_spending_balance_micro_algos=INITIAL_ALGO_FUNDS,
-        ),
+def oscar(algorand: AlgorandClient) -> SigningAccount:
+    account = algorand.account.random()
+    algorand.account.ensure_funded_from_environment(
+        account_to_fund=account.address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     return account
 
 
 @pytest.fixture(scope="function")
-def currency(algorand_client: AlgorandClient, bank: AddressAndSigner) -> utils.Currency:
-    txn_result = algorand_client.send.asset_create(
+def currency(algorand: AlgorandClient, bank: SigningAccount) -> utils.Currency:
+    currency_id = algorand.send.asset_create(
         AssetCreateParams(
             sender=bank.address,
             signer=bank.signer,
@@ -114,10 +82,10 @@ def currency(algorand_client: AlgorandClient, bank: AddressAndSigner) -> utils.C
             asset_name=DENOMINATION_ASA_NAME,
             unit_name=DENOMINATION_ASA_UNIT,
         )
-    )
+    ).asset_id
 
     return utils.Currency(
-        id=txn_result["confirmation"]["asset-index"],
+        id=currency_id,
         total=DENOMINATION_ASA_TOTAL,
         decimals=DENOMINATION_ASA_DECIMALS,
         name=DENOMINATION_ASA_NAME,

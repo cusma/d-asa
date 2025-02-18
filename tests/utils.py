@@ -2,17 +2,30 @@ import math
 from dataclasses import asdict, dataclass
 from typing import Optional, TypeAlias
 
-from algokit_utils import OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner, TransactionSigner
-from algokit_utils.beta.algorand_client import AlgorandClient, PayParams
+from algokit_utils import (
+    AlgoAmount,
+    AlgorandClient,
+    PaymentParams,
+    SigningAccount,
+)
 from algosdk.abi import TupleType, UintType
 from algosdk.constants import min_txn_fee
-from algosdk.encoding import decode_address
-from algosdk.transaction import SuggestedParams
 from algosdk.v2client.algod import AlgodClient
 
 from smart_contracts import constants as sc_cst
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import BaseDAsaClient
+from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    BaseDAsaClient,
+    GetAccountInfoArgs,
+)
+from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
+    FixedCouponBondClient,
+)
+from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
+    PerpetualBondClient,
+)
+from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
+    ZeroCouponBondClient,
+)
 
 COUPON_PER_OP_UP_TXN = 10  # This parameter is empirical and depends on the complexity of `count_due_coupons` subroutine
 
@@ -53,162 +66,81 @@ class Currency:
 
 
 @dataclass(kw_only=True)
-class DAsaAccountManager(AddressAndSigner):
-    @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_ACCOUNT_MANAGER
-
+class DAsaAccountManager(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_ACCOUNT_MANAGER
 
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:
-        return self.role_box_prefix() + decode_address(self.address)
-
 
 @dataclass(kw_only=True)
-class DAsaPrimaryDealer(AddressAndSigner):
-    @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_PRIMARY_DEALER
-
+class DAsaPrimaryDealer(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_PRIMARY_DEALER
 
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:
-        return self.role_box_prefix() + decode_address(self.address)
-
 
 @dataclass(kw_only=True)
-class DAsaTrustee(AddressAndSigner):
-    @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_TRUSTEE
-
+class DAsaTrustee(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_TRUSTEE
 
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:
-        return self.role_box_prefix() + decode_address(self.address)
-
 
 @dataclass(kw_only=True)
-class DAsaAuthority(AddressAndSigner):
-    @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_AUTHORITY
-
+class DAsaAuthority(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_AUTHORITY
 
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:
-        return self.role_box_prefix() + decode_address(self.address)
-
 
 @dataclass(kw_only=True)
-class DAsaInterestOracle(AddressAndSigner):
-    @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_INTEREST_ORACLE
-
+class DAsaInterestOracle(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
         return sc_cst.ROLE_INTEREST_ORACLE
 
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:
-        return self.role_box_prefix() + decode_address(self.address)
-
 
 @dataclass(kw_only=True)
-class DAsaAccount:
+class DAsaAccount(SigningAccount):
     holding_address: str
-    signer: TransactionSigner
-    d_asa_client: BaseDAsaClient
-
-    @classmethod
-    def role_box_prefix(cls) -> bytes:
-        return sc_cst.PREFIX_ID_ACCOUNT
-
-    @classmethod
-    def box_id_from_address(cls, address: str) -> bytes:
-        return cls.role_box_prefix() + decode_address(address)
-
-    @property
-    def box_id(self) -> bytes:
-        return self.role_box_prefix() + decode_address(self.holding_address)
+    d_asa_client: (
+        BaseDAsaClient
+        | ZeroCouponBondClient
+        | FixedCouponBondClient
+        | PerpetualBondClient
+    )
 
     @property
     def payment_address(self) -> str:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.payment_address
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(
+                holding_address=self.holding_address,
+            )
+        ).abi_return.payment_address
 
     @property
     def units(self) -> int:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.units
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(holding_address=self.holding_address)
+        ).abi_return.units
 
     @property
     def unit_value(self) -> int:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.unit_value
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(holding_address=self.holding_address)
+        ).abi_return.unit_value
 
     @property
     def paid_coupons(self) -> int:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.paid_coupons
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(holding_address=self.holding_address)
+        ).abi_return.paid_coupons
 
     @property
     def suspended(self) -> bool:
-        return self.d_asa_client.get_account_info(
-            holding_address=self.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[(self.d_asa_client.app_id, self.box_id)]
-            ),
-        ).return_value.suspended
+        return self.d_asa_client.send.get_account_info(
+            GetAccountInfoArgs(holding_address=self.holding_address)
+        ).abi_return.suspended
 
     @property
     def principal(self) -> int:
@@ -230,8 +162,8 @@ def round_warp(to_round: Optional[int] = None) -> None:
     Args:
         to_round (Optional): Round to advance to
     """
-    algorand_client = AlgorandClient.default_local_net()
-    algorand_client.set_suggested_params_timeout(0)
+    algorand_client = AlgorandClient.default_localnet()
+    algorand_client.set_suggested_params_cache_timeout(0)
     dispenser = algorand_client.account.localnet_dispenser()
     if to_round is not None:
         last_round = get_last_round(algorand_client.client.algod)
@@ -241,11 +173,11 @@ def round_warp(to_round: Optional[int] = None) -> None:
         n_rounds = 1
     for _ in range(n_rounds):
         algorand_client.send.payment(
-            PayParams(
+            PaymentParams(
                 signer=dispenser.signer,
                 sender=dispenser.address,
                 receiver=dispenser.address,
-                amount=0,
+                amount=AlgoAmount.from_algo(0),
             )
         )
 
@@ -257,8 +189,8 @@ def time_warp(to_timestamp: int) -> None:
     Args:
         to_timestamp: Timestamp to advance to
     """
-    algorand_client = AlgorandClient.default_local_net()
-    algorand_client.set_suggested_params_timeout(0)
+    algorand_client = AlgorandClient.default_localnet()
+    algorand_client.set_suggested_params_cache_timeout(0)
     algorand_client.client.algod.set_timestamp_offset(
         to_timestamp - get_latest_timestamp(algorand_client.client.algod)
     )
@@ -266,21 +198,19 @@ def time_warp(to_timestamp: int) -> None:
     algorand_client.client.algod.set_timestamp_offset(0)
 
 
-def sp_per_coupon(coupon_idx: int) -> SuggestedParams:
+def max_fee_per_coupon(coupon_idx: int) -> AlgoAmount:
     """
-    Set fee credit for opcode budget, based on coupon index to process
+    Compute max fee credit for opcode budget, based on coupon index to process
 
     Args:
         coupon_idx: coupon index to process
 
     Returns:
-
+        Max fee
     """
-    algorand_client = AlgorandClient.default_local_net()
-    sp = algorand_client.get_suggested_params()
-    sp.flat_fee = True
-    sp.fee = math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee
-    return sp
+    return AlgoAmount.from_micro_algo(
+        math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee
+    )
 
 
 def set_role_config(validity_start: int = 0, validity_end: int = 2**64 - 1) -> bytes:

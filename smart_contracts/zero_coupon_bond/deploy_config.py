@@ -2,8 +2,6 @@ import logging
 import os
 
 import algokit_utils
-from algosdk.v2client.algod import AlgodClient
-from algosdk.v2client.indexer import IndexerClient
 
 from smart_contracts import constants as sc_cst
 
@@ -11,31 +9,27 @@ logger = logging.getLogger(__name__)
 
 
 # define deployment behaviour based on supplied app spec
-def deploy(
-    algod_client: AlgodClient,
-    indexer_client: IndexerClient,
-    app_spec: algokit_utils.ApplicationSpecification,
-    deployer: algokit_utils.Account,
-) -> None:
+def deploy() -> None:
     from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
         AssetCreateArgs,
         AssetMetadata,
         AssetUpdateArgs,
-        Deploy,
-        DeployCreate,
-        ZeroCouponBondClient,
+        ZeroCouponBondFactory,
+        ZeroCouponBondMethodCallCreateParams,
+        ZeroCouponBondMethodCallUpdateParams,
     )
 
-    app_client = ZeroCouponBondClient(
-        algod_client,
-        creator=deployer,
-        indexer_client=indexer_client,
+    algorand = algokit_utils.AlgorandClient.from_environment()
+    deployer = algorand.account.from_environment("DEPLOYER")
+
+    factory = algorand.client.get_typed_app_factory(
+        ZeroCouponBondFactory, default_sender=deployer.address
     )
 
-    app_client.deploy(
+    app_client, _ = factory.deploy(
         on_schema_break=algokit_utils.OnSchemaBreak.AppendApp,
         on_update=algokit_utils.OnUpdate.UpdateApp,
-        create_args=DeployCreate(
+        create_params=ZeroCouponBondMethodCallCreateParams(
             args=AssetCreateArgs(
                 arranger=os.environ["ARRANGER_ADDRESS"],
                 metadata=AssetMetadata(
@@ -48,9 +42,9 @@ def deploy(
                     prospectus_hash=bytes(32),
                     prospectus_url="Zero Coupon Bond Prospectus",
                 ),
-            )
+            ),
         ),
-        update_args=Deploy(
+        update_params=ZeroCouponBondMethodCallUpdateParams(
             args=AssetUpdateArgs(
                 metadata=AssetMetadata(
                     contract_type=sc_cst.CT_PAM,
@@ -62,6 +56,6 @@ def deploy(
                     prospectus_hash=bytes(32),
                     prospectus_url="Zero Coupon Bond Prospectus",
                 ),
-            )
+            ),
         ),
     )

@@ -1,13 +1,14 @@
 from typing import Callable, Final
 
 import pytest
-from algokit_utils import LogicError, OnCompleteCallParameters
-from algokit_utils.beta.account_manager import AddressAndSigner
+from algokit_utils import LogicError, SigningAccount
 
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
+    GetPaymentAmountArgs,
+    PayCouponArgs,
 )
 from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
@@ -23,34 +24,15 @@ def test_pass_get_coupon_payment_amount(
 ) -> None:
     account = account_with_units_factory(units=D_ASA_TEST_UNITS)
 
-    time_events = fixed_coupon_bond_client_primary.get_time_events(
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[(fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_TIME_EVENTS)]
-        )
-    ).return_value
+    time_events = fixed_coupon_bond_client_primary.send.get_time_events().abi_return
 
-    coupon_rates = fixed_coupon_bond_client_primary.get_coupon_rates(
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_COUPON_RATES)
-            ]
-        ),
-    ).return_value
+    coupon_rates = fixed_coupon_bond_client_primary.send.get_coupon_rates().abi_return
 
     print(f"Principal: {account.principal * currency.asa_to_unit:.2f} EUR")
     for coupon in range(1, fixed_coupon_bond_cfg.total_coupons + 1):
-        payment_amount = fixed_coupon_bond_client_primary.get_payment_amount(
-            holding_address=account.holding_address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                ]
-            ),
-        ).return_value
+        payment_amount = fixed_coupon_bond_client_primary.send.get_payment_amount(
+            GetPaymentAmountArgs(holding_address=account.holding_address),
+        ).abi_return
         coupon_rate_bps = coupon_rates[coupon - 1]
         print(f"Coupon rate {coupon}:\t\t{coupon_rate_bps / 100:.2f}%")
         print(
@@ -64,24 +46,8 @@ def test_pass_get_coupon_payment_amount(
         # Coupon reaches due date
         coupon_due_date = time_events[sc_cfg.FIRST_COUPON_DATE_IDX - 1 + coupon]
         time_warp(coupon_due_date)
-        fixed_coupon_bond_client_primary.pay_coupon(
-            holding_address=account.holding_address,
-            payment_info=b"",
-            transaction_parameters=OnCompleteCallParameters(
-                foreign_assets=[currency.id],
-                accounts=[account.payment_address],
-                boxes=[
-                    (fixed_coupon_bond_client_primary.app_id, account.box_id),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                    (
-                        fixed_coupon_bond_client_primary.app_id,
-                        sc_cst.BOX_ID_TIME_EVENTS,
-                    ),
-                ],
-            ),
+        fixed_coupon_bond_client_primary.send.pay_coupon(
+            PayCouponArgs(holding_address=account.holding_address, payment_info=b"")
         )
 
 
@@ -94,15 +60,9 @@ def test_pass_get_principal_payment_amount(
     # Account with all coupons paid and principal repayment left
     account = account_with_coupons_factory()
 
-    payment_amount = fixed_coupon_bond_client_primary.get_payment_amount(
-        holding_address=account.holding_address,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[
-                (fixed_coupon_bond_client_primary.app_id, account.box_id),
-                (fixed_coupon_bond_client_primary.app_id, sc_cst.BOX_ID_COUPON_RATES),
-            ]
-        ),
-    ).return_value
+    payment_amount = fixed_coupon_bond_client_primary.send.get_payment_amount(
+        GetPaymentAmountArgs(holding_address=account.holding_address),
+    ).abi_return
 
     print(f"Interest rate:\t\t{fixed_coupon_bond_cfg.interest_rate / 100:.2f}%")
     print(f"Principal amount:\t{account.principal * currency.asa_to_unit:.2f} EUR")
@@ -116,35 +76,17 @@ def test_pass_not_configured(
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_factory(fixed_coupon_bond_client_empty)
-    payment_amount = fixed_coupon_bond_client_empty.get_payment_amount(
-        holding_address=account.holding_address,
-        transaction_parameters=OnCompleteCallParameters(
-            boxes=[
-                (fixed_coupon_bond_client_empty.app_id, account.box_id),
-                (fixed_coupon_bond_client_empty.app_id, sc_cst.BOX_ID_COUPON_RATES),
-            ]
-        ),
-    ).return_value
+    payment_amount = fixed_coupon_bond_client_empty.send.get_payment_amount(
+        GetPaymentAmountArgs(holding_address=account.holding_address),
+    ).abi_return
     assert payment_amount.interest == 0
     assert payment_amount.principal == 0
 
 
 def test_fail_invalid_holding_address(
-    oscar: AddressAndSigner, fixed_coupon_bond_client_at_maturity: FixedCouponBondClient
+    oscar: SigningAccount, fixed_coupon_bond_client_at_maturity: FixedCouponBondClient
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
-        fixed_coupon_bond_client_at_maturity.get_payment_amount(
-            holding_address=oscar.address,
-            transaction_parameters=OnCompleteCallParameters(
-                boxes=[
-                    (
-                        fixed_coupon_bond_client_at_maturity.app_id,
-                        DAsaAccount.box_id_from_address(oscar.address),
-                    ),
-                    (
-                        fixed_coupon_bond_client_at_maturity.app_id,
-                        sc_cst.BOX_ID_COUPON_RATES,
-                    ),
-                ]
-            ),
+        fixed_coupon_bond_client_at_maturity.send.get_payment_amount(
+            GetPaymentAmountArgs(holding_address=oscar.address),
         )

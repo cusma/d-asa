@@ -1,11 +1,12 @@
-from algokit_utils.beta.account_manager import AddressAndSigner
+from algokit_utils import AlgorandClient, SigningAccount
 from algosdk.abi import ArrayStaticType, ByteType, StringType, TupleType, UintType
 from algosdk.encoding import encode_address
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    AssetCreateArgs,
     AssetMetadata,
-    BaseDAsaClient,
+    BaseDAsaFactory,
 )
 from smart_contracts.base_d_asa import config as sc_cfg
 
@@ -13,18 +14,22 @@ from .conftest import PROSPECTUS_URL
 
 
 def test_pass_asset_create(
+    algorand: AlgorandClient,
+    day_count_convention: int,
     asset_metadata: AssetMetadata,
-    arranger: AddressAndSigner,
-    base_d_asa_client_void: BaseDAsaClient,
+    arranger: SigningAccount,
 ) -> None:
-    base_d_asa_client_void.create_asset_create(
-        arranger=arranger.address, metadata=asset_metadata
+    factory = algorand.client.get_typed_app_factory(
+        BaseDAsaFactory, default_sender=arranger.address, default_signer=arranger.signer
+    )
+    base_d_asa_client, _ = factory.send.create.asset_create(
+        AssetCreateArgs(arranger=arranger.address, metadata=asset_metadata)
     )
 
-    state = base_d_asa_client_void.get_global_state()
+    state = base_d_asa_client.state.global_state
 
     # Roles
-    assert encode_address(state.arranger.as_bytes) == arranger.address
+    assert encode_address(state.arranger) == arranger.address
 
     # Asset Configuration
     assert not state.denomination_asset_id
@@ -33,7 +38,7 @@ def test_pass_asset_create(
     assert not state.day_count_convention
 
     # Metadata
-    assert state.metadata.as_bytes == TupleType(
+    assert state.metadata == TupleType(
         [
             UintType(8),  # Contract Type
             UintType(8),  # Calendar
