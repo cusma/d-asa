@@ -3,7 +3,7 @@
 
 // smart_contracts.perpetual_bond.contract.PerpetualBond.__algopy_entrypoint_with_init() -> uint64:
 main:
-    intcblock 0 1 8 100 448 86400 10000 200
+    intcblock 0 1 32 8 448 86400 10000 200
     bytecblock 0x151f7c75 0x52333023 "status" "circulating_units" "issuance_date" "settlement_asset_id" "interest_rate" 0x0000000000000000 "total_coupons" "primary_distribution_opening_date" "maturity_date" 0x00 "unit_value" "day_count_convention" "total_units" "secondary_market_opening_date" "secondary_market_closure_date" "coupon_period" 0x52323023 "denomination_asset_id" "metadata" "principal_discount" "primary_distribution_closure_date" "suspended" "defaulted" "paid_coupon_units" 0x74696d65506572696f6473 0x52383023 0x52343023 0x52373023 0x74696d654576656e7473 0x52363023 0x52353023 0x0000 0x068101 0x636f75706f6e5261746573
     txn ApplicationID
     bnz main_after_if_else@2
@@ -1021,10 +1021,6 @@ day_count_factor_after_if_else@8:
 
 // smart_contracts.perpetual_bond.contract.PerpetualBond.is_accruing_interest() -> uint64:
 is_accruing_interest:
-    // smart_contracts/perpetual_bond/contract.py:123-124
-    // @subroutine
-    // def is_accruing_interest(self) -> bool:
-    proto 0 1
     // smart_contracts/perpetual_bond/contract.py:125
     // return self.issuance_date != 0 and Global.latest_timestamp > self.issuance_date
     intc_0 // 0
@@ -1070,13 +1066,13 @@ accrued_interest_amount:
     // smart_contracts/perpetual_bond/contract.py:134
     // coupon_accrued_period = day_count_factor.numerator.native
     dup
-    extract 0 8 // on error: Index access is out of bounds
-    btoi
+    intc_0 // 0
+    extract_uint64
     // smart_contracts/perpetual_bond/contract.py:135
     // coupon_period = day_count_factor.denominator.native
     swap
-    extract 8 8 // on error: Index access is out of bounds
-    btoi
+    intc_3 // 8
+    extract_uint64
     // smart_contracts/perpetual_bond/contract.py:137
     // self.account_units_value(holding_address, units)
     frame_dig -3
@@ -1135,7 +1131,7 @@ asset_transfer:
     // ) -> arc4.UInt64:
     proto 3 1
     intc_0 // 0
-    dupn 2
+    dupn 3
     pushbytes ""
     dup
     // smart_contracts/perpetual_bond/contract.py:176
@@ -1148,7 +1144,7 @@ asset_transfer:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    intc_3 // 100
+    pushint 100 // 100
     ==
     // smart_contracts/base_d_asa/contract.py:298-301
     // self.status_is_active()
@@ -1166,7 +1162,7 @@ asset_transfer:
     // <= Global.latest_timestamp
     global LatestTimestamp
     dup
-    frame_bury 4
+    frame_bury 5
     // smart_contracts/base_d_asa/contract.py:299-300
     // and self.secondary_market_opening_date
     // <= Global.latest_timestamp
@@ -1185,7 +1181,7 @@ asset_transfer:
     // smart_contracts/base_d_asa/contract.py:300-301
     // <= Global.latest_timestamp
     // < self.secondary_market_closure_date
-    frame_dig 4
+    frame_dig 5
     >
     // smart_contracts/base_d_asa/contract.py:299-301
     // and self.secondary_market_opening_date
@@ -1223,7 +1219,7 @@ asset_transfer_bool_merge@6:
     frame_dig -3
     concat
     dup
-    frame_bury 1
+    frame_bury 2
     dup
     box_len
     bury 1
@@ -1232,7 +1228,7 @@ asset_transfer_bool_merge@6:
     frame_dig -2
     concat
     dup
-    frame_bury 2
+    frame_bury 3
     dup
     box_len
     bury 1
@@ -1274,9 +1270,9 @@ asset_transfer_bool_merge@6:
     dig 1
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
-    frame_dig 5
+    intc_2 // 32
+    extract_uint64
+    frame_dig 6
     >=
     // smart_contracts/base_d_asa/contract.py:387-389
     // assert (
@@ -1289,21 +1285,21 @@ asset_transfer_bool_merge@6:
     box_get
     assert // check self.account entry exists
     extract 40 8 // on error: Index access is out of bounds
-    frame_bury 0
+    frame_bury 1
     // smart_contracts/base_d_asa/contract.py:398
     // if self.account[receiver_holding_address].units.native > 0:
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
+    intc_2 // 32
+    extract_uint64
     bz asset_transfer_else_body@16
     // smart_contracts/base_d_asa/contract.py:309
     // self.account[sender].unit_value == self.account[receiver].unit_value
-    frame_dig 1
+    frame_dig 2
     box_get
     assert // check self.account entry exists
     extract 40 8 // on error: Index access is out of bounds
-    frame_dig 2
+    frame_dig 3
     box_get
     assert // check self.account entry exists
     extract 40 8 // on error: Index access is out of bounds
@@ -1314,11 +1310,11 @@ asset_transfer_bool_merge@6:
     bz asset_transfer_bool_false@14
     // smart_contracts/base_d_asa/contract.py:310
     // and self.account[sender].paid_coupons == self.account[receiver].paid_coupons
-    frame_dig 1
+    frame_dig 2
     box_get
     assert // check self.account entry exists
     extract 48 8 // on error: Index access is out of bounds
-    frame_dig 2
+    frame_dig 3
     box_get
     assert // check self.account entry exists
     extract 48 8 // on error: Index access is out of bounds
@@ -1350,31 +1346,31 @@ asset_transfer_after_if_else@17:
     // smart_contracts/perpetual_bond/contract.py:183-184
     // # Transferred units value (must be computed before the transfer)
     // sender_unit_value = self.account[sender_holding_address].unit_value
-    frame_dig 1
+    frame_dig 2
     dup
     cover 2
     box_get
-    assert // check self.account entry exists
-    extract 40 8 // on error: Index access is out of bounds
+    swap
     frame_bury 0
+    assert // check self.account entry exists
     // smart_contracts/perpetual_bond/contract.py:185-187
     // accrued_interest = self.accrued_interest_amount(
     //     sender_holding_address, units.native, due_coupons
     // )
     frame_dig -3
-    frame_dig 5
+    frame_dig 6
     dup
     cover 4
     uncover 2
     callsub accrued_interest_amount
-    frame_bury 3
+    frame_bury 4
     // smart_contracts/base_d_asa/contract.py:434
     // self.account[sender_holding_address].units.native - units
     dup
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
+    intc_2 // 32
+    extract_uint64
     dig 2
     -
     // smart_contracts/base_d_asa/contract.py:433-435
@@ -1398,12 +1394,12 @@ asset_transfer_after_if_else@17:
     box_put
     // smart_contracts/base_d_asa/contract.py:437
     // self.account[receiver_holding_address].units.native + units
-    frame_dig 2
+    frame_dig 3
     dup
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
+    intc_2 // 32
+    extract_uint64
     uncover 3
     +
     // smart_contracts/base_d_asa/contract.py:436-438
@@ -1427,12 +1423,12 @@ asset_transfer_after_if_else@17:
     // if self.account[holding_address].units.native == 0:
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
+    intc_2 // 32
+    extract_uint64
     bnz asset_transfer_after_if_else@21
     // smart_contracts/base_d_asa/contract.py:361
     // self.account[holding_address].unit_value = arc4.UInt64()
-    frame_dig 1
+    frame_dig 2
     dup
     box_get
     assert // check self.account entry exists
@@ -1454,10 +1450,16 @@ asset_transfer_after_if_else@21:
     // smart_contracts/perpetual_bond/contract.py:192
     // return arc4.UInt64(units.native * sender_unit_value.native + accrued_interest)
     frame_dig 0
-    btoi
-    frame_dig 5
+    // smart_contracts/perpetual_bond/contract.py:183-184
+    // # Transferred units value (must be computed before the transfer)
+    // sender_unit_value = self.account[sender_holding_address].unit_value
+    pushint 40 // 40
+    // smart_contracts/perpetual_bond/contract.py:192
+    // return arc4.UInt64(units.native * sender_unit_value.native + accrued_interest)
+    extract_uint64
+    frame_dig 6
     *
-    frame_dig 3
+    frame_dig 4
     +
     itob
     frame_bury 0
@@ -1470,11 +1472,11 @@ asset_transfer_bool_false@14:
 asset_transfer_else_body@16:
     // smart_contracts/base_d_asa/contract.py:403
     // self.account[receiver_holding_address].unit_value = sender_unit_value
-    frame_dig 2
+    frame_dig 3
     dup
     box_get
     assert // check self.account entry exists
-    frame_dig 0
+    frame_dig 1
     replace2 40
     dig 1
     swap
@@ -1483,7 +1485,7 @@ asset_transfer_else_body@16:
     // self.account[receiver_holding_address].paid_coupons = self.account[
     //     sender_holding_address
     // ].paid_coupons
-    frame_dig 1
+    frame_dig 2
     box_get
     assert // check self.account entry exists
     // smart_contracts/base_d_asa/contract.py:404
@@ -1520,7 +1522,7 @@ pay_coupon:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    intc_3 // 100
+    pushint 100 // 100
     ==
     // smart_contracts/perpetual_bond/contract.py:217-218
     // # The reference implementation does not restrict caller authorization
@@ -1546,8 +1548,8 @@ pay_coupon:
     dup
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
+    intc_2 // 32
+    extract_uint64
     dup
     cover 2
     // smart_contracts/perpetual_bond/contract.py:223
@@ -1561,8 +1563,8 @@ pay_coupon:
     dig 1
     box_get
     assert // check self.account entry exists
-    extract 48 8 // on error: Index access is out of bounds
-    btoi
+    pushint 48 // 48
+    extract_uint64
     // smart_contracts/perpetual_bond/contract.py:226
     // assert due_coupons > account_paid_coupons, err.NO_DUE_COUPON
     swap
@@ -1703,8 +1705,8 @@ pay_coupon_after_if_else@3:
     dup
     box_get
     assert // check self.account entry exists
-    extract 48 8 // on error: Index access is out of bounds
-    btoi
+    pushint 48 // 48
+    extract_uint64
     intc_1 // 1
     +
     // smart_contracts/perpetual_bond/contract.py:245-247
@@ -1935,8 +1937,8 @@ get_account_units_current_value_bool_merge@4:
     frame_dig 0
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
+    intc_2 // 32
+    extract_uint64
     itob
     frame_dig -1
     b>=
@@ -2009,13 +2011,13 @@ get_account_units_current_value_bool_merge@8:
     // smart_contracts/perpetual_bond/contract.py:328
     // numerator = day_count_factor.numerator.native
     dup
-    extract 0 8 // on error: Index access is out of bounds
-    btoi
+    intc_0 // 0
+    extract_uint64
     frame_bury 5
     // smart_contracts/perpetual_bond/contract.py:329
     // denominator = day_count_factor.denominator.native
-    extract 8 8 // on error: Index access is out of bounds
-    btoi
+    intc_3 // 8
+    extract_uint64
     frame_bury 3
 
 get_account_units_current_value_after_if_else@10:
@@ -2131,7 +2133,7 @@ get_coupons_status:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    intc_3 // 100
+    pushint 100 // 100
     ==
     // smart_contracts/perpetual_bond/contract.py:373
     // due_coupons = self.count_due_coupons() if self.status_is_active() else UInt64()
@@ -2171,13 +2173,13 @@ get_coupons_status_ternary_merge@3:
     // smart_contracts/perpetual_bond/contract.py:380
     // numerator = day_count_factor.numerator.native
     dup
-    extract 0 8 // on error: Index access is out of bounds
-    btoi
+    intc_0 // 0
+    extract_uint64
     frame_bury 4
     // smart_contracts/perpetual_bond/contract.py:381
     // denominator = day_count_factor.denominator.native
-    extract 8 8 // on error: Index access is out of bounds
-    btoi
+    intc_3 // 8
+    extract_uint64
     frame_bury 1
 
 get_coupons_status_after_if_else@5:
@@ -2262,7 +2264,7 @@ get_time_periods:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    intc_3 // 100
+    pushint 100 // 100
     ==
     // smart_contracts/perpetual_bond/contract.py:402
     // if self.status_is_active():
@@ -2285,10 +2287,6 @@ get_time_periods_after_if_else@2:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.assert_is_not_defaulted() -> void:
 assert_is_not_defaulted:
-    // smart_contracts/base_d_asa/contract.py:110-111
-    // @subroutine
-    // def assert_is_not_defaulted(self) -> None:
-    proto 0 0
     // smart_contracts/base_d_asa/contract.py:112
     // assert not self.defaulted, err.DEFAULTED
     intc_0 // 0
@@ -2302,10 +2300,6 @@ assert_is_not_defaulted:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.assert_is_not_suspended() -> void:
 assert_is_not_suspended:
-    // smart_contracts/base_d_asa/contract.py:114-115
-    // @subroutine
-    // def assert_is_not_suspended(self) -> None:
-    proto 0 0
     // smart_contracts/base_d_asa/contract.py:116
     // assert not self.suspended, err.SUSPENDED
     intc_0 // 0
@@ -2319,10 +2313,6 @@ assert_is_not_suspended:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.assert_caller_is_arranger() -> void:
 assert_caller_is_arranger:
-    // smart_contracts/base_d_asa/contract.py:118-119
-    // @subroutine
-    // def assert_caller_is_arranger(self) -> None:
-    proto 0 0
     // smart_contracts/base_d_asa/contract.py:120
     // assert Txn.sender == self.arranger.value, err.UNAUTHORIZED
     txn Sender
@@ -2507,9 +2497,9 @@ assert_time_events_sorted:
     // time_events[cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX].native
     frame_dig -1
     extract 2 0
-    dup
-    extract 0 8 // on error: Index access is out of bounds
-    btoi
+    frame_dig -1
+    pushint 2 // 2
+    extract_uint64
     // smart_contracts/base_d_asa/contract.py:247
     // > Global.latest_timestamp
     global LatestTimestamp
@@ -2564,15 +2554,13 @@ assert_time_events_sorted_after_while@13:
     // time_i = time_events[_t].native
     frame_dig 4
     dup
-    intc_2 // 8
+    intc_3 // 8
     *
     frame_dig 2
     dup
     cover 3
     swap
-    intc_2 // 8
-    extract3 // on error: Index access is out of bounds
-    btoi
+    extract_uint64
     dup
     cover 3
     frame_bury 1
@@ -2582,11 +2570,9 @@ assert_time_events_sorted_after_while@13:
     +
     dup
     frame_bury 4
-    intc_2 // 8
+    intc_3 // 8
     *
-    intc_2 // 8
-    extract3 // on error: Index access is out of bounds
-    btoi
+    extract_uint64
     dup
     frame_bury 0
     // smart_contracts/base_d_asa/contract.py:256
@@ -2640,8 +2626,8 @@ account_units_value:
     concat
     box_get
     assert // check self.account entry exists
-    extract 40 8 // on error: Index access is out of bounds
-    btoi
+    pushint 40 // 40
+    extract_uint64
     frame_dig -1
     *
     retsub
@@ -2660,8 +2646,8 @@ account_total_units_value:
     concat
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
+    intc_2 // 32
+    extract_uint64
     // smart_contracts/base_d_asa/contract.py:350-352
     // return self.account_units_value(
     //     holding_address, self.account[holding_address].units.native
@@ -3006,11 +2992,10 @@ asset_config_after_if_else@31:
     // ].native
     frame_dig -2
     extract 2 0
-    dup
     frame_bury 0
-    dup
-    extract 0 8 // on error: Index access is out of bounds
-    btoi
+    frame_dig -2
+    pushint 2 // 2
+    extract_uint64
     // smart_contracts/base_d_asa/contract.py:266
     // self.primary_distribution_opening_date = time_events[
     bytec 9 // "primary_distribution_opening_date"
@@ -3024,9 +3009,9 @@ asset_config_after_if_else@31:
     // self.primary_distribution_closure_date = time_events[
     //     cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
     // ].native
-    dup
-    extract 8 8 // on error: Index access is out of bounds
-    btoi
+    frame_dig -2
+    pushint 10 // 10
+    extract_uint64
     // smart_contracts/base_d_asa/contract.py:269
     // self.primary_distribution_closure_date = time_events[
     bytec 22 // "primary_distribution_closure_date"
@@ -3038,8 +3023,9 @@ asset_config_after_if_else@31:
     app_global_put
     // smart_contracts/base_d_asa/contract.py:272
     // self.issuance_date = time_events[cfg.ISSUANCE_DATE_IDX].native
-    extract 16 8 // on error: Index access is out of bounds
-    btoi
+    frame_dig -2
+    pushint 18 // 18
+    extract_uint64
     bytec 4 // "issuance_date"
     swap
     app_global_put
@@ -3064,13 +3050,11 @@ asset_config_after_if_else@31:
     frame_dig 3
     intc_1 // 1
     -
-    intc_2 // 8
+    intc_3 // 8
     *
     frame_dig 0
     swap
-    intc_2 // 8
-    extract3 // on error: Index access is out of bounds
-    btoi
+    extract_uint64
     bytec 10 // "maturity_date"
     swap
     app_global_put
@@ -3088,16 +3072,15 @@ asset_config_after_if_else@37:
     // smart_contracts/perpetual_bond/contract.py:56
     // coupon_period_duration = time_periods[0][0].native
     frame_dig -1
-    extract 2 0
-    extract 0 16 // on error: Index access is out of bounds
+    extract 2 16
     dup
-    extract 0 8 // on error: Index access is out of bounds
-    btoi
+    intc_0 // 0
+    extract_uint64
     // smart_contracts/perpetual_bond/contract.py:57
     // repetitions = time_periods[0][1].native
     swap
-    extract 8 8 // on error: Index access is out of bounds
-    btoi
+    intc_3 // 8
+    extract_uint64
     // smart_contracts/perpetual_bond/contract.py:58
     // assert coupon_period_duration > UInt64(0), err.INVALID_TIME_PERIOD_DURATION
     swap
@@ -3119,17 +3102,16 @@ asset_config_after_if_else@37:
     bytec 26 // 0x74696d65506572696f6473
     box_get
     assert // check self.time_periods exists
-    extract 2 0
-    extract 0 16 // on error: Index access is out of bounds
-    extract 0 8 // on error: Index access is out of bounds
-    btoi
+    extract 2 16
+    intc_0 // 0
+    extract_uint64
     bytec 17 // "coupon_period"
     swap
     app_global_put
     // smart_contracts/base_d_asa/contract.py:567
     // self.status = UInt64(cfg.STATUS_ACTIVE)
     bytec_2 // "status"
-    intc_3 // 100
+    pushint 100 // 100
     app_global_put
     retsub
 
@@ -3206,10 +3188,10 @@ set_secondary_time_events_after_if_else@2:
     // ].native
     frame_dig -1
     extract 2 0
-    dup
     frame_bury 0
-    extract 0 8 // on error: Index access is out of bounds
-    btoi
+    frame_dig -1
+    pushint 2 // 2
+    extract_uint64
     // smart_contracts/base_d_asa/contract.py:598-601
     // self.issuance_date
     // <= secondary_market_time_events[
@@ -3259,13 +3241,11 @@ set_secondary_time_events_after_if_else@2:
     // ].native
     intc_1 // 1
     -
-    intc_2 // 8
+    intc_3 // 8
     *
     frame_dig 0
     swap
-    intc_2 // 8
-    extract3 // on error: Index access is out of bounds
-    btoi
+    extract_uint64
     // smart_contracts/base_d_asa/contract.py:608-611
     // self.maturity_date
     // >= secondary_market_time_events[
@@ -3507,9 +3487,13 @@ assign_role_switch_case_5@14:
     //     role_address not in self.interest_oracle
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
+    // smart_contracts/base_d_asa/contract.py:681-683
+    // self.interest_oracle[role_address] = typ.RoleConfig.from_bytes(
+    //     config.native
+    // )
+    frame_dig -1
     // smart_contracts/base_d_asa/contract.py:682
     // config.native
-    frame_dig -1
     extract 2 0
     // smart_contracts/base_d_asa/contract.py:681-683
     // self.interest_oracle[role_address] = typ.RoleConfig.from_bytes(
@@ -3572,9 +3556,13 @@ assign_role_switch_case_2@11:
     bury 1
     !
     assert // Invalid account role address
+    // smart_contracts/base_d_asa/contract.py:668-670
+    // self.primary_dealer[role_address] = typ.RoleConfig.from_bytes(
+    //     config.native
+    // )
+    frame_dig -1
     // smart_contracts/base_d_asa/contract.py:669
     // config.native
-    frame_dig -1
     extract 2 0
     // smart_contracts/base_d_asa/contract.py:668-670
     // self.primary_dealer[role_address] = typ.RoleConfig.from_bytes(
@@ -3598,9 +3586,13 @@ assign_role_switch_case_1@10:
     //     role_address not in self.account_manager
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
+    // smart_contracts/base_d_asa/contract.py:663-665
+    // self.account_manager[role_address] = typ.RoleConfig.from_bytes(
+    //     config.native
+    // )
+    frame_dig -1
     // smart_contracts/base_d_asa/contract.py:664
     // config.native
-    frame_dig -1
     extract 2 0
     // smart_contracts/base_d_asa/contract.py:663-665
     // self.account_manager[role_address] = typ.RoleConfig.from_bytes(
@@ -3976,8 +3968,8 @@ close_account:
     dup
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
+    intc_2 // 32
+    extract_uint64
     dup
     uncover 2
     // smart_contracts/base_d_asa/contract.py:794
@@ -4041,7 +4033,7 @@ primary_distribution:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    intc_3 // 100
+    pushint 100 // 100
     ==
     // smart_contracts/base_d_asa/contract.py:289-292
     // self.status_is_active()
@@ -4218,8 +4210,8 @@ primary_distribution_bool_merge@13:
     dig 1
     box_get
     assert // check self.account entry exists
-    extract 32 8 // on error: Index access is out of bounds
-    btoi
+    intc_2 // 32
+    extract_uint64
     +
     // smart_contracts/base_d_asa/contract.py:837-839
     // self.account[holding_address].units = arc4.UInt64(
@@ -4693,7 +4685,7 @@ get_time_events:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    intc_3 // 100
+    pushint 100 // 100
     ==
     // smart_contracts/base_d_asa/contract.py:963
     // if self.status_is_active():
@@ -4716,10 +4708,6 @@ get_time_events_after_if_else@2:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_secondary_market_schedule() -> bytes:
 get_secondary_market_schedule:
-    // smart_contracts/base_d_asa/contract.py:967-968
-    // @arc4.abimethod(readonly=True)
-    // def get_secondary_market_schedule(self) -> typ.TimeEvents:
-    proto 0 1
     // smart_contracts/base_d_asa/contract.py:976
     // arc4.UInt64(self.secondary_market_opening_date),
     intc_0 // 0
@@ -4748,10 +4736,6 @@ get_secondary_market_schedule:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_asset_metadata() -> bytes:
 get_asset_metadata:
-    // smart_contracts/base_d_asa/contract.py:980-981
-    // @arc4.abimethod(readonly=True)
-    // def get_asset_metadata(self) -> typ.AssetMetadata:
-    proto 0 1
     // smart_contracts/base_d_asa/contract.py:989
     // return typ.AssetMetadata.from_bytes(self.metadata)
     intc_0 // 0
