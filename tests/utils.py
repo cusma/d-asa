@@ -163,7 +163,7 @@ def round_warp(to_round: Optional[int] = None) -> None:
         to_round (Optional): Round to advance to
     """
     algorand_client = AlgorandClient.default_localnet()
-    algorand_client.set_suggested_params_timeout(0)
+    algorand_client.set_suggested_params_cache_timeout(0)
     dispenser = algorand_client.account.localnet_dispenser()
     if to_round is not None:
         last_round = get_last_round(algorand_client.client.algod)
@@ -190,7 +190,7 @@ def time_warp(to_timestamp: int) -> None:
         to_timestamp: Timestamp to advance to
     """
     algorand_client = AlgorandClient.default_localnet()
-    algorand_client.set_suggested_params_timeout(0)
+    algorand_client.set_suggested_params_cache_timeout(0)
     algorand_client.client.algod.set_timestamp_offset(
         to_timestamp - get_latest_timestamp(algorand_client.client.algod)
     )

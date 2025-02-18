@@ -37,7 +37,7 @@ INITIAL_D_ASA_UNITS: Final[int] = 100
 @pytest.fixture(scope="session")
 def algorand() -> AlgorandClient:
     client = AlgorandClient.default_localnet()
-    client.set_suggested_params_timeout(0)
+    client.set_suggested_params_cache_timeout(0)
     return client
 
 
