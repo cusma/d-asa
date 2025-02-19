@@ -20,7 +20,7 @@ keywords = [
 
 [tool.poetry.dependencies]
 python = "^3.12"
-algokit-utils = "^3.0.0"
+algokit-utils = "^3.0.1b1"
 python-dotenv = "^1.0.0"
 algorand-python = "^2.7.0"
 algorand-python-testing = "^0.4.1"
