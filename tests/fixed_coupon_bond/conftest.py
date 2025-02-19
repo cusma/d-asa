@@ -339,14 +339,14 @@ def account_with_units_factory(
 
 @pytest.fixture(scope="function")
 def account_a(
-    account_with_units_factory: Callable[..., utils.DAsaAccount]
+    account_with_units_factory: Callable[..., utils.DAsaAccount],
 ) -> utils.DAsaAccount:
     return account_with_units_factory()
 
 
 @pytest.fixture(scope="function")
 def account_b(
-    account_with_units_factory: Callable[..., utils.DAsaAccount]
+    account_with_units_factory: Callable[..., utils.DAsaAccount],
 ) -> utils.DAsaAccount:
     return account_with_units_factory(units=2 * INITIAL_D_ASA_UNITS)
 
