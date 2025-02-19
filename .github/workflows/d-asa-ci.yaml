@@ -52,7 +52,7 @@ jobs:
               - 'tests/base_d_asa/**'
             test-zero-coupon-bond:
               - 'tests/conftest.py'
-              - 'tests/zero-coupon-bond/**'
+              - 'tests/zero_coupon_bond/**'
             test-fixed-coupon-bond:
               - 'tests/conftest.py'
               - 'tests/fixed_coupon_bond/**'
