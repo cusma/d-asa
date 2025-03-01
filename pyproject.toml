@@ -20,7 +20,7 @@ keywords = [
 
 [tool.poetry.dependencies]
 python = "^3.12"
-algokit-utils = "^3.0.1b1"
+algokit-utils = "^3.0.2"
 python-dotenv = "^1.0.0"
 algorand-python = "^2.7.0"
 algorand-python-testing = "^0.4.1"
@@ -28,14 +28,14 @@ algorand-python-testing = "^0.4.1"
 [tool.poetry.group.dev.dependencies]
 algokit-client-generator = "^2.0.0"
 black = { extras = ["d"], version = "^25.1.0" }
-ruff = "^0.9.6"
+ruff = "^0.9.9"
 mypy = "^1.15.0"
 pytest = "^8.3.4"
 pytest-cov = "^6.0.0"
 pytest-sugar = "^1.0.0"
 pip-audit = "^2.7.3"
 pre-commit = "^4.1.0"
-puyapy = "^4.4.0"
+puyapy = "^4.4.2"
 
 [build-system]
 requires = ["poetry-core"]
