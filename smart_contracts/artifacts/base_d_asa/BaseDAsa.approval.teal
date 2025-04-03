@@ -3,7 +3,7 @@
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.__algopy_entrypoint_with_init() -> uint64:
 main:
-    intcblock 0 1 4 8 200
+    intcblock 0 1 8 4 200
     bytecblock 0x151f7c75 "circulating_units" "status" "maturity_date" "unit_value" "total_units" "total_coupons" 0x52333023 0x52323023 "denomination_asset_id" "settlement_asset_id" "day_count_convention" "metadata" "principal_discount" "primary_distribution_opening_date" "primary_distribution_closure_date" "issuance_date" "secondary_market_opening_date" "secondary_market_closure_date" "suspended" "defaulted" "interest_rate" 0x52343023 0x52373023 0x74696d654576656e7473 0x52363023 0x52353023 0x0000000000000000 0x068101 0x636f75706f6e5261746573 0x52383023
     txn ApplicationID
     bnz main_after_if_else@2
@@ -436,7 +436,7 @@ main_asset_update_route@6:
     // smart_contracts/base_d_asa/contract.py:473
     // @arc4.abimethod(allow_actions=["UpdateApplication"])
     txn OnCompletion
-    intc_2 // UpdateApplication
+    intc_3 // UpdateApplication
     ==
     assert // OnCompletion is not UpdateApplication
     txn ApplicationID
@@ -739,7 +739,7 @@ assert_time_events_sorted_after_while@13:
     // time_i = time_events[_t].native
     frame_dig 4
     dup
-    intc_3 // 8
+    intc_2 // 8
     *
     frame_dig 2
     dup
@@ -755,7 +755,7 @@ assert_time_events_sorted_after_while@13:
     +
     dup
     frame_bury 4
-    intc_3 // 8
+    intc_2 // 8
     *
     extract_uint64
     dup
@@ -950,7 +950,7 @@ asset_config_bool_merge@5:
     // smart_contracts/base_d_asa/contract.py:197-198
     // # The reference implementation has on-chain settlement with ASA
     // itxn.AssetTransfer(
-    intc_2 // axfer
+    intc_3 // axfer
     itxn_field TypeEnum
     itxn_field Fee
     // smart_contracts/base_d_asa/contract.py:197-203
@@ -1102,7 +1102,7 @@ asset_config_after_if_else@31:
     bytec 6 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
-    intc_2 // 4
+    intc_3 // 4
     +
     ==
     // smart_contracts/base_d_asa/contract.py:239-241
@@ -1178,7 +1178,7 @@ asset_config_after_if_else@31:
     bytec 6 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
-    intc_2 // 4
+    intc_3 // 4
     +
     ==
     bz asset_config_after_if_else@37
@@ -1187,7 +1187,7 @@ asset_config_after_if_else@31:
     frame_dig 3
     intc_1 // 1
     -
-    intc_3 // 8
+    intc_2 // 8
     *
     frame_dig 0
     swap
@@ -1337,7 +1337,7 @@ set_secondary_time_events_after_if_else@2:
     // ].native
     intc_1 // 1
     -
-    intc_3 // 8
+    intc_2 // 8
     *
     frame_dig 0
     swap
@@ -2545,7 +2545,7 @@ get_asset_info:
     bz get_asset_info_after_if_else@3
     // smart_contracts/base_d_asa/contract.py:910
     // performance = UInt64(cst.PRF_MATURED)
-    intc_2 // 4
+    intc_3 // 4
     frame_bury 2
 
 get_asset_info_after_if_else@3:
@@ -2607,6 +2607,11 @@ get_asset_info_after_if_else@5:
     app_global_get_ex
     assert // check self.day_count_convention exists
     itob
+    dup
+    bitlen
+    intc_2 // 8
+    <=
+    assert // overflow
     extract 7 1
     // smart_contracts/base_d_asa/contract.py:921
     // principal_discount=arc4.UInt16(self.principal_discount),
@@ -2615,6 +2620,11 @@ get_asset_info_after_if_else@5:
     app_global_get_ex
     assert // check self.principal_discount exists
     itob
+    dup
+    bitlen
+    pushint 16 // 16
+    <=
+    assert // overflow
     extract 6 2
     // smart_contracts/base_d_asa/contract.py:922
     // interest_rate=arc4.UInt16(self.interest_rate),
@@ -2623,6 +2633,11 @@ get_asset_info_after_if_else@5:
     app_global_get_ex
     assert // check self.interest_rate exists
     itob
+    dup
+    bitlen
+    pushint 16 // 16
+    <=
+    assert // overflow
     extract 6 2
     // smart_contracts/base_d_asa/contract.py:923
     // total_supply=arc4.UInt64(self.total_units),
@@ -2688,6 +2703,11 @@ get_asset_info_after_if_else@5:
     // performance=arc4.UInt8(performance),
     frame_dig 0
     itob
+    dup
+    bitlen
+    intc_2 // 8
+    <=
+    assert // overflow
     extract 7 1
     // smart_contracts/base_d_asa/contract.py:915-935
     // return typ.AssetInfo(
