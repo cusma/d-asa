@@ -16,10 +16,21 @@ the <a href="https://github.com/actusfrf/actus-dictionary">ACTUS dictionary</a>.
 Non-normative sections mainly contextualize the specification for technical readers
 unfamiliar with the financial concepts described.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > Sections like this are examples aiming to clarify the specifications.
 
 ```text
 Sections like this are either pseudo-code or formal examples.
 ```
+
+## Math Symbols
+
+For a correct rendering of mathematical symbols and formulas, it is recommended to
+right-click on the symbol below, and select `Math Settings -> Math Renderer -> Common
+HTML` from the drop-down menu.
+
+$$
+\mathcal{C}
+$$
+
+Once MathJax rendering is correctly set, you should see a calligraphic “C”.

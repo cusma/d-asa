@@ -71,16 +71,14 @@ events **MUST** be multiples of a day, in seconds (`86400`)[^2].
 
 The *time events* **MUST** be set using the `asset_config` method.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > The following are valid *time events* (UNIX times):
 >
 > ```text
 > uint64[] = [1704067200, 1735603200, 1767139200, 1798675200, 1830211200]
 > ```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > The following are invalid (respectively unsorted and not-strictly sorted) *time
 > events* (UNIX times):
 >
@@ -92,8 +90,7 @@ The *time events* **MUST** be set using the `asset_config` method.
 > uint64[] = [1704067200, 1735603200, 1767139200, 1798675200, 1830211200, 1830211200]
 > ```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > A D-ASA with `K` *total coupons* and a **defined** *maturity date*, has the following
 > *time events*:
 >
@@ -101,8 +98,7 @@ The *time events* **MUST** be set using the `asset_config` method.
 > uint64[] = [primary_distribution_opening_date, primary_distribution_closure_date, issuance_date, cupon_due_date_1, ..., coupon_due_date_K, maturity_date]
 > ```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > A D-ASA whose primary distribution lasts from December 1st, 2023 00:00:00 GMT+0
 > to December 15th, 2023 00:00:00 GMT+0, is issued on January 1st, 2024 00:00:00
 > GMT+0 and matures on January 1st, 2028 00:00:00 GMT+0, with 4 annual coupons,
@@ -113,8 +109,7 @@ The *time events* **MUST** be set using the `asset_config` method.
 > uint64[] = [1701388800, 1702598400, 1704067200, 1735603200, 1767139200, 1798675200, 1830211200, 1830297600]
 > ```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > A D-ASA whose primary distribution lasts from December 1st, 2023 00:00:00 GMT+0
 > to December 15th, 2023 00:00:00 GMT+0, is issued on January 1st, 2024 00:00:00
 > GMT+0 and matures on January 1st, 2028 00:00:00 GMT+0, with zero coupons, has
@@ -124,8 +119,7 @@ The *time events* **MUST** be set using the `asset_config` method.
 > uint64[] = [1701388800, 1702598400, 1704067200, 1830297600]
 > ```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > A D-ASA whose primary distribution lasts from December 1st, 2023 00:00:00 GMT+0
 > to December 15th, 2023 00:00:00 GMT+0, is issued on January 1st, 2024 00:00:00
 > GMT+0 and no maturity, with perpetual coupons, has the following *time events*

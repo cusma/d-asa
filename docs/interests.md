@@ -41,8 +41,7 @@ be empty and the *interest rate* **MUST** be used instead.
 
 > Coupon rates could be derived from the interest rate.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > D-ASA with 4 coupons with the following rates: 2,00%, 2,50%, 3,00%, and 3,50%
 > would have the following coupon rates array (bps):
 >
@@ -50,8 +49,7 @@ be empty and the *interest rate* **MUST** be used instead.
 > uint64[] = [200, 250, 300, 350]
 > ```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > D-ASA with zero coupons would have the following coupon rates array (bps):
 >
 > ```text
@@ -70,8 +68,7 @@ convention* (see [Day-Count Convention](./day-count-convention.md) section).
 If the D-ASA has coupons, the *units* accrued interest **MUST** be calculated with
 respect to the latest coupon due date.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > Let's have a D-ASA with `4` coupons. The 2nd coupon is due. The D-ASA units are
 > accruing the interest of the 3rd coupon. The accrued interest is calculated according
 > to the day-count convention, applied to the elapsed time with respect to the 2nd
@@ -80,8 +77,7 @@ respect to the latest coupon due date.
 If the D-ASA has coupons, the account *units* accrued interest calculation **SHOULD**
 fail if it has pending coupon payments.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > Let's have a D-ASA with `4` coupons. The 2nd coupon is due. The D-ASA units are
 > accruing the interest of the 3rd coupon. Coupon payments are not executed synchronously
 > for all the Investors. The 2nd coupon payment is executed for Investor A, while

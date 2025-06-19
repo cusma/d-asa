@@ -11,24 +11,44 @@ It provides the interfaces for arranging the asset, configuring its role-based a
 control, issuing and distributing it on the primary market, executing cash flows,
 exchanging it on the secondary market, and querying information about the debt instrument.
 
-The specification provides recommendations to conform, at the best effort[^1], to
+The specification provides recommendations to conform, to the best effort[^1], to
 the *Algorithmic Contract Types Unified Standards* (<a href="https://www.actusfrf.org/">ACTUS</a>).
 
 The specification allows the tokenization of various debt instruments, such as bonds,
 loans, commercial papers, mortgages, etc. A [reference implementation](./reference-implementation.md)
-of some fixed income contract examples is provided.
+of some fixed income contract examples are provided.
 
-This document is a *technical specification*, it is not to be intended as a legal
+This document is a *technical specification*, it is not intended to be as a legal
 or a financial document.
+
+## Contents
+
+Contents are organized in four hierarchical levels (see the navigation sidebar on
+the left):
+
+```text
+Part
+└── 1. Chapter
+    └── 1.1. Section
+        └── 1.1.1. Sub Section
+```
+
+The navigation sidebar can be folded up to the *Chapter* level by clicking the folding
+icon (**>**), next to the level name.
 
 ## Contributing {#contributing}
 
-The D-ASA is free and open source. The source code is released on the official
-<a href="https://github.com/cusma/d-asa">GitHub repository</a>. External contributions
-are welcome, the project relies on the community to improve and expand. Issues and
-features requests can be submitted on the <a href="https://github.com/cusma/d-asa/issues">GitHub
-issues page</a>. If you would like to contribute, please consider submitting a
-<a href="https://github.com/cusma/d-asa/pulls">pull request</a>.
+The D-ASA is free and open source.
+
+The source code is released on the official
+<a href="https://github.com/cusma/d-asa">GitHub repository</a>.
+
+External contributions are welcome, the project relies on the community to improve
+and expand. Issues and features requests can be submitted on the <a href="https://github.com/cusma/d-asa/issues">GitHub
+issues page</a>.
+
+If you would like to contribute, please read the [guidelines](./contributors.md#guidelines-guidelines)
+and consider submitting a <a href="https://github.com/cusma/d-asa/pulls">pull request</a>.
 
 ## License {#license}
 

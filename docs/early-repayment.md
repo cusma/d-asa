@@ -10,8 +10,7 @@ to the Investor Payment Addresses.
 The D-ASA units associated with the early repaid principal **MUST** be removed from
 Investors’ Accounts and from circulation.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > Let’s have a D-ASA denominated in EUR, with a *principal* of 1M EUR and a *minimum
 > denomination* of 1,000 EUR. The D-ASA originally had 1,000 *total units* in circulation.
 > An early repayment of 500k EUR (equal to 500 units) is executed for some Investors.
