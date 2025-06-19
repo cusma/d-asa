@@ -26,8 +26,7 @@ The *time periods* **MAY** be set using the `asset_config` method.
 If the D-ASA does not implement *time periods,* it **MUST** be set to `[]` in the
 `asset_config` method.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > The following are valid *time periods* (UNIX times) indicating:
 >
 > - a daily time event with unlimited repetitions
@@ -37,8 +36,7 @@ If the D-ASA does not implement *time periods,* it **MUST** be set to `[]` in th
 > (uint64,uint64)[] = [(86400, 0), (2592000, 12)]
 > ```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > The following are invalid *time periods* (UNIX times):
 >
 > ```text
@@ -48,8 +46,7 @@ If the D-ASA does not implement *time periods,* it **MUST** be set to `[]` in th
 The *time periods* **MUST** be chronologically consistent with respect to the *time
 events*.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > Let's have a D-ASA with an *issuance date* and a *maturity date*, defined as *time
 > events*, and 4 coupons whose periods are defined by *time periods*.
 >
@@ -64,8 +61,7 @@ If the D-ASA has an **undefined** number of *coupons*, then the *coupon due date
 The first coupon due date \\([IPANX]\\) occurs on *issuance date* plus the *time
 period duration* \\([IPCL]\\) and the interest payment \\([IPPNT]\\) can be executed[^1].
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > A D-ASA whose primary distribution lasts from December 1st, 2023 00:00:00 GMT+0
 > to December 15th, 2023 00:00:00 GMT+0, is issued on January 1st, 2024 00:00:00
 > GMT+0 and no maturity, with perpetual coupons maturing every 365 days, has the

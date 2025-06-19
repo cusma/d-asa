@@ -26,8 +26,7 @@ apply to the principal on the issuance.
 
 The *discount* **MUST** be set using the `asset_config` method.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > Let’s have a D-ASA denominated in EUR, with a principal of 1M EUR paid at maturity
 > and a minimum denomination of 1,000 EUR. The D-ASA has a principal discount of
 > 200 bps (2%) at the issuance. Each D-ASA unit is sold on the primary market at
@@ -60,28 +59,24 @@ points</a>* (*bps*);
 The *amortization rates* define the amount of principal \\([PRNXT]\\) paid at the
 next payment date.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > A D-ASA with 5 coupons and even principal amortizing rates has the following amortizing
 > rates (bps):
 >
 > ```uint64[] = [2000, 2000, 2000, 2000, 2000, 0]```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > A D-ASA with 5 coupons and a single principal early repayment of 50% has the following
 > amortizing rates (bps):
 >
 > ```uint64[] = [0, 0, 5000, 0, 0, 5000]```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > A D-ASA with 4 coupons and different principal amortizing rates (bps):
 >
 > ```uint64[] = [1000, 2000, 3000, 4000, 0]```
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > The following are invalid amortizing rates, since their sum is not equal to `10,000`
 > bps:
 >

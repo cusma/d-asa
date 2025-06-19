@@ -32,8 +32,7 @@ It is **RECOMMENDED** to use an ACTUS *interest calculation base* \\([IPCB]\\).
 
 > A reference implementation **SHOULD** restrict the amortizing rates updatability.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > Let’s have a D-ASA denominated in EUR, with a *principal* of 1M EUR and a *minimum
 > denomination* of 1,000 EUR, 5 coupons, and an even amortizing schedule (20% amortizing
 > rate). The D-ASA has 1,000 *total units*. The D-ASA initial *unit value* is 1,000
@@ -41,8 +40,7 @@ It is **RECOMMENDED** to use an ACTUS *interest calculation base* \\([IPCB]\\).
 > 20% of the principal (according to *amortizing rates*). The D-ASA outstanding
 > principal is 800k EUR. The D-ASA *unit value* is 800 EUR.
 
-> 📎 **EXAMPLE**
->
+{{#include ./.include/styles.md:example}}
 > Let’s have a D-ASA denominated in EUR, with a *principal* of 1M EUR and a *minimum
 > denomination* of 1,000 EUR. The D-ASA originally had 1,000 *total units* (worth
 > 1,000 EUR each) in circulation. A partial repayment of 500k EUR (50% of the original
