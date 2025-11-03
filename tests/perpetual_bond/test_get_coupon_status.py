@@ -1,4 +1,5 @@
-from typing import Callable, Final
+from collections.abc import Callable
+from typing import Final
 
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
     PayCouponArgs,
