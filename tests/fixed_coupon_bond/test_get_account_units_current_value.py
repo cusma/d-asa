@@ -1,4 +1,5 @@
-from typing import Callable, Final
+from collections.abc import Callable
+from typing import Final
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (

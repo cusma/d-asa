@@ -26,7 +26,7 @@ def deploy() -> None:
         ZeroCouponBondFactory, default_sender=deployer.address
     )
 
-    app_client, _ = factory.deploy(
+    factory.deploy(
         on_schema_break=algokit_utils.OnSchemaBreak.AppendApp,
         on_update=algokit_utils.OnUpdate.UpdateApp,
         create_params=ZeroCouponBondMethodCallCreateParams(

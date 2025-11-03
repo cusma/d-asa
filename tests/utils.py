@@ -1,6 +1,6 @@
 import math
 from dataclasses import asdict, dataclass
-from typing import Optional, TypeAlias
+from typing import TypeAlias
 
 from algokit_utils import (
     AlgoAmount,
@@ -155,7 +155,7 @@ def get_latest_timestamp(algod_client: AlgodClient) -> int:
     return algod_client.block_info(get_last_round(algod_client))["block"]["ts"]  # type: ignore
 
 
-def round_warp(to_round: Optional[int] = None) -> None:
+def round_warp(to_round: int | None = None) -> None:
     """
     Fastforward directly `to_round` or advance by 1 round.
 
