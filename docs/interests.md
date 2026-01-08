@@ -82,5 +82,5 @@ fail if it has pending coupon payments.
 > accruing the interest of the 3rd coupon. Coupon payments are not executed synchronously
 > for all the Investors. The 2nd coupon payment is executed for Investor A, while
 > Investor B is still waiting for the payment settlement. The accrued interest calculation
-> succeeds for Investor A and fails for Investor B until the 2nd coupon payment is
-> settled.
+> succeeds for Investor A and fails for Investor B until the 2nd coupon payment
+> is settled.

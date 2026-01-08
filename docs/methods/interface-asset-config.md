@@ -47,5 +47,5 @@ are not properly set for the specific implementation.
 The call **MAY** fail with the `INVALID_TIME_PERIOD_REPETITIONS` error code if the
 *time period repetitions* are not properly set for the specific implementation.
 
-The call **MAY** fail with the `INVALID_COUPON_RATES` error code if the *coupon rates*
-are not properly set for the specific implementation.
+The call **MAY** fail with the `INVALID_COUPON_RATES` error code if the *coupon
+rates* are not properly set for the specific implementation.
