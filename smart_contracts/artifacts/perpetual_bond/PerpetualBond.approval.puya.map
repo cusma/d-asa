@@ -452,7 +452,7 @@
       ]
     },
     "573": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "defined_out": [
         "2",
         "tmp%0#2"
@@ -486,7 +486,7 @@
       ]
     },
     "579": {
-      "op": "pushint 20 // 20",
+      "op": "pushint 20",
       "defined_out": [
         "20",
         "tmp%2#1"
@@ -643,8 +643,7 @@
       ]
     },
     "615": {
-      "error": "OnCompletion must be NoOp",
-      "op": "assert // OnCompletion must be NoOp",
+      "op": "assert",
       "stack_out": []
     },
     "616": {
@@ -852,8 +851,7 @@
       ]
     },
     "805": {
-      "error": "OnCompletion must be UpdateApplication && can only call when not creating",
-      "op": "assert // OnCompletion must be UpdateApplication && can only call when not creating",
+      "op": "assert",
       "stack_out": []
     },
     "806": {
@@ -1289,7 +1287,7 @@
       ]
     },
     "844": {
-      "op": "pushint 100 // 100",
+      "op": "pushint 100",
       "defined_out": [
         "100",
         "maybe_value%0#0",
@@ -4524,7 +4522,7 @@
       ]
     },
     "1081": {
-      "op": "pushint 40 // 40",
+      "op": "pushint 40",
       "defined_out": [
         "40",
         "accrued_interest#0",
@@ -4595,7 +4593,7 @@
       ]
     },
     "1086": {
-      "op": "pushint 48 // 48",
+      "op": "pushint 48",
       "defined_out": [
         "48",
         "accrued_interest#0",
@@ -4681,7 +4679,7 @@
       ]
     },
     "1093": {
-      "op": "pushint 40 // 40",
+      "op": "pushint 40",
       "defined_out": [
         "40",
         "aggregate%box_get%20#0"
@@ -5017,7 +5015,7 @@
       ]
     },
     "1116": {
-      "op": "pushint 40 // 40",
+      "op": "pushint 40",
       "defined_out": [
         "40",
         "box_prefixed_key%0#3",
@@ -5162,7 +5160,7 @@
       ]
     },
     "1128": {
-      "op": "pushint 48 // 48"
+      "op": "pushint 48"
     },
     "1130": {
       "op": "swap",
@@ -5375,7 +5373,7 @@
       ]
     },
     "1157": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "defined_out": [
         "2",
         "aggregate%array_length%0#0",
@@ -5507,7 +5505,7 @@
       ]
     },
     "1168": {
-      "op": "pushint 100 // 100",
+      "op": "pushint 100",
       "defined_out": [
         "100",
         "holding_address#0",
@@ -5814,7 +5812,7 @@
       ]
     },
     "1203": {
-      "op": "pushint 48 // 48",
+      "op": "pushint 48",
       "defined_out": [
         "48",
         "aggregate%box_get%2#0",
@@ -6940,7 +6938,7 @@
       ]
     },
     "1318": {
-      "op": "pushint 48 // 48",
+      "op": "pushint 48",
       "defined_out": [
         "48",
         "aggregate%box_get%10#0",
@@ -7024,7 +7022,7 @@
       ]
     },
     "1324": {
-      "op": "pushint 48 // 48"
+      "op": "pushint 48"
     },
     "1326": {
       "op": "swap",
@@ -10456,7 +10454,7 @@
       ]
     },
     "1669": {
-      "op": "pushint 100 // 100",
+      "op": "pushint 100",
       "defined_out": [
         "100",
         "maybe_value%0#0"
@@ -11582,7 +11580,7 @@
       ]
     },
     "1777": {
-      "op": "pushint 100 // 100",
+      "op": "pushint 100",
       "defined_out": [
         "100",
         "maybe_value%0#0",
@@ -11829,7 +11827,7 @@
       ]
     },
     "1812": {
-      "op": "pushint 38 // 38",
+      "op": "pushint 38",
       "defined_out": [
         "38",
         "arranger#0",
@@ -11879,7 +11877,7 @@
       ]
     },
     "1816": {
-      "op": "pushint 40 // 40",
+      "op": "pushint 40",
       "defined_out": [
         "40",
         "arranger#0",
@@ -12012,7 +12010,7 @@
       ]
     },
     "1828": {
-      "op": "pushint 42 // 42",
+      "op": "pushint 42",
       "defined_out": [
         "42",
         "aggregate%array_length%0#0",
@@ -12170,7 +12168,7 @@
       ]
     },
     "1851": {
-      "op": "pushint 38 // 38",
+      "op": "pushint 38",
       "defined_out": [
         "38",
         "metadata#0",
@@ -12214,7 +12212,7 @@
       ]
     },
     "1855": {
-      "op": "pushint 40 // 40",
+      "op": "pushint 40",
       "defined_out": [
         "40",
         "extract_uint16%0#0",
@@ -12332,7 +12330,7 @@
       ]
     },
     "1867": {
-      "op": "pushint 42 // 42",
+      "op": "pushint 42",
       "defined_out": [
         "42",
         "aggregate%array_length%0#0",
@@ -13175,7 +13173,7 @@
       ]
     },
     "1951": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "defined_out": [
         "2",
         "day_count_convention#0",
@@ -13429,7 +13427,7 @@
       ]
     },
     "1967": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "stack_out": [
         "aggregate%array_trimmed%0#0",
         "aggregate%array_length%6#0",
@@ -13482,7 +13480,7 @@
       ]
     },
     "1970": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "stack_out": [
         "aggregate%array_trimmed%0#0",
         "aggregate%array_length%6#0",
@@ -13887,7 +13885,7 @@
       ]
     },
     "1991": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "stack_out": [
         "aggregate%array_trimmed%0#0",
         "aggregate%array_length%6#0",
@@ -14271,7 +14269,7 @@
       ]
     },
     "2010": {
-      "op": "pushint 16 // 16",
+      "op": "pushint 16",
       "defined_out": [
         "16",
         "aggregate%array_length%0#0",
@@ -14352,7 +14350,7 @@
       ]
     },
     "2013": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "stack_out": [
         "aggregate%array_trimmed%0#0",
         "aggregate%array_length%6#0",
@@ -16490,7 +16488,7 @@
       ]
     },
     "2125": {
-      "op": "pushint 255 // 255",
+      "op": "pushint 255",
       "defined_out": [
         "255",
         "day_count_convention#0",
@@ -17594,7 +17592,7 @@
       ]
     },
     "2187": {
-      "op": "pushint 3 // 3",
+      "op": "pushint 3",
       "defined_out": [
         "3",
         "maybe_value%0#0"
@@ -18021,7 +18019,7 @@
       ]
     },
     "2215": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "defined_out": [
         "2",
         "aggregate%array_length%1#0",
@@ -18187,7 +18185,7 @@
       ]
     },
     "2223": {
-      "op": "pushint 10 // 10",
+      "op": "pushint 10",
       "defined_out": [
         "10",
         "aggregate%array_length%1#0",
@@ -18347,7 +18345,7 @@
       ]
     },
     "2231": {
-      "op": "pushint 18 // 18",
+      "op": "pushint 18",
       "defined_out": [
         "18",
         "aggregate%array_length%1#0",
@@ -18695,7 +18693,7 @@
       ]
     },
     "2247": {
-      "op": "pushint 4 // 4",
+      "op": "pushint 4",
       "defined_out": [
         "4",
         "aggregate%array_length%1#0",
@@ -19783,7 +19781,7 @@
       ]
     },
     "2299": {
-      "op": "pushints 2 16 // 2, 16",
+      "op": "pushints 2 16",
       "defined_out": [
         "0x74696d65506572696f6473",
         "16",
@@ -19999,7 +19997,7 @@
       ]
     },
     "2311": {
-      "op": "pushint 100 // 100",
+      "op": "pushint 100",
       "defined_out": [
         "\"status\"",
         "100",
@@ -20291,7 +20289,7 @@
       ]
     },
     "2335": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "defined_out": [
         "2",
         "aggregate%array_length%0#0",
@@ -20662,7 +20660,7 @@
       ]
     },
     "2383": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "defined_out": [
         "2",
         "aggregate%array_trimmed%0#0",
@@ -21484,7 +21482,7 @@
       ]
     },
     "2473": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "defined_out": [
         "2",
         "aggregate%array_length%0#0",
@@ -21604,7 +21602,7 @@
       ]
     },
     "2488": {
-      "op": "pushint 20 // 20",
+      "op": "pushint 20",
       "defined_out": [
         "20",
         "awst_tmp%0#0",
@@ -21652,7 +21650,7 @@
       ]
     },
     "2495": {
-      "op": "pushint 40 // 40",
+      "op": "pushint 40",
       "defined_out": [
         "40",
         "awst_tmp%0#0",
@@ -21700,7 +21698,7 @@
       ]
     },
     "2502": {
-      "op": "pushint 50 // 50",
+      "op": "pushint 50",
       "defined_out": [
         "50",
         "awst_tmp%0#0",
@@ -21748,7 +21746,7 @@
       ]
     },
     "2509": {
-      "op": "pushint 60 // 60",
+      "op": "pushint 60",
       "defined_out": [
         "60",
         "awst_tmp%0#0",
@@ -21796,7 +21794,7 @@
       ]
     },
     "2516": {
-      "op": "pushint 70 // 70",
+      "op": "pushint 70",
       "defined_out": [
         "70",
         "awst_tmp%0#0",
@@ -21844,7 +21842,7 @@
       ]
     },
     "2523": {
-      "op": "pushint 80 // 80",
+      "op": "pushint 80",
       "defined_out": [
         "80",
         "awst_tmp%0#0",
@@ -21918,7 +21916,7 @@
       ]
     },
     "2531": {
-      "op": "pushints 20 40 50 60 70 80 // 20, 40, 50, 60, 70, 80",
+      "op": "pushints 20 40 50 60 70 80",
       "defined_out": [
         "20",
         "40",
@@ -23063,7 +23061,7 @@
       ]
     },
     "2698": {
-      "op": "pushint 40 // 40",
+      "op": "pushint 40",
       "defined_out": [
         "40",
         "awst_tmp%0#0",
@@ -23105,7 +23103,7 @@
       ]
     },
     "2705": {
-      "op": "pushint 50 // 50",
+      "op": "pushint 50",
       "defined_out": [
         "50",
         "awst_tmp%0#0",
@@ -23147,7 +23145,7 @@
       ]
     },
     "2712": {
-      "op": "pushint 60 // 60",
+      "op": "pushint 60",
       "defined_out": [
         "60",
         "awst_tmp%0#0",
@@ -23189,7 +23187,7 @@
       ]
     },
     "2719": {
-      "op": "pushint 70 // 70",
+      "op": "pushint 70",
       "defined_out": [
         "70",
         "awst_tmp%0#0",
@@ -23231,7 +23229,7 @@
       ]
     },
     "2726": {
-      "op": "pushint 80 // 80",
+      "op": "pushint 80",
       "defined_out": [
         "80",
         "awst_tmp%0#0",
@@ -23296,7 +23294,7 @@
       ]
     },
     "2734": {
-      "op": "pushints 40 50 60 70 80 // 40, 50, 60, 70, 80",
+      "op": "pushints 40 50 60 70 80",
       "defined_out": [
         "40",
         "50",
@@ -25164,7 +25162,7 @@
       ]
     },
     "3016": {
-      "op": "pushint 100 // 100",
+      "op": "pushint 100",
       "defined_out": [
         "100",
         "holding_address#0",
@@ -26643,7 +26641,7 @@
       ]
     },
     "3161": {
-      "op": "pushint 40 // 40",
+      "op": "pushint 40",
       "defined_out": [
         "40",
         "aggregate%val_as_bytes%1#0",
@@ -27359,7 +27357,7 @@
       ]
     },
     "3247": {
-      "op": "pushint 56 // 56",
+      "op": "pushint 56",
       "defined_out": [
         "56",
         "aggregate%get_bit%0#0",
@@ -27426,7 +27424,7 @@
       ]
     },
     "3255": {
-      "op": "pushint 56 // 56"
+      "op": "pushint 56"
     },
     "3257": {
       "op": "swap",
@@ -28148,7 +28146,7 @@
       ]
     },
     "3355": {
-      "op": "pushint 4 // 4",
+      "op": "pushint 4",
       "stack_out": [
         "performance#0",
         "maybe_value%0#0",
@@ -28221,7 +28219,7 @@
       ]
     },
     "3367": {
-      "op": "pushint 3 // 3",
+      "op": "pushint 3",
       "defined_out": [
         "performance#0"
       ],
@@ -28947,7 +28945,7 @@
       ]
     },
     "3420": {
-      "op": "pushint 16 // 16",
+      "op": "pushint 16",
       "defined_out": [
         "16",
         "aggregate%bitlen%1#0",
@@ -29201,7 +29199,7 @@
       ]
     },
     "3435": {
-      "op": "pushint 16 // 16",
+      "op": "pushint 16",
       "stack_out": [
         "performance#0",
         "maybe_value%0#0",
@@ -31520,7 +31518,7 @@
       ]
     },
     "3577": {
-      "op": "pushint 100 // 100",
+      "op": "pushint 100",
       "defined_out": [
         "100",
         "maybe_value%0#0",
@@ -34316,7 +34314,7 @@
       ]
     },
     "4004": {
-      "op": "pushint 2 // 2",
+      "op": "pushint 2",
       "defined_out": [
         "2",
         "aggregate%array_trimmed%0#0",
@@ -34546,7 +34544,7 @@
         "tmp%4#0",
         "_t#0"
       ],
-      "op": "pushint 75 // 75",
+      "op": "pushint 75",
       "defined_out": [
         "75"
       ],
@@ -35222,7 +35220,7 @@
       ]
     },
     "4094": {
-      "op": "pushint 255 // 255",
+      "op": "pushint 255",
       "defined_out": [
         "255",
         "_t#0",
@@ -35523,7 +35521,7 @@
       ]
     },
     "4132": {
-      "op": "pushint 40 // 40",
+      "op": "pushint 40",
       "defined_out": [
         "40",
         "aggregate%box_get%0#0"

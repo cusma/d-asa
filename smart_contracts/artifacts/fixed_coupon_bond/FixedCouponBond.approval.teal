@@ -118,13 +118,13 @@ main:
     // # State schema validation
     // assert Txn.global_num_byte_slice == cfg.GLOBAL_BYTES, err.WRONG_GLOBAL_BYTES
     txn GlobalNumByteSlice
-    pushint 2 // 2
+    pushint 2
     ==
     assert // Wrong Global Bytes allocation
     // smart_contracts/fixed_coupon_bond/contract.py:38
     // assert Txn.global_num_uint == cfg.GLOBAL_UINTS, err.WRONG_GLOBAL_UINTS
     txn GlobalNumUint
-    pushint 20 // 20
+    pushint 20
     ==
     assert // Wrong Global UInts allocation
     // smart_contracts/fixed_coupon_bond/contract.py:39
@@ -177,7 +177,7 @@ main_switch_case_next@5:
     // ):
     txn OnCompletion
     !
-    assert // OnCompletion must be NoOp
+    assert
     txn ApplicationID
     bz main_create_NoOp@30
     pushbytess 0x4fd6a3cc 0x8cf14b51 0x9c76b6a3 0x44363d49 0x53bef045 0x67db4f20 0xf6a96c8d 0x89474134 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x402dba47 0xed02759f 0xfad2173e 0x08efea35 0xe4a5ab54 // method "asset_transfer(address,address,uint64)uint64", method "pay_coupon(address,byte[])(uint64,uint64,byte[])", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_coupon_rates()uint16[]", method "get_payment_amount(address)(uint64,uint64)", method "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)", method "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)"
@@ -209,7 +209,7 @@ main_asset_update_route@4:
     ==
     txn ApplicationID
     &&
-    assert // OnCompletion must be UpdateApplication && can only call when not creating
+    assert
     b asset_update
 
 
@@ -217,7 +217,7 @@ main_asset_update_route@4:
 ensure_budget:
     proto 2 0
     frame_dig -2
-    pushint 10 // 10
+    pushint 10
     +
 
 ensure_budget_while_top@1:
@@ -290,7 +290,7 @@ asset_transfer:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    pushint 100 // 100
+    pushint 100
     ==
     // smart_contracts/base_d_asa/contract.py:298-301
     // self.status_is_active()
@@ -557,12 +557,12 @@ asset_transfer_after_if_else@13:
     // self.account[holding_address].unit_value = arc4.UInt64()
     dig 7
     dup
-    pushint 40 // 40
+    pushint 40
     bytec 25 // 0x0000000000000000
     box_replace
     // smart_contracts/base_d_asa/contract.py:362
     // self.account[holding_address].paid_coupons = arc4.UInt64()
-    pushint 48 // 48
+    pushint 48
     bytec 25 // 0x0000000000000000
     box_replace
 
@@ -573,7 +573,7 @@ asset_transfer_after_if_else@17:
     // smart_contracts/fixed_coupon_bond/contract.py:191-192
     // # Transferred units value (must be computed before the transfer)
     // sender_unit_value = self.account[sender_holding_address].unit_value
-    pushint 40 // 40
+    pushint 40
     // smart_contracts/fixed_coupon_bond/contract.py:200
     // return arc4.UInt64(units.native * sender_unit_value.native + accrued_interest)
     extract_uint64
@@ -600,7 +600,7 @@ asset_transfer_else_body@12:
     // self.account[receiver_holding_address].unit_value = sender_unit_value
     dig 6
     dup
-    pushint 40 // 40
+    pushint 40
     dig 8
     box_replace
     // smart_contracts/base_d_asa/contract.py:404-406
@@ -611,7 +611,7 @@ asset_transfer_else_body@12:
     box_get
     assert // check self.account entry exists
     extract 48 8
-    pushint 48 // 48
+    pushint 48
     swap
     box_replace
     b asset_transfer_after_if_else@13
@@ -637,7 +637,7 @@ pay_coupon:
     dup
     intc_0 // 0
     extract_uint16 // on error: invalid array length header
-    pushint 2 // 2
+    pushint 2
     +
     swap
     len
@@ -649,7 +649,7 @@ pay_coupon:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    pushint 100 // 100
+    pushint 100
     ==
     // smart_contracts/fixed_coupon_bond/contract.py:225-226
     // # The reference implementation does not restrict caller authorization
@@ -692,7 +692,7 @@ pay_coupon:
     swap
     box_get
     assert // check self.account entry exists
-    pushint 48 // 48
+    pushint 48
     extract_uint64
     dup
     cover 3
@@ -750,7 +750,7 @@ pay_coupon_after_if_else@4:
     dup
     box_get
     assert // check self.account entry exists
-    pushint 48 // 48
+    pushint 48
     extract_uint64
     intc_1 // 1
     +
@@ -759,7 +759,7 @@ pay_coupon_after_if_else@4:
     //     self.account[holding_address].paid_coupons.native + 1
     // )
     itob
-    pushint 48 // 48
+    pushint 48
     swap
     box_replace
     // smart_contracts/fixed_coupon_bond/contract.py:257
@@ -824,7 +824,7 @@ pay_principal:
     dup
     intc_0 // 0
     extract_uint16 // on error: invalid array length header
-    pushint 2 // 2
+    pushint 2
     +
     swap
     len
@@ -836,7 +836,7 @@ pay_principal:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    pushint 100 // 100
+    pushint 100
     ==
     // smart_contracts/base_d_asa/contract.py:443-444
     // # The reference implementation does not restrict caller authorization
@@ -1187,7 +1187,7 @@ get_coupon_rates:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    pushint 100 // 100
+    pushint 100
     ==
     // smart_contracts/fixed_coupon_bond/contract.py:378
     // if self.status_is_active():
@@ -1242,7 +1242,7 @@ get_payment_amount:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    pushint 100 // 100
+    pushint 100
     ==
     // smart_contracts/fixed_coupon_bond/contract.py:399
     // if self.status_is_active():
@@ -1252,7 +1252,7 @@ get_payment_amount:
     dig 2
     box_get
     assert // check self.account entry exists
-    pushint 48 // 48
+    pushint 48
     extract_uint64
     dup
     bury 6
@@ -1439,10 +1439,10 @@ asset_create:
     dup
     len
     dig 1
-    pushint 38 // 38
+    pushint 38
     extract_uint16 // on error: invalid tuple encoding
     dup
-    pushint 40 // 40
+    pushint 40
     ==
     assert // invalid tail pointer at index 7 of (uint8,uint8,uint8,uint8,uint8,uint8,uint8[32],(len+utf8[]))
     dig 2
@@ -1451,7 +1451,7 @@ asset_create:
     substring3
     intc_0 // 0
     extract_uint16 // on error: invalid array length header
-    pushint 42 // 42
+    pushint 42
     +
     ==
     assert // invalid number of bytes for smart_contracts.abi_types.AssetMetadata
@@ -1479,10 +1479,10 @@ asset_update:
     dup
     len
     dig 1
-    pushint 38 // 38
+    pushint 38
     extract_uint16 // on error: invalid tuple encoding
     dup
-    pushint 40 // 40
+    pushint 40
     ==
     assert // invalid tail pointer at index 7 of (uint8,uint8,uint8,uint8,uint8,uint8,uint8[32],(len+utf8[]))
     dig 2
@@ -1491,7 +1491,7 @@ asset_update:
     substring3
     intc_0 // 0
     extract_uint16 // on error: invalid array length header
-    pushint 42 // 42
+    pushint 42
     +
     ==
     assert // invalid number of bytes for smart_contracts.abi_types.AssetMetadata
@@ -1564,7 +1564,7 @@ asset_config:
     dup
     cover 2
     len
-    pushint 2 // 2
+    pushint 2
     ==
     assert // invalid number of bytes for arc4.uint16
     txna ApplicationArgs 8
@@ -1575,9 +1575,9 @@ asset_config:
     extract_uint16 // on error: invalid array length header
     dup
     cover 3
-    pushint 2 // 2
+    pushint 2
     *
-    pushint 2 // 2
+    pushint 2
     +
     swap
     len
@@ -1593,7 +1593,7 @@ asset_config:
     cover 3
     intc_3 // 8
     *
-    pushint 2 // 2
+    pushint 2
     +
     swap
     len
@@ -1605,9 +1605,9 @@ asset_config:
     extract_uint16 // on error: invalid array length header
     dup
     cover 3
-    pushint 16 // 16
+    pushint 16
     *
-    pushint 2 // 2
+    pushint 2
     +
     swap
     len
@@ -1842,7 +1842,7 @@ asset_config_after_if_else@31:
     bytec 4 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
-    pushint 4 // 4
+    pushint 4
     +
     dig 3
     ==
@@ -1871,7 +1871,7 @@ asset_config_after_if_else@31:
     extract 2 0
     bury 17
     dup
-    pushint 2 // 2
+    pushint 2
     extract_uint64
     // smart_contracts/base_d_asa/contract.py:266
     // self.primary_distribution_opening_date = time_events[
@@ -1887,7 +1887,7 @@ asset_config_after_if_else@31:
     //     cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
     // ].native
     dup
-    pushint 10 // 10
+    pushint 10
     extract_uint64
     // smart_contracts/base_d_asa/contract.py:269
     // self.primary_distribution_closure_date = time_events[
@@ -1901,7 +1901,7 @@ asset_config_after_if_else@31:
     // smart_contracts/base_d_asa/contract.py:272
     // self.issuance_date = time_events[cfg.ISSUANCE_DATE_IDX].native
     dup
-    pushint 18 // 18
+    pushint 18
     extract_uint64
     bytec 5 // "issuance_date"
     swap
@@ -1917,7 +1917,7 @@ asset_config_after_if_else@31:
     bytec 4 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
-    pushint 4 // 4
+    pushint 4
     +
     ==
     bz asset_config_after_if_else@37
@@ -1944,7 +1944,7 @@ asset_config_after_if_else@37:
     // smart_contracts/base_d_asa/contract.py:567
     // self.status = UInt64(cfg.STATUS_ACTIVE)
     bytec_2 // "status"
-    pushint 100 // 100
+    pushint 100
     app_global_put
     // smart_contracts/base_d_asa/contract.py:484
     // @arc4.abimethod
@@ -1972,7 +1972,7 @@ set_secondary_time_events:
     dup
     intc_3 // 8
     *
-    pushint 2 // 2
+    pushint 2
     +
     uncover 2
     len
@@ -2026,7 +2026,7 @@ set_secondary_time_events_after_if_else@3:
     dup
     extract 2 0
     bury 4
-    pushint 2 // 2
+    pushint 2
     extract_uint64
     // smart_contracts/base_d_asa/contract.py:598-601
     // self.issuance_date
@@ -2173,7 +2173,7 @@ assign_role:
     dup
     intc_0 // 0
     extract_uint16 // on error: invalid array length header
-    pushint 2 // 2
+    pushint 2
     +
     swap
     len
@@ -2191,7 +2191,7 @@ assign_role:
     dup
     // smart_contracts/base_d_asa/contract.py:649
     // UInt64(cst.ROLE_ARRANGER),
-    pushint 20 // 20
+    pushint 20
     // smart_contracts/base_d_asa/contract.py:648-655
     // assert role.native in (
     //     UInt64(cst.ROLE_ARRANGER),
@@ -2206,7 +2206,7 @@ assign_role:
     dup
     // smart_contracts/base_d_asa/contract.py:650
     // UInt64(cst.ROLE_ACCOUNT_MANAGER),
-    pushint 40 // 40
+    pushint 40
     // smart_contracts/base_d_asa/contract.py:648-655
     // assert role.native in (
     //     UInt64(cst.ROLE_ARRANGER),
@@ -2221,7 +2221,7 @@ assign_role:
     dup
     // smart_contracts/base_d_asa/contract.py:651
     // UInt64(cst.ROLE_PRIMARY_DEALER),
-    pushint 50 // 50
+    pushint 50
     // smart_contracts/base_d_asa/contract.py:648-655
     // assert role.native in (
     //     UInt64(cst.ROLE_ARRANGER),
@@ -2236,7 +2236,7 @@ assign_role:
     dup
     // smart_contracts/base_d_asa/contract.py:652
     // UInt64(cst.ROLE_TRUSTEE),
-    pushint 60 // 60
+    pushint 60
     // smart_contracts/base_d_asa/contract.py:648-655
     // assert role.native in (
     //     UInt64(cst.ROLE_ARRANGER),
@@ -2251,7 +2251,7 @@ assign_role:
     dup
     // smart_contracts/base_d_asa/contract.py:653
     // UInt64(cst.ROLE_AUTHORITY),
-    pushint 70 // 70
+    pushint 70
     // smart_contracts/base_d_asa/contract.py:648-655
     // assert role.native in (
     //     UInt64(cst.ROLE_ARRANGER),
@@ -2266,7 +2266,7 @@ assign_role:
     dup
     // smart_contracts/base_d_asa/contract.py:654
     // UInt64(cst.ROLE_INTEREST_ORACLE),
-    pushint 80 // 80
+    pushint 80
     // smart_contracts/base_d_asa/contract.py:648-655
     // assert role.native in (
     //     UInt64(cst.ROLE_ARRANGER),
@@ -2295,7 +2295,7 @@ assign_role_bool_merge@9:
     assert // Invalid role identifier
     // smart_contracts/base_d_asa/contract.py:657
     // case UInt64(cst.ROLE_ARRANGER):
-    pushints 20 40 50 60 70 80 // 20, 40, 50, 60, 70, 80
+    pushints 20 40 50 60 70 80
     // smart_contracts/base_d_asa/contract.py:656-685
     // match role.native:
     //     case UInt64(cst.ROLE_ARRANGER):
@@ -2509,7 +2509,7 @@ revoke_role:
     dup
     // smart_contracts/base_d_asa/contract.py:709
     // UInt64(cst.ROLE_ACCOUNT_MANAGER),
-    pushint 40 // 40
+    pushint 40
     // smart_contracts/base_d_asa/contract.py:708-714
     // assert role.native in (
     //     UInt64(cst.ROLE_ACCOUNT_MANAGER),
@@ -2523,7 +2523,7 @@ revoke_role:
     dup
     // smart_contracts/base_d_asa/contract.py:710
     // UInt64(cst.ROLE_PRIMARY_DEALER),
-    pushint 50 // 50
+    pushint 50
     // smart_contracts/base_d_asa/contract.py:708-714
     // assert role.native in (
     //     UInt64(cst.ROLE_ACCOUNT_MANAGER),
@@ -2537,7 +2537,7 @@ revoke_role:
     dup
     // smart_contracts/base_d_asa/contract.py:711
     // UInt64(cst.ROLE_TRUSTEE),
-    pushint 60 // 60
+    pushint 60
     // smart_contracts/base_d_asa/contract.py:708-714
     // assert role.native in (
     //     UInt64(cst.ROLE_ACCOUNT_MANAGER),
@@ -2551,7 +2551,7 @@ revoke_role:
     dup
     // smart_contracts/base_d_asa/contract.py:712
     // UInt64(cst.ROLE_AUTHORITY),
-    pushint 70 // 70
+    pushint 70
     // smart_contracts/base_d_asa/contract.py:708-714
     // assert role.native in (
     //     UInt64(cst.ROLE_ACCOUNT_MANAGER),
@@ -2565,7 +2565,7 @@ revoke_role:
     dup
     // smart_contracts/base_d_asa/contract.py:713
     // UInt64(cst.ROLE_INTEREST_ORACLE),
-    pushint 80 // 80
+    pushint 80
     // smart_contracts/base_d_asa/contract.py:708-714
     // assert role.native in (
     //     UInt64(cst.ROLE_ACCOUNT_MANAGER),
@@ -2593,7 +2593,7 @@ revoke_role_bool_merge@8:
     // smart_contracts/base_d_asa/contract.py:716-717
     // # Arranger role can not be revoked (just rotated)
     // case UInt64(cst.ROLE_ACCOUNT_MANAGER):
-    pushints 40 50 60 70 80 // 40, 50, 60, 70, 80
+    pushints 40 50 60 70 80
     // smart_contracts/base_d_asa/contract.py:715-733
     // match role.native:
     //     # Arranger role can not be revoked (just rotated)
@@ -2889,7 +2889,7 @@ primary_distribution:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    pushint 100 // 100
+    pushint 100
     ==
     // smart_contracts/base_d_asa/contract.py:289-292
     // self.status_is_active()
@@ -3082,7 +3082,7 @@ primary_distribution_bool_merge@13:
     assert // check self.unit_value exists
     itob
     uncover 2
-    pushint 40 // 40
+    pushint 40
     uncover 2
     box_replace
     // smart_contracts/base_d_asa/contract.py:841
@@ -3180,13 +3180,13 @@ set_account_suspension:
     intc_0 // 0
     getbit
     dig 1
-    pushint 56 // 56
+    pushint 56
     intc_1 // 1
     box_extract
     intc_0 // 0
     uncover 2
     setbit
-    pushint 56 // 56
+    pushint 56
     swap
     box_replace
     // smart_contracts/base_d_asa/contract.py:882
@@ -3320,7 +3320,7 @@ get_asset_info:
     bz get_asset_info_after_if_else@4
     // smart_contracts/base_d_asa/contract.py:910
     // performance = UInt64(cst.PRF_MATURED)
-    pushint 4 // 4
+    pushint 4
     bury 2
 
 get_asset_info_after_if_else@4:
@@ -3334,7 +3334,7 @@ get_asset_info_after_if_else@4:
     bz get_asset_info_after_if_else@6
     // smart_contracts/base_d_asa/contract.py:913
     // performance = UInt64(cst.PRF_DEFAULTED)
-    pushint 3 // 3
+    pushint 3
     bury 2
 
 get_asset_info_after_if_else@6:
@@ -3393,7 +3393,7 @@ get_asset_info_after_if_else@6:
     itob
     dup
     bitlen
-    pushint 16 // 16
+    pushint 16
     <=
     assert // overflow
     extract 6 2
@@ -3406,7 +3406,7 @@ get_asset_info_after_if_else@6:
     itob
     dup
     bitlen
-    pushint 16 // 16
+    pushint 16
     <=
     assert // overflow
     extract 6 2
@@ -3584,7 +3584,7 @@ get_time_events:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    pushint 100 // 100
+    pushint 100
     ==
     // smart_contracts/base_d_asa/contract.py:963
     // if self.status_is_active():
@@ -3727,7 +3727,7 @@ count_due_coupons_else_body@2:
     bytec 23 // "due_coupons_watermark"
     app_global_get_ex
     assert // check self.due_coupons_watermark exists
-    pushint 3 // 3
+    pushint 3
     +
     dup
     frame_bury 0
@@ -3735,7 +3735,7 @@ count_due_coupons_else_body@2:
     // coupon_due_date = self.time_events.value[coupon_idx].native
     intc_3 // 8
     *
-    pushint 2 // 2
+    pushint 2
     +
     bytec 9 // 0x74696d654576656e7473
     swap
@@ -3772,7 +3772,7 @@ count_due_coupons_while_top@4:
     // coupon_due_date = self.time_events.value[coupon_idx].native
     intc_3 // 8
     *
-    pushint 2 // 2
+    pushint 2
     +
     bytec 9 // 0x74696d654576656e7473
     swap
@@ -3785,7 +3785,7 @@ count_due_coupons_after_while@6:
     // smart_contracts/fixed_coupon_bond/contract.py:66
     // due_coupons = coupon_idx - cfg.FIRST_COUPON_DATE_IDX
     frame_dig 0
-    pushint 3 // 3
+    pushint 3
     -
     frame_bury 2
     b count_due_coupons_after_if_else@8
@@ -3799,14 +3799,14 @@ coupon_due_date:
     proto 1 1
     // smart_contracts/fixed_coupon_bond/contract.py:72
     // return self.time_events.value[cfg.FIRST_COUPON_DATE_IDX + coupon - 1].native
-    pushint 3 // 3
+    pushint 3
     frame_dig -1
     +
     intc_1 // 1
     -
     intc_3 // 8
     *
-    pushint 2 // 2
+    pushint 2
     +
     bytec 9 // 0x74696d654576656e7473
     swap
@@ -3912,20 +3912,20 @@ coupon_interest_amount:
     frame_dig -1
     intc_1 // 1
     -
-    pushint 2 // 2
+    pushint 2
     *
-    pushint 2 // 2
+    pushint 2
     +
     bytec 15 // 0x636f75706f6e5261746573
     swap
-    pushint 2 // 2
+    pushint 2
     box_extract
     btoi
     // smart_contracts/fixed_coupon_bond/contract.py:105
     // return principal_amount * coupon_rate_bps // cst.BPS
     frame_dig -2
     *
-    pushint 10000 // 10000
+    pushint 10000
     /
     retsub
 
@@ -4113,9 +4113,9 @@ accrued_interest_amount:
     //     due_coupons
     // ].native  # due_coupons is equal to the 0-base idx of next coupon
     frame_dig -1
-    pushint 2 // 2
+    pushint 2
     *
-    pushint 2 // 2
+    pushint 2
     +
     // smart_contracts/fixed_coupon_bond/contract.py:141
     // next_coupon_rate_bps = self.coupon_rates.value[
@@ -4125,7 +4125,7 @@ accrued_interest_amount:
     //     due_coupons
     // ].native  # due_coupons is equal to the 0-base idx of next coupon
     swap
-    pushint 2 // 2
+    pushint 2
     box_extract
     btoi
     // smart_contracts/fixed_coupon_bond/contract.py:145
@@ -4145,7 +4145,7 @@ accrued_interest_amount:
     *
     // smart_contracts/fixed_coupon_bond/contract.py:149
     // cst.BPS * coupon_period
-    pushint 10000 // 10000
+    pushint 10000
     uncover 2
     *
     // smart_contracts/fixed_coupon_bond/contract.py:145-150
@@ -4381,7 +4381,7 @@ assert_time_events_sorted:
     frame_dig -1
     extract 2 0
     frame_dig -1
-    pushint 2 // 2
+    pushint 2
     extract_uint64
     // smart_contracts/base_d_asa/contract.py:247
     // > Global.latest_timestamp
@@ -4414,7 +4414,7 @@ assert_time_events_sorted_for_header@1:
     bz assert_time_events_sorted_after_for@6
     // smart_contracts/base_d_asa/contract.py:251
     // required_budget=UInt64(cfg.OP_UP_TIME_EVENT_SORTING),
-    pushint 65 // 65
+    pushint 65
     // smart_contracts/base_d_asa/contract.py:252
     // fee_source=OpUpFeeSource.AppAccount,  # App funds are not at risk since caller is trusted
     intc_1 // 1
@@ -4642,7 +4642,7 @@ account_units_value:
     concat
     box_get
     assert // check self.account entry exists
-    pushint 40 // 40
+    pushint 40
     extract_uint64
     frame_dig -1
     *

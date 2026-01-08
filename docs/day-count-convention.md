@@ -59,8 +59,8 @@ The *day-count convention* **MUST** be set using the `asset_config` method.
 > debt instruments.
 
 > The AVM (so the D-ASA) time has no notion of calendars. Conversion of serial UNIX
-> timestamps into a year/month/day triple[^1] (and vice versa) can be performed by
-> external Algorand Applications[^2] or client side.
+> timestamps into a year/month/day triple[^1] (and vice versa) can be performed
+> by external Algorand Applications[^2] or client side.
 
 The D-ASA **MAY** specify a *calendar* \\([CLDR]\\).
 
