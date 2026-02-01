@@ -36,7 +36,7 @@ pip-audit = "^2.10.0"
 pre-commit = "^4.5.1"
 puyapy = "^5.6.0"
 urllib3 = "^2.6.3"
-pip = "^25.3"
+pip = "^26.0"
 
 [build-system]
 requires = ["poetry-core"]
