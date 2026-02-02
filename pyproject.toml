@@ -26,7 +26,7 @@ algorand-python = "^3.3.0"
 
 [tool.poetry.group.dev.dependencies]
 algokit-client-generator = "^2.2.0"
-black = { extras = ["d"], version = "^25.12.0" }
+black = { extras = ["d"], version = "^26.1.0" }
 ruff = "^0.14.10"
 mypy = "^1.19.1"
 pytest = "^9.0.2"
