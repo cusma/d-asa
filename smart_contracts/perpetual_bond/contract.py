@@ -1,11 +1,12 @@
 # pyright: reportMissingModuleSource=false
 from algopy import (
+    Account,
+    Bytes,
     Global,
     StateTotals,
     Txn,
     UInt64,
     arc4,
-    subroutine,
 )
 
 from smart_contracts.base_d_asa.contract import BaseDAsa
@@ -42,28 +43,24 @@ class PerpetualBond(
         self.coupon_period = UInt64()
         self.paid_coupon_units = UInt64()
 
-    @subroutine
     def assert_time_schedule_limits(self, time_events: typ.TimeEvents) -> None:
         # The perpetual bond has undefined coupons (total_coupons = 0) and no maturity date
         assert (
             time_events.length == self.total_coupons + cfg.TIME_SCHEDULE_LIMITS
         ), err.INVALID_TIME_EVENTS_LENGTH
 
-    @subroutine
     def assert_time_periods(self, time_periods: typ.TimePeriods) -> None:
         # The perpetual bond defines a single time period for the coupon duration with unlimited repetitions
         assert time_periods.length == UInt64(1), err.INVALID_TIME_PERIODS
-        coupon_period_duration = time_periods[0][0].native
-        repetitions = time_periods[0][1].native
+        coupon_period_duration = time_periods[0][0]
+        repetitions = time_periods[0][1]
         assert coupon_period_duration > UInt64(0), err.INVALID_TIME_PERIOD_DURATION
         assert repetitions == UInt64(0), err.INVALID_TIME_PERIOD_REPETITIONS
 
-    @subroutine
     def set_time_periods(self, time_periods: typ.TimePeriods) -> None:
         self.time_periods.value = time_periods.copy()
-        self.coupon_period = self.time_periods.value[0][0].native
+        self.coupon_period = self.time_periods.value[0][0]
 
-    @subroutine
     def count_due_coupons(self) -> UInt64:
         due_coupons = UInt64(0)
         current_ts = Global.latest_timestamp
@@ -72,38 +69,31 @@ class PerpetualBond(
             # div-by-zero: coupon_period != 0 due to assert_time_periods checks
         return due_coupons
 
-    @subroutine
     def coupon_due_date(self, coupon: UInt64) -> UInt64:
         return self.issuance_date + coupon * self.coupon_period
 
-    @subroutine
     def latest_coupon_due_date(self, due_coupons: UInt64) -> UInt64:
         coupon_due_date = UInt64()
         if due_coupons >= UInt64(1):
             coupon_due_date = self.coupon_due_date(due_coupons)
         return coupon_due_date
 
-    @subroutine
     def next_coupon_due_date(self, due_coupons: UInt64) -> UInt64:
         return self.coupon_due_date(due_coupons + 1)
 
-    @subroutine
     def all_due_coupons_paid(self, due_coupons: UInt64) -> bool:
         return self.paid_coupon_units >= self.circulating_units * due_coupons
 
-    @subroutine
     def assert_no_pending_coupon_payment(
-        self, holding_address: arc4.Address, due_coupons: UInt64
+        self, holding_address: Account, due_coupons: UInt64
     ) -> None:
         assert (
             self.account[holding_address].paid_coupons == due_coupons
         ), err.PENDING_COUPON_PAYMENT
 
-    @subroutine
     def coupon_interest_amount(self, principal_amount: UInt64) -> UInt64:
         return principal_amount * self.interest_rate // cst.BPS
 
-    @subroutine
     def day_count_factor(self, due_coupons: UInt64) -> typ.DayCountFactor:
         # The reference implementation supports only the Actual/Actual and Continuous day-count conventions
         if not due_coupons:
@@ -116,23 +106,21 @@ class PerpetualBond(
             coupon_accrued_period = self.days_in(coupon_accrued_period)
             coupon_period = self.days_in(coupon_period)
         return typ.DayCountFactor(
-            numerator=arc4.UInt64(coupon_accrued_period),
-            denominator=arc4.UInt64(coupon_period),
+            numerator=coupon_accrued_period,
+            denominator=coupon_period,
         )
 
-    @subroutine
     def is_accruing_interest(self) -> bool:
         return self.issuance_date != 0 and Global.latest_timestamp > self.issuance_date
 
-    @subroutine
     def accrued_interest_amount(
-        self, holding_address: arc4.Address, units: UInt64, due_coupons: UInt64
+        self, holding_address: Account, units: UInt64, due_coupons: UInt64
     ) -> UInt64:
         # The following assert safeguards the subroutine from forbidden invocations
         self.assert_no_pending_coupon_payment(holding_address, due_coupons)
         day_count_factor = self.day_count_factor(due_coupons)
-        coupon_accrued_period = day_count_factor.numerator.native
-        coupon_period = day_count_factor.denominator.native
+        coupon_accrued_period = day_count_factor.numerator
+        coupon_period = day_count_factor.denominator
         return (
             self.account_units_value(holding_address, units)
             * self.interest_rate
@@ -145,10 +133,11 @@ class PerpetualBond(
     @arc4.abimethod
     def asset_transfer(
         self,
-        sender_holding_address: arc4.Address,
-        receiver_holding_address: arc4.Address,
-        units: arc4.UInt64,
-    ) -> arc4.UInt64:
+        *,
+        sender_holding_address: Account,
+        receiver_holding_address: Account,
+        units: UInt64,
+    ) -> UInt64:
         """
         Transfer D-ASA units between accounts
 
@@ -173,7 +162,7 @@ class PerpetualBond(
         self.assert_asset_transfer_preconditions(
             sender_holding_address,
             receiver_holding_address,
-            units.native,
+            units,
         )
 
         # Transfer is forbidden in case of pending coupon payments
@@ -183,17 +172,17 @@ class PerpetualBond(
         # Transferred units value (must be computed before the transfer)
         sender_unit_value = self.account[sender_holding_address].unit_value
         accrued_interest = self.accrued_interest_amount(
-            sender_holding_address, units.native, due_coupons
+            sender_holding_address, units, due_coupons
         )
 
         self.transfer_units(
-            sender_holding_address, receiver_holding_address, units.native
+            sender_holding_address, receiver_holding_address, units
         )
-        return arc4.UInt64(units.native * sender_unit_value.native + accrued_interest)
+        return units * sender_unit_value + accrued_interest
 
     @arc4.abimethod
     def pay_coupon(
-        self, holding_address: arc4.Address, payment_info: arc4.DynamicBytes
+        self, *, holding_address: Account, payment_info: Bytes
     ) -> typ.PaymentResult:
         """
         Pay due coupon to an account
@@ -219,10 +208,10 @@ class PerpetualBond(
         self.assert_is_not_defaulted()
         self.assert_is_not_suspended()
         self.assert_valid_holding_address(holding_address)
-        units = self.account[holding_address].units.native
+        units = self.account[holding_address].units
         assert units > 0, err.NO_UNITS
         due_coupons = self.count_due_coupons()
-        account_paid_coupons = self.account[holding_address].paid_coupons.native
+        account_paid_coupons = self.account[holding_address].paid_coupons
         assert due_coupons > account_paid_coupons, err.NO_DUE_COUPON
         # The following conditions verify if other accounts are still waiting for the payment of previous coupons
         assert self.all_due_coupons_paid(
@@ -242,18 +231,16 @@ class PerpetualBond(
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
             payment_amount = UInt64()
 
-        self.account[holding_address].paid_coupons = arc4.UInt64(
-            self.account[holding_address].paid_coupons.native + 1
-        )
+        self.account[holding_address].paid_coupons += 1
         self.paid_coupon_units += units
         return typ.PaymentResult(
-            amount=arc4.UInt64(payment_amount),
-            timestamp=arc4.UInt64(Global.latest_timestamp),
-            context=payment_info.copy(),  # TODO: Add info on failed payment
+            amount=payment_amount,
+            timestamp=Global.latest_timestamp,
+            context=payment_info,  # TODO: Add info on failed payment
         )
 
     @arc4.abimethod
-    def update_interest_rate(self, interest_rate: arc4.UInt64) -> arc4.UInt64:
+    def update_interest_rate(self, *, interest_rate: UInt64) -> UInt64:
         """
         Update variable interest rates in bps
 
@@ -276,12 +263,12 @@ class PerpetualBond(
         assert self.all_due_coupons_paid(due_coupons), err.PENDING_COUPON_PAYMENT
 
         # Update interest rate
-        self.interest_rate = interest_rate.native
-        return arc4.UInt64(Global.latest_timestamp)
+        self.interest_rate = interest_rate
+        return Global.latest_timestamp
 
     @arc4.abimethod(readonly=True)
     def get_account_units_current_value(
-        self, holding_address: arc4.Address, units: arc4.UInt64
+        self, *, holding_address: Account, units: UInt64
     ) -> typ.CurrentUnitsValue:
         """
         Get account's units current value and accrued interest
@@ -305,12 +292,12 @@ class PerpetualBond(
         ), err.NO_PRIMARY_DISTRIBUTION
         self.assert_valid_holding_address(holding_address)
         assert (
-            0 < units <= self.account[holding_address].units.native
+            0 < units <= self.account[holding_address].units
         ), err.INVALID_UNITS
 
         # Value during primary distribution
         account_units_nominal_value = self.account_units_value(
-            holding_address, units.native
+            holding_address, units
         )
         # Accruing interest during primary distribution
         accrued_interest = UInt64()
@@ -323,21 +310,21 @@ class PerpetualBond(
         if self.is_accruing_interest():
             day_count_factor = self.day_count_factor(due_coupons)
             accrued_interest = self.accrued_interest_amount(
-                holding_address, units.native, due_coupons
+                holding_address, units, due_coupons
             )
-            numerator = day_count_factor.numerator.native
-            denominator = day_count_factor.denominator.native
+            numerator = day_count_factor.numerator
+            denominator = day_count_factor.denominator
         return typ.CurrentUnitsValue(
-            units_value=arc4.UInt64(account_units_nominal_value),
-            accrued_interest=arc4.UInt64(accrued_interest),
+            units_value=account_units_nominal_value,
+            accrued_interest=accrued_interest,
             day_count_factor=typ.DayCountFactor(
-                numerator=arc4.UInt64(numerator),
-                denominator=arc4.UInt64(denominator),
+                numerator=numerator,
+                denominator=denominator,
             ),
         )
 
     @arc4.abimethod(readonly=True)
-    def get_payment_amount(self, holding_address: arc4.Address) -> typ.PaymentAmounts:
+    def get_payment_amount(self, *, holding_address: Account) -> typ.PaymentAmounts:
         """
         Get the next payment amount
 
@@ -357,8 +344,8 @@ class PerpetualBond(
             // cst.BPS
         )
         return typ.PaymentAmounts(
-            interest=arc4.UInt64(interest_amount),
-            principal=arc4.UInt64(),
+            interest=interest_amount,
+            principal=UInt64(0),
         )
 
     @arc4.abimethod(readonly=True)
@@ -377,17 +364,17 @@ class PerpetualBond(
         denominator = UInt64()
         if self.is_accruing_interest():
             day_count_factor = self.day_count_factor(due_coupons)
-            numerator = day_count_factor.numerator.native
-            denominator = day_count_factor.denominator.native
+            numerator = day_count_factor.numerator
+            denominator = day_count_factor.denominator
         return typ.CouponsInfo(
-            total_coupons=arc4.UInt64(self.total_coupons),
-            due_coupons=arc4.UInt64(due_coupons),
-            next_coupon_due_date=arc4.UInt64(next_coupon_due_date),
+            total_coupons=self.total_coupons,
+            due_coupons=due_coupons,
+            next_coupon_due_date=next_coupon_due_date,
             day_count_factor=typ.DayCountFactor(
-                numerator=arc4.UInt64(numerator),
-                denominator=arc4.UInt64(denominator),
+                numerator=numerator,
+                denominator=denominator,
             ),
-            all_due_coupons_paid=arc4.Bool(all_due_coupons_paid),
+            all_due_coupons_paid=all_due_coupons_paid,
         )
 
     @arc4.abimethod(readonly=True)
