@@ -871,10 +871,10 @@ class BaseDAsa(ARC4Contract):
         Returns:
             Time events
         """
+        time_events = typ.TimeEvents()
         if self.status_is_active():
-            return self.time_events.value
-        else:
-            return typ.TimeEvents()
+            time_events = self.time_events.value.copy()
+        return time_events
 
     @arc4.abimethod(readonly=True)
     def get_secondary_market_schedule(self) -> typ.TimeEvents:
