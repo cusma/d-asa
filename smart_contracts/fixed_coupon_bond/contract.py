@@ -143,6 +143,7 @@ class FixedCouponBond(
     @arc4.abimethod
     def asset_transfer(
         self,
+        *,
         sender_holding_address: Account,
         receiver_holding_address: Account,
         units: UInt64,
@@ -189,7 +190,7 @@ class FixedCouponBond(
 
     @arc4.abimethod
     def pay_coupon(
-        self, holding_address: Account, payment_info: Bytes
+        self, *, holding_address: Account, payment_info: Bytes
     ) -> typ.PaymentResult:
         """
         Pay due coupon to an account
@@ -249,7 +250,7 @@ class FixedCouponBond(
 
     @arc4.abimethod
     def pay_principal(
-        self, holding_address: Account, payment_info: Bytes
+        self, *, holding_address: Account, payment_info: Bytes
     ) -> typ.PaymentResult:
         """
         Pay the outstanding principal to an account
@@ -297,7 +298,7 @@ class FixedCouponBond(
 
     @arc4.abimethod(readonly=True)
     def get_account_units_current_value(
-        self, holding_address: Account, units: UInt64
+        self, *, holding_address: Account, units: UInt64
     ) -> typ.CurrentUnitsValue:
         """
         Get account's units current value and accrued interest
@@ -362,7 +363,7 @@ class FixedCouponBond(
         return coupon_rates
 
     @arc4.abimethod(readonly=True)
-    def get_payment_amount(self, holding_address: Account) -> typ.PaymentAmounts:
+    def get_payment_amount(self, *, holding_address: Account) -> typ.PaymentAmounts:
         """
         Get the next payment amount
 
