@@ -505,7 +505,7 @@ asset_transfer_after_if_else@13:
     box_replace
 
 asset_transfer_after_if_else@17:
-    // smart_contracts/perpetual_bond/contract.py:181
+    // smart_contracts/perpetual_bond/contract.py:179
     // return units * sender_unit_value + accrued_interest
     dup
     dig 4
@@ -554,7 +554,7 @@ asset_transfer_bool_false@5:
 
 // smart_contracts.perpetual_bond.contract.PerpetualBond.pay_coupon[routing]() -> void:
 pay_coupon:
-    // smart_contracts/perpetual_bond/contract.py:183
+    // smart_contracts/perpetual_bond/contract.py:181
     // @arc4.abimethod
     txna ApplicationArgs 1
     dupn 2
@@ -582,14 +582,14 @@ pay_coupon:
     assert // check self.status exists
     pushint 100
     ==
-    // smart_contracts/perpetual_bond/contract.py:206-207
+    // smart_contracts/perpetual_bond/contract.py:204-205
     // # The reference implementation does not restrict caller authorization
     // assert self.status_is_active(), err.UNAUTHORIZED
     assert // Not authorized
-    // smart_contracts/perpetual_bond/contract.py:208
+    // smart_contracts/perpetual_bond/contract.py:206
     // self.assert_is_not_defaulted()
     callsub assert_is_not_defaulted
-    // smart_contracts/perpetual_bond/contract.py:209
+    // smart_contracts/perpetual_bond/contract.py:207
     // self.assert_is_not_suspended()
     callsub assert_is_not_suspended
     // smart_contracts/base_d_asa/contract.py:160
@@ -601,7 +601,7 @@ pay_coupon:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/perpetual_bond/contract.py:211
+    // smart_contracts/perpetual_bond/contract.py:209
     // units = self.account[holding_address].units
     dup
     box_get
@@ -610,26 +610,26 @@ pay_coupon:
     extract_uint64
     dup
     cover 2
-    // smart_contracts/perpetual_bond/contract.py:212
+    // smart_contracts/perpetual_bond/contract.py:210
     // assert units > 0, err.NO_UNITS
     assert // No D-ASA units
-    // smart_contracts/perpetual_bond/contract.py:213
+    // smart_contracts/perpetual_bond/contract.py:211
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
-    // smart_contracts/perpetual_bond/contract.py:214
+    // smart_contracts/perpetual_bond/contract.py:212
     // account_paid_coupons = self.account[holding_address].paid_coupons
     dig 1
     box_get
     assert // check self.account entry exists
     pushint 48
     extract_uint64
-    // smart_contracts/perpetual_bond/contract.py:215
+    // smart_contracts/perpetual_bond/contract.py:213
     // assert due_coupons > account_paid_coupons, err.NO_DUE_COUPON
     swap
     dig 1
     >
     assert // No due coupon to pay
-    // smart_contracts/perpetual_bond/contract.py:216-219
+    // smart_contracts/perpetual_bond/contract.py:214-217
     // # The following conditions verify if other accounts are still waiting for the payment of previous coupons
     // assert self.all_due_coupons_paid(
     //     account_paid_coupons
@@ -670,10 +670,10 @@ pay_coupon:
     intc_1 // 1
 
 pay_coupon_bool_merge@15:
-    // smart_contracts/perpetual_bond/contract.py:222
+    // smart_contracts/perpetual_bond/contract.py:220
     // if self.is_payment_executable(holding_address):
     bz pay_coupon_else_body@3
-    // smart_contracts/perpetual_bond/contract.py:224
+    // smart_contracts/perpetual_bond/contract.py:222
     // self.account_total_units_value(holding_address)
     dig 3
     callsub account_total_units_value
@@ -709,7 +709,7 @@ pay_coupon_bool_merge@15:
     //     >= payment_amount
     // ), err.NOT_ENOUGH_FUNDS
     assert // Not enough funds for the payment
-    // smart_contracts/perpetual_bond/contract.py:228-229
+    // smart_contracts/perpetual_bond/contract.py:226-227
     // # The reference implementation has the same asset for denomination and settlement, no conversion needed
     // self.pay(self.account[holding_address].payment_address, payment_amount)
     dig 4
@@ -748,7 +748,7 @@ pay_coupon_bool_merge@15:
     itxn_submit
 
 pay_coupon_after_if_else@4:
-    // smart_contracts/perpetual_bond/contract.py:234
+    // smart_contracts/perpetual_bond/contract.py:232
     // self.account[holding_address].paid_coupons += 1
     dig 2
     dup
@@ -762,7 +762,7 @@ pay_coupon_after_if_else@4:
     pushint 48
     swap
     box_replace
-    // smart_contracts/perpetual_bond/contract.py:235
+    // smart_contracts/perpetual_bond/contract.py:233
     // self.paid_coupon_units += units
     intc_0 // 0
     bytec 23 // "paid_coupon_units"
@@ -773,10 +773,10 @@ pay_coupon_after_if_else@4:
     bytec 23 // "paid_coupon_units"
     swap
     app_global_put
-    // smart_contracts/perpetual_bond/contract.py:238
+    // smart_contracts/perpetual_bond/contract.py:236
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // smart_contracts/perpetual_bond/contract.py:236-240
+    // smart_contracts/perpetual_bond/contract.py:234-238
     // return typ.PaymentResult(
     //     amount=payment_amount,
     //     timestamp=Global.latest_timestamp,
@@ -799,7 +799,7 @@ pay_coupon_after_if_else@4:
     concat
     swap
     concat
-    // smart_contracts/perpetual_bond/contract.py:183
+    // smart_contracts/perpetual_bond/contract.py:181
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     swap
@@ -809,7 +809,7 @@ pay_coupon_after_if_else@4:
     return
 
 pay_coupon_else_body@3:
-    // smart_contracts/perpetual_bond/contract.py:231-232
+    // smart_contracts/perpetual_bond/contract.py:229-230
     // # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
     // payment_amount = UInt64()
     intc_0 // 0
@@ -823,7 +823,7 @@ pay_coupon_bool_false@14:
 // smart_contracts.perpetual_bond.contract.PerpetualBond.update_interest_rate[routing]() -> void:
 update_interest_rate:
     bytec_2 // ""
-    // smart_contracts/perpetual_bond/contract.py:242
+    // smart_contracts/perpetual_bond/contract.py:240
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -899,29 +899,29 @@ update_interest_rate_bool_merge@6:
     //     <= self.interest_oracle[caller].role_validity_end
     // ), err.UNAUTHORIZED
     assert // Not authorized
-    // smart_contracts/perpetual_bond/contract.py:260
+    // smart_contracts/perpetual_bond/contract.py:258
     // self.assert_is_not_defaulted()
     callsub assert_is_not_defaulted
-    // smart_contracts/perpetual_bond/contract.py:261
+    // smart_contracts/perpetual_bond/contract.py:259
     // self.assert_is_not_suspended()
     callsub assert_is_not_suspended
-    // smart_contracts/perpetual_bond/contract.py:262
+    // smart_contracts/perpetual_bond/contract.py:260
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
-    // smart_contracts/perpetual_bond/contract.py:263
+    // smart_contracts/perpetual_bond/contract.py:261
     // assert self.all_due_coupons_paid(due_coupons), err.PENDING_COUPON_PAYMENT
     callsub all_due_coupons_paid
     assert // Pending due coupon payment
-    // smart_contracts/perpetual_bond/contract.py:265-266
+    // smart_contracts/perpetual_bond/contract.py:263-264
     // # Update interest rate
     // self.interest_rate = interest_rate
     bytec 6 // "interest_rate"
     dig 2
     app_global_put
-    // smart_contracts/perpetual_bond/contract.py:267
+    // smart_contracts/perpetual_bond/contract.py:265
     // return Global.latest_timestamp
     global LatestTimestamp
-    // smart_contracts/perpetual_bond/contract.py:242
+    // smart_contracts/perpetual_bond/contract.py:240
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -941,7 +941,7 @@ get_account_units_current_value:
     intc_0 // 0
     bytec_2 // ""
     dupn 4
-    // smart_contracts/perpetual_bond/contract.py:269
+    // smart_contracts/perpetual_bond/contract.py:267
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -956,17 +956,17 @@ get_account_units_current_value:
     ==
     assert // invalid number of bytes for arc4.uint64
     btoi
-    // smart_contracts/perpetual_bond/contract.py:290
+    // smart_contracts/perpetual_bond/contract.py:288
     // self.primary_distribution_opening_date
     intc_0 // 0
     bytec 7 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
-    // smart_contracts/perpetual_bond/contract.py:290-291
+    // smart_contracts/perpetual_bond/contract.py:288-289
     // self.primary_distribution_opening_date
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     bz get_account_units_current_value_bool_false@4
-    // smart_contracts/perpetual_bond/contract.py:291
+    // smart_contracts/perpetual_bond/contract.py:289
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     global LatestTimestamp
     intc_0 // 0
@@ -974,14 +974,14 @@ get_account_units_current_value:
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
     >=
-    // smart_contracts/perpetual_bond/contract.py:290-291
+    // smart_contracts/perpetual_bond/contract.py:288-289
     // self.primary_distribution_opening_date
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     bz get_account_units_current_value_bool_false@4
     intc_1 // 1
 
 get_account_units_current_value_bool_merge@5:
-    // smart_contracts/perpetual_bond/contract.py:289-292
+    // smart_contracts/perpetual_bond/contract.py:287-290
     // assert (
     //     self.primary_distribution_opening_date
     //     and Global.latest_timestamp >= self.primary_distribution_opening_date
@@ -997,8 +997,8 @@ get_account_units_current_value_bool_merge@5:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/perpetual_bond/contract.py:295
-    // 0 < units <= self.account[holding_address].units
+    // smart_contracts/perpetual_bond/contract.py:292
+    // assert 0 < units <= self.account[holding_address].units, err.INVALID_UNITS
     dup
     bz get_account_units_current_value_bool_false@8
     dig 7
@@ -1012,53 +1012,49 @@ get_account_units_current_value_bool_merge@5:
     intc_1 // 1
 
 get_account_units_current_value_bool_merge@9:
-    // smart_contracts/perpetual_bond/contract.py:294-296
-    // assert (
-    //     0 < units <= self.account[holding_address].units
-    // ), err.INVALID_UNITS
+    // smart_contracts/perpetual_bond/contract.py:292
+    // assert 0 < units <= self.account[holding_address].units, err.INVALID_UNITS
     assert // Invalid amount of units for the account
-    // smart_contracts/perpetual_bond/contract.py:298-301
+    // smart_contracts/perpetual_bond/contract.py:294-295
     // # Value during primary distribution
-    // account_units_nominal_value = self.account_units_value(
-    //     holding_address, units
-    // )
+    // account_units_nominal_value = self.account_units_value(holding_address, units)
     dig 1
     dup
     dig 2
     callsub account_units_value
     bury 8
-    // smart_contracts/perpetual_bond/contract.py:302-303
+    // smart_contracts/perpetual_bond/contract.py:296-297
     // # Accruing interest during primary distribution
     // accrued_interest = UInt64()
     intc_0 // 0
     bury 7
-    // smart_contracts/perpetual_bond/contract.py:304
+    // smart_contracts/perpetual_bond/contract.py:298
     // numerator = UInt64()
     intc_0 // 0
     bury 4
-    // smart_contracts/perpetual_bond/contract.py:305
+    // smart_contracts/perpetual_bond/contract.py:299
     // denominator = UInt64()
     intc_0 // 0
     bury 6
-    // smart_contracts/perpetual_bond/contract.py:307-308
+    // smart_contracts/perpetual_bond/contract.py:301-302
     // # Accruing interest
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
     dup
     bury 6
-    // smart_contracts/perpetual_bond/contract.py:309
+    // smart_contracts/perpetual_bond/contract.py:303
     // self.assert_no_pending_coupon_payment(holding_address, due_coupons)
     callsub assert_no_pending_coupon_payment
-    // smart_contracts/perpetual_bond/contract.py:310
+    // smart_contracts/perpetual_bond/contract.py:304
     // if self.is_accruing_interest():
     callsub is_accruing_interest
     bz get_account_units_current_value_after_if_else@11
-    // smart_contracts/perpetual_bond/contract.py:311
+    // smart_contracts/perpetual_bond/contract.py:305
     // day_count_factor = self.day_count_factor(due_coupons)
     dig 3
     dup
     callsub day_count_factor
-    // smart_contracts/perpetual_bond/contract.py:312-314
+    // smart_contracts/perpetual_bond/contract.py:306-308
     // accrued_interest = self.accrued_interest_amount(
     //     holding_address, units, due_coupons
     // )
@@ -1067,20 +1063,20 @@ get_account_units_current_value_bool_merge@9:
     uncover 3
     callsub accrued_interest_amount
     bury 7
-    // smart_contracts/perpetual_bond/contract.py:315
+    // smart_contracts/perpetual_bond/contract.py:309
     // numerator = day_count_factor.numerator
     dup
     intc_0 // 0
     extract_uint64
     bury 4
-    // smart_contracts/perpetual_bond/contract.py:316
+    // smart_contracts/perpetual_bond/contract.py:310
     // denominator = day_count_factor.denominator
     intc_3 // 8
     extract_uint64
     bury 5
 
 get_account_units_current_value_after_if_else@11:
-    // smart_contracts/perpetual_bond/contract.py:320-323
+    // smart_contracts/perpetual_bond/contract.py:314-317
     // day_count_factor=typ.DayCountFactor(
     //     numerator=numerator,
     //     denominator=denominator,
@@ -1090,7 +1086,7 @@ get_account_units_current_value_after_if_else@11:
     dig 5
     itob
     concat
-    // smart_contracts/perpetual_bond/contract.py:317-324
+    // smart_contracts/perpetual_bond/contract.py:311-318
     // return typ.CurrentUnitsValue(
     //     units_value=account_units_nominal_value,
     //     accrued_interest=accrued_interest,
@@ -1106,7 +1102,7 @@ get_account_units_current_value_after_if_else@11:
     concat
     swap
     concat
-    // smart_contracts/perpetual_bond/contract.py:269
+    // smart_contracts/perpetual_bond/contract.py:267
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -1126,7 +1122,7 @@ get_account_units_current_value_bool_false@4:
 
 // smart_contracts.perpetual_bond.contract.PerpetualBond.get_payment_amount[routing]() -> void:
 get_payment_amount:
-    // smart_contracts/perpetual_bond/contract.py:326
+    // smart_contracts/perpetual_bond/contract.py:320
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -1142,44 +1138,44 @@ get_payment_amount:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/perpetual_bond/contract.py:342
+    // smart_contracts/perpetual_bond/contract.py:336
     // self.account_total_units_value(holding_address)
     callsub account_total_units_value
-    // smart_contracts/perpetual_bond/contract.py:343
+    // smart_contracts/perpetual_bond/contract.py:337
     // * self.interest_rate
     intc_0 // 0
     bytec 6 // "interest_rate"
     app_global_get_ex
     assert // check self.interest_rate exists
-    // smart_contracts/perpetual_bond/contract.py:342-343
+    // smart_contracts/perpetual_bond/contract.py:336-337
     // self.account_total_units_value(holding_address)
     // * self.interest_rate
     *
-    // smart_contracts/perpetual_bond/contract.py:344
+    // smart_contracts/perpetual_bond/contract.py:338
     // // cst.BPS
     intc 5 // 10000
-    // smart_contracts/perpetual_bond/contract.py:342-344
+    // smart_contracts/perpetual_bond/contract.py:336-338
     // self.account_total_units_value(holding_address)
     // * self.interest_rate
     // // cst.BPS
     /
-    // smart_contracts/perpetual_bond/contract.py:346-349
+    // smart_contracts/perpetual_bond/contract.py:340-343
     // return typ.PaymentAmounts(
     //     interest=interest_amount,
     //     principal=UInt64(0),
     // )
     itob
-    // smart_contracts/perpetual_bond/contract.py:348
+    // smart_contracts/perpetual_bond/contract.py:342
     // principal=UInt64(0),
     intc_0 // 0
-    // smart_contracts/perpetual_bond/contract.py:346-349
+    // smart_contracts/perpetual_bond/contract.py:340-343
     // return typ.PaymentAmounts(
     //     interest=interest_amount,
     //     principal=UInt64(0),
     // )
     itob
     concat
-    // smart_contracts/perpetual_bond/contract.py:326
+    // smart_contracts/perpetual_bond/contract.py:320
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -1201,7 +1197,7 @@ get_coupons_status:
     assert // check self.status exists
     pushint 100
     ==
-    // smart_contracts/perpetual_bond/contract.py:360
+    // smart_contracts/perpetual_bond/contract.py:354
     // due_coupons = self.count_due_coupons() if self.status_is_active() else UInt64()
     bz get_coupons_status_ternary_false@3
     callsub count_due_coupons
@@ -1216,46 +1212,46 @@ get_coupons_status_ternary_merge@4:
     +
     callsub coupon_due_date
     bury 3
-    // smart_contracts/perpetual_bond/contract.py:362
+    // smart_contracts/perpetual_bond/contract.py:356
     // all_due_coupons_paid = self.all_due_coupons_paid(due_coupons)
     callsub all_due_coupons_paid
     bury 5
-    // smart_contracts/perpetual_bond/contract.py:363
+    // smart_contracts/perpetual_bond/contract.py:357
     // numerator = UInt64()
     intc_0 // 0
     bury 1
-    // smart_contracts/perpetual_bond/contract.py:364
+    // smart_contracts/perpetual_bond/contract.py:358
     // denominator = UInt64()
     intc_0 // 0
     bury 4
-    // smart_contracts/perpetual_bond/contract.py:365
+    // smart_contracts/perpetual_bond/contract.py:359
     // if self.is_accruing_interest():
     callsub is_accruing_interest
     bz get_coupons_status_after_if_else@6
-    // smart_contracts/perpetual_bond/contract.py:366
+    // smart_contracts/perpetual_bond/contract.py:360
     // day_count_factor = self.day_count_factor(due_coupons)
     dig 2
     callsub day_count_factor
-    // smart_contracts/perpetual_bond/contract.py:367
+    // smart_contracts/perpetual_bond/contract.py:361
     // numerator = day_count_factor.numerator
     dup
     intc_0 // 0
     extract_uint64
     bury 2
-    // smart_contracts/perpetual_bond/contract.py:368
+    // smart_contracts/perpetual_bond/contract.py:362
     // denominator = day_count_factor.denominator
     intc_3 // 8
     extract_uint64
     bury 4
 
 get_coupons_status_after_if_else@6:
-    // smart_contracts/perpetual_bond/contract.py:370
+    // smart_contracts/perpetual_bond/contract.py:364
     // total_coupons=self.total_coupons,
     intc_0 // 0
     bytec 12 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
-    // smart_contracts/perpetual_bond/contract.py:373-376
+    // smart_contracts/perpetual_bond/contract.py:367-370
     // day_count_factor=typ.DayCountFactor(
     //     numerator=numerator,
     //     denominator=denominator,
@@ -1265,7 +1261,7 @@ get_coupons_status_after_if_else@6:
     dig 5
     itob
     concat
-    // smart_contracts/perpetual_bond/contract.py:369-378
+    // smart_contracts/perpetual_bond/contract.py:363-372
     // return typ.CouponsInfo(
     //     total_coupons=self.total_coupons,
     //     due_coupons=due_coupons,
@@ -1291,7 +1287,7 @@ get_coupons_status_after_if_else@6:
     dig 7
     setbit
     concat
-    // smart_contracts/perpetual_bond/contract.py:351
+    // smart_contracts/perpetual_bond/contract.py:345
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -1301,7 +1297,7 @@ get_coupons_status_after_if_else@6:
     return
 
 get_coupons_status_ternary_false@3:
-    // smart_contracts/perpetual_bond/contract.py:360
+    // smart_contracts/perpetual_bond/contract.py:354
     // due_coupons = self.count_due_coupons() if self.status_is_active() else UInt64()
     intc_0 // 0
     bury 3
@@ -1310,7 +1306,7 @@ get_coupons_status_ternary_false@3:
 
 // smart_contracts.perpetual_bond.contract.PerpetualBond.get_time_periods[routing]() -> void:
 get_time_periods:
-    // smart_contracts/perpetual_bond/contract.py:388
+    // smart_contracts/perpetual_bond/contract.py:382
     // time_periods = typ.TimePeriods()
     bytec 33 // 0x0000
     // smart_contracts/base_d_asa/contract.py:100
@@ -1321,10 +1317,10 @@ get_time_periods:
     assert // check self.status exists
     pushint 100
     ==
-    // smart_contracts/perpetual_bond/contract.py:389
+    // smart_contracts/perpetual_bond/contract.py:383
     // if self.status_is_active():
     bz get_time_periods_after_if_else@3
-    // smart_contracts/perpetual_bond/contract.py:390
+    // smart_contracts/perpetual_bond/contract.py:384
     // time_periods = self.time_periods.value.copy()
     bytec 24 // 0x74696d65506572696f6473
     box_get
@@ -1333,7 +1329,7 @@ get_time_periods:
     assert // check self.time_periods exists
 
 get_time_periods_after_if_else@3:
-    // smart_contracts/perpetual_bond/contract.py:380
+    // smart_contracts/perpetual_bond/contract.py:374
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     dig 1
