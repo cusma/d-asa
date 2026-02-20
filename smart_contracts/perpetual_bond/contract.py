@@ -175,9 +175,7 @@ class PerpetualBond(
             sender_holding_address, units, due_coupons
         )
 
-        self.transfer_units(
-            sender_holding_address, receiver_holding_address, units
-        )
+        self.transfer_units(sender_holding_address, receiver_holding_address, units)
         return units * sender_unit_value + accrued_interest
 
     @arc4.abimethod
@@ -291,14 +289,10 @@ class PerpetualBond(
             and Global.latest_timestamp >= self.primary_distribution_opening_date
         ), err.NO_PRIMARY_DISTRIBUTION
         self.assert_valid_holding_address(holding_address)
-        assert (
-            0 < units <= self.account[holding_address].units
-        ), err.INVALID_UNITS
+        assert 0 < units <= self.account[holding_address].units, err.INVALID_UNITS
 
         # Value during primary distribution
-        account_units_nominal_value = self.account_units_value(
-            holding_address, units
-        )
+        account_units_nominal_value = self.account_units_value(holding_address, units)
         # Accruing interest during primary distribution
         accrued_interest = UInt64()
         numerator = UInt64()
