@@ -238,7 +238,7 @@ class PerpetualBond(
         )
 
     @arc4.abimethod
-    def update_interest_rate(self, *, interest_rate: UInt64) -> UInt64:
+    def update_interest_rate(self, *, interest_rate: arc4.UInt16) -> UInt64:
         """
         Update variable interest rates in bps
 
@@ -261,7 +261,7 @@ class PerpetualBond(
         assert self.all_due_coupons_paid(due_coupons), err.PENDING_COUPON_PAYMENT
 
         # Update interest rate
-        self.interest_rate = interest_rate
+        self.interest_rate = interest_rate.as_uint64()
         return Global.latest_timestamp
 
     @arc4.abimethod(readonly=True)

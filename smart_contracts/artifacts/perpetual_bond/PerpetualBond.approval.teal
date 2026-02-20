@@ -180,7 +180,7 @@ main_switch_case_next@5:
     assert
     txn ApplicationID
     bz main_create_NoOp@30
-    pushbytess 0x4fd6a3cc 0x8cf14b51 0x80e51e9f 0x44363d49 0x67db4f20 0xf6a96c8d 0x229b706f 0x89474134 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x402dba47 0xed02759f 0xfad2173e 0x08efea35 0xe4a5ab54 // method "asset_transfer(address,address,uint64)uint64", method "pay_coupon(address,byte[])(uint64,uint64,byte[])", method "update_interest_rate(uint64)uint64", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_payment_amount(address)(uint64,uint64)", method "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)", method "get_time_periods()(uint64,uint64)[]", method "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)"
+    pushbytess 0x4fd6a3cc 0x8cf14b51 0x9316298d 0x44363d49 0x67db4f20 0xf6a96c8d 0x229b706f 0x89474134 0x1d6fc255 0xfef74567 0xb8fc1390 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xf63ace8d 0xbbcca18a 0x1a7babb4 0x402dba47 0xed02759f 0xfad2173e 0x08efea35 0xe4a5ab54 // method "asset_transfer(address,address,uint64)uint64", method "pay_coupon(address,byte[])(uint64,uint64,byte[])", method "update_interest_rate(uint16)uint64", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_payment_amount(address)(uint64,uint64)", method "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)", method "get_time_periods()(uint64,uint64)[]", method "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "assign_role(address,uint8,byte[])uint64", method "revoke_role(address,uint8)uint64", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_asset_suspension(bool)uint64", method "set_account_suspension(address,bool)uint64", method "set_default_status(bool)void", method "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)"
     txna ApplicationArgs 0
     match asset_transfer pay_coupon update_interest_rate get_account_units_current_value get_payment_amount get_coupons_status get_time_periods asset_config set_secondary_time_events assign_role revoke_role open_account close_account primary_distribution set_asset_suspension set_account_suspension set_default_status get_asset_info get_account_info get_time_events get_secondary_market_schedule get_asset_metadata
     err
@@ -828,10 +828,9 @@ update_interest_rate:
     txna ApplicationArgs 1
     dup
     len
-    intc_3 // 8
+    pushint 2
     ==
-    assert // invalid number of bytes for arc4.uint64
-    btoi
+    assert // invalid number of bytes for arc4.uint16
     // smart_contracts/base_d_asa/contract.py:153
     // caller in self.interest_oracle
     bytec 26 // 0x52383023
@@ -914,9 +913,11 @@ update_interest_rate_bool_merge@6:
     assert // Pending due coupon payment
     // smart_contracts/perpetual_bond/contract.py:263-264
     // # Update interest rate
-    // self.interest_rate = interest_rate
+    // self.interest_rate = interest_rate.as_uint64()
+    dig 1
+    btoi
     bytec 6 // "interest_rate"
-    dig 2
+    swap
     app_global_put
     // smart_contracts/perpetual_bond/contract.py:265
     // return Global.latest_timestamp
