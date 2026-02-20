@@ -1,34 +1,35 @@
 from typing import Literal, TypeAlias
 
-from algopy import arc4
+from algopy import Account, Array, Bytes, FixedBytes, String, Struct, UInt64, arc4
 
-CouponRates: TypeAlias = arc4.DynamicArray[arc4.UInt16]
-TimeEvents: TypeAlias = arc4.DynamicArray[arc4.UInt64]
-TimePeriod: TypeAlias = arc4.Tuple[arc4.UInt64, arc4.UInt64]
-TimePeriods: TypeAlias = arc4.DynamicArray[TimePeriod]
-ProspectusHash: TypeAlias = arc4.StaticArray[arc4.Byte, Literal[32]]
+CouponRates: TypeAlias = Array[arc4.UInt16]
+TimeEvents: TypeAlias = Array[UInt64]
+TimePeriod: TypeAlias = tuple[UInt64, UInt64]
+TimePeriods: TypeAlias = Array[TimePeriod]
+ProspectusHash: TypeAlias = FixedBytes[Literal[32]]
 
 
-class AssetInfo(arc4.Struct, kw_only=True):
+class AssetInfo(Struct, kw_only=True):
     """D-ASA Info"""
 
-    denomination_asset_id: arc4.UInt64
-    settlement_asset_id: arc4.UInt64
-    outstanding_principal: arc4.UInt64
-    unit_value: arc4.UInt64
+    denomination_asset_id: UInt64
+    settlement_asset_id: UInt64
+    outstanding_principal: UInt64
+    unit_value: UInt64
     day_count_convention: arc4.UInt8
     principal_discount: arc4.UInt16
     interest_rate: arc4.UInt16
-    total_supply: arc4.UInt64
-    circulating_supply: arc4.UInt64
-    primary_distribution_opening_date: arc4.UInt64
-    primary_distribution_closure_date: arc4.UInt64
-    issuance_date: arc4.UInt64
-    maturity_date: arc4.UInt64
-    suspended: arc4.Bool
+    total_supply: UInt64
+    circulating_supply: UInt64
+    primary_distribution_opening_date: UInt64
+    primary_distribution_closure_date: UInt64
+    issuance_date: UInt64
+    maturity_date: UInt64
+    suspended: bool
     performance: arc4.UInt8
 
 
+# FIXME: Switch to Struct when bytes operations are supported
 class AssetMetadata(arc4.Struct, kw_only=True):
     """D-ASA Metadata"""
 
@@ -39,68 +40,69 @@ class AssetMetadata(arc4.Struct, kw_only=True):
     prepayment_effect: arc4.UInt8
     penalty_type: arc4.UInt8
     prospectus_hash: ProspectusHash
-    prospectus_url: arc4.String
+    prospectus_url: String
 
 
-class AccountInfo(arc4.Struct, kw_only=True):
+class AccountInfo(Struct, kw_only=True):
     """D-ASA Account Info"""
 
-    payment_address: arc4.Address
-    units: arc4.UInt64
-    unit_value: arc4.UInt64
-    paid_coupons: arc4.UInt64
-    suspended: arc4.Bool
+    payment_address: Account
+    units: UInt64
+    unit_value: UInt64
+    paid_coupons: UInt64
+    suspended: bool
 
 
-class DayCountFactor(arc4.Struct, kw_only=True):
+class DayCountFactor(Struct, kw_only=True):
     """D-ASA Day Count Factor"""
 
-    numerator: arc4.UInt64
-    denominator: arc4.UInt64
+    numerator: UInt64
+    denominator: UInt64
 
 
-class CouponsInfo(arc4.Struct, kw_only=True):
+class CouponsInfo(Struct, kw_only=True):
     """D-ASA Coupons Info"""
 
-    total_coupons: arc4.UInt64
-    due_coupons: arc4.UInt64
-    next_coupon_due_date: arc4.UInt64
+    total_coupons: UInt64
+    due_coupons: UInt64
+    next_coupon_due_date: UInt64
     day_count_factor: DayCountFactor
-    all_due_coupons_paid: arc4.Bool
+    all_due_coupons_paid: bool
 
 
-class PaymentAmounts(arc4.Struct, kw_only=True):
+class PaymentAmounts(Struct, kw_only=True):
     """D-ASA Payment Amounts"""
 
-    interest: arc4.UInt64
-    principal: arc4.UInt64
+    interest: UInt64
+    principal: UInt64
 
 
-class PaymentResult(arc4.Struct, kw_only=True):
+class PaymentResult(Struct, kw_only=True):
     """D-ASA Payment Result"""
 
-    amount: arc4.UInt64
-    timestamp: arc4.UInt64
-    context: arc4.DynamicBytes
+    amount: UInt64
+    timestamp: UInt64
+    context: Bytes
 
 
-class SecondaryMarketSchedule(arc4.Struct, kw_only=True):
+class SecondaryMarketSchedule(Struct, kw_only=True):
     """D-ASA Secondary Market Schedule"""
 
-    secondary_market_opening_date: arc4.UInt64
-    secondary_market_closure_date: arc4.UInt64
+    secondary_market_opening_date: UInt64
+    secondary_market_closure_date: UInt64
 
 
-class CurrentUnitsValue(arc4.Struct, kw_only=True):
+class CurrentUnitsValue(Struct, kw_only=True):
     """D-ASA Account's Current Units Value"""
 
-    units_value: arc4.UInt64
-    accrued_interest: arc4.UInt64
+    units_value: UInt64
+    accrued_interest: UInt64
     day_count_factor: DayCountFactor
 
 
+# FIXME: Switch to Struct when bytes operations are supported
 class RoleConfig(arc4.Struct, kw_only=True):
     """D-ASA Role Configuration"""
 
-    role_validity_start: arc4.UInt64
-    role_validity_end: arc4.UInt64
+    role_validity_start: UInt64
+    role_validity_end: UInt64
