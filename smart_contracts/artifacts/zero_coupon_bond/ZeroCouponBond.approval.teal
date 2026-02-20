@@ -409,7 +409,7 @@ asset_transfer_bool_merge@11:
     assert // Sender and receiver units are not fungible
 
 asset_transfer_after_if_else@13:
-    // smart_contracts/zero_coupon_bond/contract.py:110-111
+    // smart_contracts/zero_coupon_bond/contract.py:111-112
     // # Transferred units value (must be computed before the transfer)
     // sender_unit_value = self.account[sender_holding_address].unit_value
     dig 7
@@ -419,10 +419,8 @@ asset_transfer_after_if_else@13:
     pushint 40
     extract_uint64
     bury 5
-    // smart_contracts/zero_coupon_bond/contract.py:112-114
-    // accrued_interest = self.accrued_interest_amount(
-    //     sender_holding_address, units
-    // )
+    // smart_contracts/zero_coupon_bond/contract.py:113
+    // accrued_interest = self.accrued_interest_amount(sender_holding_address, units)
     dig 3
     dig 2
     dup
@@ -481,7 +479,7 @@ asset_transfer_after_if_else@13:
     box_replace
 
 asset_transfer_after_if_else@17:
-    // smart_contracts/zero_coupon_bond/contract.py:119
+    // smart_contracts/zero_coupon_bond/contract.py:116
     // return units * sender_unit_value + accrued_interest
     dup
     dig 4
@@ -530,7 +528,7 @@ asset_transfer_bool_false@5:
 
 // smart_contracts.zero_coupon_bond.contract.ZeroCouponBond.pay_principal[routing]() -> void:
 pay_principal:
-    // smart_contracts/zero_coupon_bond/contract.py:121
+    // smart_contracts/zero_coupon_bond/contract.py:118
     // @arc4.abimethod
     txna ApplicationArgs 1
     dupn 2
@@ -628,10 +626,10 @@ pay_principal:
     intc_1 // 1
 
 pay_principal_bool_merge@17:
-    // smart_contracts/zero_coupon_bond/contract.py:146
+    // smart_contracts/zero_coupon_bond/contract.py:143
     // if self.is_payment_executable(holding_address):
     bz pay_principal_else_body@3
-    // smart_contracts/zero_coupon_bond/contract.py:147
+    // smart_contracts/zero_coupon_bond/contract.py:144
     // payment_amount = self.account_total_units_value(holding_address)
     dig 2
     callsub account_total_units_value
@@ -658,7 +656,7 @@ pay_principal_bool_merge@17:
     //     >= payment_amount
     // ), err.NOT_ENOUGH_FUNDS
     assert // Not enough funds for the payment
-    // smart_contracts/zero_coupon_bond/contract.py:150-151
+    // smart_contracts/zero_coupon_bond/contract.py:147-148
     // # The reference implementation has the same asset for denomination and settlement, no conversion needed
     // self.pay(self.account[holding_address].payment_address, payment_amount)
     dig 3
@@ -724,10 +722,10 @@ pay_principal_after_if_else@4:
     // smart_contracts/base_d_asa/contract.py:398
     // self.end_if_no_circulating_units()
     callsub end_if_no_circulating_units
-    // smart_contracts/zero_coupon_bond/contract.py:159
+    // smart_contracts/zero_coupon_bond/contract.py:156
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // smart_contracts/zero_coupon_bond/contract.py:157-161
+    // smart_contracts/zero_coupon_bond/contract.py:154-158
     // return typ.PaymentResult(
     //     amount=payment_amount,
     //     timestamp=Global.latest_timestamp,
@@ -750,7 +748,7 @@ pay_principal_after_if_else@4:
     concat
     swap
     concat
-    // smart_contracts/zero_coupon_bond/contract.py:121
+    // smart_contracts/zero_coupon_bond/contract.py:118
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     swap
@@ -760,7 +758,7 @@ pay_principal_after_if_else@4:
     return
 
 pay_principal_else_body@3:
-    // smart_contracts/zero_coupon_bond/contract.py:153-154
+    // smart_contracts/zero_coupon_bond/contract.py:150-151
     // # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
     // payment_amount = UInt64()
     intc_0 // 0
@@ -776,7 +774,7 @@ get_account_units_current_value:
     intc_0 // 0
     pushbytes ""
     dupn 5
-    // smart_contracts/zero_coupon_bond/contract.py:163
+    // smart_contracts/zero_coupon_bond/contract.py:160
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -791,17 +789,17 @@ get_account_units_current_value:
     ==
     assert // invalid number of bytes for arc4.uint64
     btoi
-    // smart_contracts/zero_coupon_bond/contract.py:183
+    // smart_contracts/zero_coupon_bond/contract.py:180
     // self.primary_distribution_opening_date
     intc_0 // 0
     bytec 5 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
-    // smart_contracts/zero_coupon_bond/contract.py:183-184
+    // smart_contracts/zero_coupon_bond/contract.py:180-181
     // self.primary_distribution_opening_date
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     bz get_account_units_current_value_bool_false@4
-    // smart_contracts/zero_coupon_bond/contract.py:184
+    // smart_contracts/zero_coupon_bond/contract.py:181
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     global LatestTimestamp
     intc_0 // 0
@@ -809,14 +807,14 @@ get_account_units_current_value:
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
     >=
-    // smart_contracts/zero_coupon_bond/contract.py:183-184
+    // smart_contracts/zero_coupon_bond/contract.py:180-181
     // self.primary_distribution_opening_date
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     bz get_account_units_current_value_bool_false@4
     intc_1 // 1
 
 get_account_units_current_value_bool_merge@5:
-    // smart_contracts/zero_coupon_bond/contract.py:182-185
+    // smart_contracts/zero_coupon_bond/contract.py:179-182
     // assert (
     //     self.primary_distribution_opening_date
     //     and Global.latest_timestamp >= self.primary_distribution_opening_date
@@ -832,8 +830,8 @@ get_account_units_current_value_bool_merge@5:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/zero_coupon_bond/contract.py:188
-    // 0 < units <= self.account[holding_address].units
+    // smart_contracts/zero_coupon_bond/contract.py:184
+    // assert 0 < units <= self.account[holding_address].units, err.INVALID_UNITS
     dup
     bz get_account_units_current_value_bool_false@8
     dig 8
@@ -847,20 +845,16 @@ get_account_units_current_value_bool_merge@5:
     intc_1 // 1
 
 get_account_units_current_value_bool_merge@9:
-    // smart_contracts/zero_coupon_bond/contract.py:187-189
-    // assert (
-    //     0 < units <= self.account[holding_address].units
-    // ), err.INVALID_UNITS
+    // smart_contracts/zero_coupon_bond/contract.py:184
+    // assert 0 < units <= self.account[holding_address].units, err.INVALID_UNITS
     assert // Invalid amount of units for the account
-    // smart_contracts/zero_coupon_bond/contract.py:191-193
-    // account_units_nominal_value = self.account_units_value(
-    //     holding_address, units
-    // )
+    // smart_contracts/zero_coupon_bond/contract.py:186
+    // account_units_nominal_value = self.account_units_value(holding_address, units)
     dup2
     callsub account_units_value
     dup
     bury 8
-    // smart_contracts/zero_coupon_bond/contract.py:195
+    // smart_contracts/zero_coupon_bond/contract.py:188
     // account_units_nominal_value * self.principal_discount // cst.BPS
     intc_0 // 0
     bytec 10 // "principal_discount"
@@ -870,20 +864,20 @@ get_account_units_current_value_bool_merge@9:
     *
     pushint 10000
     /
-    // smart_contracts/zero_coupon_bond/contract.py:200
+    // smart_contracts/zero_coupon_bond/contract.py:193
     // account_units_nominal_value - account_units_discount
     -
     bury 8
-    // smart_contracts/zero_coupon_bond/contract.py:203-204
+    // smart_contracts/zero_coupon_bond/contract.py:196-197
     // # Accruing interest during primary distribution and at maturity
     // accrued_interest = UInt64()
     intc_0 // 0
     bury 6
-    // smart_contracts/zero_coupon_bond/contract.py:205
+    // smart_contracts/zero_coupon_bond/contract.py:198
     // numerator = UInt64()
     intc_0 // 0
     bury 3
-    // smart_contracts/zero_coupon_bond/contract.py:206
+    // smart_contracts/zero_coupon_bond/contract.py:199
     // denominator = UInt64()
     intc_0 // 0
     bury 4
@@ -909,35 +903,33 @@ get_account_units_current_value_bool_merge@9:
     intc_1 // 1
 
 get_account_units_current_value_bool_merge@18:
-    // smart_contracts/zero_coupon_bond/contract.py:208-209
+    // smart_contracts/zero_coupon_bond/contract.py:201-202
     // # Accruing interest
     // if self.is_accruing_interest():
     bz get_account_units_current_value_after_if_else@11
-    // smart_contracts/zero_coupon_bond/contract.py:210
+    // smart_contracts/zero_coupon_bond/contract.py:203
     // day_count_factor = self.day_count_factor()
     callsub day_count_factor
-    // smart_contracts/zero_coupon_bond/contract.py:211-213
-    // accrued_interest = self.accrued_interest_amount(
-    //     holding_address, units
-    // )
+    // smart_contracts/zero_coupon_bond/contract.py:204
+    // accrued_interest = self.accrued_interest_amount(holding_address, units)
     dig 2
     dig 2
     callsub accrued_interest_amount
     bury 7
-    // smart_contracts/zero_coupon_bond/contract.py:214
+    // smart_contracts/zero_coupon_bond/contract.py:205
     // numerator = day_count_factor.numerator
     dup
     intc_0 // 0
     extract_uint64
     bury 4
-    // smart_contracts/zero_coupon_bond/contract.py:215
+    // smart_contracts/zero_coupon_bond/contract.py:206
     // denominator = day_count_factor.denominator
     intc_3 // 8
     extract_uint64
     bury 4
 
 get_account_units_current_value_after_if_else@11:
-    // smart_contracts/zero_coupon_bond/contract.py:217-218
+    // smart_contracts/zero_coupon_bond/contract.py:208-209
     // # Value at maturity
     // if Global.latest_timestamp >= self.maturity_date:
     global LatestTimestamp
@@ -951,7 +943,7 @@ get_account_units_current_value_after_if_else@11:
     bury 8
 
 get_account_units_current_value_after_if_else@13:
-    // smart_contracts/zero_coupon_bond/contract.py:224-227
+    // smart_contracts/zero_coupon_bond/contract.py:215-218
     // day_count_factor=typ.DayCountFactor(
     //     numerator=numerator,
     //     denominator=denominator,
@@ -961,7 +953,7 @@ get_account_units_current_value_after_if_else@13:
     dig 4
     itob
     concat
-    // smart_contracts/zero_coupon_bond/contract.py:221-228
+    // smart_contracts/zero_coupon_bond/contract.py:212-219
     // return typ.CurrentUnitsValue(
     //     units_value=account_units_current_value,
     //     accrued_interest=accrued_interest,
@@ -977,7 +969,7 @@ get_account_units_current_value_after_if_else@13:
     concat
     swap
     concat
-    // smart_contracts/zero_coupon_bond/contract.py:163
+    // smart_contracts/zero_coupon_bond/contract.py:160
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -1001,7 +993,7 @@ get_account_units_current_value_bool_false@4:
 
 // smart_contracts.zero_coupon_bond.contract.ZeroCouponBond.get_payment_amount[routing]() -> void:
 get_payment_amount:
-    // smart_contracts/zero_coupon_bond/contract.py:230
+    // smart_contracts/zero_coupon_bond/contract.py:221
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dupn 2
@@ -1017,7 +1009,7 @@ get_payment_amount:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/zero_coupon_bond/contract.py:246
+    // smart_contracts/zero_coupon_bond/contract.py:237
     // principal_amount = UInt64()
     intc_0 // 0
     // smart_contracts/base_d_asa/contract.py:100
@@ -1028,24 +1020,24 @@ get_payment_amount:
     assert // check self.status exists
     pushint 100
     ==
-    // smart_contracts/zero_coupon_bond/contract.py:247
+    // smart_contracts/zero_coupon_bond/contract.py:238
     // if self.status_is_active():
     bz get_payment_amount_after_if_else@3
-    // smart_contracts/zero_coupon_bond/contract.py:248
+    // smart_contracts/zero_coupon_bond/contract.py:239
     // principal_amount = self.account_total_units_value(holding_address)
     dig 1
     callsub account_total_units_value
     bury 1
 
 get_payment_amount_after_if_else@3:
-    // smart_contracts/zero_coupon_bond/contract.py:249
+    // smart_contracts/zero_coupon_bond/contract.py:240
     // return typ.PaymentAmounts(interest=UInt64(0), principal=principal_amount)
     intc_0 // 0
     itob
     dig 1
     itob
     concat
-    // smart_contracts/zero_coupon_bond/contract.py:230
+    // smart_contracts/zero_coupon_bond/contract.py:221
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -3103,6 +3095,9 @@ get_account_info:
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_time_events[routing]() -> void:
 get_time_events:
+    // smart_contracts/base_d_asa/contract.py:874
+    // time_events = typ.TimeEvents()
+    pushbytes 0x0000
     // smart_contracts/base_d_asa/contract.py:100
     // return self.status == cfg.STATUS_ACTIVE
     intc_0 // 0
@@ -3111,32 +3106,26 @@ get_time_events:
     assert // check self.status exists
     pushint 100
     ==
-    // smart_contracts/base_d_asa/contract.py:874
-    // if self.status_is_active():
-    bz get_time_events_else_body@3
     // smart_contracts/base_d_asa/contract.py:875
-    // return self.time_events.value
+    // if self.status_is_active():
+    bz get_time_events_after_if_else@3
+    // smart_contracts/base_d_asa/contract.py:876
+    // time_events = self.time_events.value.copy()
     bytec 22 // 0x74696d654576656e7473
     box_get
+    swap
+    bury 2
     assert // check self.time_events exists
 
-get_time_events_after_inlined_smart_contracts.base_d_asa.contract.BaseDAsa.get_time_events@4:
+get_time_events_after_if_else@3:
     // smart_contracts/base_d_asa/contract.py:866
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
-    swap
+    dig 1
     concat
     log
     intc_1 // 1
     return
-
-get_time_events_else_body@3:
-    // smart_contracts/base_d_asa/contract.py:877
-    // return typ.TimeEvents()
-    pushbytes 0x0000
-    // smart_contracts/base_d_asa/contract.py:866
-    // @arc4.abimethod(readonly=True)
-    b get_time_events_after_inlined_smart_contracts.base_d_asa.contract.BaseDAsa.get_time_events@4
 
 
 // smart_contracts.base_d_asa.contract.BaseDAsa.get_secondary_market_schedule[routing]() -> void:
