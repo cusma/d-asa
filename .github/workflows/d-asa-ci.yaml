@@ -30,64 +30,6 @@ jobs:
       - name: Lint and format python dependencies
         run: algokit project run lint
 
-      - name: Detect changes
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |      
-            base-d-asa:
-              - 'smart_contracts/_helpers/**'
-              - 'smart_contracts/artifacts/base_d_asa/**'
-            zero-coupon-bond:
-              - 'smart_contracts/_helpers/**'
-              - 'smart_contracts/artifacts/zero_coupon_bond/**'
-            fixed-coupon-bond:
-              - 'smart_contracts/_helpers/**'
-              - 'smart_contracts/artifacts/fixed_coupon_bond/**'
-            perpetual-bond:
-              - 'smart_contracts/_helpers/**'
-              - 'smart_contracts/artifacts/perpetual_bond/**'
-            test-base-d-asa:
-              - 'tests/conftest.py'
-              - 'tests/base_d_asa/**'
-            test-zero-coupon-bond:
-              - 'tests/conftest.py'
-              - 'tests/zero_coupon_bond/**'
-            test-fixed-coupon-bond:
-              - 'tests/conftest.py'
-              - 'tests/fixed_coupon_bond/**'
-            test-perpetual-bond:
-              - 'tests/conftest.py'
-              - 'tests/perpetual_bond/**'
-
-      - name: Run Base D-ASA tests
-        if: steps.filter.outputs.base-d-asa == 'true' || steps.filter.outputs.test-base-d-asa == 'true'
-        shell: bash
-        run: |
-          set -o pipefail
-          algokit project run test tests/base_d_asa
-
-      - name: Run Zero Coupon Bond tests
-        if: steps.filter.outputs.zero-coupon-bond == 'true' || steps.filter.outputs.test-zero-coupon-bond == 'true'
-        shell: bash
-        run: |
-          set -o pipefail
-          algokit project run test tests/zero_coupon_bond
-
-      - name: Run Fixed Coupon Bond tests
-        if: steps.filter.outputs.fixed-coupon-bond == 'true' || steps.filter.outputs.test-fixed-coupon-bond == 'true'
-        shell: bash
-        run: |
-          set -o pipefail
-          algokit project run test tests/fixed_coupon_bond
-
-      - name: Run Perpetual Bond tests
-        if: steps.filter.outputs.perpetual-bond == 'true' || steps.filter.outputs.test-perpetual-bond == 'true'
-        shell: bash
-        run: |
-          set -o pipefail
-          algokit project run test tests/perpetual_bond
-
       - name: Build smart contracts
         run: algokit project run build
 
@@ -96,3 +38,39 @@ jobs:
 
       - name: Run deployer against LocalNet
         run: algokit project deploy localnet
+
+  test:
+    name: Test ${{ matrix.module }}
+    if: '! github.event.pull_request.draft'
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        module:
+          - base_d_asa
+          - zero_coupon_bond
+          - fixed_coupon_bond
+          - perpetual_bond
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Set up AlgoKit
+        uses: ./.github/actions/algokit-setup
+
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            module:
+              - 'smart_contracts/_helpers/**'
+              - 'smart_contracts/artifacts/${{ matrix.module }}/**'
+              - 'tests/conftest.py'
+              - 'tests/${{ matrix.module }}/**'
+
+      - name: Run tests
+        if: steps.filter.outputs.module == 'true'
+        shell: bash
+        run: |
+          set -o pipefail
+          algokit project run test tests/${{ matrix.module }}
