@@ -1,7 +1,7 @@
 # Revoke Role
 
 ```json
-{{#include ../.include/interface.revoke-role.json}}
+{{#include ../.include/interface.rbac-revoke-role.json}}
 ```
 
 The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an authorized

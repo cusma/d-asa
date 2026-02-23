@@ -45,8 +45,8 @@
 
 - [Methods]()
   - [Asset Config](./methods/interface-asset-config.md)
-  - [Assign Role](./methods/interface-assign-role.md)
-  - [Revoke Role](./methods/interface-revoke-role.md)
+  - [Assign Role](methods/interface-rbac-assign-role.md)
+  - [Revoke Role](methods/interface-rbac-revoke-role.md)
   - [Open Account](./methods/interface-open-account.md)
   - [Close Account](./methods/interface-close-account.md)
   - [Set Asset Metadata](./methods/interface-set-asset-metadata.md)

@@ -1,7 +1,7 @@
 # Assign Role
 
 ```json
-{{#include ../.include/interface.assign-role.json}}
+{{#include ../.include/interface.rbac-assign-role.json}}
 ```
 
 The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an

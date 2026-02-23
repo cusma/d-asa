@@ -1,22 +1,27 @@
 {
-  "name": "revoke_role",
-  "desc": "Revoke a role from an address",
+  "name": "rbac_assign_role",
+  "desc": "Assign a role to an address",
   "readonly": false,
   "args": [
+    {
+      "type": "uint8",
+      "name": "role_id",
+      "desc": "Role Identifier"
+    },
     {
       "type": "address",
       "name": "role_address",
       "desc": "Account Role Address"
     },
     {
-      "type": "uint8",
-      "name": "role",
-      "desc": "Role identifier"
+      "type": "bytes[]",
+      "name": "config",
+      "desc": "Role configuration (Optional)"
     }
   ],
   "returns": {
     "type": "uint64",
-    "desc": "Timestamp of the role revocation"
+    "desc": "Timestamp of the role assignment"
   },
   "errors": [
     {
