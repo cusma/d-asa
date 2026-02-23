@@ -616,7 +616,7 @@ class BaseDAsa(RbacModule):
         if Global.latest_timestamp > self.maturity_date > 0:
             performance = UInt64(cst.PRF_MATURED)
         # The reference implementation has no grace or delinquency periods
-        if self.defaulted:
+        if self.asset_defaulted:
             performance = UInt64(cst.PRF_DEFAULTED)
 
         return typ.AssetInfo(
