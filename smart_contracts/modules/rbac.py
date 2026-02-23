@@ -253,18 +253,18 @@ class RbacModule(ARC4Contract):
                 return typ.RoleConfig(role_validity_start=UInt64(0), role_validity_end=UInt64(0))
             case UInt64(cst.ROLE_ACCOUNT_MANAGER):
                 assert self._has_role(self.account_manager, role_address), err.INVALID_ROLE_ADDRESS
-                return self.account_manager[role_address].copy()
+                return self.account_manager[role_address]
             case UInt64(cst.ROLE_PRIMARY_DEALER):
                 assert self._has_role(self.primary_dealer, role_address), err.INVALID_ROLE_ADDRESS
-                return self.primary_dealer[role_address].copy()
+                return self.primary_dealer[role_address]
             case UInt64(cst.ROLE_TRUSTEE):
                 assert self._has_role(self.trustee, role_address), err.INVALID_ROLE_ADDRESS
-                return self.trustee[role_address].copy()
+                return self.trustee[role_address]
             case UInt64(cst.ROLE_AUTHORITY):
                 assert self._has_role(self.authority, role_address), err.INVALID_ROLE_ADDRESS
-                return self.authority[role_address].copy()
+                return self.authority[role_address]
             case UInt64(cst.ROLE_INTEREST_ORACLE):
                 assert self._has_role(self.interest_oracle, role_address), err.INVALID_ROLE_ADDRESS
-                return self.interest_oracle[role_address].copy()
+                return self.interest_oracle[role_address]
             case _:
                 op.err(err.INVALID_ROLE)
