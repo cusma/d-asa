@@ -5,7 +5,7 @@
     "../../modules/rbac.py",
     "../../perpetual_bond/contract.py"
   ],
-  "mappings": "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",
+  "mappings": "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",
   "op_pc_offset": 0,
   "pc_events": {
     "1": {
@@ -34889,263 +34889,264 @@
     "4116": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%0#0"
+        "box_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#0"
+        "box_prefixed_key%0#1"
       ]
     },
     "4117": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%0#0",
-        "box_prefixed_key%0#0 (copy)"
+        "box_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#0",
-        "box_prefixed_key%0#0 (copy)"
+        "box_prefixed_key%0#1",
+        "box_prefixed_key%0#1"
       ]
     },
     "4118": {
-      "op": "box_get",
+      "op": "box_len",
       "defined_out": [
-        "aggregate%box_get%1#0",
-        "box_prefixed_key%0#0",
-        "role_cfg#0"
+        "_%0#0",
+        "box_prefixed_key%0#1",
+        "maybe_exists%0#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#0",
-        "role_cfg#0",
-        "aggregate%box_get%1#0"
+        "box_prefixed_key%0#1",
+        "_%0#0",
+        "maybe_exists%0#0"
       ]
     },
     "4119": {
-      "op": "swap",
+      "op": "bury 1",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#0",
-        "aggregate%box_get%1#0",
-        "role_cfg#0"
+        "box_prefixed_key%0#1",
+        "maybe_exists%0#0"
       ]
     },
-    "4120": {
-      "op": "cover 2",
+    "4121": {
+      "op": "bz _role_is_active_bool_false@4",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "box_prefixed_key%0#1"
+      ]
+    },
+    "4124": {
+      "op": "frame_dig 1",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "box_prefixed_key%0#1",
+        "box_prefixed_key%0#1"
+      ]
+    },
+    "4126": {
+      "op": "box_get",
       "defined_out": [
+        "aggregate%box_get%0#0",
         "aggregate%box_get%1#0",
-        "box_prefixed_key%0#0",
-        "role_cfg#0"
+        "box_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
-        "box_prefixed_key%0#0",
+        "box_prefixed_key%0#1",
+        "aggregate%box_get%0#0",
         "aggregate%box_get%1#0"
       ]
     },
-    "4122": {
+    "4127": {
       "error": "check BoxMap entry exists",
       "op": "assert // check BoxMap entry exists",
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
-        "box_prefixed_key%0#0"
+        "box_prefixed_key%0#1",
+        "aggregate%box_get%0#0"
       ]
     },
-    "4123": {
-      "op": "box_len",
-      "defined_out": [
-        "_%0#0",
-        "maybe_exists%0#0",
-        "role_cfg#0"
-      ],
-      "stack_out": [
-        "awst_tmp%0#0",
-        "role_cfg#0",
-        "_%0#0",
-        "maybe_exists%0#0"
-      ]
-    },
-    "4124": {
-      "op": "bury 1",
-      "stack_out": [
-        "awst_tmp%0#0",
-        "role_cfg#0",
-        "maybe_exists%0#0"
-      ]
-    },
-    "4126": {
-      "op": "bz _role_is_active_bool_false@4",
-      "stack_out": [
-        "awst_tmp%0#0",
-        "role_cfg#0"
-      ]
-    },
-    "4129": {
-      "op": "frame_dig 1",
-      "stack_out": [
-        "awst_tmp%0#0",
-        "role_cfg#0",
-        "role_cfg#0"
-      ]
-    },
-    "4131": {
+    "4128": {
       "op": "intc_0 // 0",
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
+        "aggregate%box_get%0#0",
         "0"
       ]
     },
-    "4132": {
+    "4129": {
       "op": "extract_uint64",
       "defined_out": [
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "values%0#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "values%0#0"
       ]
     },
-    "4133": {
+    "4130": {
       "op": "global LatestTimestamp"
     },
-    "4135": {
+    "4132": {
       "op": "dup",
       "defined_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "values%0#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "values%0#0",
         "awst_tmp%0#0",
         "awst_tmp%0#0"
       ]
     },
-    "4136": {
+    "4133": {
       "op": "frame_bury 0",
       "defined_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "values%0#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "values%0#0",
         "awst_tmp%0#0"
       ]
     },
-    "4138": {
+    "4135": {
       "op": "<=",
       "defined_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "tmp%1#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "tmp%1#0"
       ]
     },
-    "4139": {
+    "4136": {
       "op": "bz _role_is_active_bool_false@4",
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0"
+        "box_prefixed_key%0#1"
       ]
     },
-    "4142": {
+    "4139": {
       "op": "frame_dig 1",
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
-        "role_cfg#0"
+        "box_prefixed_key%0#1",
+        "box_prefixed_key%0#1"
       ]
     },
-    "4144": {
+    "4141": {
+      "op": "box_get",
+      "defined_out": [
+        "aggregate%box_get%2#0",
+        "aggregate%box_get%3#0",
+        "awst_tmp%0#0",
+        "box_prefixed_key%0#1"
+      ],
+      "stack_out": [
+        "awst_tmp%0#0",
+        "box_prefixed_key%0#1",
+        "aggregate%box_get%2#0",
+        "aggregate%box_get%3#0"
+      ]
+    },
+    "4142": {
+      "error": "check BoxMap entry exists",
+      "op": "assert // check BoxMap entry exists",
+      "stack_out": [
+        "awst_tmp%0#0",
+        "box_prefixed_key%0#1",
+        "aggregate%box_get%2#0"
+      ]
+    },
+    "4143": {
       "op": "intc_3 // 8",
       "defined_out": [
         "8",
+        "aggregate%box_get%2#0",
         "awst_tmp%0#0",
-        "role_cfg#0"
+        "box_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
+        "aggregate%box_get%2#0",
         "8"
       ]
     },
-    "4145": {
+    "4144": {
       "op": "extract_uint64",
       "defined_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "values%1#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "values%1#0"
       ]
     },
-    "4146": {
+    "4145": {
       "op": "frame_dig 0",
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "values%1#0",
         "awst_tmp%0#0"
       ]
     },
-    "4148": {
+    "4147": {
       "op": ">=",
       "defined_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "tmp%2#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "tmp%2#0"
       ]
     },
-    "4149": {
+    "4148": {
       "op": "bz _role_is_active_bool_false@4",
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0"
+        "box_prefixed_key%0#1"
       ]
     },
-    "4152": {
+    "4151": {
       "op": "intc_1 // 1",
       "defined_out": [
         "and_result%0#0",
         "awst_tmp%0#0",
-        "role_cfg#0"
+        "box_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "and_result%0#0"
       ]
     },
-    "4153": {
+    "4152": {
       "block": "_role_is_active_bool_merge@5",
       "stack_in": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "and_result%0#0"
       ],
       "op": "frame_bury 0",
@@ -35153,15 +35154,15 @@
         "and_result%0#0"
       ]
     },
-    "4155": {
+    "4154": {
       "retsub": true,
       "op": "retsub"
     },
-    "4156": {
+    "4155": {
       "block": "_role_is_active_bool_false@4",
       "stack_in": [
         "awst_tmp%0#0",
-        "role_cfg#0"
+        "box_prefixed_key%0#1"
       ],
       "op": "intc_0 // 0",
       "defined_out": [
@@ -35169,14 +35170,14 @@
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "role_cfg#0",
+        "box_prefixed_key%0#1",
         "and_result%0#0"
       ]
     },
-    "4157": {
+    "4156": {
       "op": "b _role_is_active_bool_merge@5"
     },
-    "4160": {
+    "4159": {
       "subroutine": "smart_contracts.modules.rbac.RbacModule.assert_caller_is_arranger",
       "params": {},
       "block": "assert_caller_is_arranger",
@@ -35189,7 +35190,7 @@
         "role_address#0"
       ]
     },
-    "4162": {
+    "4161": {
       "op": "intc_0 // 0",
       "defined_out": [
         "0",
@@ -35200,7 +35201,7 @@
         "0"
       ]
     },
-    "4163": {
+    "4162": {
       "op": "bytec 6 // 0x52323023",
       "defined_out": [
         "0",
@@ -35213,7 +35214,7 @@
         "0x52323023"
       ]
     },
-    "4165": {
+    "4164": {
       "op": "app_global_get_ex",
       "defined_out": [
         "maybe_exists%0#0",
@@ -35226,7 +35227,7 @@
         "maybe_exists%0#0"
       ]
     },
-    "4166": {
+    "4165": {
       "error": "check self.arranger exists",
       "op": "assert // check self.arranger exists",
       "stack_out": [
@@ -35234,7 +35235,7 @@
         "maybe_value%0#0"
       ]
     },
-    "4167": {
+    "4166": {
       "op": "==",
       "defined_out": [
         "tmp%0#1"
@@ -35243,16 +35244,16 @@
         "tmp%0#1"
       ]
     },
-    "4168": {
+    "4167": {
       "error": "Not authorized",
       "op": "assert // Not authorized",
       "stack_out": []
     },
-    "4169": {
+    "4168": {
       "retsub": true,
       "op": "retsub"
     },
-    "4170": {
+    "4169": {
       "subroutine": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_defaulted",
       "params": {},
       "block": "assert_is_not_asset_defaulted",
@@ -35265,7 +35266,7 @@
         "0"
       ]
     },
-    "4171": {
+    "4170": {
       "op": "bytec 22 // \"asset_defaulted\"",
       "defined_out": [
         "\"asset_defaulted\"",
@@ -35276,7 +35277,7 @@
         "\"asset_defaulted\""
       ]
     },
-    "4173": {
+    "4172": {
       "op": "app_global_get_ex",
       "defined_out": [
         "maybe_exists%0#0",
@@ -35287,14 +35288,14 @@
         "maybe_exists%0#0"
       ]
     },
-    "4174": {
+    "4173": {
       "error": "check self.asset_defaulted exists",
       "op": "assert // check self.asset_defaulted exists",
       "stack_out": [
         "maybe_value%0#0"
       ]
     },
-    "4175": {
+    "4174": {
       "op": "!",
       "defined_out": [
         "tmp%0#0"
@@ -35303,16 +35304,16 @@
         "tmp%0#0"
       ]
     },
-    "4176": {
+    "4175": {
       "error": "Defaulted",
       "op": "assert // Defaulted",
       "stack_out": []
     },
-    "4177": {
+    "4176": {
       "retsub": true,
       "op": "retsub"
     },
-    "4178": {
+    "4177": {
       "subroutine": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_suspended",
       "params": {},
       "block": "assert_is_not_asset_suspended",
@@ -35325,7 +35326,7 @@
         "0"
       ]
     },
-    "4179": {
+    "4178": {
       "op": "bytec 21 // \"asset_suspended\"",
       "defined_out": [
         "\"asset_suspended\"",
@@ -35336,7 +35337,7 @@
         "\"asset_suspended\""
       ]
     },
-    "4181": {
+    "4180": {
       "op": "app_global_get_ex",
       "defined_out": [
         "maybe_exists%0#0",
@@ -35347,14 +35348,14 @@
         "maybe_exists%0#0"
       ]
     },
-    "4182": {
+    "4181": {
       "error": "check self.asset_suspended exists",
       "op": "assert // check self.asset_suspended exists",
       "stack_out": [
         "maybe_value%0#0"
       ]
     },
-    "4183": {
+    "4182": {
       "op": "!",
       "defined_out": [
         "tmp%0#0"
@@ -35363,16 +35364,16 @@
         "tmp%0#0"
       ]
     },
-    "4184": {
+    "4183": {
       "error": "Suspended operations",
       "op": "assert // Suspended operations",
       "stack_out": []
     },
-    "4185": {
+    "4184": {
       "retsub": true,
       "op": "retsub"
     },
-    "4186": {
+    "4185": {
       "subroutine": "smart_contracts.modules.rbac.RbacModule._assert_valid_role",
       "params": {
         "role_id#0": "uint64"
@@ -35381,7 +35382,7 @@
       "stack_in": [],
       "op": "proto 1 0"
     },
-    "4189": {
+    "4188": {
       "op": "frame_dig -1",
       "defined_out": [
         "role_id#0 (copy)"
@@ -35390,7 +35391,7 @@
         "role_id#0 (copy)"
       ]
     },
-    "4191": {
+    "4190": {
       "op": "pushint 20",
       "defined_out": [
         "20",
@@ -35401,7 +35402,7 @@
         "20"
       ]
     },
-    "4193": {
+    "4192": {
       "op": "==",
       "defined_out": [
         "tmp%0#0"
@@ -35410,17 +35411,17 @@
         "tmp%0#0"
       ]
     },
-    "4194": {
+    "4193": {
       "op": "bnz _assert_valid_role_bool_true@6",
       "stack_out": []
     },
-    "4197": {
+    "4196": {
       "op": "frame_dig -1",
       "stack_out": [
         "role_id#0 (copy)"
       ]
     },
-    "4199": {
+    "4198": {
       "op": "pushint 40",
       "defined_out": [
         "40",
@@ -35431,7 +35432,7 @@
         "40"
       ]
     },
-    "4201": {
+    "4200": {
       "op": "==",
       "defined_out": [
         "tmp%1#0"
@@ -35440,17 +35441,17 @@
         "tmp%1#0"
       ]
     },
-    "4202": {
+    "4201": {
       "op": "bnz _assert_valid_role_bool_true@6",
       "stack_out": []
     },
-    "4205": {
+    "4204": {
       "op": "frame_dig -1",
       "stack_out": [
         "role_id#0 (copy)"
       ]
     },
-    "4207": {
+    "4206": {
       "op": "pushint 50",
       "defined_out": [
         "50",
@@ -35461,7 +35462,7 @@
         "50"
       ]
     },
-    "4209": {
+    "4208": {
       "op": "==",
       "defined_out": [
         "tmp%2#0"
@@ -35470,17 +35471,17 @@
         "tmp%2#0"
       ]
     },
-    "4210": {
+    "4209": {
       "op": "bnz _assert_valid_role_bool_true@6",
       "stack_out": []
     },
-    "4213": {
+    "4212": {
       "op": "frame_dig -1",
       "stack_out": [
         "role_id#0 (copy)"
       ]
     },
-    "4215": {
+    "4214": {
       "op": "pushint 60",
       "defined_out": [
         "60",
@@ -35491,7 +35492,7 @@
         "60"
       ]
     },
-    "4217": {
+    "4216": {
       "op": "==",
       "defined_out": [
         "tmp%3#0"
@@ -35500,17 +35501,17 @@
         "tmp%3#0"
       ]
     },
-    "4218": {
+    "4217": {
       "op": "bnz _assert_valid_role_bool_true@6",
       "stack_out": []
     },
-    "4221": {
+    "4220": {
       "op": "frame_dig -1",
       "stack_out": [
         "role_id#0 (copy)"
       ]
     },
-    "4223": {
+    "4222": {
       "op": "pushint 70",
       "defined_out": [
         "70",
@@ -35521,7 +35522,7 @@
         "70"
       ]
     },
-    "4225": {
+    "4224": {
       "op": "==",
       "defined_out": [
         "tmp%4#0"
@@ -35530,17 +35531,17 @@
         "tmp%4#0"
       ]
     },
-    "4226": {
+    "4225": {
       "op": "bnz _assert_valid_role_bool_true@6",
       "stack_out": []
     },
-    "4229": {
+    "4228": {
       "op": "frame_dig -1",
       "stack_out": [
         "role_id#0 (copy)"
       ]
     },
-    "4231": {
+    "4230": {
       "op": "pushint 80",
       "defined_out": [
         "80",
@@ -35551,7 +35552,7 @@
         "80"
       ]
     },
-    "4233": {
+    "4232": {
       "op": "==",
       "defined_out": [
         "tmp%5#0"
@@ -35560,11 +35561,11 @@
         "tmp%5#0"
       ]
     },
-    "4234": {
+    "4233": {
       "op": "bz _assert_valid_role_bool_false@7",
       "stack_out": []
     },
-    "4237": {
+    "4236": {
       "block": "_assert_valid_role_bool_true@6",
       "stack_in": [],
       "op": "intc_1 // 1",
@@ -35575,7 +35576,7 @@
         "or_result%0#0"
       ]
     },
-    "4238": {
+    "4237": {
       "error": "Invalid role identifier",
       "block": "_assert_valid_role_bool_merge@8",
       "stack_in": [
@@ -35585,11 +35586,11 @@
       "defined_out": [],
       "stack_out": []
     },
-    "4239": {
+    "4238": {
       "retsub": true,
       "op": "retsub"
     },
-    "4240": {
+    "4239": {
       "block": "_assert_valid_role_bool_false@7",
       "stack_in": [],
       "op": "intc_0 // 0",
@@ -35600,7 +35601,7 @@
         "or_result%0#0"
       ]
     },
-    "4241": {
+    "4240": {
       "op": "b _assert_valid_role_bool_merge@8"
     }
   }
