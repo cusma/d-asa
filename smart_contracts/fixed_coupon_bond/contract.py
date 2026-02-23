@@ -213,8 +213,8 @@ class FixedCouponBond(
         """
         # The reference implementation does not restrict caller authorization
         assert self.status_is_active(), err.UNAUTHORIZED
-        self.assert_is_not_defaulted()
-        self.assert_is_not_suspended()
+        self.assert_is_not_asset_defaulted()
+        self.assert_is_not_asset_suspended()
         self.assert_valid_holding_address(holding_address)
         units = self.account[holding_address].units
         assert units > 0, err.NO_UNITS
