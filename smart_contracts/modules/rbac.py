@@ -45,11 +45,10 @@ class RbacModule(ARC4Contract):
     def _role_is_active(
         self, role_map: typ.RbacRole, role_address: Account
     ) -> bool:
-        role_cfg = role_map[role_address].copy()
         return self._has_role(role_map, role_address) and (
-            role_cfg.role_validity_start
+            role_map[role_address].role_validity_start
             <= Global.latest_timestamp
-            <= role_cfg.role_validity_end
+            <= role_map[role_address].role_validity_end
         )
 
     def assert_caller_is_arranger(self) -> None:
