@@ -12,7 +12,7 @@ class RbacModule(ARC4Contract):
     Role-Based Access Control (RBAC) Module
 
     - Defines and manages roles and permissions for D-ASA RBAC
-    - Governance of D-ASA suspension
+    - Manages of D-ASA suspension policy
     """
 
     def __init__(self) -> None:
@@ -188,14 +188,14 @@ class RbacModule(ARC4Contract):
         self._delete_role(role_id.as_uint64(), role_address)
         return Global.latest_timestamp
 
-    @arc4.abimethod  # TODO: Add specs
+    @arc4.abimethod  # TODO: Add specs and tests
     def rbac_rotate_arranger(self, *, new_arranger: Account) -> UInt64:
         self.assert_caller_is_arranger()
         self.arranger.value = new_arranger
         return Global.latest_timestamp
 
     @arc4.abimethod  # TODO: Update specs and add test
-    def gov_set_asset_suspended(self, *, suspended: bool) -> UInt64:
+    def policy_set_asset_suspension(self, *, suspended: bool) -> UInt64:
         """
         Set asset suspension status
 
@@ -226,14 +226,14 @@ class RbacModule(ARC4Contract):
         """
 
         self.assert_caller_is_trustee()
-        self.defaulted = defaulted
+        self.asset_defaulted = defaulted
         return Global.latest_timestamp
 
-    @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    @arc4.abimethod(readonly=True)  # TODO: Add specs
     def rbac_get_arranger(self) -> Account:
         return self.arranger.value
 
-    @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    @arc4.abimethod(readonly=True)  # TODO: Add specs
     def rbac_get_address_roles(self, address: Account) -> tuple[bool, bool, bool, bool, bool]:
         return (
             self._role_is_active(self.account_manager, address),
@@ -243,7 +243,7 @@ class RbacModule(ARC4Contract):
             self._role_is_active(self.interest_oracle, address),
         )
 
-    @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    @arc4.abimethod(readonly=True)  # TODO: Add specs
     def rbac_get_role_config(
         self, *, role_id: arc4.UInt8, role_address: Account
     ) -> typ.RoleConfig:
