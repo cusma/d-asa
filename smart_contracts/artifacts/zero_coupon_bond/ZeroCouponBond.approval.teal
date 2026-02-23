@@ -4,7 +4,7 @@
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
     intcblock 0 1 32 8 448 200 86400
-    bytecblock 0x151f7c75 0x52333023 "status" "maturity_date" "circulating_units" 0x52323023 "primary_distribution_opening_date" "issuance_date" 0x52343023 0x52373023 "settlement_asset_id" "day_count_convention" "total_units" "principal_discount" "secondary_market_opening_date" "secondary_market_closure_date" 0x52353023 0x52363023 "asset_suspended" "unit_value" "metadata" "total_coupons" "primary_distribution_closure_date" 0x52383023 "denomination_asset_id" "interest_rate" 0x74696d654576656e7473 0x00 "asset_defaulted" 0x636f75706f6e5261746573 "defaulted" 0x068101
+    bytecblock 0x151f7c75 0x52333023 "status" "maturity_date" "circulating_units" 0x52323023 "primary_distribution_opening_date" "issuance_date" 0x52343023 0x52373023 "settlement_asset_id" "day_count_convention" "total_units" "principal_discount" "secondary_market_opening_date" "secondary_market_closure_date" 0x52353023 0x52363023 "asset_suspended" "asset_defaulted" "unit_value" "metadata" "total_coupons" "primary_distribution_closure_date" 0x52383023 "denomination_asset_id" "interest_rate" 0x74696d654576656e7473 0x00 0x636f75706f6e5261746573 0x068101
     txn ApplicationID
     bnz main_after_if_else@2
     // smart_contracts/modules/rbac.py:19-20
@@ -21,13 +21,13 @@ main:
     app_global_put
     // smart_contracts/modules/rbac.py:37
     // self.asset_defaulted = False
-    bytec 28 // "asset_defaulted"
+    bytec 19 // "asset_defaulted"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:40-41
     // # Asset Configuration
     // self.denomination_asset_id = UInt64()
-    bytec 24 // "denomination_asset_id"
+    bytec 25 // "denomination_asset_id"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:42
@@ -37,7 +37,7 @@ main:
     app_global_put
     // smart_contracts/base_d_asa/contract.py:43
     // self.unit_value = UInt64()
-    bytec 19 // "unit_value"
+    bytec 20 // "unit_value"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:44
@@ -48,7 +48,7 @@ main:
     // smart_contracts/base_d_asa/contract.py:46-47
     // # Metadata
     // self.metadata = Bytes()
-    bytec 20 // "metadata"
+    bytec 21 // "metadata"
     pushbytes 0x
     app_global_put
     // smart_contracts/base_d_asa/contract.py:49-50
@@ -71,12 +71,12 @@ main:
     // smart_contracts/base_d_asa/contract.py:56-57
     // # Interest
     // self.interest_rate = UInt64()
-    bytec 25 // "interest_rate"
+    bytec 26 // "interest_rate"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:61
     // self.total_coupons = UInt64()
-    bytec 21 // "total_coupons"
+    bytec 22 // "total_coupons"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:66
@@ -86,7 +86,7 @@ main:
     app_global_put
     // smart_contracts/base_d_asa/contract.py:67
     // self.primary_distribution_closure_date = UInt64()
-    bytec 22 // "primary_distribution_closure_date"
+    bytec 23 // "primary_distribution_closure_date"
     intc_0 // 0
     app_global_put
     // smart_contracts/base_d_asa/contract.py:68
@@ -170,9 +170,9 @@ main_switch_case_next@5:
     assert
     txn ApplicationID
     bz main_create_NoOp@31
-    pushbytess 0x4fd6a3cc 0x9c76b6a3 0x44363d49 0x67db4f20 0x89474134 0x1d6fc255 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xbbcca18a 0x402dba47 0xed02759f 0xfad2173e 0x08efea35 0xe4a5ab54 0x03b83329 0x3dbe80bd 0x82f71b2d 0x2422d1c4 0x25e9997f 0x010c8299 0x7406acd2 0xc3e4b297 // method "asset_transfer(address,address,uint64)uint64", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_payment_amount(address)(uint64,uint64)", method "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_account_suspension(address,bool)uint64", method "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)", method "rbac_assign_role(uint8,address,byte[])uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_rotate_arranger(address)uint64", method "gov_set_asset_suspended(bool)uint64", method "set_default_status(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_config(uint8,address)(uint64,uint64)"
+    pushbytess 0x4fd6a3cc 0x9c76b6a3 0x44363d49 0x67db4f20 0x89474134 0x1d6fc255 0x3d43d1f0 0xebd96b2f 0x6c85e3ee 0xbbcca18a 0x402dba47 0xed02759f 0xfad2173e 0x08efea35 0xe4a5ab54 0x03b83329 0x3dbe80bd 0x82f71b2d 0x08a1fa7c 0x25e9997f 0x010c8299 0x7406acd2 0xc3e4b297 // method "asset_transfer(address,address,uint64)uint64", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_payment_amount(address)(uint64,uint64)", method "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "open_account(address,address)uint64", method "close_account(address)(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "set_account_suspension(address,bool)uint64", method "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)", method "get_account_info(address)(address,uint64,uint64,uint64,bool)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)", method "rbac_assign_role(uint8,address,byte[])uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_rotate_arranger(address)uint64", method "policy_set_asset_suspension(bool)uint64", method "set_default_status(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_config(uint8,address)(uint64,uint64)"
     txna ApplicationArgs 0
-    match asset_transfer pay_principal get_account_units_current_value get_payment_amount asset_config set_secondary_time_events open_account close_account primary_distribution set_account_suspension get_asset_info get_account_info get_time_events get_secondary_market_schedule get_asset_metadata rbac_assign_role rbac_revoke_role rbac_rotate_arranger gov_set_asset_suspended set_default_status rbac_get_arranger rbac_get_address_roles rbac_get_role_config
+    match asset_transfer pay_principal get_account_units_current_value get_payment_amount asset_config set_secondary_time_events open_account close_account primary_distribution set_account_suspension get_asset_info get_account_info get_time_events get_secondary_market_schedule get_asset_metadata rbac_assign_role rbac_revoke_role rbac_rotate_arranger policy_set_asset_suspension set_default_status rbac_get_arranger rbac_get_address_roles rbac_get_role_config
     err
 
 main_create_NoOp@31:
@@ -1085,7 +1085,7 @@ asset_create:
     app_global_put
     // smart_contracts/base_d_asa/contract.py:338
     // self.metadata = metadata.bytes
-    bytec 20 // "metadata"
+    bytec 21 // "metadata"
     swap
     app_global_put
     // smart_contracts/base_d_asa/contract.py:328
@@ -1126,7 +1126,7 @@ asset_update:
     callsub assert_caller_is_arranger
     // smart_contracts/base_d_asa/contract.py:349
     // self.metadata = metadata.bytes
-    bytec 20 // "metadata"
+    bytec 21 // "metadata"
     swap
     app_global_put
     // smart_contracts/base_d_asa/contract.py:340
@@ -1273,7 +1273,7 @@ asset_config_bool_merge@5:
     assert // Denomination asset is not properly set
     // smart_contracts/base_d_asa/contract.py:97
     // self.denomination_asset_id = denomination_asset_id
-    bytec 24 // "denomination_asset_id"
+    bytec 25 // "denomination_asset_id"
     dig 12
     dup
     cover 2
@@ -1345,7 +1345,7 @@ asset_config_bool_merge@5:
     assert // Minimum denomination is not a divisor of principal
     // smart_contracts/base_d_asa/contract.py:408
     // self.unit_value = minimum_denomination
-    bytec 19 // "unit_value"
+    bytec 20 // "unit_value"
     dig 1
     app_global_put
     // smart_contracts/base_d_asa/contract.py:409
@@ -1415,7 +1415,7 @@ asset_config_bool_merge@17:
     assert // Interest rate is not properly defined
     // smart_contracts/base_d_asa/contract.py:131
     // self.interest_rate = interest_rate
-    bytec 25 // "interest_rate"
+    bytec 26 // "interest_rate"
     swap
     app_global_put
     // smart_contracts/base_d_asa/contract.py:134
@@ -1426,7 +1426,7 @@ asset_config_bool_merge@17:
     assert // Coupon rates are not properly defined
     // smart_contracts/base_d_asa/contract.py:137
     // self.total_coupons = coupon_rates.length
-    bytec 21 // "total_coupons"
+    bytec 22 // "total_coupons"
     dig 1
     app_global_put
     // smart_contracts/base_d_asa/contract.py:138
@@ -1445,7 +1445,7 @@ asset_config_after_if_else@29:
     // smart_contracts/base_d_asa/contract.py:143
     // time_events.length == self.total_coupons + cfg.TIME_SCHEDULE_LIMITS
     intc_0 // 0
-    bytec 21 // "total_coupons"
+    bytec 22 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
     pushint 4
@@ -1463,10 +1463,10 @@ asset_config_after_if_else@29:
     callsub assert_time_events_sorted
     // smart_contracts/base_d_asa/contract.py:166
     // self.time_events.value = time_events.copy()
-    bytec 26 // 0x74696d654576656e7473
+    bytec 27 // 0x74696d654576656e7473
     box_del
     pop
-    bytec 26 // 0x74696d654576656e7473
+    bytec 27 // 0x74696d654576656e7473
     dig 1
     box_put
     // smart_contracts/base_d_asa/contract.py:167-169
@@ -1497,7 +1497,7 @@ asset_config_after_if_else@29:
     extract_uint64
     // smart_contracts/base_d_asa/contract.py:170
     // self.primary_distribution_closure_date = time_events[
-    bytec 22 // "primary_distribution_closure_date"
+    bytec 23 // "primary_distribution_closure_date"
     // smart_contracts/base_d_asa/contract.py:170-172
     // self.primary_distribution_closure_date = time_events[
     //     cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
@@ -1520,7 +1520,7 @@ asset_config_after_if_else@29:
     dup
     bury 15
     intc_0 // 0
-    bytec 21 // "total_coupons"
+    bytec 22 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
     pushint 4
@@ -1802,7 +1802,7 @@ open_account:
     concat
     swap
     concat
-    bytec 27 // 0x00
+    bytec 28 // 0x00
     concat
     box_put
     // smart_contracts/base_d_asa/contract.py:516
@@ -1946,7 +1946,7 @@ primary_distribution:
     // smart_contracts/base_d_asa/contract.py:190
     // < self.primary_distribution_closure_date
     intc_0 // 0
-    bytec 22 // "primary_distribution_closure_date"
+    bytec 23 // "primary_distribution_closure_date"
     app_global_get_ex
     assert // check self.primary_distribution_closure_date exists
     // smart_contracts/base_d_asa/contract.py:189-190
@@ -2033,7 +2033,7 @@ primary_distribution_bool_merge@6:
     // smart_contracts/base_d_asa/contract.py:579
     // self.account[holding_address].unit_value = self.unit_value
     intc_0 // 0
-    bytec 19 // "unit_value"
+    bytec 20 // "unit_value"
     app_global_get_ex
     assert // check self.unit_value exists
     itob
@@ -2151,11 +2151,11 @@ get_asset_info:
 get_asset_info_after_if_else@4:
     // smart_contracts/base_d_asa/contract.py:618-619
     // # The reference implementation has no grace or delinquency periods
-    // if self.defaulted:
+    // if self.asset_defaulted:
     intc_0 // 0
-    bytec 30 // "defaulted"
+    bytec 19 // "asset_defaulted"
     app_global_get_ex
-    assert // check self.defaulted exists
+    assert // check self.asset_defaulted exists
     bz get_asset_info_after_if_else@6
     // smart_contracts/base_d_asa/contract.py:620
     // performance = UInt64(cst.PRF_DEFAULTED)
@@ -2166,7 +2166,7 @@ get_asset_info_after_if_else@6:
     // smart_contracts/base_d_asa/contract.py:623
     // denomination_asset_id=self.denomination_asset_id,
     intc_0 // 0
-    bytec 24 // "denomination_asset_id"
+    bytec 25 // "denomination_asset_id"
     app_global_get_ex
     assert // check self.denomination_asset_id exists
     // smart_contracts/base_d_asa/contract.py:624
@@ -2182,7 +2182,7 @@ get_asset_info_after_if_else@6:
     app_global_get_ex
     assert // check self.circulating_units exists
     intc_0 // 0
-    bytec 19 // "unit_value"
+    bytec 20 // "unit_value"
     app_global_get_ex
     assert // check self.unit_value exists
     dup2
@@ -2216,7 +2216,7 @@ get_asset_info_after_if_else@6:
     // smart_contracts/base_d_asa/contract.py:629
     // interest_rate=arc4.UInt16(self.interest_rate),
     intc_0 // 0
-    bytec 25 // "interest_rate"
+    bytec 26 // "interest_rate"
     app_global_get_ex
     assert // check self.interest_rate exists
     itob
@@ -2241,7 +2241,7 @@ get_asset_info_after_if_else@6:
     // smart_contracts/base_d_asa/contract.py:633
     // primary_distribution_closure_date=self.primary_distribution_closure_date,
     intc_0 // 0
-    bytec 22 // "primary_distribution_closure_date"
+    bytec 23 // "primary_distribution_closure_date"
     app_global_get_ex
     assert // check self.primary_distribution_closure_date exists
     // smart_contracts/base_d_asa/contract.py:634
@@ -2325,7 +2325,7 @@ get_asset_info_after_if_else@6:
     uncover 3
     itob
     concat
-    bytec 27 // 0x00
+    bytec 28 // 0x00
     intc_0 // 0
     uncover 4
     setbit
@@ -2393,7 +2393,7 @@ get_time_events:
     bz get_time_events_after_if_else@3
     // smart_contracts/base_d_asa/contract.py:667
     // time_events = self.time_events.value.copy()
-    bytec 26 // 0x74696d654576656e7473
+    bytec 27 // 0x74696d654576656e7473
     box_get
     swap
     bury 2
@@ -2449,7 +2449,7 @@ get_asset_metadata:
     // smart_contracts/base_d_asa/contract.py:691
     // return typ.AssetMetadata.from_bytes(self.metadata)
     intc_0 // 0
-    bytec 20 // "metadata"
+    bytec 21 // "metadata"
     app_global_get_ex
     assert // check self.metadata exists
     // smart_contracts/base_d_asa/contract.py:682
@@ -2636,7 +2636,7 @@ rbac_assign_role_after_if_else@11:
     bz rbac_assign_role_after_inlined_smart_contracts.modules.rbac.RbacModule._upsert_role@14
     // smart_contracts/modules/rbac.py:113
     // assert role_address not in self.interest_oracle, err.INVALID_ROLE_ADDRESS
-    bytec 23 // 0x52383023
+    bytec 24 // 0x52383023
     dig 3
     concat
     dup
@@ -2799,7 +2799,7 @@ rbac_revoke_role_after_if_else@9:
     bz rbac_revoke_role_after_inlined_smart_contracts.modules.rbac.RbacModule._delete_role@12
     // smart_contracts/modules/rbac.py:135
     // assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
-    bytec 23 // 0x52383023
+    bytec 24 // 0x52383023
     dig 2
     concat
     dup
@@ -2816,7 +2816,7 @@ rbac_revoke_role_after_if_else@9:
 // smart_contracts.modules.rbac.RbacModule.rbac_rotate_arranger[routing]() -> void:
 rbac_rotate_arranger:
     // smart_contracts/modules/rbac.py:191
-    // @arc4.abimethod  # TODO: Add specs
+    // @arc4.abimethod  # TODO: Add specs and tests
     txna ApplicationArgs 1
     dup
     len
@@ -2835,7 +2835,7 @@ rbac_rotate_arranger:
     // return Global.latest_timestamp
     global LatestTimestamp
     // smart_contracts/modules/rbac.py:191
-    // @arc4.abimethod  # TODO: Add specs
+    // @arc4.abimethod  # TODO: Add specs and tests
     itob
     bytec_0 // 0x151f7c75
     swap
@@ -2845,8 +2845,8 @@ rbac_rotate_arranger:
     return
 
 
-// smart_contracts.modules.rbac.RbacModule.gov_set_asset_suspended[routing]() -> void:
-gov_set_asset_suspended:
+// smart_contracts.modules.rbac.RbacModule.policy_set_asset_suspension[routing]() -> void:
+policy_set_asset_suspension:
     // smart_contracts/modules/rbac.py:197
     // @arc4.abimethod  # TODO: Update specs and add test
     txna ApplicationArgs 1
@@ -2901,8 +2901,8 @@ set_default_status:
     callsub _role_is_active
     assert // Not authorized
     // smart_contracts/modules/rbac.py:229
-    // self.defaulted = defaulted
-    bytec 30 // "defaulted"
+    // self.asset_defaulted = defaulted
+    bytec 19 // "asset_defaulted"
     swap
     app_global_put
     // smart_contracts/modules/rbac.py:230
@@ -2928,7 +2928,7 @@ rbac_get_arranger:
     app_global_get_ex
     assert // check self.arranger exists
     // smart_contracts/modules/rbac.py:232
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
     bytec_0 // 0x151f7c75
     swap
     concat
@@ -2940,7 +2940,7 @@ rbac_get_arranger:
 // smart_contracts.modules.rbac.RbacModule.rbac_get_address_roles[routing]() -> void:
 rbac_get_address_roles:
     // smart_contracts/modules/rbac.py:236
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
     txna ApplicationArgs 1
     dup
     len
@@ -2969,12 +2969,12 @@ rbac_get_address_roles:
     callsub _role_is_active
     // smart_contracts/modules/rbac.py:243
     // self._role_is_active(self.interest_oracle, address),
-    bytec 23 // 0x52383023
+    bytec 24 // 0x52383023
     uncover 5
     callsub _role_is_active
     // smart_contracts/modules/rbac.py:236
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
-    bytec 27 // 0x00
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
+    bytec 28 // 0x00
     intc_0 // 0
     uncover 6
     setbit
@@ -3001,7 +3001,7 @@ rbac_get_address_roles:
 // smart_contracts.modules.rbac.RbacModule.rbac_get_role_config[routing]() -> void:
 rbac_get_role_config:
     // smart_contracts/modules/rbac.py:246
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
     txna ApplicationArgs 1
     dup
     len
@@ -3055,7 +3055,7 @@ rbac_get_role_config:
 rbac_get_role_config_switch_case_5@7:
     // smart_contracts/modules/rbac.py:268
     // assert self._has_role(self.interest_oracle, role_address), err.INVALID_ROLE_ADDRESS
-    bytec 23 // 0x52383023
+    bytec 24 // 0x52383023
     // smart_contracts/modules/rbac.py:43
     // return role_address in role_map
     dig 1
@@ -3073,7 +3073,7 @@ rbac_get_role_config_switch_case_5@7:
 
 rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9:
     // smart_contracts/modules/rbac.py:246
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
     bytec_0 // 0x151f7c75
     swap
     concat
@@ -3100,7 +3100,7 @@ rbac_get_role_config_switch_case_4@6:
     box_get
     pop
     // smart_contracts/modules/rbac.py:246
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_3@5:
@@ -3122,7 +3122,7 @@ rbac_get_role_config_switch_case_3@5:
     box_get
     pop
     // smart_contracts/modules/rbac.py:246
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_2@4:
@@ -3144,7 +3144,7 @@ rbac_get_role_config_switch_case_2@4:
     box_get
     pop
     // smart_contracts/modules/rbac.py:246
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_1@3:
@@ -3166,7 +3166,7 @@ rbac_get_role_config_switch_case_1@3:
     box_get
     pop
     // smart_contracts/modules/rbac.py:246
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_0@2:
@@ -3174,7 +3174,7 @@ rbac_get_role_config_switch_case_0@2:
     // return typ.RoleConfig(role_validity_start=UInt64(0), role_validity_end=UInt64(0))
     pushbytes 0x00000000000000000000000000000000
     // smart_contracts/modules/rbac.py:246
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs and test
+    // @arc4.abimethod(readonly=True)  # TODO: Add specs
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 
@@ -3354,9 +3354,9 @@ assert_time_events_sorted_while_top@8:
     itxn_field TypeEnum
     pushint 5 // DeleteApplication
     itxn_field OnCompletion
-    bytec 31 // 0x068101
+    bytec 30 // 0x068101
     itxn_field ApprovalProgram
-    bytec 31 // 0x068101
+    bytec 30 // 0x068101
     itxn_field ClearStateProgram
     global MinTxnFee
     itxn_field Fee
@@ -3594,7 +3594,7 @@ assert_is_not_asset_defaulted:
     // smart_contracts/modules/rbac.py:74
     // assert not self.asset_defaulted, err.DEFAULTED
     intc_0 // 0
-    bytec 28 // "asset_defaulted"
+    bytec 19 // "asset_defaulted"
     app_global_get_ex
     assert // check self.asset_defaulted exists
     !
