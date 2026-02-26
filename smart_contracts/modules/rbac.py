@@ -203,7 +203,7 @@ class RbacModule(ARC4Contract):
         return Global.latest_timestamp
 
     @arc4.abimethod  # TODO: Update specs and add test
-    def policy_set_asset_suspension(self, *, suspended: bool) -> UInt64:
+    def rbac_gov_asset_suspension(self, *, suspended: bool) -> UInt64:
         """
         Set asset suspension status
 
