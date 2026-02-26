@@ -1,8 +1,8 @@
-# RBAC Policy Set Asset Suspension
+# RBAC Governance Asset Suspension
 
 ```json
 {
-  "name": "rbac_policy_set_asset_suspension",
+  "name": "rbac_gov_asset_suspension",
   "desc": "Set asset suspension status",
   "readonly": false,
   "args": [

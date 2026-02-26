@@ -4,6 +4,7 @@ import pytest
 from algokit_utils import CommonAppCallParams, LogicError, SigningAccount
 
 from smart_contracts import constants as sc_cst
+from smart_contracts import enums
 from smart_contracts import errors as err
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     AssetConfigArgs,
@@ -74,7 +75,7 @@ def test_pass_asset_config(
     )
 
     # Status
-    assert state.status == sc_cfg.STATUS_ACTIVE
+    assert state.status == enums.STATUS_ACTIVE
     assert not state.asset_suspended
 
 

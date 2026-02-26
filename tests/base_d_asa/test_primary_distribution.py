@@ -12,8 +12,8 @@ from algokit_utils import (
 from smart_contracts import errors as err
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     BaseDAsaClient,
-    PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
+    RbacGovAssetSuspensionArgs,
 )
 from tests.utils import (
     DAsaAccount,
@@ -127,8 +127,8 @@ def test_fail_suspended(
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
-    base_d_asa_client_primary.send.policy_set_asset_suspension(
-        PolicySetAssetSuspensionArgs(
+    base_d_asa_client_primary.send.rbac_gov_asset_suspension(
+        RbacGovAssetSuspensionArgs(
             suspended=True,
         ),
         params=CommonAppCallParams(

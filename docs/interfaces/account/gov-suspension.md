@@ -1,5 +1,8 @@
+# Account Governance Suspension
+
+```json
 {
-  "name": "set_account_suspension_status",
+  "name": "account_gov_suspension",
   "desc": "Set account suspension status",
   "readonly": false,
   "args": [
@@ -29,3 +32,10 @@
     }
   ]
 }
+```
+
+The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an authorized
+caller.
+
+The call **MUST** fail with the `INVALID_HOLDING_ADDRESS` error code if the Account
+does not exist.

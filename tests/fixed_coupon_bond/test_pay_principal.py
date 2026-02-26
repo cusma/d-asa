@@ -5,8 +5,8 @@ from algokit_utils import LogicError, SigningAccount
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
+    AccountGetInfoArgs,
     FixedCouponBondClient,
-    GetAccountInfoArgs,
     PayPrincipalArgs,
 )
 from tests.utils import (
@@ -30,8 +30,8 @@ def test_pass_pay_principal(
     pre_payment_state = fixed_coupon_bond_client_primary.state.global_state
     time_warp(pre_payment_state.maturity_date)
 
-    pre_payment_account_info = fixed_coupon_bond_client_primary.send.get_account_info(
-        GetAccountInfoArgs(holding_address=account_all_coupons.holding_address),
+    pre_payment_account_info = fixed_coupon_bond_client_primary.send.account_get_info(
+        AccountGetInfoArgs(holding_address=account_all_coupons.holding_address),
     ).abi_return
 
     pre_payment_account_principal = account_all_coupons.principal
@@ -61,8 +61,8 @@ def test_pass_pay_principal(
     # Post payment state
     post_payment_state = fixed_coupon_bond_client_primary.state.global_state
 
-    post_payment_account_info = fixed_coupon_bond_client_primary.send.get_account_info(
-        GetAccountInfoArgs(holding_address=account_all_coupons.holding_address),
+    post_payment_account_info = fixed_coupon_bond_client_primary.send.account_get_info(
+        AccountGetInfoArgs(holding_address=account_all_coupons.holding_address),
     ).abi_return
 
     assert (

@@ -26,7 +26,7 @@ main:
     app_global_put
 
 main_after_if_else@2:
-    // smart_contracts/mock_rbac_module/contract.py:6
+    // smart_contracts/mock_module_rbac/contract.py:6
     // class MockRbacModule(RbacModule):
     txn NumAppArgs
     bz main_create@17
@@ -41,7 +41,7 @@ main_after_if_else@2:
     err
 
 main_create@17:
-    // smart_contracts/mock_rbac_module/contract.py:14
+    // smart_contracts/mock_module_rbac/contract.py:14
     // @arc4.baremethod(create="require")
     txn OnCompletion
     !
@@ -49,12 +49,12 @@ main_create@17:
     !
     &&
     assert
-    // smart_contracts/mock_rbac_module/contract.py:16
+    // smart_contracts/mock_module_rbac/contract.py:16
     // self.arranger.value = Txn.sender
     bytec_1 // 0x52323023
     txn Sender
     app_global_put
-    // smart_contracts/mock_rbac_module/contract.py:14
+    // smart_contracts/mock_module_rbac/contract.py:14
     // @arc4.baremethod(create="require")
     intc_0 // 1
     return

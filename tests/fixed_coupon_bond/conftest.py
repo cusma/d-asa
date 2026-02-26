@@ -13,16 +13,16 @@ from algokit_utils import (
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
+    AccountOpenArgs,
     AssetConfigArgs,
     AssetCreateArgs,
     AssetMetadata,
     FixedCouponBondClient,
     FixedCouponBondFactory,
-    OpenAccountArgs,
     PayCouponArgs,
-    PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
     RbacAssignRoleArgs,
+    RbacGovAssetSuspensionArgs,
     SetDefaultStatusArgs,
     SetSecondaryTimeEventsArgs,
 )
@@ -281,8 +281,8 @@ def account_factory(
             )
         )
 
-        fixed_coupon_bond_client.send.open_account(
-            OpenAccountArgs(
+        fixed_coupon_bond_client.send.account_open(
+            AccountOpenArgs(
                 holding_address=account.address,
                 payment_address=account.address,
             ),
@@ -395,8 +395,8 @@ def fixed_coupon_bond_client_suspended(
     authority: utils.DAsaAuthority,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> FixedCouponBondClient:
-    fixed_coupon_bond_client_ongoing.send.policy_set_asset_suspension(
-        PolicySetAssetSuspensionArgs(suspended=True),
+    fixed_coupon_bond_client_ongoing.send.rbac_gov_asset_suspension(
+        RbacGovAssetSuspensionArgs(suspended=True),
         params=CommonAppCallParams(sender=authority.address),
     )
     return fixed_coupon_bond_client_ongoing

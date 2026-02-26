@@ -9,7 +9,7 @@ from algokit_utils import (
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
-    GetAccountInfoArgs,
+    AccountGetInfoArgs,
     PayPrincipalArgs,
     ZeroCouponBondClient,
 )
@@ -30,8 +30,8 @@ def test_pass_pay_principal(
     pre_payment_state = zero_coupon_bond_client_at_maturity.state.global_state
 
     pre_payment_account_info = (
-        zero_coupon_bond_client_at_maturity.send.get_account_info(
-            GetAccountInfoArgs(holding_address=account_a.holding_address)
+        zero_coupon_bond_client_at_maturity.send.account_get_info(
+            AccountGetInfoArgs(holding_address=account_a.holding_address)
         ).abi_return
     )
 
@@ -63,8 +63,8 @@ def test_pass_pay_principal(
     post_payment_state = zero_coupon_bond_client_at_maturity.state.global_state
 
     post_payment_account_info = (
-        zero_coupon_bond_client_at_maturity.send.get_account_info(
-            GetAccountInfoArgs(holding_address=account_a.holding_address)
+        zero_coupon_bond_client_at_maturity.send.account_get_info(
+            AccountGetInfoArgs(holding_address=account_a.holding_address)
         ).abi_return
     )
 

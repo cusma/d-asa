@@ -12,13 +12,13 @@ from algokit_utils import (
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
+    AccountOpenArgs,
     AssetConfigArgs,
     AssetCreateArgs,
     AssetMetadata,
-    OpenAccountArgs,
-    PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
     RbacAssignRoleArgs,
+    RbacGovAssetSuspensionArgs,
     SetSecondaryTimeEventsArgs,
     ZeroCouponBondClient,
     ZeroCouponBondFactory,
@@ -236,8 +236,8 @@ def account_factory(
             )
         )
 
-        base_d_asa_client.send.open_account(
-            OpenAccountArgs(
+        base_d_asa_client.send.account_open(
+            AccountOpenArgs(
                 holding_address=account.address,
                 payment_address=account.address,
             ),
@@ -323,8 +323,8 @@ def zero_coupon_bond_client_suspended(
     authority: utils.DAsaAuthority,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    zero_coupon_bond_client_ongoing.send.policy_set_asset_suspension(
-        PolicySetAssetSuspensionArgs(suspended=True),
+    zero_coupon_bond_client_ongoing.send.rbac_gov_asset_suspension(
+        RbacGovAssetSuspensionArgs(suspended=True),
         params=CommonAppCallParams(sender=authority.address),
     )
     return zero_coupon_bond_client_ongoing

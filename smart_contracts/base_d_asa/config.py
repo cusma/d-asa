@@ -6,11 +6,6 @@ GLOBAL_UINTS: Final[int] = 18
 LOCAL_BYTES: Final[int] = 0
 LOCAL_UINTS: Final[int] = 0
 
-# Status  # TODO: Use Contract Performance instead
-STATUS_EMPTY: Final[int] = 0
-STATUS_ACTIVE: Final[int] = 100
-STATUS_ENDED: Final[int] = 200
-
 # Time Schedule Limits
 TIME_SCHEDULE_LIMITS: Final[int] = 4
 PRIMARY_DISTRIBUTION_OPENING_DATE_IDX: Final[int] = 0

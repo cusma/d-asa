@@ -12,15 +12,15 @@ from algokit_utils import (
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    AccountOpenArgs,
     AssetConfigArgs,
     AssetCreateArgs,
     AssetMetadata,
     BaseDAsaClient,
     BaseDAsaFactory,
-    OpenAccountArgs,
-    PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
     RbacAssignRoleArgs,
+    RbacGovAssetSuspensionArgs,
     SetSecondaryTimeEventsArgs,
 )
 from tests import utils
@@ -230,8 +230,8 @@ def account_factory(
             )
         )
 
-        base_d_asa_client.send.open_account(
-            OpenAccountArgs(
+        base_d_asa_client.send.account_open(
+            AccountOpenArgs(
                 holding_address=account.address,
                 payment_address=account.address,
             ),
@@ -303,8 +303,8 @@ def base_d_asa_client_ongoing(
 def base_d_asa_client_suspended(
     authority: utils.DAsaAuthority, base_d_asa_client_ongoing: BaseDAsaClient
 ) -> BaseDAsaClient:
-    base_d_asa_client_ongoing.send.policy_set_asset_suspension(
-        PolicySetAssetSuspensionArgs(suspended=True),
+    base_d_asa_client_ongoing.send.rbac_gov_asset_suspension(
+        RbacGovAssetSuspensionArgs(suspended=True),
         params=CommonAppCallParams(sender=authority.address),
     )
     return base_d_asa_client_ongoing
