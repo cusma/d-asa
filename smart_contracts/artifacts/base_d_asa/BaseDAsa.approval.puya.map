@@ -524,7 +524,7 @@
       "stack_out": []
     },
     "545": {
-      "op": "pushbytess 0x89474134 0x1d6fc255 0x6c85e3ee 0x402dba47 0xfad2173e 0x08efea35 0xe4a5ab54 0xdc063b35 0x14fc10ef 0x4c113ed5 0x74a7297f 0x105c184e 0x82f71b2d 0x03b83329 0x3dbe80bd 0x08a1fa7c 0x25e9997f 0x010c8299 0x7406acd2 0xc3e4b297 // method \"asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void\", method \"set_secondary_time_events(uint64[])(uint64,uint64)\", method \"primary_distribution(address,uint64)uint64\", method \"get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)\", method \"get_time_events()uint64[]\", method \"get_secondary_market_schedule()uint64[]\", method \"get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)\", method \"account_gov_suspension(address,bool)uint64\", method \"account_open(address,address)uint64\", method \"account_close(address)(uint64,uint64)\", method \"account_update_payment_address(address,address)uint64\", method \"account_get_info(address)(address,uint64,uint64,uint64,bool)\", method \"rbac_rotate_arranger(address)uint64\", method \"rbac_assign_role(uint8,address,byte[])uint64\", method \"rbac_revoke_role(uint8,address)uint64\", method \"policy_set_asset_suspension(bool)uint64\", method \"set_default_status(bool)uint64\", method \"rbac_get_arranger()address\", method \"rbac_get_address_roles(address)(bool,bool,bool,bool,bool)\", method \"rbac_get_role_config(uint8,address)(uint64,uint64)\"",
+      "op": "pushbytess 0x89474134 0x1d6fc255 0x6c85e3ee 0x402dba47 0xfad2173e 0x08efea35 0xe4a5ab54 0xdc063b35 0x14fc10ef 0x4c113ed5 0x74a7297f 0x105c184e 0x82f71b2d 0x03b83329 0x3dbe80bd 0xdf54e82c 0x25e9997f 0x010c8299 0x7406acd2 0xc3e4b297 // method \"asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void\", method \"set_secondary_time_events(uint64[])(uint64,uint64)\", method \"primary_distribution(address,uint64)uint64\", method \"get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)\", method \"get_time_events()uint64[]\", method \"get_secondary_market_schedule()uint64[]\", method \"get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)\", method \"account_gov_suspension(address,bool)uint64\", method \"account_open(address,address)uint64\", method \"account_close(address)(uint64,uint64)\", method \"account_update_payment_address(address,address)uint64\", method \"account_get_info(address)(address,uint64,uint64,uint64,bool)\", method \"rbac_rotate_arranger(address)uint64\", method \"rbac_assign_role(uint8,address,byte[])uint64\", method \"rbac_revoke_role(uint8,address)uint64\", method \"rbac_gov_asset_suspension(bool)uint64\", method \"set_default_status(bool)uint64\", method \"rbac_get_arranger()address\", method \"rbac_get_address_roles(address)(bool,bool,bool,bool,bool)\", method \"rbac_get_role_config(uint8,address)(uint64,uint64)\"",
       "defined_out": [
         "Method(account_close(address)(uint64,uint64))",
         "Method(account_get_info(address)(address,uint64,uint64,uint64,bool))",
@@ -536,12 +536,12 @@
         "Method(get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))",
         "Method(get_secondary_market_schedule()uint64[])",
         "Method(get_time_events()uint64[])",
-        "Method(policy_set_asset_suspension(bool)uint64)",
         "Method(primary_distribution(address,uint64)uint64)",
         "Method(rbac_assign_role(uint8,address,byte[])uint64)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_role_config(uint8,address)(uint64,uint64))",
+        "Method(rbac_gov_asset_suspension(bool)uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(set_default_status(bool)uint64)",
@@ -563,7 +563,7 @@
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(rbac_assign_role(uint8,address,byte[])uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
-        "Method(policy_set_asset_suspension(bool)uint64)",
+        "Method(rbac_gov_asset_suspension(bool)uint64)",
         "Method(set_default_status(bool)uint64)",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
@@ -583,12 +583,12 @@
         "Method(get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))",
         "Method(get_secondary_market_schedule()uint64[])",
         "Method(get_time_events()uint64[])",
-        "Method(policy_set_asset_suspension(bool)uint64)",
         "Method(primary_distribution(address,uint64)uint64)",
         "Method(rbac_assign_role(uint8,address,byte[])uint64)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_role_config(uint8,address)(uint64,uint64))",
+        "Method(rbac_gov_asset_suspension(bool)uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(set_default_status(bool)uint64)",
@@ -611,7 +611,7 @@
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(rbac_assign_role(uint8,address,byte[])uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
-        "Method(policy_set_asset_suspension(bool)uint64)",
+        "Method(rbac_gov_asset_suspension(bool)uint64)",
         "Method(set_default_status(bool)uint64)",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
@@ -620,7 +620,7 @@
       ]
     },
     "650": {
-      "op": "match asset_config set_secondary_time_events primary_distribution get_asset_info get_time_events get_secondary_market_schedule get_asset_metadata account_gov_suspension account_open account_close account_update_payment_address account_get_info rbac_rotate_arranger rbac_assign_role rbac_revoke_role policy_set_asset_suspension set_default_status rbac_get_arranger rbac_get_address_roles rbac_get_role_config",
+      "op": "match asset_config set_secondary_time_events primary_distribution get_asset_info get_time_events get_secondary_market_schedule get_asset_metadata account_gov_suspension account_open account_close account_update_payment_address account_get_info rbac_rotate_arranger rbac_assign_role rbac_revoke_role rbac_gov_asset_suspension set_default_status rbac_get_arranger rbac_get_address_roles rbac_get_role_config",
       "stack_out": []
     },
     "692": {
@@ -19163,9 +19163,9 @@
       "op": "b rbac_revoke_role_after_inlined_smart_contracts.modules.rbac.RbacModule._delete_role@12"
     },
     "2386": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.policy_set_asset_suspension[routing]",
+      "subroutine": "smart_contracts.modules.rbac.RbacModule.rbac_gov_asset_suspension[routing]",
       "params": {},
-      "block": "policy_set_asset_suspension",
+      "block": "rbac_gov_asset_suspension",
       "stack_in": [],
       "op": "txna ApplicationArgs 1",
       "defined_out": [

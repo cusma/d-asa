@@ -35,9 +35,9 @@ main_after_if_else@2:
     assert
     txn ApplicationID
     assert
-    pushbytess 0x82f71b2d 0x03b83329 0x3dbe80bd 0x08a1fa7c 0x25e9997f 0x010c8299 0x7406acd2 0xc3e4b297 // method "rbac_rotate_arranger(address)uint64", method "rbac_assign_role(uint8,address,byte[])uint64", method "rbac_revoke_role(uint8,address)uint64", method "policy_set_asset_suspension(bool)uint64", method "set_default_status(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_config(uint8,address)(uint64,uint64)"
+    pushbytess 0x82f71b2d 0x03b83329 0x3dbe80bd 0xdf54e82c 0x25e9997f 0x010c8299 0x7406acd2 0xc3e4b297 // method "rbac_rotate_arranger(address)uint64", method "rbac_assign_role(uint8,address,byte[])uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_gov_asset_suspension(bool)uint64", method "set_default_status(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_config(uint8,address)(uint64,uint64)"
     txna ApplicationArgs 0
-    match rbac_rotate_arranger rbac_assign_role rbac_revoke_role policy_set_asset_suspension set_default_status rbac_get_arranger rbac_get_address_roles rbac_get_role_config
+    match rbac_rotate_arranger rbac_assign_role rbac_revoke_role rbac_gov_asset_suspension set_default_status rbac_get_arranger rbac_get_address_roles rbac_get_role_config
     err
 
 main_create@17:
@@ -443,8 +443,8 @@ rbac_revoke_role_after_if_else@9:
     b rbac_revoke_role_after_inlined_smart_contracts.modules.rbac.RbacModule._delete_role@12
 
 
-// smart_contracts.modules.rbac.RbacModule.policy_set_asset_suspension[routing]() -> void:
-policy_set_asset_suspension:
+// smart_contracts.modules.rbac.RbacModule.rbac_gov_asset_suspension[routing]() -> void:
+rbac_gov_asset_suspension:
     // smart_contracts/modules/rbac.py:205
     // @arc4.abimethod  # TODO: Update specs and add test
     txna ApplicationArgs 1
