@@ -12,10 +12,10 @@ from algokit_utils import (
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
+    AccountOpenArgs,
     AssetConfigArgs,
     AssetCreateArgs,
     AssetMetadata,
-    OpenAccountArgs,
     PayCouponArgs,
     PerpetualBondClient,
     PerpetualBondFactory,
@@ -284,8 +284,8 @@ def account_factory(
             )
         )
 
-        perpetual_bond_client.send.open_account(
-            OpenAccountArgs(
+        perpetual_bond_client.send.account_open(
+            AccountOpenArgs(
                 holding_address=account.address,
                 payment_address=account.address,
             ),

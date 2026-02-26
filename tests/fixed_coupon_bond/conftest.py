@@ -13,12 +13,12 @@ from algokit_utils import (
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
+    AccountOpenArgs,
     AssetConfigArgs,
     AssetCreateArgs,
     AssetMetadata,
     FixedCouponBondClient,
     FixedCouponBondFactory,
-    OpenAccountArgs,
     PayCouponArgs,
     PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
@@ -281,8 +281,8 @@ def account_factory(
             )
         )
 
-        fixed_coupon_bond_client.send.open_account(
-            OpenAccountArgs(
+        fixed_coupon_bond_client.send.account_open(
+            AccountOpenArgs(
                 holding_address=account.address,
                 payment_address=account.address,
             ),

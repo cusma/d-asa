@@ -12,12 +12,12 @@ from algokit_utils import (
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+    AccountOpenArgs,
     AssetConfigArgs,
     AssetCreateArgs,
     AssetMetadata,
     BaseDAsaClient,
     BaseDAsaFactory,
-    OpenAccountArgs,
     PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
     RbacAssignRoleArgs,
@@ -230,8 +230,8 @@ def account_factory(
             )
         )
 
-        base_d_asa_client.send.open_account(
-            OpenAccountArgs(
+        base_d_asa_client.send.account_open(
+            AccountOpenArgs(
                 holding_address=account.address,
                 payment_address=account.address,
             ),
