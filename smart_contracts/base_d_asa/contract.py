@@ -3,7 +3,6 @@ from algopy import (
     Account,
     Asset,
     Box,
-    BoxMap,
     Bytes,
     Global,
     OpUpFeeSource,
@@ -15,20 +14,20 @@ from algopy import (
     urange,
 )
 
-from smart_contracts.modules.rbac import RbacModule
+from smart_contracts.modules.accounting import AccountingModule
 
 from .. import abi_types as typ
 from .. import constants as cst
+from .. import enums as enm
 from .. import errors as err
 from . import config as cfg
 
 
-class BaseDAsa(RbacModule):
+class BaseDAsa(AccountingModule):
     """
     Base D-ASA Class implementing common interfaces and state schema:
 
     - Asset creation and configuration
-    - Account management (creation, suspension, close-out)
     - Time schedule with no coupons and maturity date
     - Primary distribution
     - Getters (asset info, account info, time events)
@@ -45,10 +44,6 @@ class BaseDAsa(RbacModule):
 
         # Metadata
         self.metadata = Bytes()
-
-        # Supply
-        self.total_units = UInt64()
-        self.circulating_units = UInt64()
 
         # Principal
         self.principal_discount = UInt64()
@@ -69,23 +64,6 @@ class BaseDAsa(RbacModule):
         self.secondary_market_opening_date = UInt64()
         self.secondary_market_closure_date = UInt64()
         self.maturity_date = UInt64()
-
-        # Status
-        self.status = UInt64(cfg.STATUS_EMPTY)
-
-        # Account
-        self.account = BoxMap(
-            Account, typ.AccountInfo, key_prefix=cst.PREFIX_ID_ACCOUNT
-        )
-
-    def status_is_active(self) -> bool:
-        return self.status == cfg.STATUS_ACTIVE
-
-    def status_is_ended(self) -> bool:
-        return self.status == cfg.STATUS_ENDED
-
-    def assert_valid_holding_address(self, holding_address: Account) -> None:
-        assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
 
     def assert_denomination_asset(self, denomination_asset_id: UInt64) -> None:
         # The reference implementation has on-chain denomination with ASA
@@ -198,12 +176,6 @@ class BaseDAsa(RbacModule):
             < self.secondary_market_closure_date
         ), err.SECONDARY_MARKET_CLOSED
 
-    def assert_are_units_fungible(self, sender: Account, receiver: Account) -> None:
-        assert (
-            self.account[sender].unit_value == self.account[receiver].unit_value
-            and self.account[sender].paid_coupons == self.account[receiver].paid_coupons
-        ), err.NON_FUNGIBLE_UNITS
-
     def is_payment_executable(self, holding_address: Account) -> bool:
         return (
             self.account[holding_address].payment_address.is_opted_in(
@@ -226,28 +198,8 @@ class BaseDAsa(RbacModule):
             fee=Global.min_txn_fee,
         ).submit()
 
-    def outstanding_principal(self) -> UInt64:
-        return self.circulating_units * self.unit_value
-
-    def account_units_value(self, holding_address: Account, units: UInt64) -> UInt64:
-        return units * self.account[holding_address].unit_value
-
-    def account_total_units_value(self, holding_address: Account) -> UInt64:
-        return self.account_units_value(
-            holding_address, self.account[holding_address].units
-        )
-
     def days_in(self, time_period: UInt64) -> UInt64:
         return time_period // UInt64(cst.DAY_2_SEC)
-
-    def reset_account_if_zero_units(self, holding_address: Account) -> None:
-        if self.account[holding_address].units == 0:
-            self.account[holding_address].unit_value = UInt64(0)
-            self.account[holding_address].paid_coupons = UInt64(0)
-
-    def end_if_no_circulating_units(self) -> None:
-        if self.circulating_units == 0:
-            self.status = UInt64(cfg.STATUS_ENDED)
 
     def assert_asset_transfer_authorization(
         self,
@@ -266,22 +218,6 @@ class BaseDAsa(RbacModule):
         assert not self.account[receiver_holding_address].suspended, err.SUSPENDED
         assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
 
-    def assert_transferred_units_fungibility(
-        self,
-        sender_holding_address: Account,
-        receiver_holding_address: Account,
-    ) -> None:
-        sender_unit_value = self.account[sender_holding_address].unit_value
-        if self.account[receiver_holding_address].units > 0:
-            self.assert_are_units_fungible(
-                sender_holding_address, receiver_holding_address
-            )
-        else:
-            self.account[receiver_holding_address].unit_value = sender_unit_value
-            self.account[receiver_holding_address].paid_coupons = self.account[
-                sender_holding_address
-            ].paid_coupons
-
     def assert_asset_transfer_preconditions(
         self,
         sender_holding_address: Account,
@@ -294,20 +230,10 @@ class BaseDAsa(RbacModule):
             receiver_holding_address,
             units,
         )
-        self.assert_transferred_units_fungibility(
+        self.assert_fungible_transfer(
             sender_holding_address,
             receiver_holding_address,
         )
-
-    def transfer_units(
-        self,
-        sender_holding_address: Account,
-        receiver_holding_address: Account,
-        units: UInt64,
-    ) -> None:
-        self.account[sender_holding_address].units -= units
-        self.account[receiver_holding_address].units += units
-        self.reset_account_if_zero_units(sender_holding_address)
 
     def assert_pay_principal_authorization(self, holding_address: Account) -> None:
         # The reference implementation does not restrict caller authorization
@@ -393,7 +319,7 @@ class BaseDAsa(RbacModule):
             INVALID_COUPON_RATES: Coupon rates not properly set
         """
         self.assert_caller_is_arranger()
-        assert self.status == cfg.STATUS_EMPTY, err.ALREADY_CONFIGURED
+        assert self.status == enm.STATUS_INACTIVE, err.ALREADY_CONFIGURED
 
         # Set Denomination Asset
         self.assert_denomination_asset(denomination_asset_id)
@@ -430,7 +356,7 @@ class BaseDAsa(RbacModule):
         self.assert_time_periods(time_periods)
         self.set_time_periods(time_periods)
 
-        self.status = UInt64(cfg.STATUS_ACTIVE)
+        self.status = UInt64(enm.STATUS_ACTIVE)
 
     @arc4.abimethod
     def set_secondary_time_events(
@@ -481,67 +407,6 @@ class BaseDAsa(RbacModule):
         )
 
     @arc4.abimethod
-    def open_account(
-        self, *, holding_address: Account, payment_address: Account
-    ) -> UInt64:
-        """
-        Open D-ASA account
-
-        Args:
-            holding_address: Account Holding Address
-            payment_address: Account Payment Address
-
-        Returns:
-            Timestamp of the account opening
-
-        Raises:
-            UNAUTHORIZED: Not authorized
-            DEFAULTED: Defaulted
-            SUSPENDED: Suspended
-            INVALID_HOLDING_ADDRESS: Invalid account holding address
-        """
-        self.assert_caller_is_account_manager()
-        assert not self.status_is_ended(), err.UNAUTHORIZED
-        self.assert_is_not_asset_defaulted()
-        self.assert_is_not_asset_suspended()
-        assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
-
-        self.account[holding_address] = typ.AccountInfo(
-            payment_address=payment_address,
-            units=UInt64(0),
-            unit_value=UInt64(0),
-            paid_coupons=UInt64(0),
-            suspended=False,
-        )
-        return Global.latest_timestamp
-
-    @arc4.abimethod
-    def close_account(self, *, holding_address: Account) -> tuple[UInt64, UInt64]:
-        """
-        Close D-ASA account
-
-        Args:
-            holding_address: Account Holding Address
-
-        Returns:
-            Closed units, Timestamp of the account closing
-
-        Raises:
-            UNAUTHORIZED: Not authorized
-            DEFAULTED: Defaulted
-            INVALID_HOLDING_ADDRESS: Invalid account holding address
-        """
-        self.assert_caller_is_account_manager()
-        self.assert_is_not_asset_defaulted()
-        self.assert_valid_holding_address(holding_address)
-
-        closed_units = self.account[holding_address].units
-        del self.account[holding_address]
-        self.circulating_units -= closed_units
-        self.end_if_no_circulating_units()
-        return closed_units, Global.latest_timestamp
-
-    @arc4.abimethod
     def primary_distribution(
         self, *, holding_address: Account, units: UInt64
     ) -> UInt64:
@@ -579,29 +444,6 @@ class BaseDAsa(RbacModule):
         self.account[holding_address].unit_value = self.unit_value
         return self.total_units - self.circulating_units
 
-    @arc4.abimethod
-    def set_account_suspension(
-        self, *, holding_address: Account, suspended: bool
-    ) -> UInt64:
-        """
-        Set account suspension status
-
-        Args:
-            holding_address: Account Holding Address
-            suspended: Suspension status
-
-        Returns:
-            Timestamp of the set account suspension status
-
-        Raises:
-            UNAUTHORIZED: Not authorized
-            INVALID_HOLDING_ADDRESS: Invalid account holding address
-        """
-        self.assert_caller_is_authority()
-        self.assert_valid_holding_address(holding_address)
-        self.account[holding_address].suspended = suspended
-        return Global.latest_timestamp
-
     @arc4.abimethod(readonly=True)
     def get_asset_info(self) -> typ.AssetInfo:
         """
@@ -636,23 +478,6 @@ class BaseDAsa(RbacModule):
             suspended=self.asset_suspended,
             performance=arc4.UInt8(performance),
         )
-
-    @arc4.abimethod(readonly=True)
-    def get_account_info(self, *, holding_address: Account) -> typ.AccountInfo:
-        """
-        Get account info
-
-        Args:
-            holding_address: Account Holding Address
-
-        Returns:
-            Payment Address, D-ASA units, Unit nominal value in denomination asset, Paid coupons, Suspended
-
-        Raises:
-            INVALID_HOLDING_ADDRESS: Invalid account holding address
-        """
-        self.assert_valid_holding_address(holding_address)
-        return self.account[holding_address]
 
     @arc4.abimethod(readonly=True)
     def get_time_events(self) -> typ.TimeEvents:
