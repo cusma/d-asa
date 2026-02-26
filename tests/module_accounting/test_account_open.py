@@ -9,26 +9,26 @@ from algokit_utils import (
 )
 
 from smart_contracts import errors as err
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
-    BaseDAsaClient,
-    GetAccountInfoArgs,
-    OpenAccountArgs,
+from smart_contracts.artifacts.mock_module_accounting.mock_accounting_module_client import (
+    AccountGetInfoArgs,
+    AccountOpenArgs,
+    MockAccountingModuleClient,
 )
 from tests.utils import DAsaAccount, DAsaAccountManager
 
 ACCOUNT_TEST_UNITS: Final[int] = 7
 
 
-def test_pass_open_account(
+def test_pass_account_open(
     algorand: AlgorandClient,
-    base_d_asa_client_empty: BaseDAsaClient,
+    accounting_client: MockAccountingModuleClient,
     account_manager: DAsaAccountManager,
 ) -> None:
     holding = algorand.account.random()
     payment = algorand.account.random()
 
-    base_d_asa_client_empty.send.open_account(
-        OpenAccountArgs(
+    accounting_client.send.account_open(
+        AccountOpenArgs(
             holding_address=holding.address,
             payment_address=payment.address,
         ),
@@ -37,8 +37,8 @@ def test_pass_open_account(
         ),
     )
 
-    d_asa_account_info = base_d_asa_client_empty.send.get_account_info(
-        GetAccountInfoArgs(
+    d_asa_account_info = accounting_client.send.account_get_info(
+        AccountGetInfoArgs(
             holding_address=holding.address,
         ),
         params=CommonAppCallParams(
@@ -56,16 +56,13 @@ def test_pass_open_account(
 def test_fail_unauthorized_caller(
     algorand: AlgorandClient,
     no_role_account: SigningAccount,
-    base_d_asa_client_empty: BaseDAsaClient,
+    accounting_client: MockAccountingModuleClient,
 ) -> None:
-    holding = algorand.account.random()
-    payment = algorand.account.random()
-
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
-        base_d_asa_client_empty.send.open_account(
-            OpenAccountArgs(
-                holding_address=holding.address,
-                payment_address=payment.address,
+        accounting_client.send.account_open(
+            AccountOpenArgs(
+                holding_address=no_role_account.address,
+                payment_address=no_role_account.address,
             ),
             params=CommonAppCallParams(
                 sender=no_role_account.address,
@@ -83,17 +80,15 @@ def test_fail_defaulted_status() -> None:
 
 def test_fail_suspended(
     algorand: AlgorandClient,
+    no_role_account: SigningAccount,
     account_manager: DAsaAccountManager,
-    base_d_asa_client_suspended: BaseDAsaClient,
+    accounting_client: MockAccountingModuleClient,
 ) -> None:
-    holding = algorand.account.random()
-    payment = algorand.account.random()
-
     with pytest.raises(LogicError, match=err.SUSPENDED):
-        base_d_asa_client_suspended.send.open_account(
-            OpenAccountArgs(
-                holding_address=holding.address,
-                payment_address=payment.address,
+        accounting_client.send.account_open(
+            AccountOpenArgs(
+                holding_address=no_role_account.address,
+                payment_address=no_role_account.address,
             ),
             params=CommonAppCallParams(
                 sender=account_manager.address,
@@ -102,13 +97,13 @@ def test_fail_suspended(
 
 
 def test_fail_invalid_holding_address(
-    base_d_asa_client_empty: BaseDAsaClient,
     account_manager: DAsaAccountManager,
     account_a: DAsaAccount,
+    accounting_client: MockAccountingModuleClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
-        base_d_asa_client_empty.send.open_account(
-            OpenAccountArgs(
+        accounting_client.send.account_open(
+            AccountOpenArgs(
                 holding_address=account_a.holding_address,
                 payment_address=account_a.payment_address,
             ),
