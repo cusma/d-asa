@@ -76,7 +76,7 @@ def test_pass_asset_config(
 
     # Status
     assert state.status == sc_cfg.STATUS_ACTIVE
-    assert not state.suspended
+    assert not state.asset_suspended
 
 
 def test_fail_invalid_time_events_length(
