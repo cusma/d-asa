@@ -3,6 +3,7 @@ from copy import deepcopy
 import pytest
 from algokit_utils import LogicError
 
+from smart_contracts import enums
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     AssetConfigArgs,
@@ -82,7 +83,7 @@ def test_pass_asset_config(
     )
 
     # Status
-    assert state.status == sc_cfg.STATUS_ACTIVE
+    assert state.status == enums.STATUS_ACTIVE
     assert not state.asset_suspended
 
 
