@@ -1,6 +1,16 @@
 from typing import Literal, TypeAlias
 
-from algopy import Account, Array, BoxMap, Bytes, FixedBytes, String, Struct, UInt64, arc4
+from algopy import (
+    Account,
+    Array,
+    BoxMap,
+    Bytes,
+    FixedBytes,
+    String,
+    Struct,
+    UInt64,
+    arc4,
+)
 
 CouponRates: TypeAlias = Array[arc4.UInt16]
 TimeEvents: TypeAlias = Array[UInt64]
