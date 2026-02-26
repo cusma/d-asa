@@ -1,5 +1,8 @@
+# Account Get Info
+
+```json
 {
-  "name": "get_account_info",
+  "name": "account_get_info",
   "desc": "Get account account info",
   "readonly": true,
   "args": [
@@ -20,3 +23,7 @@
     }
   ]
 }
+```
+
+The call **MUST** fail with the `INVALID_HOLDING_ADDRESS` error code if the Sender
+or Receiver Holding Address is invalid.
