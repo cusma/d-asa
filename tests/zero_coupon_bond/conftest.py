@@ -9,17 +9,16 @@ from algokit_utils import (
     CommonAppCallParams,
     SigningAccount,
 )
-from algokit_utils.config import config
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
     AssetConfigArgs,
     AssetCreateArgs,
     AssetMetadata,
-    AssignRoleArgs,
     OpenAccountArgs,
+    PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
-    SetAssetSuspensionArgs,
+    RbacAssignRoleArgs,
     SetSecondaryTimeEventsArgs,
     ZeroCouponBondClient,
     ZeroCouponBondFactory,
@@ -101,12 +100,6 @@ def zero_coupon_bond_client_empty(
     arranger: SigningAccount,
     asset_metadata: AssetMetadata,
 ) -> ZeroCouponBondClient:
-    config.configure(
-        debug=False,
-        populate_app_call_resources=True,
-        # trace_all=True,
-    )
-
     factory = algorand.client.get_typed_app_factory(
         ZeroCouponBondFactory,
         default_sender=arranger.address,
@@ -136,10 +129,10 @@ def account_manager(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
-    zero_coupon_bond_client_empty.send.assign_role(
-        AssignRoleArgs(
+    zero_coupon_bond_client_empty.send.rbac_assign_role(
+        RbacAssignRoleArgs(
+            role_id=account.role_id(),
             role_address=account.address,
-            role=account.role_id(),
             config=role_config,
         ),
     )
@@ -160,10 +153,10 @@ def authority(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
-    zero_coupon_bond_client_empty.send.assign_role(
-        AssignRoleArgs(
+    zero_coupon_bond_client_empty.send.rbac_assign_role(
+        RbacAssignRoleArgs(
+            role_id=account.role_id(),
             role_address=account.address,
-            role=account.role_id(),
             config=role_config,
         ),
     )
@@ -210,10 +203,10 @@ def primary_dealer(
     role_config = utils.set_role_config(
         state.primary_distribution_opening_date, state.primary_distribution_closure_date
     )
-    zero_coupon_bond_client_active.send.assign_role(
-        AssignRoleArgs(
+    zero_coupon_bond_client_active.send.rbac_assign_role(
+        RbacAssignRoleArgs(
+            role_id=account.role_id(),
             role_address=account.address,
-            role=account.role_id(),
             config=role_config,
         ),
     )
@@ -330,8 +323,8 @@ def zero_coupon_bond_client_suspended(
     authority: utils.DAsaAuthority,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    zero_coupon_bond_client_ongoing.send.set_asset_suspension(
-        SetAssetSuspensionArgs(suspended=True),
+    zero_coupon_bond_client_ongoing.send.policy_set_asset_suspension(
+        PolicySetAssetSuspensionArgs(suspended=True),
         params=CommonAppCallParams(sender=authority.address),
     )
     return zero_coupon_bond_client_ongoing

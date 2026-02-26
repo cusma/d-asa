@@ -9,19 +9,18 @@ from algokit_utils import (
     CommonAppCallParams,
     SigningAccount,
 )
-from algokit_utils.config import config
 
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     AssetConfigArgs,
     AssetCreateArgs,
     AssetMetadata,
-    AssignRoleArgs,
     BaseDAsaClient,
     BaseDAsaFactory,
     OpenAccountArgs,
+    PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
-    SetAssetSuspensionArgs,
+    RbacAssignRoleArgs,
     SetSecondaryTimeEventsArgs,
 )
 from tests import utils
@@ -98,12 +97,6 @@ def base_d_asa_client_empty(
     arranger: SigningAccount,
     asset_metadata: AssetMetadata,
 ) -> BaseDAsaClient:
-    config.configure(
-        debug=False,
-        populate_app_call_resources=True,
-        # trace_all=True,
-    )
-
     factory = algorand.client.get_typed_app_factory(
         BaseDAsaFactory, default_sender=arranger.address, default_signer=arranger.signer
     )
@@ -131,10 +124,10 @@ def account_manager(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
-    base_d_asa_client_empty.send.assign_role(
-        AssignRoleArgs(
+    base_d_asa_client_empty.send.rbac_assign_role(
+        RbacAssignRoleArgs(
+            role_id=account.role_id(),
             role_address=account.address,
-            role=account.role_id(),
             config=role_config,
         )
     )
@@ -155,10 +148,10 @@ def authority(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
-    base_d_asa_client_empty.send.assign_role(
-        AssignRoleArgs(
+    base_d_asa_client_empty.send.rbac_assign_role(
+        RbacAssignRoleArgs(
+            role_id=account.role_id(),
             role_address=account.address,
-            role=account.role_id(),
             config=role_config,
         )
     )
@@ -204,10 +197,10 @@ def primary_dealer(
     role_config = utils.set_role_config(
         state.primary_distribution_opening_date, state.primary_distribution_closure_date
     )
-    base_d_asa_client_active.send.assign_role(
-        AssignRoleArgs(
+    base_d_asa_client_active.send.rbac_assign_role(
+        RbacAssignRoleArgs(
+            role_id=account.role_id(),
             role_address=account.address,
-            role=account.role_id(),
             config=role_config,
         )
     )
@@ -310,8 +303,8 @@ def base_d_asa_client_ongoing(
 def base_d_asa_client_suspended(
     authority: utils.DAsaAuthority, base_d_asa_client_ongoing: BaseDAsaClient
 ) -> BaseDAsaClient:
-    base_d_asa_client_ongoing.send.set_asset_suspension(
-        SetAssetSuspensionArgs(suspended=True),
+    base_d_asa_client_ongoing.send.policy_set_asset_suspension(
+        PolicySetAssetSuspensionArgs(suspended=True),
         params=CommonAppCallParams(sender=authority.address),
     )
     return base_d_asa_client_ongoing
