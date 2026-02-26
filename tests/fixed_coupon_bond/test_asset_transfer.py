@@ -173,7 +173,7 @@ def test_fail_secondary_market_not_open_yet(
 
 
 def test_fail_unauthorized(
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     account_a: DAsaAccount,
     account_b: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
@@ -185,7 +185,7 @@ def test_fail_unauthorized(
                 receiver_holding_address=account_b.holding_address,
                 units=1,
             ),
-            params=CommonAppCallParams(sender=oscar.address),
+            params=CommonAppCallParams(sender=no_role_account.address),
         )
 
 
@@ -206,23 +206,23 @@ def test_fail_suspended(
 
 
 def test_fail_invalid_sender(
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     account_a: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_ongoing.send.asset_transfer(
             AssetTransferArgs(
-                sender_holding_address=oscar.address,
+                sender_holding_address=no_role_account.address,
                 receiver_holding_address=account_a.holding_address,
                 units=1,
             ),
-            params=CommonAppCallParams(sender=oscar.address),
+            params=CommonAppCallParams(sender=no_role_account.address),
         )
 
 
 def test_fail_invalid_receiver(
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     account_a: DAsaAccount,
     fixed_coupon_bond_client_ongoing: FixedCouponBondClient,
 ) -> None:
@@ -230,7 +230,7 @@ def test_fail_invalid_receiver(
         fixed_coupon_bond_client_ongoing.send.asset_transfer(
             AssetTransferArgs(
                 sender_holding_address=account_a.holding_address,
-                receiver_holding_address=oscar.address,
+                receiver_holding_address=no_role_account.address,
                 units=1,
             ),
             params=CommonAppCallParams(sender=account_a.address),

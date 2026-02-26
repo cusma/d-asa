@@ -55,7 +55,7 @@ def test_pass_open_account(
 
 def test_fail_unauthorized_caller(
     algorand: AlgorandClient,
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> None:
     holding = algorand.account.random()
@@ -68,7 +68,7 @@ def test_fail_unauthorized_caller(
                 payment_address=payment.address,
             ),
             params=CommonAppCallParams(
-                sender=oscar.address,
+                sender=no_role_account.address,
             ),
         )
 

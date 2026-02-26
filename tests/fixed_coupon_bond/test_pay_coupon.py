@@ -186,12 +186,13 @@ def test_fail_suspended() -> None:
 
 
 def test_fail_invalid_holding_address(
-    oscar: SigningAccount, fixed_coupon_bond_client_at_maturity: FixedCouponBondClient
+    no_role_account: SigningAccount,
+    fixed_coupon_bond_client_at_maturity: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_at_maturity.send.pay_coupon(
             PayCouponArgs(
-                holding_address=oscar.address,
+                holding_address=no_role_account.address,
                 payment_info=b"",
             )
         )
