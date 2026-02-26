@@ -46,8 +46,10 @@ jobs:
     strategy:
       matrix:
         module:
+          # Mocked modules
+          - module_rbac
           - module_accounting
-          - rbac_module
+          # Contracts
           - base_d_asa
           - zero_coupon_bond
           - fixed_coupon_bond
