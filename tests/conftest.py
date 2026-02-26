@@ -7,6 +7,7 @@ from algokit_utils import (
     AssetCreateParams,
     SigningAccount,
 )
+from algokit_utils.config import config
 
 from smart_contracts import constants as sc_cst
 from tests import utils
@@ -36,6 +37,11 @@ INITIAL_D_ASA_UNITS: Final[int] = 100
 
 @pytest.fixture(scope="session")
 def algorand() -> AlgorandClient:
+    config.configure(
+        debug=True,
+        populate_app_call_resources=True,
+    )
+
     client = AlgorandClient.default_localnet()
     client.set_suggested_params_cache_timeout(0)
     return client
@@ -62,7 +68,7 @@ def bank(algorand: AlgorandClient) -> SigningAccount:
 
 
 @pytest.fixture(scope="session")
-def oscar(algorand: AlgorandClient) -> SigningAccount:
+def no_role_account(algorand: AlgorandClient) -> SigningAccount:
     account = algorand.account.random()
     algorand.account.ensure_funded_from_environment(
         account_to_fund=account.address,
