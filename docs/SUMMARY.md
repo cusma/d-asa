@@ -47,7 +47,7 @@
   - [Rotate Arranger]()
   - [Assign Role](./interfaces/rbac/assign-role.md)
   - [Revoke Role](./interfaces/rbac/revoke-role.md)
-  - [Policy Set Asset Suspension](./interfaces/rbac/policy-set-asset-suspension.md)
+  - [Governance Asset Suspension](interfaces/rbac/gov-asset-suspension.md)
   - [Set Default Status](./interfaces/rbac/set-default-status.md)
   - [Get Arranger]()
   - [Get Roles](./interfaces/rbac/get-roles.md)
@@ -57,7 +57,7 @@
 - [Account]()
   - [Open](interfaces/account/open.md)
   - [Close](interfaces/account/close.md)
-  - [Governance Suspension](interfaces/account/suspension.md)
+  - [Governance Suspension](interfaces/account/gov-suspension.md)
   - [Get Info](interfaces/account/get-info.md)
 
 - [Methods]()

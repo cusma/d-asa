@@ -19,9 +19,9 @@ from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
     PayCouponArgs,
     PerpetualBondClient,
     PerpetualBondFactory,
-    PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
     RbacAssignRoleArgs,
+    RbacGovAssetSuspensionArgs,
     SetDefaultStatusArgs,
     SetSecondaryTimeEventsArgs,
 )
@@ -385,8 +385,8 @@ def perpetual_bond_client_suspended(
     authority: utils.DAsaAuthority,
     perpetual_bond_client_ongoing: PerpetualBondClient,
 ) -> PerpetualBondClient:
-    perpetual_bond_client_ongoing.send.policy_set_asset_suspension(
-        PolicySetAssetSuspensionArgs(suspended=True)
+    perpetual_bond_client_ongoing.send.rbac_gov_asset_suspension(
+        RbacGovAssetSuspensionArgs(suspended=True)
     )
     return perpetual_bond_client_ongoing
 

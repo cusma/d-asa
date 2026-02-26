@@ -34,7 +34,7 @@ def accounting_client(
 @pytest.fixture(scope="function")
 def account_manager(
     algorand: AlgorandClient,
-    rbac_client: MockAccountingModuleClient,
+    accounting_client: MockAccountingModuleClient,
 ) -> utils.DAsaAccountManager:
     account = algorand.account.random()
     account = utils.DAsaAccountManager(private_key=account.private_key)
@@ -44,7 +44,30 @@ def account_manager(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
     role_config = utils.set_role_config()
-    rbac_client.send.rbac_assign_role(
+    accounting_client.send.rbac_assign_role(
+        RbacAssignRoleArgs(
+            role_id=account.role_id(),
+            role_address=account.address,
+            config=role_config,
+        )
+    )
+    return account
+
+
+@pytest.fixture(scope="function")
+def authority(
+    algorand: AlgorandClient,
+    accounting_client: MockAccountingModuleClient,
+) -> utils.DAsaAuthority:
+    account = algorand.account.random()
+    account = utils.DAsaAuthority(private_key=account.private_key)
+
+    algorand.account.ensure_funded_from_environment(
+        account_to_fund=account.address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
+    )
+    role_config = utils.set_role_config()
+    accounting_client.send.rbac_assign_role(
         RbacAssignRoleArgs(
             role_id=account.role_id(),
             role_address=account.address,

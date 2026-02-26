@@ -2,7 +2,6 @@ from typing import Final
 
 import pytest
 from algokit_utils import (
-    AlgorandClient,
     CommonAppCallParams,
     LogicError,
     SigningAccount,
@@ -13,24 +12,22 @@ from smart_contracts.artifacts.mock_module_accounting.mock_accounting_module_cli
     AccountGetInfoArgs,
     AccountOpenArgs,
     MockAccountingModuleClient,
+    RbacGovAssetSuspensionArgs,
 )
-from tests.utils import DAsaAccount, DAsaAccountManager
+from tests.utils import DAsaAccountManager, DAsaAuthority
 
 ACCOUNT_TEST_UNITS: Final[int] = 7
 
 
 def test_pass_account_open(
-    algorand: AlgorandClient,
+    no_role_account: SigningAccount,
     accounting_client: MockAccountingModuleClient,
     account_manager: DAsaAccountManager,
 ) -> None:
-    holding = algorand.account.random()
-    payment = algorand.account.random()
-
     accounting_client.send.account_open(
         AccountOpenArgs(
-            holding_address=holding.address,
-            payment_address=payment.address,
+            holding_address=no_role_account.address,
+            payment_address=no_role_account.address,
         ),
         params=CommonAppCallParams(
             sender=account_manager.address,
@@ -39,14 +36,14 @@ def test_pass_account_open(
 
     d_asa_account_info = accounting_client.send.account_get_info(
         AccountGetInfoArgs(
-            holding_address=holding.address,
+            holding_address=no_role_account.address,
         ),
         params=CommonAppCallParams(
             sender=account_manager.address,
         ),
     ).abi_return
 
-    assert d_asa_account_info.payment_address == payment.address
+    assert d_asa_account_info.payment_address == no_role_account.address
     assert d_asa_account_info.units == 0
     assert d_asa_account_info.unit_value == 0
     assert d_asa_account_info.paid_coupons == 0
@@ -54,7 +51,6 @@ def test_pass_account_open(
 
 
 def test_fail_unauthorized_caller(
-    algorand: AlgorandClient,
     no_role_account: SigningAccount,
     accounting_client: MockAccountingModuleClient,
 ) -> None:
@@ -79,11 +75,18 @@ def test_fail_defaulted_status() -> None:
 
 
 def test_fail_suspended(
-    algorand: AlgorandClient,
+    arranger: SigningAccount,
     no_role_account: SigningAccount,
+    authority: DAsaAuthority,
     account_manager: DAsaAccountManager,
     accounting_client: MockAccountingModuleClient,
 ) -> None:
+    accounting_client.send.rbac_gov_asset_suspension(
+        RbacGovAssetSuspensionArgs(suspended=True),
+        params=CommonAppCallParams(
+            sender=authority.address,
+        ),
+    )
     with pytest.raises(LogicError, match=err.SUSPENDED):
         accounting_client.send.account_open(
             AccountOpenArgs(
@@ -97,15 +100,25 @@ def test_fail_suspended(
 
 
 def test_fail_invalid_holding_address(
+    no_role_account: SigningAccount,
     account_manager: DAsaAccountManager,
-    account_a: DAsaAccount,
     accounting_client: MockAccountingModuleClient,
 ) -> None:
+    accounting_client.send.account_open(
+        AccountOpenArgs(
+            holding_address=no_role_account.address,
+            payment_address=no_role_account.address,
+        ),
+        params=CommonAppCallParams(
+            sender=account_manager.address,
+        ),
+    )
+
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         accounting_client.send.account_open(
             AccountOpenArgs(
-                holding_address=account_a.holding_address,
-                payment_address=account_a.payment_address,
+                holding_address=no_role_account.address,
+                payment_address=no_role_account.address,
             ),
             params=CommonAppCallParams(
                 sender=account_manager.address,

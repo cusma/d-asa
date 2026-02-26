@@ -18,9 +18,9 @@ from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     AssetMetadata,
     BaseDAsaClient,
     BaseDAsaFactory,
-    PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
     RbacAssignRoleArgs,
+    RbacGovAssetSuspensionArgs,
     SetSecondaryTimeEventsArgs,
 )
 from tests import utils
@@ -303,8 +303,8 @@ def base_d_asa_client_ongoing(
 def base_d_asa_client_suspended(
     authority: utils.DAsaAuthority, base_d_asa_client_ongoing: BaseDAsaClient
 ) -> BaseDAsaClient:
-    base_d_asa_client_ongoing.send.policy_set_asset_suspension(
-        PolicySetAssetSuspensionArgs(suspended=True),
+    base_d_asa_client_ongoing.send.rbac_gov_asset_suspension(
+        RbacGovAssetSuspensionArgs(suspended=True),
         params=CommonAppCallParams(sender=authority.address),
     )
     return base_d_asa_client_ongoing
