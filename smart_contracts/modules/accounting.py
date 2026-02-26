@@ -89,7 +89,7 @@ class AccountingModule(RbacModule):
         self.end_if_no_circulating_units()
 
     @arc4.abimethod
-    def set_account_suspension(
+    def account_gov_suspension(
         self, *, holding_address: Account, suspended: bool
     ) -> UInt64:
         """
@@ -174,7 +174,7 @@ class AccountingModule(RbacModule):
         self.end_if_no_circulating_units()
         return closed_units, Global.latest_timestamp
 
-    @arc4.abimethod
+    @arc4.abimethod  # TODO: Add specs and tests
     def account_update_payment_address(
         self, *, holding_address: Account, payment_address: Account
     ) -> UInt64:
