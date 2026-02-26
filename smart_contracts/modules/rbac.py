@@ -1,10 +1,21 @@
 # pyright: reportMissingModuleSource=false
 
-from algopy import ARC4Contract, Account, Bytes, BoxMap, Global, GlobalState, Txn, UInt64, arc4, op
+from algopy import (
+    Account,
+    ARC4Contract,
+    BoxMap,
+    Bytes,
+    Global,
+    GlobalState,
+    Txn,
+    UInt64,
+    arc4,
+    op,
+)
 
-from smart_contracts import errors as err
-from smart_contracts import constants as cst
 from smart_contracts import abi_types as typ
+from smart_contracts import constants as cst
+from smart_contracts import errors as err
 
 
 class RbacModule(ARC4Contract):
@@ -42,9 +53,7 @@ class RbacModule(ARC4Contract):
     def _has_role(self, role_map: typ.RbacRole, role_address: Account) -> bool:
         return role_address in role_map
 
-    def _role_is_active(
-        self, role_map: typ.RbacRole, role_address: Account
-    ) -> bool:
+    def _role_is_active(self, role_map: typ.RbacRole, role_address: Account) -> bool:
         return self._has_role(role_map, role_address) and (
             role_map[role_address].role_validity_start
             <= Global.latest_timestamp
@@ -134,6 +143,12 @@ class RbacModule(ARC4Contract):
             assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
             del self.interest_oracle[role_address]
 
+    @arc4.abimethod  # TODO: Add specs and tests
+    def rbac_rotate_arranger(self, *, new_arranger: Account) -> UInt64:
+        self.assert_caller_is_arranger()
+        self.arranger.value = new_arranger
+        return Global.latest_timestamp
+
     @arc4.abimethod
     def rbac_assign_role(
         self, *, role_id: arc4.UInt8, role_address: Account, config: Bytes
@@ -187,12 +202,6 @@ class RbacModule(ARC4Contract):
         self._delete_role(role_id.as_uint64(), role_address)
         return Global.latest_timestamp
 
-    @arc4.abimethod  # TODO: Add specs and tests
-    def rbac_rotate_arranger(self, *, new_arranger: Account) -> UInt64:
-        self.assert_caller_is_arranger()
-        self.arranger.value = new_arranger
-        return Global.latest_timestamp
-
     @arc4.abimethod  # TODO: Update specs and add test
     def policy_set_asset_suspension(self, *, suspended: bool) -> UInt64:
         """
@@ -233,7 +242,9 @@ class RbacModule(ARC4Contract):
         return self.arranger.value
 
     @arc4.abimethod(readonly=True)  # TODO: Add specs
-    def rbac_get_address_roles(self, address: Account) -> tuple[bool, bool, bool, bool, bool]:
+    def rbac_get_address_roles(
+        self, address: Account
+    ) -> tuple[bool, bool, bool, bool, bool]:
         return (
             self._role_is_active(self.account_manager, address),
             self._role_is_active(self.primary_dealer, address),
@@ -250,21 +261,33 @@ class RbacModule(ARC4Contract):
         self._assert_valid_role(role)
         match role:
             case UInt64(cst.ROLE_ARRANGER):
-                return typ.RoleConfig(role_validity_start=UInt64(0), role_validity_end=UInt64(0))
+                return typ.RoleConfig(
+                    role_validity_start=UInt64(0), role_validity_end=UInt64(0)
+                )
             case UInt64(cst.ROLE_ACCOUNT_MANAGER):
-                assert self._has_role(self.account_manager, role_address), err.INVALID_ROLE_ADDRESS
+                assert self._has_role(
+                    self.account_manager, role_address
+                ), err.INVALID_ROLE_ADDRESS
                 return self.account_manager[role_address]
             case UInt64(cst.ROLE_PRIMARY_DEALER):
-                assert self._has_role(self.primary_dealer, role_address), err.INVALID_ROLE_ADDRESS
+                assert self._has_role(
+                    self.primary_dealer, role_address
+                ), err.INVALID_ROLE_ADDRESS
                 return self.primary_dealer[role_address]
             case UInt64(cst.ROLE_TRUSTEE):
-                assert self._has_role(self.trustee, role_address), err.INVALID_ROLE_ADDRESS
+                assert self._has_role(
+                    self.trustee, role_address
+                ), err.INVALID_ROLE_ADDRESS
                 return self.trustee[role_address]
             case UInt64(cst.ROLE_AUTHORITY):
-                assert self._has_role(self.authority, role_address), err.INVALID_ROLE_ADDRESS
+                assert self._has_role(
+                    self.authority, role_address
+                ), err.INVALID_ROLE_ADDRESS
                 return self.authority[role_address]
             case UInt64(cst.ROLE_INTEREST_ORACLE):
-                assert self._has_role(self.interest_oracle, role_address), err.INVALID_ROLE_ADDRESS
+                assert self._has_role(
+                    self.interest_oracle, role_address
+                ), err.INVALID_ROLE_ADDRESS
                 return self.interest_oracle[role_address]
             case _:
                 op.err(err.INVALID_ROLE)
