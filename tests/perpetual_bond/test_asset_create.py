@@ -83,7 +83,7 @@ def test_pass_asset_create(
 
     # Status
     assert state.status == sc_cfg.STATUS_EMPTY
-    assert not state.suspended
+    assert not state.asset_suspended
 
 
 def test_fail_invalid_state_schema() -> None:

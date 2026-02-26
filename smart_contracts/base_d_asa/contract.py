@@ -1,22 +1,21 @@
 # pyright: reportMissingModuleSource=false
 from algopy import (
     Account,
-    ARC4Contract,
     Asset,
     Box,
     BoxMap,
     Bytes,
     Global,
-    GlobalState,
     OpUpFeeSource,
     Txn,
     UInt64,
     arc4,
     ensure_budget,
     itxn,
-    op,
     urange,
 )
+
+from smart_contracts.modules.rbac import RbacModule
 
 from .. import abi_types as typ
 from .. import constants as cst
@@ -24,12 +23,11 @@ from .. import errors as err
 from . import config as cfg
 
 
-class BaseDAsa(ARC4Contract):
+class BaseDAsa(RbacModule):
     """
     Base D-ASA Class implementing common interfaces and state schema:
 
     - Asset creation and configuration
-    - Role-based access control
     - Account management (creation, suspension, close-out)
     - Time schedule with no coupons and maturity date
     - Primary distribution
@@ -37,21 +35,7 @@ class BaseDAsa(ARC4Contract):
     """
 
     def __init__(self) -> None:
-        # Role Based Access Control
-        self.arranger = GlobalState(Account(), key=cst.PREFIX_ID_ARRANGER)
-        self.account_manager = BoxMap(
-            Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_ACCOUNT_MANAGER
-        )
-        self.primary_dealer = BoxMap(
-            Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_PRIMARY_DEALER
-        )
-        self.trustee = BoxMap(Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_TRUSTEE)
-        self.authority = BoxMap(
-            Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_AUTHORITY
-        )
-        self.interest_oracle = BoxMap(
-            Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_INTEREST_ORACLE
-        )
+        super().__init__()
 
         # Asset Configuration
         self.denomination_asset_id = UInt64()
@@ -88,8 +72,6 @@ class BaseDAsa(ARC4Contract):
 
         # Status
         self.status = UInt64(cfg.STATUS_EMPTY)
-        self.suspended = False
-        self.defaulted = False
 
         # Account
         self.account = BoxMap(
@@ -101,60 +83,6 @@ class BaseDAsa(ARC4Contract):
 
     def status_is_ended(self) -> bool:
         return self.status == cfg.STATUS_ENDED
-
-    def assert_is_not_defaulted(self) -> None:
-        assert not self.defaulted, err.DEFAULTED
-
-    def assert_is_not_suspended(self) -> None:
-        assert not self.suspended, err.SUSPENDED
-
-    def assert_caller_is_arranger(self) -> None:
-        assert Txn.sender == self.arranger.value, err.UNAUTHORIZED
-
-    def assert_caller_is_account_manager(self) -> None:
-        caller = Txn.sender
-        assert (
-            caller in self.account_manager
-            and self.account_manager[caller].role_validity_start
-            <= Global.latest_timestamp
-            <= self.account_manager[caller].role_validity_end
-        ), err.UNAUTHORIZED
-
-    def assert_caller_is_primary_dealer(self) -> None:
-        caller = Txn.sender
-        assert (
-            caller in self.primary_dealer
-            and self.primary_dealer[caller].role_validity_start
-            <= Global.latest_timestamp
-            <= self.primary_dealer[caller].role_validity_end
-        ), err.UNAUTHORIZED
-
-    def assert_caller_is_trustee(self) -> None:
-        caller = Txn.sender
-        assert (
-            caller in self.trustee
-            and self.trustee[caller].role_validity_start
-            <= Global.latest_timestamp
-            <= self.trustee[caller].role_validity_end
-        ), err.UNAUTHORIZED
-
-    def assert_caller_is_authority(self) -> None:
-        caller = Txn.sender
-        assert (
-            caller in self.authority
-            and self.authority[caller].role_validity_start
-            <= Global.latest_timestamp
-            <= self.authority[caller].role_validity_end
-        ), err.UNAUTHORIZED
-
-    def assert_caller_is_interest_oracle(self) -> None:
-        caller = Txn.sender
-        assert (
-            caller in self.interest_oracle
-            and self.interest_oracle[caller].role_validity_start
-            <= Global.latest_timestamp
-            <= self.interest_oracle[caller].role_validity_end
-        ), err.UNAUTHORIZED
 
     def assert_valid_holding_address(self, holding_address: Account) -> None:
         assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
@@ -330,8 +258,8 @@ class BaseDAsa(ARC4Contract):
         # The reference implementation grants transfer right to D-ASA owners. Other implementations may relay on other
         # roles, external Apps through C2C calls (e.g., an order book), or off-chain transfer agents.
         assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
-        self.assert_is_not_defaulted()
-        self.assert_is_not_suspended()
+        self.assert_is_not_asset_defaulted()
+        self.assert_is_not_asset_suspended()
         self.assert_valid_holding_address(sender_holding_address)
         self.assert_valid_holding_address(receiver_holding_address)
         assert not self.account[sender_holding_address].suspended, err.SUSPENDED
@@ -384,8 +312,8 @@ class BaseDAsa(ARC4Contract):
     def assert_pay_principal_authorization(self, holding_address: Account) -> None:
         # The reference implementation does not restrict caller authorization
         assert self.status_is_active(), err.UNAUTHORIZED
-        self.assert_is_not_defaulted()
-        self.assert_is_not_suspended()
+        self.assert_is_not_asset_defaulted()
+        self.assert_is_not_asset_suspended()
         self.assert_valid_holding_address(holding_address)
         units = self.account[holding_address].units
         assert units > 0, err.NO_UNITS
@@ -527,7 +455,7 @@ class BaseDAsa(ARC4Contract):
         """
         self.assert_caller_is_arranger()
         assert not self.status_is_ended(), err.UNAUTHORIZED
-        self.assert_is_not_defaulted()
+        self.assert_is_not_asset_defaulted()
 
         assert secondary_market_time_events.length >= 1, err.INVALID_TIME_EVENTS_LENGTH
         if secondary_market_time_events.length > 1:
@@ -553,111 +481,6 @@ class BaseDAsa(ARC4Contract):
         )
 
     @arc4.abimethod
-    def assign_role(
-        self, *, role_address: Account, role: arc4.UInt8, config: Bytes
-    ) -> UInt64:
-        """
-        Assign a role to an address
-
-        Args:
-            role_address: Account Role Address
-            role: Role identifier
-            config: Role configuration (Optional)
-
-        Returns:
-            Timestamp of the role assignment
-
-        Raises:
-            UNAUTHORIZED: Not authorized
-            DEFAULTED: Defaulted
-            INVALID_ROLE: Invalid role identifier
-            INVALID_ROLE_ADDRESS: Invalid account role address
-        """
-        self.assert_caller_is_arranger()
-        self.assert_is_not_defaulted()
-        assert role.as_uint64() in (
-            UInt64(cst.ROLE_ARRANGER),
-            UInt64(cst.ROLE_ACCOUNT_MANAGER),
-            UInt64(cst.ROLE_PRIMARY_DEALER),
-            UInt64(cst.ROLE_TRUSTEE),
-            UInt64(cst.ROLE_AUTHORITY),
-            UInt64(cst.ROLE_INTEREST_ORACLE),
-        ), err.INVALID_ROLE
-        match role.as_uint64():
-            case UInt64(cst.ROLE_ARRANGER):
-                self.arranger.value = role_address
-            case UInt64(cst.ROLE_ACCOUNT_MANAGER):
-                assert (
-                    role_address not in self.account_manager
-                ), err.INVALID_ROLE_ADDRESS
-                self.account_manager[role_address] = typ.RoleConfig.from_bytes(config)
-            case UInt64(cst.ROLE_PRIMARY_DEALER):
-                assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-                self.primary_dealer[role_address] = typ.RoleConfig.from_bytes(config)
-            case UInt64(cst.ROLE_TRUSTEE):
-                assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
-                self.trustee[role_address] = typ.RoleConfig.from_bytes(config)
-            case UInt64(cst.ROLE_AUTHORITY):
-                assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
-                self.authority[role_address] = typ.RoleConfig.from_bytes(config)
-            case UInt64(cst.ROLE_INTEREST_ORACLE):
-                assert (
-                    role_address not in self.interest_oracle
-                ), err.INVALID_ROLE_ADDRESS
-                self.interest_oracle[role_address] = typ.RoleConfig.from_bytes(config)
-            case _:
-                op.err()
-        return Global.latest_timestamp
-
-    @arc4.abimethod
-    def revoke_role(self, *, role_address: Account, role: arc4.UInt8) -> UInt64:
-        """
-        Revoke a role from an address
-
-        Args:
-            role_address: Account Role Address
-            role: Role identifier
-
-        Returns:
-            Timestamp of the role revocation
-
-        Raises:
-            UNAUTHORIZED: Not authorized
-            DEFAULTED: Defaulted
-            INVALID_ROLE: Invalid role identifier
-            INVALID_ROLE_ADDRESS: Invalid account role address
-        """
-        self.assert_caller_is_arranger()
-        self.assert_is_not_defaulted()
-        assert role.as_uint64() in (
-            UInt64(cst.ROLE_ACCOUNT_MANAGER),
-            UInt64(cst.ROLE_PRIMARY_DEALER),
-            UInt64(cst.ROLE_TRUSTEE),
-            UInt64(cst.ROLE_AUTHORITY),
-            UInt64(cst.ROLE_INTEREST_ORACLE),
-        ), err.INVALID_ROLE
-        match role.as_uint64():
-            # Arranger role can not be revoked (just rotated)
-            case UInt64(cst.ROLE_ACCOUNT_MANAGER):
-                assert role_address in self.account_manager, err.INVALID_ROLE_ADDRESS
-                del self.account_manager[role_address]
-            case UInt64(cst.ROLE_PRIMARY_DEALER):
-                assert role_address in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-                del self.primary_dealer[role_address]
-            case UInt64(cst.ROLE_TRUSTEE):
-                assert role_address in self.trustee, err.INVALID_ROLE_ADDRESS
-                del self.trustee[role_address]
-            case UInt64(cst.ROLE_AUTHORITY):
-                assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
-                del self.authority[role_address]
-            case UInt64(cst.ROLE_INTEREST_ORACLE):
-                assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
-                del self.interest_oracle[role_address]
-            case _:
-                op.err()
-        return Global.latest_timestamp
-
-    @arc4.abimethod
     def open_account(
         self, *, holding_address: Account, payment_address: Account
     ) -> UInt64:
@@ -679,8 +502,8 @@ class BaseDAsa(ARC4Contract):
         """
         self.assert_caller_is_account_manager()
         assert not self.status_is_ended(), err.UNAUTHORIZED
-        self.assert_is_not_defaulted()
-        self.assert_is_not_suspended()
+        self.assert_is_not_asset_defaulted()
+        self.assert_is_not_asset_suspended()
         assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
 
         self.account[holding_address] = typ.AccountInfo(
@@ -709,7 +532,7 @@ class BaseDAsa(ARC4Contract):
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
         self.assert_caller_is_account_manager()
-        self.assert_is_not_defaulted()
+        self.assert_is_not_asset_defaulted()
         self.assert_valid_holding_address(holding_address)
 
         closed_units = self.account[holding_address].units
@@ -746,8 +569,8 @@ class BaseDAsa(ARC4Contract):
         # implementations may relay on other roles or external Apps through C2C calls (e.g., an auction).
         self.assert_caller_is_primary_dealer()
         self.assert_valid_holding_address(holding_address)
-        self.assert_is_not_defaulted()
-        self.assert_is_not_suspended()
+        self.assert_is_not_asset_defaulted()
+        self.assert_is_not_asset_suspended()
         assert units > 0, err.ZERO_UNITS
         assert self.circulating_units + units <= self.total_units, err.OVER_DISTRIBUTION
 
@@ -755,24 +578,6 @@ class BaseDAsa(ARC4Contract):
         self.account[holding_address].units += units
         self.account[holding_address].unit_value = self.unit_value
         return self.total_units - self.circulating_units
-
-    @arc4.abimethod
-    def set_asset_suspension(self, *, suspended: bool) -> UInt64:
-        """
-        Set asset suspension status
-
-        Args:
-            suspended: Suspension status
-
-        Returns:
-            Timestamp of the set asset suspension status
-
-        Raises:
-            UNAUTHORIZED: Not authorized
-        """
-        self.assert_caller_is_authority()
-        self.suspended = suspended
-        return Global.latest_timestamp
 
     @arc4.abimethod
     def set_account_suspension(
@@ -797,20 +602,6 @@ class BaseDAsa(ARC4Contract):
         self.account[holding_address].suspended = suspended
         return Global.latest_timestamp
 
-    @arc4.abimethod
-    def set_default_status(self, *, defaulted: bool) -> None:
-        """
-        Set D-ASA default status
-
-        Args:
-            defaulted: Default status
-
-        Raises:
-            UNAUTHORIZED: Not authorized
-        """
-        self.assert_caller_is_trustee()
-        self.defaulted = defaulted
-
     @arc4.abimethod(readonly=True)
     def get_asset_info(self) -> typ.AssetInfo:
         """
@@ -825,7 +616,7 @@ class BaseDAsa(ARC4Contract):
         if Global.latest_timestamp > self.maturity_date > 0:
             performance = UInt64(cst.PRF_MATURED)
         # The reference implementation has no grace or delinquency periods
-        if self.defaulted:
+        if self.asset_defaulted:
             performance = UInt64(cst.PRF_DEFAULTED)
 
         return typ.AssetInfo(
@@ -842,7 +633,7 @@ class BaseDAsa(ARC4Contract):
             primary_distribution_closure_date=self.primary_distribution_closure_date,
             issuance_date=self.issuance_date,
             maturity_date=self.maturity_date,
-            suspended=self.suspended,
+            suspended=self.asset_suspended,
             performance=arc4.UInt8(performance),
         )
 

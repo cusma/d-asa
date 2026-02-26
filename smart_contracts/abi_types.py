@@ -1,6 +1,16 @@
 from typing import Literal, TypeAlias
 
-from algopy import Account, Array, Bytes, FixedBytes, String, Struct, UInt64, arc4
+from algopy import (
+    Account,
+    Array,
+    BoxMap,
+    Bytes,
+    FixedBytes,
+    String,
+    Struct,
+    UInt64,
+    arc4,
+)
 
 CouponRates: TypeAlias = Array[arc4.UInt16]
 TimeEvents: TypeAlias = Array[UInt64]
@@ -106,3 +116,6 @@ class RoleConfig(arc4.Struct, kw_only=True):
 
     role_validity_start: UInt64
     role_validity_end: UInt64
+
+
+RbacRole: TypeAlias = BoxMap[Account, RoleConfig]

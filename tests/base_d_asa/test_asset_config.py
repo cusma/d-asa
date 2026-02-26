@@ -75,18 +75,18 @@ def test_pass_asset_config(
 
     # Status
     assert state.status == sc_cfg.STATUS_ACTIVE
-    assert not state.suspended
+    assert not state.asset_suspended
 
 
 def test_fail_unauthorized(
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     base_d_asa_cfg: DAsaConfig,
     base_d_asa_client_empty: BaseDAsaClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         base_d_asa_client_empty.send.asset_config(
             AssetConfigArgs(**base_d_asa_cfg.dictify()),
-            params=CommonAppCallParams(sender=oscar.address),
+            params=CommonAppCallParams(sender=no_role_account.address),
         )
 
 

@@ -1,5 +1,8 @@
+# RBAC Get Roles
+
+```json
 {
-  "name": "get_roles",
+  "name": "rbac_get_roles",
   "desc": "Get role identifiers",
   "readonly": true,
   "args": [],
@@ -8,3 +11,4 @@
     "desc": "Role identifiers"
   }
 }
+```

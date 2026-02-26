@@ -34,11 +34,11 @@ def test_pass_update(
 
 def test_fail_unauthorized(
     asset_metadata: AssetMetadata,
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     base_d_asa_client_active: BaseDAsaClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         base_d_asa_client_active.send.update.asset_update(
             AssetUpdateArgs(metadata=asset_metadata),
-            params=CommonAppCallParams(sender=oscar.address),
+            params=CommonAppCallParams(sender=no_role_account.address),
         )

@@ -46,6 +46,7 @@ jobs:
     strategy:
       matrix:
         module:
+          - rbac_module
           - base_d_asa
           - zero_coupon_bond
           - fixed_coupon_bond
@@ -63,7 +64,6 @@ jobs:
         with:
           filters: |
             module:
-              - 'smart_contracts/_helpers/**'
               - 'smart_contracts/artifacts/${{ matrix.module }}/**'
               - 'tests/conftest.py'
               - 'tests/${{ matrix.module }}/**'

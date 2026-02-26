@@ -1,3 +1,6 @@
+# Set Default Status
+
+```json
 {
   "name": "set_default_status",
   "desc": "Set D-ASA default status",
@@ -20,3 +23,7 @@
     }
   ]
 }
+```
+
+The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an authorized
+caller.

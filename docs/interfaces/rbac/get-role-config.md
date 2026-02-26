@@ -1,5 +1,8 @@
+# RBAC Get Role Config
+
+```json
 {
-  "name": "get_role_config",
+  "name": "rbac_get_role_config",
   "desc": "Get role configuration",
   "readonly": true,
   "args": [
@@ -29,3 +32,4 @@
     }
   ]
 }
+```

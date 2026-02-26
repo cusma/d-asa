@@ -12,8 +12,8 @@ from algokit_utils import (
 from smart_contracts import errors as err
 from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     BaseDAsaClient,
+    PolicySetAssetSuspensionArgs,
     PrimaryDistributionArgs,
-    SetAssetSuspensionArgs,
 )
 from tests.utils import (
     DAsaAccount,
@@ -95,7 +95,7 @@ def test_fail_primary_distribution_closed(
 
 
 def test_fail_unauthorized(
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     base_d_asa_client_primary: BaseDAsaClient,
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
@@ -107,7 +107,7 @@ def test_fail_unauthorized(
                 units=ACCOUNT_TEST_UNITS,
             ),
             params=CommonAppCallParams(
-                sender=oscar.address,
+                sender=no_role_account.address,
             ),
         )
 
@@ -127,8 +127,8 @@ def test_fail_suspended(
     account_factory: Callable[..., DAsaAccount],
 ) -> None:
     account = account_factory(base_d_asa_client_primary)
-    base_d_asa_client_primary.send.set_asset_suspension(
-        SetAssetSuspensionArgs(
+    base_d_asa_client_primary.send.policy_set_asset_suspension(
+        PolicySetAssetSuspensionArgs(
             suspended=True,
         ),
         params=CommonAppCallParams(
