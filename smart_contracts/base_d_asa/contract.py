@@ -18,7 +18,7 @@ from smart_contracts.modules.accounting import AccountingModule
 
 from .. import abi_types as typ
 from .. import constants as cst
-from .. import enums as enm
+from .. import enums
 from .. import errors as err
 from . import config as cfg
 
@@ -319,7 +319,7 @@ class BaseDAsa(AccountingModule):
             INVALID_COUPON_RATES: Coupon rates not properly set
         """
         self.assert_caller_is_arranger()
-        assert self.status == enm.STATUS_INACTIVE, err.ALREADY_CONFIGURED
+        assert self.status == enums.STATUS_INACTIVE, err.ALREADY_CONFIGURED
 
         # Set Denomination Asset
         self.assert_denomination_asset(denomination_asset_id)
@@ -356,7 +356,7 @@ class BaseDAsa(AccountingModule):
         self.assert_time_periods(time_periods)
         self.set_time_periods(time_periods)
 
-        self.status = UInt64(enm.STATUS_ACTIVE)
+        self.status = UInt64(enums.STATUS_ACTIVE)
 
     @arc4.abimethod
     def set_secondary_time_events(
