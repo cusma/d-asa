@@ -33,7 +33,7 @@ def test_pass_set_secondary_time_events(
 
 
 def test_fail_unauthorized_caller(
-    oscar: SigningAccount, base_d_asa_client_active: BaseDAsaClient
+    no_role_account: SigningAccount, base_d_asa_client_active: BaseDAsaClient
 ) -> None:
     state = base_d_asa_client_active.state.global_state
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
@@ -42,7 +42,7 @@ def test_fail_unauthorized_caller(
                 secondary_market_time_events=[state.issuance_date, state.maturity_date]
             ),
             params=CommonAppCallParams(
-                sender=oscar.address,
+                sender=no_role_account.address,
             ),
         )
 

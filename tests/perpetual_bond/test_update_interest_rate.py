@@ -83,7 +83,7 @@ def test_pass_after_issuance(
 
 def test_fail_unauthorized(
     algorand: AlgorandClient,
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     perpetual_bond_client_primary: PerpetualBondClient,
 ) -> None:
     interest_rate = perpetual_bond_client_primary.state.global_state.interest_rate
