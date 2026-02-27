@@ -1,5 +1,14 @@
 # Get Early Repayment Schedule
 
 ```json
-{{#include ../.include/interface.get-early-repayment-schedule.json}}
+{
+  "name": "get_early_repayment_schedule",
+  "desc": "Get early repayment schedule",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "uint64[]",
+    "desc": "Early repayment schedule"
+  }
+}
 ```

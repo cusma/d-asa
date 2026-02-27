@@ -1,45 +1,45 @@
 # Summary
 
-[Debt Algorand Standard Application](./d-asa.md)
+[Debt Algorand Standard Application](./COVER.md)
 
 ---
 
 # Introduction
 
 - [Motivation](./motivation.md)
+- [Reading Guidelines](./READING-GUIDELINES.md)
 
 # Specification
 
-- [Definitions](./definitions.md)
-- [Overview](./overview.md)
+- [Overview](./specs/overview.md)
 - [Trust Model]()
-  - [Roles](./roles.md)
-  - [Role-Based Access Control (RBAC)](./rbac.md)
-- [Contract]()
-  - [Type](./contract-type.md)
-  - [Denomination](./denomination.md)
-  - [Principal](./principal.md)
-  - [Interests](./interests.md)
-    - [Variable Interests](./variable-interests.md)
-  - [Time Schedule](./time-schedule.md)
-    - [Time Events](./time-events.md)
-    - [Time Periods](./time-periods.md)
-    - [Variable Time Schedule](./variable-time-schedule.md)
-  - [Day-Count Convention](./day-count-convention.md)
-  - [Early Repayment Options](./early-repayment-options.md)
-  - [Performance](./performance.md)
-  - [Metadata](./metadata.md)
+  - [Roles](./specs/rbac/roles.md)
+  - [Role-Based Access Control (RBAC)](./specs/rbac/rbac.md)
+- [Contract](specs/contract/intro.md)
+  - [Type](./specs/contract/type.md)
+  - [Denomination](./specs/contract/denomination.md)
+  - [Principal](./specs/contract/principal.md)
+  - [Interests](./specs/contract/interests.md)
+    - [Variable Interests](./specs/contract/variable-interests.md)
+  - [Time Schedule](./specs/contract/time-schedule.md)
+    - [Time Events](./specs/contract/time-events.md)
+    - [Time Periods](./specs/contract/time-periods.md)
+    - [Variable Time Schedule](./specs/contract/variable-time-schedule.md)
+  - [Day-Count Convention](./specs/contract/day-count-convention.md)
+  - [Early Repayment Options](./specs/contract/early-repayment-options.md)
+  - [Performance](./specs/contract/performance.md)
+  - [Metadata](./specs/contract/metadata.md)
 - [Accounting]()
-  - [D-ASA Units](./units.md)
+  - [D-ASA Units](./specs/accounting/units.md)
 - [Execution]()
-  - [Primary Market](./primary-market.md)
-  - [Payment Agent](./payment-agent.md)
-    - [Settlement](./settlement.md)
-    - [Principal Repayment](./principal-repayment.md)
-    - [Early Repayment](./early-repayment.md)
-    - [Coupons Payment](./coupons-payment.md)
-  - [Transfer Agent](./transfer-agent.md)
-  - [Secondary Market](./secondary-market.md)
+  - [Primary Market](./specs/execution/primary-market.md)
+  - [Payment Agent](./specs/execution/payment-agent/payment-agent.md)
+    - [Settlement](./specs/execution/payment-agent/settlement.md)
+    - [Principal Repayment](./specs/execution/payment-agent/principal-repayment.md)
+    - [Early Repayment](./specs/execution/payment-agent/early-repayment.md)
+    - [Coupons Payment](./specs/execution/payment-agent/coupons-payment.md)
+  - [Transfer Agent](./specs/execution/transfer-agent.md)
+  - [Secondary Market](./specs/execution/secondary-market.md)
 
 # Interfaces
 
@@ -99,13 +99,13 @@
 
 # Reference Implementation
 
-- [Reference Implementation](./reference-implementation.md)
-  - [Zero Coupon Bond](./ref-zero-coupon-bond.md)
-  - [Fixed Coupon Bond](./ref-fixed-coupon-bond.md)
-  - [Perpetual Bond](./ref-perpetual-bond.md)
-- [Tests](./reference-implementation-tests.md)
+- [Reference Implementation](./implementation/reference-implementation.md)
+  - [Zero Coupon Bond](./implementation/ref-zero-coupon-bond.md)
+  - [Fixed Coupon Bond](./implementation/ref-fixed-coupon-bond.md)
+  - [Perpetual Bond](./implementation/ref-perpetual-bond.md)
+- [Tests](./implementation/reference-implementation-tests.md)
 
 ---
 
-[Contributors](./contributors.md)
-[License](./license.md)
+[Contribution Guidelines](./CONTRIBUTIONS.md)
+[License](LICENSE.md)

@@ -1,7 +1,57 @@
 # Pay Principal
 
 ```json
-{{#include ../.include/interface.pay-principal.json}}
+{
+  "name": "pay_principal",
+  "desc": "Pay the outstanding principal to an account",
+  "readonly": false,
+  "args": [
+    {
+      "type": "address",
+      "name": "holding_address",
+      "desc": "Account Holding Address"
+    },
+    {
+      "type": "byte[]",
+      "name": "payment_info",
+      "desc": "Additional payment information (Optional)"
+    }
+  ],
+  "returns": {
+    "type": "(uint64, uint64, byte[])",
+    "desc": "Paid principal amount in denomination asset, Payment timestamp, Payment context"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Suspended operations"
+    },
+    {
+      "code": "INVALID_HOLDING_ADDRESS",
+      "message": "Invalid account holding address"
+    },
+    {
+      "code": "NO_UNITS",
+      "message": "No D-ASA units"
+    },
+    {
+      "code": "NOT_MATURE",
+      "message": "Not mature"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment"
+    }
+  ]
+}
 ```
 
 > A reference implementation **SHOULD NOT** require an authorized caller.

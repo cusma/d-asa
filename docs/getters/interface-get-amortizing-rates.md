@@ -1,5 +1,14 @@
 # Get Amortizing Rates
 
 ```json
-{{#include ../.include/interface.get-amortizing-rates.json}}
+{
+  "name": "get_amortizing_rates",
+  "desc": "Get D-ASA principal amortizing rates",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "uint64[]",
+    "desc": "Principal amortizing rates"
+  }
+}
 ```

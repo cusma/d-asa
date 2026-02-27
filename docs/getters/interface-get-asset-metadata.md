@@ -1,5 +1,14 @@
 # Get Asset Metadata
 
 ```json
-{{#include ../.include/interface.get-asset-metadata.json}}
+{
+  "name": "get_asset_metadata",
+  "desc": "Get D-ASA metadata",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)",
+    "desc": "Contract type, Calendar, Business day convention, End of month convention, Early repayment effect, Early repayment penalty type, Prospectus hash, Prospectus URL"
+  }
+}
 ```

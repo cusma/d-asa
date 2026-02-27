@@ -1,7 +1,61 @@
 # Set Early Repayment Option
 
 ```json
-{{#include ../.include/interface.set-early-repayment-option.json}}
+{
+  "name": "set_early_repayment_option",
+  "desc": "Set early repayment schedule and eventual penalty rate",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint64[]",
+      "name": "time_events",
+      "desc": "Early repayment time events (strictly ascending order)"
+    },
+    {
+      "type": "uint64",
+      "name": "penalty_rate",
+      "desc": "Early repayment penalty rate (absolute or relative), if any"
+    }
+  ],
+  "returns": {
+    "type": "(uint64, uint64)",
+    "desc": "Early repayments start date, Early repayments end date"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Suspended operations"
+    },
+    {
+      "code": "INVALID_TIME_EVENTS_LENGTH",
+      "message": "Time events length is invalid"
+    },
+    {
+      "code": "INVALID_SORTING",
+      "message": "Time events are not sorted correctly"
+    },
+    {
+      "code": "INVALID_EARLY_REPAYMENT_START_DATE",
+      "message": "Invalid early repayment start date"
+    },
+    {
+      "code": "INVALID_EARLY_REPAYMENT_END_DATE",
+      "message": "Invalid early repayment end date"
+    },
+    {
+      "code": "INVALID_PAST_EVENT",
+      "message": "Past time events can not be modified"
+    }
+  ]
+}
 ```
 
 The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an authorized

@@ -1,5 +1,14 @@
 # Get Asset Info
 
 ```json
-{{#include ../.include/interface.get-asset-info.json}}
+{
+  "name": "get_asset_info",
+  "desc": "Get D-ASA info",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64, uint64,uint64,uint64,bool,uint8)",
+    "desc": "Denomination asset ID, Settlement asset ID, Outstanding principal, Unit nominal value, Day-count convention, Principal discount, Interest rate, Total supply, Circulating supply, Primary distribution opening date, Primary distribution closure date, Issuance date, Maturity date, Suspended, Performance"
+  }
+}
 ```

@@ -1,7 +1,70 @@
 # Early Repayment
 
 ```json
-{{#include ../.include/interface.early-repayment.json}}
+{
+  "name": "early_repayment",
+  "desc": "Pay the principal to an account before maturity",
+  "readonly": false,
+  "args": [
+    {
+      "type": "address",
+      "name": "holding_address",
+      "desc": "Account Holding Address"
+    },
+    {
+      "type": "uint64",
+      "name": "units",
+      "desc": "Amount of D-ASA units to repay"
+    },
+    {
+      "type": "byte[]",
+      "name": "payment_info",
+      "desc": "Additional payment information (Optional)"
+    }
+  ],
+  "returns": {
+    "type": "(uint64, uint64, byte[])",
+    "desc": "Paid principal amount in denomination asset, Payment timestamp, Payment information"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Suspended operations"
+    },
+    {
+      "code": "INVALID_HOLDING_ADDRESS",
+      "message": "Invalid account holding address"
+    },
+    {
+      "code": "NO_UNITS",
+      "message": "No D-ASA units"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment for the account"
+    },
+    {
+      "code": "ZERO_UNITS",
+      "message": "Can not repay zero units"
+    },
+    {
+      "code": "OVER_REPAYMENT",
+      "message": "Insufficient units to repay for the account"
+    },
+    {
+      "code": "ALREADY_MATURE",
+      "message": "Already mature"
+    }
+  ]
+}
 ```
 
 The call **MUST** remove D-ASA early rapid units from the Account Holding Address

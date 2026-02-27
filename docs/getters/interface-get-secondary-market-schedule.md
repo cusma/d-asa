@@ -1,5 +1,14 @@
 # Get Secondary Market Schedule
 
 ```json
-{{#include ../.include/interface.get-secondary-market-schedule.json}}
+{
+  "name": "get_secondary_market_schedule",
+  "desc": "Get secondary market schedule",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "uint64[]",
+    "desc": "Secondary market schedule"
+  }
+}
 ```
