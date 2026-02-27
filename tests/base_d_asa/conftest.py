@@ -23,6 +23,7 @@ from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
     RbacGovAssetSuspensionArgs,
     SetSecondaryTimeEventsArgs,
 )
+from tests import conftest_helpers as helpers
 from tests import utils
 from tests.conftest import (
     APR,
@@ -303,8 +304,6 @@ def base_d_asa_client_ongoing(
 def base_d_asa_client_suspended(
     authority: utils.DAsaAuthority, base_d_asa_client_ongoing: BaseDAsaClient
 ) -> BaseDAsaClient:
-    base_d_asa_client_ongoing.send.rbac_gov_asset_suspension(
-        RbacGovAssetSuspensionArgs(suspended=True),
-        params=CommonAppCallParams(sender=authority.address),
+    return helpers.suspend_client(
+        base_d_asa_client_ongoing, authority, RbacGovAssetSuspensionArgs
     )
-    return base_d_asa_client_ongoing
