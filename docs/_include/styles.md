@@ -1,4 +1,4 @@
 // ANCHOR: example
-> 📎 **EXAMPLE**
+> [!TIP]
 >
 // ANCHOR_END: example
