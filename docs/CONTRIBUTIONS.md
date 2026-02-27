@@ -9,7 +9,7 @@ External contributions are welcome, the project relies on the community to impro
 and expand. Issues and features requests can be submitted on the <a href="https://github.com/cusma/d-asa/issues">GitHub
 issues page</a>.
 
-If you would like to contribute, please read the [guidelines](./contributors.md#guidelines-guidelines)
+If you would like to contribute, please read the [guidelines](CONTRIBUTIONS.md#guidelines-guidelines)
 and consider submitting a <a href="https://github.com/cusma/d-asa/pulls">pull request</a>.
 
 ## Contributors {#contributors}
