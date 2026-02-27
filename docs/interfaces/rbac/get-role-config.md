@@ -18,7 +18,7 @@
     }
   ],
   "returns": {
-    "type": "bytes[]",
+    "type": "byte[]",
     "desc": "Role configuration"
   },
   "errors": [
