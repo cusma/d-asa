@@ -1,7 +1,48 @@
 # Update Coupon Rates
 
 ```json
-{{#include ../.include/interface.update-coupon-rates.json}}
+{
+  "name": "update_coupon_rates",
+  "desc": "Update variable coupon interest rates in bps",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint64[]",
+      "name": "coupon_rates",
+      "desc": "Coupon interest rates in bps"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the update"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Asset operations are suspended"
+    },
+    {
+      "code": "INVALID_COUPON_RATES_LENGTH",
+      "message": "Coupon rates length is not equal to total coupons"
+    },
+    {
+      "code": "INVALID_PAST_RATE",
+      "message": "Due coupon rates can not be modified"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment"
+    }
+  ]
+}
 ```
 
 The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an authorized

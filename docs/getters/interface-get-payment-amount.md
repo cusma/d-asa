@@ -1,7 +1,28 @@
 # Get Payment Amount
 
 ```json
-{{#include ../.include/interface.get-payment-amount.json}}
+{
+  "name": "get_payment_amount",
+  "desc": "Get the next payment amount",
+  "readonly": true,
+  "args": [
+    {
+      "type": "address",
+      "name": "holding_address",
+      "desc": "Account Holding Address"
+    }
+  ],
+  "returns": {
+    "type": "(uint64,uint64)",
+    "desc": "Interest amount in denomination asset, Principal amount in denomination asset"
+  },
+  "errors": [
+    {
+      "code": "INVALID_HOLDING_ADDRESS",
+      "message": "Invalid Holding Address"
+    }
+  ]
+}
 ```
 
 The getter **MUST** return the next payment amount for the account or `0` if there

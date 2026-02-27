@@ -1,7 +1,40 @@
 # Update Total Units
 
 ```json
-{{#include ../.include/interface.update-total-units.json}}
+{
+  "name": "update_total_units",
+  "desc": "Update D-ASA total_units",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint64",
+      "name": "total_units",
+      "desc": "D-ASA total units"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the update"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Asset operations are suspended"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment"
+    }
+  ]
+}
 ```
 
 The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an authorized

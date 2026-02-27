@@ -1,7 +1,40 @@
 # Update Global Unit Value
 
 ```json
-{{#include ../.include/interface.update-global-unit-value.json}}
+{
+  "name": "update_global_unit_value",
+  "desc": "Update D-ASA nominal unit value globally",
+  "readonly": false,
+  "args": [
+    {
+      "type": "uint64",
+      "name": "unit_value",
+      "desc": "D-ASA nominal unit value, expressed in denomination asset"
+    }
+  ],
+  "returns": {
+    "type": "uint64",
+    "desc": "Timestamp of the update"
+  },
+  "errors": [
+    {
+      "code": "UNAUTHORIZED",
+      "message": "Not authorized"
+    },
+    {
+      "code": "DEFAULTED",
+      "message": "Defaulted"
+    },
+    {
+      "code": "SUSPENDED",
+      "message": "Asset operations are suspended"
+    },
+    {
+      "code": "PENDING_COUPON_PAYMENT",
+      "message": "Pending due coupon payment"
+    }
+  ]
+}
 ```
 
 The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an authorized

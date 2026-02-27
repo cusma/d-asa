@@ -1,5 +1,14 @@
 # Get Time Events
 
 ```json
-{{#include ../.include/interface.get-time-events.json}}
+{
+  "name": "get_time_events",
+  "desc": "Get D-ASA time events",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "uint64[]",
+    "desc": "Time events"
+  }
+}
 ```
