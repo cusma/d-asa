@@ -4,9 +4,6 @@ from typing import Final
 import pytest
 from algokit_utils import (
     AlgorandClient,
-    AssetOptInParams,
-    AssetTransferParams,
-    CommonAppCallParams,
     SigningAccount,
 )
 
@@ -23,10 +20,10 @@ from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
     ZeroCouponBondClient,
     ZeroCouponBondFactory,
 )
+from tests import conftest_helpers as helpers
 from tests import utils
 from tests.conftest import (
     APR,
-    INITIAL_ALGO_FUNDS,
     INITIAL_D_ASA_UNITS,
     ISSUANCE_DELAY,
     MINIMUM_DENOMINATION,
@@ -100,19 +97,12 @@ def zero_coupon_bond_client_empty(
     arranger: SigningAccount,
     asset_metadata: AssetMetadata,
 ) -> ZeroCouponBondClient:
-    factory = algorand.client.get_typed_app_factory(
+    return helpers.create_and_fund_client(
+        algorand,
         ZeroCouponBondFactory,
-        default_sender=arranger.address,
-        default_signer=arranger.signer,
+        arranger,
+        AssetCreateArgs(arranger=arranger.address, metadata=asset_metadata),
     )
-    client, _ = factory.send.create.asset_create(
-        AssetCreateArgs(arranger=arranger.address, metadata=asset_metadata)
-    )
-    algorand.account.ensure_funded_from_environment(
-        account_to_fund=client.app_address,
-        min_spending_balance=INITIAL_ALGO_FUNDS,
-    )
-    return client
 
 
 @pytest.fixture(scope="function")
@@ -121,22 +111,12 @@ def account_manager(
     zero_coupon_bond_cfg: utils.DAsaConfig,
     zero_coupon_bond_client_empty: ZeroCouponBondClient,
 ) -> utils.DAsaAccountManager:
-    account = algorand.account.random()
-    account = utils.DAsaAccountManager(private_key=account.private_key)
-
-    algorand.account.ensure_funded_from_environment(
-        account_to_fund=account.address,
-        min_spending_balance=INITIAL_ALGO_FUNDS,
+    return helpers.create_role_account(
+        algorand,
+        utils.DAsaAccountManager,
+        zero_coupon_bond_client_empty,
+        rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
-    role_config = utils.set_role_config()
-    zero_coupon_bond_client_empty.send.rbac_assign_role(
-        RbacAssignRoleArgs(
-            role_id=account.role_id(),
-            role_address=account.address,
-            config=role_config,
-        ),
-    )
-    return account
 
 
 @pytest.fixture(scope="function")
@@ -145,22 +125,12 @@ def authority(
     zero_coupon_bond_cfg: utils.DAsaConfig,
     zero_coupon_bond_client_empty: ZeroCouponBondClient,
 ) -> utils.DAsaAuthority:
-    account = algorand.account.random()
-    account = utils.DAsaAuthority(private_key=account.private_key)
-
-    algorand.account.ensure_funded_from_environment(
-        account_to_fund=account.address,
-        min_spending_balance=INITIAL_ALGO_FUNDS,
+    return helpers.create_role_account(
+        algorand,
+        utils.DAsaAuthority,
+        zero_coupon_bond_client_empty,
+        rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
-    role_config = utils.set_role_config()
-    zero_coupon_bond_client_empty.send.rbac_assign_role(
-        RbacAssignRoleArgs(
-            role_id=account.role_id(),
-            role_address=account.address,
-            config=role_config,
-        ),
-    )
-    return account
 
 
 @pytest.fixture(scope="function")
@@ -170,21 +140,14 @@ def zero_coupon_bond_client_active(
     zero_coupon_bond_cfg: utils.DAsaConfig,
     zero_coupon_bond_client_empty: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    zero_coupon_bond_client_empty.send.asset_config(
-        AssetConfigArgs(**zero_coupon_bond_cfg.dictify()),
+    return helpers.activate_client_with_config_and_funding(
+        algorand,
+        zero_coupon_bond_client_empty,
+        bank,
+        zero_coupon_bond_cfg,
+        TOTAL_ASA_FUNDS,
+        AssetConfigArgs,
     )
-
-    algorand.send.asset_transfer(
-        AssetTransferParams(
-            asset_id=zero_coupon_bond_cfg.denomination_asset_id,
-            amount=TOTAL_ASA_FUNDS,
-            receiver=zero_coupon_bond_client_empty.app_address,
-            sender=bank.address,
-            signer=bank.signer,
-        )
-    )
-
-    return zero_coupon_bond_client_empty
 
 
 @pytest.fixture(scope="function")
@@ -192,25 +155,17 @@ def primary_dealer(
     algorand: AlgorandClient,
     zero_coupon_bond_client_active: ZeroCouponBondClient,
 ) -> utils.DAsaPrimaryDealer:
-    account = algorand.account.random()
-    account = utils.DAsaPrimaryDealer(private_key=account.private_key)
-
-    algorand.account.ensure_funded_from_environment(
-        account_to_fund=account.address,
-        min_spending_balance=INITIAL_ALGO_FUNDS,
-    )
     state = zero_coupon_bond_client_active.state.global_state
     role_config = utils.set_role_config(
         state.primary_distribution_opening_date, state.primary_distribution_closure_date
     )
-    zero_coupon_bond_client_active.send.rbac_assign_role(
-        RbacAssignRoleArgs(
-            role_id=account.role_id(),
-            role_address=account.address,
-            config=role_config,
-        ),
+    return helpers.create_role_account(
+        algorand,
+        utils.DAsaPrimaryDealer,
+        zero_coupon_bond_client_active,
+        role_config,
+        RbacAssignRoleArgs,
     )
-    return account
 
 
 @pytest.fixture(scope="function")
@@ -220,36 +175,9 @@ def account_factory(
     currency: utils.Currency,
     account_manager: utils.DAsaAccountManager,
 ) -> Callable[..., utils.DAsaAccount]:
-    def _factory(base_d_asa_client: ZeroCouponBondClient) -> utils.DAsaAccount:
-        account = algorand.account.random()
-
-        algorand.account.ensure_funded_from_environment(
-            account_to_fund=account.address,
-            min_spending_balance=INITIAL_ALGO_FUNDS,
-        )
-
-        algorand.send.asset_opt_in(
-            AssetOptInParams(
-                asset_id=currency.id,
-                sender=account.address,
-                signer=account.signer,
-            )
-        )
-
-        base_d_asa_client.send.account_open(
-            AccountOpenArgs(
-                holding_address=account.address,
-                payment_address=account.address,
-            ),
-            params=CommonAppCallParams(sender=account_manager.address),
-        )
-        return utils.DAsaAccount(
-            d_asa_client=base_d_asa_client,
-            holding_address=account.address,
-            private_key=account.private_key,
-        )
-
-    return _factory
+    return helpers.build_account_factory(
+        algorand, currency, account_manager, AccountOpenArgs
+    )
 
 
 @pytest.fixture(scope="function")
@@ -257,13 +185,11 @@ def zero_coupon_bond_client_primary(
     zero_coupon_bond_client_active: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
     state = zero_coupon_bond_client_active.state.global_state
-    zero_coupon_bond_client_active.send.set_secondary_time_events(
-        SetSecondaryTimeEventsArgs(
-            secondary_market_time_events=[state.issuance_date, state.maturity_date]
-        )
+    return helpers.set_client_to_primary_phase(
+        zero_coupon_bond_client_active,
+        SetSecondaryTimeEventsArgs,
+        [state.issuance_date, state.maturity_date],
     )
-    utils.time_warp(state.primary_distribution_opening_date)
-    return zero_coupon_bond_client_active
 
 
 @pytest.fixture(scope="function")
@@ -272,18 +198,13 @@ def account_with_units_factory(
     primary_dealer: utils.DAsaPrimaryDealer,
     zero_coupon_bond_client_primary: ZeroCouponBondClient,
 ) -> Callable[..., utils.DAsaAccount]:
-    def _factory(*, units: int = INITIAL_D_ASA_UNITS) -> utils.DAsaAccount:
-        account = account_factory(zero_coupon_bond_client_primary)
-        zero_coupon_bond_client_primary.send.primary_distribution(
-            PrimaryDistributionArgs(
-                holding_address=account.holding_address,
-                units=units,
-            ),
-            params=CommonAppCallParams(sender=primary_dealer.address),
-        )
-        return account
-
-    return _factory
+    return helpers.build_account_with_units_factory(
+        account_factory,
+        primary_dealer,
+        zero_coupon_bond_client_primary,
+        PrimaryDistributionArgs,
+        INITIAL_D_ASA_UNITS,
+    )
 
 
 @pytest.fixture(scope="function")
@@ -323,8 +244,6 @@ def zero_coupon_bond_client_suspended(
     authority: utils.DAsaAuthority,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> ZeroCouponBondClient:
-    zero_coupon_bond_client_ongoing.send.rbac_gov_asset_suspension(
-        RbacGovAssetSuspensionArgs(suspended=True),
-        params=CommonAppCallParams(sender=authority.address),
+    return helpers.suspend_client(
+        zero_coupon_bond_client_ongoing, authority, RbacGovAssetSuspensionArgs
     )
-    return zero_coupon_bond_client_ongoing
