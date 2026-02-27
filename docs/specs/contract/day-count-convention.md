@@ -16,7 +16,7 @@ IDs (`uint8`):
 | `2`   |  Actual/365   | \\([A365]\\)       | Year fractions accrue on the basis of the actual number of days per month and 365 days per year in the respective period |
 | `3`   |  30/360 ISDA  | \\([30E360ISDA]\\) | Year fractions accrue on the basis of 30 days per month and 360 days per year in the respective period (ISDA method)     |
 | `4`   |    30/360     | \\([30E360]\\)     | Year fractions accrue on the basis of 30 days per month and 360 days per year in the respective period                   |
-| `5`   |    28/366     | \\([28E336]\\)     | Year fractions accrue on the basis of 28 days per month and 366 days per year in the respective period                   |
+| `5`   |    28/366     | \\([28E366]\\)     | Year fractions accrue on the basis of 28 days per month and 366 days per year in the respective period                   |
 | `6`   |    30/365     | -                  | Year fractions accrue on the basis of 30 days per month and 365 days per year in the respective period                   |
 | `255` |  Continuous   | -                  | Time fractions accrue on the basis of the number of UNIX time units (non-leap seconds) in the respective time period     |
 
