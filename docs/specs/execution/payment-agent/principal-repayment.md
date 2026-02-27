@@ -19,8 +19,8 @@ coupon still to be paid.
 
 If the debt instrument has an *amortizing principal repayment schedule*, the *principal*
 **MUST** be repaid along with the **fixed** number of *coupons*, according to the
-*principal amortization* (see [Amortization](../../contract/principal.md#amortization) section),
-using the `pay_coupon` method.
+*principal amortization* (see [Amortization](../../contract/principal.md#amortization)
+section), using the `pay_coupon` method.
 
 The first coupon due date corresponds to \\([PRANX]\\).
 

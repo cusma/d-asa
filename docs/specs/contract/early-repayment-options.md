@@ -49,7 +49,8 @@ The updated *early repayment time events* **MUST NOT** modify past events.
 An early repayment option could have different *prepayment effects* \\([PPEF]\\):
 
 - It **MAY** repay the *principal* partially or totally, to all or some Investors
-before the *maturity date* (see [Early Repayment](../execution/payment-agent/early-repayment.md) section);
+before the *maturity date* (see [Early Repayment](../execution/payment-agent/early-repayment.md)
+section);
 
 - It **MAY** reduce the *maturity date* (see [Variable Time Schedule](variable-time-schedule.md)
 section).
