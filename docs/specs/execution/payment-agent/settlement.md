@@ -30,9 +30,9 @@ ALGO.
 > On-chain settlement is possible even if the denomination asset is a traditional
 > off-chain currency.
 
-## Off-chain denomination {#off-chain-settlement}
+## Off-chain settlement {#off-chain-settlement}
 
-The *settlement asset identifier* **MUST** the <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO
+The *settlement asset identifier* **MUST** be the <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO
 4217</a> currency numeric code.
 
 The *settlement asset* **MUST** use the decimal digits specified by the <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO

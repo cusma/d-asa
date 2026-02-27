@@ -77,7 +77,7 @@ period duration* \\([IPCL]\\) and the interest payment \\([IPPNT]\\) can be exec
 > (uint64, uint64) = [31536000, 0]
 > ```
 >
-> The fist coupon due date \\(([IPANX]\\)) is `1704067200 + 31536000` (UNIX time).
+> The first coupon due date \\([IPANX]\\) is `1704067200 + 31536000` (UNIX time).
 
 ---
 

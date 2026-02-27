@@ -19,7 +19,7 @@ ALGO.
 
 ## Off-chain denomination {#off-chain-denomination}
 
-The *denomination asset identifier* **MUST** the <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO
+The *denomination asset identifier* **MUST** be the <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO
 4217</a> currency numeric code.
 
 The *denomination asset* **MUST** use the decimal digits specified by the <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO

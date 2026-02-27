@@ -95,7 +95,7 @@ The *time events* **MUST** be set using the `asset_config` method.
 > *time events*:
 >
 > ```text
-> uint64[] = [primary_distribution_opening_date, primary_distribution_closure_date, issuance_date, cupon_due_date_1, ..., coupon_due_date_K, maturity_date]
+> uint64[] = [primary_distribution_opening_date, primary_distribution_closure_date, issuance_date, coupon_due_date_1, ..., coupon_due_date_K, maturity_date]
 > ```
 
 {{#include ../../_include/styles.md:example}}
