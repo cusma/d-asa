@@ -7,7 +7,7 @@
   "readonly": false,
   "args": [
     {
-      "type": "uint64[]",
+      "type": "uint16[]",
       "name": "amortizing_rates",
       "desc": "Principal amortizing rates in bps"
     }

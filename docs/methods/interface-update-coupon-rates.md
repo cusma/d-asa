@@ -7,7 +7,7 @@
   "readonly": false,
   "args": [
     {
-      "type": "uint64[]",
+      "type": "uint16[]",
       "name": "coupon_rates",
       "desc": "Coupon interest rates in bps"
     }
