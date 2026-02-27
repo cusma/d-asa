@@ -33,7 +33,7 @@ The *rate spread* **MUST** be set using the **OPTIONAL** `set_variable_rate` met
 If the debt instrument has no *rate spread*, then the D-ASA **MUST** set the *rate
 spread* to `0`.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > A D-ASA has variable interest rates pegged to an off-chain index. Interest update
 > is equal to the off-chain index plus the *rate spread* (bps).
 
@@ -111,10 +111,10 @@ The updated *coupon rates* **MUST NOT** modify past coupon rates.
 The *interest rate* and *coupon rates* updatability **MUST** be restricted to the
 *interest oracle* role (see [Oracles](../rbac/roles.md#oracles) section).
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > A D-ASA has variable interest rates pegged to an off-chain index. Interest update
 > permissions are granted to an external interest oracle.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > A D-ASA has variable interest rates based on covenant breaches. Interest update
 > permissions are granted to a trustee in charge of verifying breaches.

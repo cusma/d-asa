@@ -14,7 +14,7 @@ key* of the form:
 
 Where `||` denotes concatenation.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let’s have a D-ASA role ID `42` associated with the Algorand Address `XYZ`. The
 > corresponding role key is `42#XYZ`.
 

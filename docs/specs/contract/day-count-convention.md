@@ -27,7 +27,7 @@ The *day-count convention* defines the *day-count factor* as a fraction of:
 
 The *day-count convention* **MUST** be set using the `asset_config` method.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let’s have a D-ASA with the following coupon dates:
 >
 > - `date1`: starting date for the current coupon’s interest accrual, defined by

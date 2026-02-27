@@ -36,7 +36,7 @@ with:
 - The *grace period* **MUST** be anchored \\([ANX]\\) to the *time event* of the
 first failed payment.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let's have a D-ASA with a *grace period*. A D-ASA coupon payment is triggered
 > on due date, but there is not enough liquidity to pay all the investors. The D-ASA
 > program starts counting the *grace period*, increments a failed payments counter,
@@ -66,7 +66,7 @@ period* with:
 - The *delinquency period* **MUST** be anchored \\([ANX]\\) to the *time event*
 of the first failed payment or at the end of the *grace period* (if any).
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let's have a D-ASA with a *delinquency period*. A D-ASA coupon payment is triggered
 > on due date, but there is not enough liquidity to pay all the investors. The D-ASA
 > program starts counting the *delinquency period*, increments a failed payments
@@ -91,17 +91,17 @@ The D-ASA **MAY** disable all non-administrative methods on *default* status.
 
 The *default* status **MAY** be set with the **OPTIONAL** `set_default_status` method.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > The D-ASA has no *grace period* and no *delinquency period*. A D-ASA coupon payment
 > is triggered on due date, but there is not enough liquidity to pay all the investors.
 > The D-ASA contract automatically enters in *default* immediately.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > The D-ASA has a *grace period* and a *delinquency period*. A D-ASA coupon payment
 > is triggered on due date, but there is not enough liquidity to pay all the investors.
 > The D-ASA program starts counting the *grace period* and *delinquency period*.
 > If the *delinquency period* expires, then the contract enters in *default*.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > A D-ASA coupon payment is triggered on due date, but there is not enough liquidity
 > to pay all the investors. The D-ASA contract relies on a trustee to call the *default*.

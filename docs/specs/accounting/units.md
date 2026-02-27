@@ -9,7 +9,7 @@ The D-ASA **MUST** define its *total units* (`uint64`).
 If the D-ASA has a *principal*, its initials *total units* **MUST** be equal to
 the *principal* divided by the *minimum denomination.*
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let’s have a D-ASA denominated in EUR, with a principal of 1M EUR and a minimum
 > denomination of 1,000 EUR. The D-ASA has 1,000 initial total units.
 
@@ -38,12 +38,12 @@ The D-ASA *unit value* **MAY** change globally or locally (per account).
 > Local unit value should be used when the units' value is updated at different
 > times per each account.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let’s have a D-ASA denominated in EUR, with an initial unit value of 1,000 EUR.
 > The D-ASA accrues interest on a daily basis, paid at redemption. The unit value
 > is updated globally (for all the units).
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let’s have a D-ASA denominated in EUR, with an initial unit value of 1,000 EUR.
 > The D-ASA has an amortizing principal repayment schedule. Repayments are executed
 > per-account. The unit value is updated per-account (for the account’s units).
@@ -61,7 +61,7 @@ method.
 
 The D-ASA *fungible units* **MUST** have the same *value* and *executed payments.*
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let’s have a D-ASA with 4 coupons. Investors A and B are holding 10 D-ASA units
 > each. The 1st coupon is due. Coupon payments might not be executed synchronously
 > for all the Investors. The coupon payment is executed for Investor A, while Investor

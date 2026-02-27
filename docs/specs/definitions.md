@@ -16,7 +16,7 @@ the <a href="https://github.com/actusfrf/actus-dictionary">ACTUS dictionary</a>.
 Non-normative sections mainly contextualize the specification for technical readers
 unfamiliar with the financial concepts described.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../_include/styles.md:example}}
 > Sections like this are examples aiming to clarify the specifications.
 
 ```text

@@ -13,7 +13,7 @@ The updated *time events* **MUST NOT** modify past events.
 > A reference implementation **SHOULD** restrict the time events updatability according
 > to the optionalities of the agreement.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let's have a D-ASA with a *maturity date* and 4 coupons, defined by *time events*.
 > The 2nd coupon is due.
 >
@@ -39,7 +39,7 @@ to the *time events*.
 
 > A reference implementation **SHOULD** restrict the time periods updatability.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > Let's have a D-ASA with an *issuance date* and a *maturity date*, defined as *time
 > events*, and 4 coupons whose periods are defined by *time periods*.
 >

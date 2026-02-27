@@ -12,12 +12,12 @@ distribution opening* and *closing dates*, according to the primary market.
 The `primary_distribution` method **MUST** be called by an authorized primary distribution
 entity.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > The primary market is performed as an auction on a dedicated Algorand Application.
 > The implementation requires the `primary_distribution` method to be called exclusively
 > by the primary market Application, which defines the auction’s outcome.
 
-{{#include ./.include/styles.md:example}}
+{{#include ../../_include/styles.md:example}}
 > The primary market is performed as a book building by an authorized Book-builder
 > Address. The implementation requires the `primary_distribution` method to be called
 > exclusively by the authorized Book-builder.
