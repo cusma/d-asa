@@ -36,10 +36,10 @@ In the case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count
 Conventions](day-count-convention.md) section), the *time periods* between subsequent
 events **MUST** be multiples of a day, in seconds (`86400`).
 
-The *early repayment time events* **MUST** be set with the `set_early_repayment_time_events`
+The *early repayment time events* **MUST** be set with the `set_early_repayment_option`
 method.
 
-The *early repayment time events* **MAY** be updated with the `set_early_repayment_time_events`
+The *early repayment time events* **MAY** be updated with the `set_early_repayment_option`
 method.
 
 The updated *early repayment time events* **MUST NOT** modify past events.

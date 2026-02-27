@@ -5,7 +5,7 @@
 > Debt instruments may have variable interest rates, based on external data oracles.
 
 If the debt instrument has *variable interest rates*, the D-ASA **MAY** implement
-the **OPTIONAL** `set_variable_interest` method.
+the **OPTIONAL** `set_variable_interest_rate` method.
 
 ## Interest Update Dates
 
@@ -28,7 +28,8 @@ The first *interest update date* corresponds to \\([RRANX]\\).
 The D-ASA **MAY** define a *rate spread* \\([RRSP]\\) (`uint16`) in *bps* to apply
 to the external interest data feed.
 
-The *rate spread* **MUST** be set using the **OPTIONAL** `set_variable_rate` method.
+The *rate spread* **MUST** be set using the **OPTIONAL** `set_variable_interest_rate`
+method.
 
 If the debt instrument has no *rate spread*, then the D-ASA **MUST** set the *rate
 spread* to `0`.
@@ -50,7 +51,7 @@ to the variable *interest rate*.
 The D-ASA **MAY** define a *life floor* \\([RRLF]\\) (`uint16`) in *bps* to apply
 to the variable *interest rate*.
 
-The *life cap* and the *life floor* **MUST** be set using the **OPTIONAL** `set_variable_rate`
+The *life cap* and the *life floor* **MUST** be set using the **OPTIONAL** `set_variable_interest_rate`
 method.
 
 If the debt instrument has no *life cap*, then the D-ASA **MUST** set the *life
@@ -67,7 +68,7 @@ to the variable *interest rate*.
 The D-ASA **MAY** define a *period floor* \\([RRPF]\\) (`uint16`) in *bps* to
 apply to the variable *interest rate*.
 
-The *period cap* and the *period floor* **MUST** be set using the **OPTIONAL** `set_variable_rate`
+The *period cap* and the *period floor* **MUST** be set using the **OPTIONAL** `set_variable_interest_rate`
 method.
 
 If the debt instrument has no *period cap*, then the D-ASA **MUST** set the *period
@@ -84,7 +85,8 @@ floor* to `0`.
 The D-ASA **MUST** define a *fixing period* \\([RRFIX]\\) (`uint64`) that specifies
 a period of time before the *coupon due date* in which the interest can be updated.
 
-The *fixing period* **MUST** be set using the **OPTIONAL** `set_variable_rate` method.
+The *fixing period* **MUST** be set using the **OPTIONAL** `set_variable_interest_rate`
+method.
 
 ## Rates Update
 

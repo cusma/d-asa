@@ -17,7 +17,7 @@
       "desc": "Account Role Address"
     },
     {
-      "type": "bytes[]",
+      "type": "byte[]",
       "name": "config",
       "desc": "Role configuration (Optional)"
     }

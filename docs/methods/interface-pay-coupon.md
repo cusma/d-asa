@@ -49,6 +49,10 @@
     {
       "code": "PENDING_COUPON_PAYMENT",
       "message": "Pending due coupon payment"
+    },
+    {
+      "code": "NOT_ENOUGH_FUNDS",
+      "message": "Not enough funds for the payment"
     }
   ]
 }
@@ -70,7 +74,7 @@ suspended.
 The call **MUST** fail with the `INVALID_HOLDING_ADDRESS` error code if the Account
 does not exist.
 
-The call **MUST** fail with the `NO_UNTIS` error code if the Account has no D-ASA
+The call **MUST** fail with the `NO_UNITS` error code if the Account has no D-ASA
 units.
 
 The call **MUST** fail with the `NO_DUE_COUPON` error code if there is no due

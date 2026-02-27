@@ -70,7 +70,7 @@ suspended.
 The call **MUST** fail with the `INVALID_HOLDING_ADDRESS` error code if the Account
 does not exist.
 
-The call **MUST** fail with the `NO_UNTIS` error code if the Account has no D-ASA
+The call **MUST** fail with the `NO_UNITS` error code if the Account has no D-ASA
 units.
 
 The call **MUST** fail with the `NOT_MATURE` error code if the principal is not

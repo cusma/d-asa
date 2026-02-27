@@ -70,12 +70,20 @@
       "message": "D-ASA already configured"
     },
     {
+      "code": "INVALID_DENOMINATION",
+      "message": "Denomination asset is not properly set"
+    },
+    {
       "code": "INVALID_MINIMUM_DENOMINATION",
       "message": "Minimum denomination is not a divisor of principal"
     },
     {
       "code": "INVALID_DAY_COUNT_CONVENTION",
       "message": "Invalid day-count convention ID"
+    },
+    {
+      "code": "INVALID_INTEREST_RATE",
+      "message": "Interest rate is not properly defined"
     },
     {
       "code": "INVALID_TIME_EVENTS_LENGTH",
