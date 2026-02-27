@@ -15,7 +15,7 @@ The specification provides recommendations to conform, to the best effort[^1], t
 the *Algorithmic Contract Types Unified Standards* (<a href="https://www.actusfrf.org/">ACTUS</a>).
 
 The specification allows the tokenization of various debt instruments, such as bonds,
-loans, commercial papers, mortgages, etc. A [reference implementation](./reference-implementation.md)
+loans, commercial papers, mortgages, etc. A [reference implementation](./implementation/reference-implementation.md)
 of some fixed income contract examples are provided.
 
 This document is a *technical specification*, it is not intended to be as a legal
@@ -47,7 +47,7 @@ External contributions are welcome, the project relies on the community to impro
 and expand. Issues and features requests can be submitted on the <a href="https://github.com/cusma/d-asa/issues">GitHub
 issues page</a>.
 
-If you would like to contribute, please read the [guidelines](./contributors.md#guidelines-guidelines)
+If you would like to contribute, please read the [guidelines](CONTRIBUTIONS.md#guidelines-guidelines)
 and consider submitting a <a href="https://github.com/cusma/d-asa/pulls">pull request</a>.
 
 ## License {#license}
