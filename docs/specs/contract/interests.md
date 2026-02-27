@@ -46,14 +46,14 @@ be empty and the *interest rate* **MUST** be used instead.
 > would have the following coupon rates array (bps):
 >
 > ```text
-> uint64[] = [200, 250, 300, 350]
+> uint16[] = [200, 250, 300, 350]
 > ```
 
 {{#include ../../_include/styles.md:example}}
 > D-ASA with zero coupons would have the following coupon rates array (bps):
 >
 > ```text
-> uint64[] = []
+> uint16[] = []
 > ```
 
 The *coupon rates* **MUST** be set using the `asset_config` method.

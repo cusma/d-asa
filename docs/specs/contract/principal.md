@@ -63,24 +63,24 @@ next payment date.
 > A D-ASA with 5 coupons and even principal amortizing rates has the following amortizing
 > rates (bps):
 >
-> ```uint64[] = [2000, 2000, 2000, 2000, 2000, 0]```
+> ```uint16[] = [2000, 2000, 2000, 2000, 2000, 0]```
 
 {{#include ../../_include/styles.md:example}}
 > A D-ASA with 5 coupons and a single principal early repayment of 50% has the following
 > amortizing rates (bps):
 >
-> ```uint64[] = [0, 0, 5000, 0, 0, 5000]```
+> ```uint16[] = [0, 0, 5000, 0, 0, 5000]```
 
 {{#include ../../_include/styles.md:example}}
 > A D-ASA with 4 coupons and different principal amortizing rates (bps):
 >
-> ```uint64[] = [1000, 2000, 3000, 4000, 0]```
+> ```uint16[] = [1000, 2000, 3000, 4000, 0]```
 
 {{#include ../../_include/styles.md:example}}
 > The following are invalid amortizing rates, since their sum is not equal to `10,000`
 > bps:
 >
-> ```uint64[] = [1000, 2000, 3000, 4000, 5000]```
+> ```uint16[] = [1000, 2000, 3000, 4000, 5000]```
 
 The *amortizing rates* **MUST** be set using the **OPTIONAL** `set_amortizing_rates`
 method.
