@@ -7,10 +7,10 @@
 # Introduction
 
 - [Motivation](./motivation.md)
+- [Reading Guidelines](./READING-GUIDELINES.md)
 
 # Specification
 
-- [Definitions](./specs/definitions.md)
 - [Overview](./specs/overview.md)
 - [Trust Model]()
   - [Roles](./specs/rbac/roles.md)
@@ -99,13 +99,13 @@
 
 # Reference Implementation
 
-- [Reference Implementation](./reference-implementation.md)
-  - [Zero Coupon Bond](./ref-zero-coupon-bond.md)
-  - [Fixed Coupon Bond](./ref-fixed-coupon-bond.md)
-  - [Perpetual Bond](./ref-perpetual-bond.md)
-- [Tests](./reference-implementation-tests.md)
+- [Reference Implementation](./implementation/reference-implementation.md)
+  - [Zero Coupon Bond](./implementation/ref-zero-coupon-bond.md)
+  - [Fixed Coupon Bond](./implementation/ref-fixed-coupon-bond.md)
+  - [Perpetual Bond](./implementation/ref-perpetual-bond.md)
+- [Tests](./implementation/reference-implementation-tests.md)
 
 ---
 
-[Contributors](./contributors.md)
+[Contribution Guidelines](./CONTRIBUTIONS.md)
 [License](LICENSE.md)
