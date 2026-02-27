@@ -39,7 +39,7 @@ The Arranger role **MUST** be identified with the reserved ID `20`.
 The Arranger **SHALL** configure the D-ASA using the `asset_config` method.
 
 The Arranger **MAY** configure the D-ASA *role-based access control* with the **OPTIONAL**
-`assign_role` and `revoke_role` methods.
+`assign_role` and `rbac_revoke_role` methods.
 
 ## Investor (Lender)
 
@@ -71,7 +71,7 @@ The Investors **MAY** have different **seniority** \\([SEN]\\).
 
 ### Open Account
 
-The D-ASA accounts **SHALL** be opened using the `open_account` method.
+The D-ASA accounts **SHALL** be opened using the `account_open` method.
 
 The D-ASA accounts **MUST NOT** be opened if the D-ASA is suspended (see [Suspension](rbac.md#suspension)
 section).
@@ -81,7 +81,7 @@ section).
 
 ### Close Account
 
-The D-ASA accounts **MAY** be closed using the `close_account` method.
+The D-ASA accounts **MAY** be closed using the `account_close` method.
 
 The D-ASA accounts **MUST NOT** be closed if the D-ASA is in default (see [Default](../contract/performance.md#default)
 section).

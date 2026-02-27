@@ -3,9 +3,9 @@
 > D-ASA can define a custom role-based access control to comply with administrative
 > and regulatory requirements.
 
-A D-ASA *role* **MAY** be assigned using the **OPTIONAL** `assign_role` method.
+A D-ASA *role* **MAY** be assigned using the **OPTIONAL** `rbac_assign_role` method.
 
-A D-ASA *role* **MAY** be revoked using the **OPTIONAL** `revoke_role` method.
+A D-ASA *role* **MAY** be revoked using the **OPTIONAL** `rbac_revoke_role` method.
 
 ## Suspension
 
@@ -31,7 +31,7 @@ The D-ASA **MAY** suspend all:
 - Payments;
 - D-ASA units transfers.
 
-The asset *suspension* status **MUST** be set with the `set_asset_suspension_status`
+The asset *suspension* status **MUST** be set with the `rbac_gov_asset_suspension`
 method.
 
 ### Account Suspension
@@ -41,5 +41,5 @@ The D-ASA **MAY** suspend an account:
 - Payments (skipped on due dates);
 - D-ASA units transfers (from and to).
 
-The account *suspension* status **MUST** be set with the `set_account_suspension_status`
+The account *suspension* status **MUST** be set with the `account_gov_suspension`
 method.
