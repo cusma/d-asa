@@ -13,10 +13,10 @@ The D-ASA **MUST** define *interest update dates* of known \\([RRF]\\) or unknow
 \\([RR]\\) with respect to:
 
 - *time events* if the D-ASA has **fixed** number of *coupons* (see [Time
-Events](./time-events.md#time-events-array) section);
+Events](time-events.md#time-events-array) section);
 
 - *time periods* if the D-ASA has **undefined** number of *coupons* (see [Time
-Periods](./time-periods.md#unlimited-time-schedule) section).
+Periods](time-periods.md#unlimited-time-schedule) section).
 
 The first *interest update date* corresponds to \\([RRANX]\\).
 
@@ -92,7 +92,7 @@ The *fixing period* **MUST** be set using the **OPTIONAL** `set_variable_rate` m
 
 If the debt instrument has a **fixed** rate update schedule, then the D-ASA **MUST**
 use the *coupon due dates* (either *time events* or *time periods*) as anchors for
-the rate update events (see [Time Schedule](./time-schedule.md) section).
+the rate update events (see [Time Schedule](time-schedule.md) section).
 
 The *interest rate* **MAY** be updated using the **OPTIONAL** `update_interest_rate`
 method.
@@ -109,7 +109,7 @@ paid.
 The updated *coupon rates* **MUST NOT** modify past coupon rates.
 
 The *interest rate* and *coupon rates* updatability **MUST** be restricted to the
-*interest oracle* role (see [Oracles](./roles.md#oracles) section).
+*interest oracle* role (see [Oracles](../rbac/roles.md#oracles) section).
 
 {{#include ./.include/styles.md:example}}
 > A D-ASA has variable interest rates pegged to an off-chain index. Interest update

@@ -73,7 +73,7 @@ The *calendar* **MUST** be identified with one of the following enumerated IDs (
 | `255` |      Custom      | -          | Custom holidays definition                     |
 
 The *calendar* **MAY** be set using the **OPTIONAL** `set_asset_metadata` method
-(see [Metadata](./metadata.md) section).
+(see [Metadata](metadata.md) section).
 
 > A reference implementation **SHOULD** use the default *calendar* (`0`).
 
@@ -90,7 +90,7 @@ The D-ASA **MAY** specify a *business day convention* \\([BDC]\\).
 It is **RECOMMENDED** to use an ACTUS *business day convention*.
 
 The *business day convention* **MAY** be set using the **OPTIONAL** `set_asset_metadata`
-method (see [Metadata](./metadata.md) section).
+method (see [Metadata](metadata.md) section).
 
 > A reference implementation **SHOULD NOT** adopt a *business day convention* (as
 > it has no defined calendar).
@@ -107,7 +107,7 @@ The D-ASA **MAY** specify a *end-of-month convention* \\([EOMC]\\).
 It is **RECOMMENDED** to use an ACTUS *end-of-month convention*.
 
 The *end-of-month convention* **MAY** be set using the **OPTIONAL** `set_asset_metadata`
-method (see [Metadata](./metadata.md) section).
+method (see [Metadata](metadata.md) section).
 
 > A reference implementation **SHOULD NOT** adopt an *end-of-month day convention*
 > (as it has no defined calendar).

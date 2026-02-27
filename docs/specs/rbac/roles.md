@@ -73,17 +73,17 @@ The Investors **MAY** have different **seniority** \\([SEN]\\).
 
 The D-ASA accounts **SHALL** be opened using the `open_account` method.
 
-The D-ASA accounts **MUST NOT** be opened if the D-ASA is suspended (see [Suspension](./rbac.md#suspension)
+The D-ASA accounts **MUST NOT** be opened if the D-ASA is suspended (see [Suspension](rbac.md#suspension)
 section).
 
-The D-ASA accounts **MUST NOT** be opened if the D-ASA is in default (see [Default](./performance.md#default)
+The D-ASA accounts **MUST NOT** be opened if the D-ASA is in default (see [Default](../contract/performance.md#default)
 section).
 
 ### Close Account
 
 The D-ASA accounts **MAY** be closed using the `close_account` method.
 
-The D-ASA accounts **MUST NOT** be closed if the D-ASA is in default (see [Default](./performance.md#default)
+The D-ASA accounts **MUST NOT** be closed if the D-ASA is in default (see [Default](../contract/performance.md#default)
 section).
 
 ## Oracles

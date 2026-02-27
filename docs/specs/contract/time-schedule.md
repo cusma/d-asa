@@ -26,7 +26,7 @@ The D-ASA events \\([EVT]\\) are defined by:
 ---
 
 [^1]: ACTUS is based on <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
-timestamps. The UNIX to ISO 8601 conversions are left to clients (see [Calendar](./day-count-convention.md#calendar)
+timestamps. The UNIX to ISO 8601 conversions are left to clients (see [Calendar](day-count-convention.md#calendar)
 section).
 
 [^2]: ACTUS timestamps have millisecond precision, which is not compatible with

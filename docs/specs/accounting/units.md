@@ -28,7 +28,7 @@ If the D-ASA has a *principal*, its initial *unit value* **MUST** be equal to th
 The D-ASA *unit* *value* **MAY** change over time.
 
 > The D-ASA unit’s value may change according to different conditions, such as an
-> amortizing principal repayment schedule (see [Amortizing Schedule](./principal-repayment.md#amortizing-schedule)
+> amortizing principal repayment schedule (see [Amortizing Schedule](../execution/payment-agent/principal-repayment.md#amortizing-schedule)
 > section).
 
 The D-ASA *unit value* **MAY** change globally or locally (per account).

@@ -7,7 +7,7 @@
 The Transfer Agent **SHALL** authorize the D-ASA transfers according to the transferability
 policy.
 
-The transferred D-ASA *units* **MUST** be *fungible* (see [D-ASA Units fungibility](./units.md#fungibility-fungibility)
+The transferred D-ASA *units* **MUST** be *fungible* (see [D-ASA Units fungibility](../accounting/units.md#fungibility-fungibility)
 section).
 
 The transferred D-ASA *units* **MUST** record D-ASA *unit value* and *paid coupons*.

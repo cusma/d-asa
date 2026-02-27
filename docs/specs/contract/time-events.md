@@ -27,7 +27,7 @@ The D-ASA **MUST** have an *issuance date* \\([IED]\\) (`uint64`).
 The D-ASA **MAY** have a *maturity date* \\([MD]\\) (`uint64`).
 
 The *maturity date* **MAY** be updated in case of early repayment options (see
-[Early Repayment Options](./early-repayment-options.md) section).
+[Early Repayment Options](early-repayment-options.md) section).
 
 ## Time Events Array
 
@@ -55,7 +55,7 @@ coupons mature and the interest payment \\([IPPNT]\\) can be executed[^1]. The f
 coupon due date corresponds to \\([IPANX]\\).
 
 - If the D-ASA has **unlimited** number of *coupons*, then `K` **MUST** be `0` and
-*coupons due dates* \\([IP]\\) are managed with *time periods* (see [Time Periods](./time-periods.md#unlimited-time-schedule)
+*coupons due dates* \\([IP]\\) are managed with *time periods* (see [Time Periods](time-periods.md#unlimited-time-schedule)
 section).
 
 - If the D-ASA **has** a *maturity date*, the last element **MUST** be the *maturity
@@ -66,7 +66,7 @@ The *time events* **MUST** be sorted in strictly ascending order.
 The *time events* **MUST** be defined as UNIX time, in seconds.
 
 In the case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count
-Conventions](./day-count-convention.md) section), the *time periods* between subsequent
+Conventions](day-count-convention.md) section), the *time periods* between subsequent
 events **MUST** be multiples of a day, in seconds (`86400`)[^2].
 
 The *time events* **MUST** be set using the `asset_config` method.

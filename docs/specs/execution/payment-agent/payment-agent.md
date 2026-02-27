@@ -16,7 +16,7 @@
 > or precedence of a payee with respect to others.
 
 > D-ASA supports both on-chain and off-chain payment agents, depending on the settlement
-> asset (see [Settlement](./settlement.md) section).
+> asset (see [Settlement](settlement.md) section).
 
 > For reference implementations using on-chain payment agents, the AVM fees (ALGO)
 > for the cash flows execution **SHOULD** be paid by who triggers the cash flows.

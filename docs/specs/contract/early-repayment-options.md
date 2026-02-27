@@ -33,7 +33,7 @@ The unscheduled *prepayment events* \\([PP]\\) **MUST** occur within the defined
 *early repayment schedule*.
 
 In the case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count
-Conventions](./day-count-convention.md) section), the *time periods* between subsequent
+Conventions](day-count-convention.md) section), the *time periods* between subsequent
 events **MUST** be multiples of a day, in seconds (`86400`).
 
 The *early repayment time events* **MUST** be set with the `set_early_repayment_time_events`
@@ -49,9 +49,9 @@ The updated *early repayment time events* **MUST NOT** modify past events.
 An early repayment option could have different *prepayment effects* \\([PPEF]\\):
 
 - It **MAY** repay the *principal* partially or totally, to all or some Investors
-before the *maturity date* (see [Early Repayment](./early-repayment.md) section);
+before the *maturity date* (see [Early Repayment](../execution/payment-agent/early-repayment.md) section);
 
-- It **MAY** reduce the *maturity date* (see [Variable Time Schedule](./variable-time-schedule.md)
+- It **MAY** reduce the *maturity date* (see [Variable Time Schedule](variable-time-schedule.md)
 section).
 
 The *prepayment effect* **MUST** be identified with one of the following enumerated
@@ -65,7 +65,7 @@ IDs (`uint8`):
 | `255` |                Custom                | -             | Prepayment is allowed and the effect is custom                                                  |
 
 The *prepayment effect* **MAY** be set using the **OPTIONAL** `set_asset_metadata`
-method (see [Metadata](./metadata.md) section).
+method (see [Metadata](metadata.md) section).
 
 > The implementation **SHOULD** manage the accrued interest on early repayments.
 
@@ -87,7 +87,7 @@ The *penalty type* **MUST** be identified with one of the following enumerated I
 | `255` |           Custom           | -             | Custom penalty                                                                                         |
 
 The *penalty type* **MAY** be set using the **OPTIONAL** `set_asset_metadata` method
-(see [Metadata](./metadata.md) section).
+(see [Metadata](metadata.md) section).
 
 If the debt instrument has a *penalty type* with `ID>0`, the D-ASA **MUST** define
 a *penalty rate* \\([PYRT]\\) (`uint64`) for the amount of the penalty.
@@ -95,4 +95,4 @@ a *penalty rate* \\([PYRT]\\) (`uint64`) for the amount of the penalty.
 > The *penalty rate* is either the absolute amount or the rate of the penalty.
 
 The *penalty rate* **MAY** be set using the **OPTIONAL** `set_early_repayment_option`
-method (see [Metadata](./metadata.md) section).
+method (see [Metadata](metadata.md) section).

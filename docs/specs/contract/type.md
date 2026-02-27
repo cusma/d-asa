@@ -17,6 +17,6 @@ The *contract type* **MUST** have the following properties:
 - `class`: Fixed Income
 
 The *contract type* **MAY** be set using the **OPTIONAL** `set_asset_metadata` method
-(see [Metadata](./metadata.md) section).
+(see [Metadata](metadata.md) section).
 
 It is **RECOMMENDED** to use the unique D-ASA ID as *contract identifier* \\([CID]\\).

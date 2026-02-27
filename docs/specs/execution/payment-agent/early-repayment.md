@@ -1,7 +1,7 @@
 # Early Repayment {#early-repayment}
 
 If the *early repayment options* repays the principal amount before *maturity* (*prepayment
-effect* `1`, see [Prepayment Effects](./early-repayment-options.md#prepayment-effects)
+effect* `1`, see [Prepayment Effects](../../contract/early-repayment-options.md#prepayment-effects)
 section), the D-ASA **MUST** implement the **OPTIONAL** `early_repayment` method.
 
 In the case of an on-chain payment agent, the D-ASA **MUST** repay the *principal*

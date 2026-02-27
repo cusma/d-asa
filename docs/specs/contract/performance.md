@@ -23,7 +23,7 @@ The D-ASA **MAY** define a *grace period* \\([GRP]\\) (`uint64`).
 
 The *grace period* **MUST** be defined as UNIX time, in seconds.
 
-In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
+In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](day-count-convention.md)
 section), the *grace period* **MUST** be multiples of a day, in seconds (`86400`).
 
 The *grace period* **MAY** be set using the `asset_config` method as *time period*
@@ -53,7 +53,7 @@ The D-ASA **MAY** define a *delinquency period* \\([DQP]\\) (`uint64`).
 
 The *delinquency period* **MUST** be defined as UNIX time, in seconds.
 
-In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
+In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](day-count-convention.md)
 section), the *delinquency period* **MUST** be multiples of a day, in seconds (`86400`).
 
 The *delinquency period* **MAY** be set using the `asset_config` method as *time

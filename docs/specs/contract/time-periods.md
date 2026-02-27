@@ -14,11 +14,11 @@ It **MUST** be strictly greater than `0`;
 It **MUST** be `0` if *repetitions* are **unlimited**;
 
 The *time periods* **MUST** be anchored \\([ANX]\\) to a *time event* (see [Time
-Events](./time-events.md) section).
+Events](time-events.md) section).
 
 The *time periods* **MUST** be defined as UNIX time, in seconds.
 
-In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](./day-count-convention.md)
+In case of non-continuous *day-count conventions* (`ID<255`, see [Day-Count Conventions](day-count-convention.md)
 section), the *time periods* **MUST** be multiples of a day, in seconds (`86400`).
 
 The *time periods* **MAY** be set using the `asset_config` method.

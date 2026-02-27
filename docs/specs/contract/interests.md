@@ -63,7 +63,7 @@ The *coupon rates* **MUST** be set using the `asset_config` method.
 > Debt instruments may accrue interest over time.
 
 The D-ASA *units* **MAY** accrue interest \\([IPAC]\\), according to the *day-count
-convention* (see [Day-Count Convention](./day-count-convention.md) section).
+convention* (see [Day-Count Convention](day-count-convention.md) section).
 
 If the D-ASA has coupons, the *units* accrued interest **MUST** be calculated with
 respect to the latest coupon due date.

@@ -43,7 +43,7 @@ If the debt instrument has *principal amortization*, the D-ASA **MUST** define t
 *amortization rates* as `uint16[]` array, where:
 
 - The length of the array is `N=K+1`, with `K` equal to the **fixed** *total coupons*
-(see [Coupons](./interests.md#coupons) section);
+(see [Coupons](interests.md#coupons) section);
 
 - The first `K`elements of the array are the *amortizing rates* associated with
 *coupon* payments;

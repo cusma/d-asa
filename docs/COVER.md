@@ -52,7 +52,7 @@ and consider submitting a <a href="https://github.com/cusma/d-asa/pulls">pull re
 
 ## License {#license}
 
-The D-ASA source and documentation are released under the [AGPL-3.0 license](./license.md).
+The D-ASA source and documentation are released under the [AGPL-3.0 license](LICENSE.md).
 
 ---
 
