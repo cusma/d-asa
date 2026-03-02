@@ -2,7 +2,7 @@
 
 ```json
 {
-  "name": "set_asset_metadata",
+  "name": "set_metadata",
   "desc": "Set D-ASA metadata",
   "readonly": false,
   "args": [
