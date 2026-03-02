@@ -113,6 +113,20 @@ def shared_trustee(
 
 
 @pytest.fixture(scope="function")
+def shared_interest_oracle(
+    algorand: AlgorandClient,
+    contract_case: ContractCase,
+    shared_client_empty: Any,
+) -> utils.DAsaInterestOracle:
+    return helpers.create_role_account(
+        algorand,
+        utils.DAsaInterestOracle,
+        shared_client_empty,
+        rbac_assign_role_args_class=contract_case.rbac_assign_role_args_cls,
+    )
+
+
+@pytest.fixture(scope="function")
 def shared_client_active(
     algorand: AlgorandClient,
     bank: SigningAccount,
