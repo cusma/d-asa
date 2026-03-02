@@ -50,7 +50,6 @@ jobs:
           - module_rbac
           - module_accounting
           # Contracts
-          - base_d_asa
           - zero_coupon_bond
           - fixed_coupon_bond
           - perpetual_bond
@@ -77,3 +76,36 @@ jobs:
         run: |
           set -o pipefail
           algokit project run test tests/${{ matrix.module }}
+
+  test-shared:
+    name: Test shared contracts
+    if: '! github.event.pull_request.draft'
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Set up AlgoKit
+        uses: ./.github/actions/algokit-setup
+
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            shared:
+              - 'smart_contracts/modules/**'
+              - 'smart_contracts/actus/**'
+              - 'smart_contracts/artifacts/zero_coupon_bond/**'
+              - 'smart_contracts/artifacts/fixed_coupon_bond/**'
+              - 'smart_contracts/artifacts/perpetual_bond/**'
+              - 'tests/conftest.py'
+              - 'tests/conftest_helpers.py'
+              - 'tests/shared/**'
+
+      - name: Run shared tests
+        if: steps.filter.outputs.shared == 'true'
+        shell: bash
+        run: |
+          set -o pipefail
+          algokit project run test tests/shared
