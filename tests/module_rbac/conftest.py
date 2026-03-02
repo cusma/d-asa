@@ -34,3 +34,55 @@ def authority(
         rbac_client,
         rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
+
+
+@pytest.fixture(scope="function")
+def trustee(
+    algorand: AlgorandClient,
+    rbac_client: MockRbacModuleClient,
+) -> utils.DAsaTrustee:
+    return helpers.create_role_account(
+        algorand,
+        utils.DAsaTrustee,
+        rbac_client,
+        rbac_assign_role_args_class=RbacAssignRoleArgs,
+    )
+
+
+@pytest.fixture(scope="function")
+def account_manager(
+    algorand: AlgorandClient,
+    rbac_client: MockRbacModuleClient,
+) -> utils.DAsaAccountManager:
+    return helpers.create_role_account(
+        algorand,
+        utils.DAsaAccountManager,
+        rbac_client,
+        rbac_assign_role_args_class=RbacAssignRoleArgs,
+    )
+
+
+@pytest.fixture(scope="function")
+def primary_dealer(
+    algorand: AlgorandClient,
+    rbac_client: MockRbacModuleClient,
+) -> utils.DAsaPrimaryDealer:
+    return helpers.create_role_account(
+        algorand,
+        utils.DAsaPrimaryDealer,
+        rbac_client,
+        rbac_assign_role_args_class=RbacAssignRoleArgs,
+    )
+
+
+@pytest.fixture(scope="function")
+def interest_oracle(
+    algorand: AlgorandClient,
+    rbac_client: MockRbacModuleClient,
+) -> utils.DAsaInterestOracle:
+    return helpers.create_role_account(
+        algorand,
+        utils.DAsaInterestOracle,
+        rbac_client,
+        rbac_assign_role_args_class=RbacAssignRoleArgs,
+    )
