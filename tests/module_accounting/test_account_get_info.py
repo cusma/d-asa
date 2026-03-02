@@ -41,3 +41,26 @@ def test_fail_invalid_holding_address(
         accounting_client.send.account_get_info(
             AccountGetInfoArgs(holding_address=no_role_account.address)
         )
+
+
+def test_concrete_pass_account_get_info(
+    shared_account_factory,
+    shared_client_active,
+) -> None:
+    account = shared_account_factory(shared_client_active)
+    account_info = shared_client_active.send.account_get_info(
+        (account.holding_address,)
+    ).abi_return
+    assert account_info.payment_address == account.holding_address
+    assert account_info.units == 0
+    assert account_info.unit_value == 0
+    assert account_info.paid_coupons == 0
+    assert not account_info.suspended
+
+
+def test_concrete_fail_invalid_holding_address(
+    no_role_account: SigningAccount,
+    shared_client_active,
+) -> None:
+    with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
+        shared_client_active.send.account_get_info((no_role_account.address,))
