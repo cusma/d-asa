@@ -15,11 +15,11 @@ from . import config as cfg
 
 
 class FixedCouponBond(
-    CouponTransferAgentMixin,
+    PAMCoreMixin,
+    FixedCouponCashflowMixin,
     CouponPaymentAgentMixin,
     PrincipalPaymentAgentMixin,
-    FixedCouponCashflowMixin,
-    PAMCoreMixin,
+    CouponTransferAgentMixin,
     state_totals=StateTotals(
         global_bytes=cfg.GLOBAL_BYTES,
         global_uints=cfg.GLOBAL_UINTS,

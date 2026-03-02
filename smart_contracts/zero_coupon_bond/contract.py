@@ -10,10 +10,10 @@ from . import config as cfg
 
 
 class ZeroCouponBond(
-    NoCouponTransferAgentMixin,
-    PrincipalPaymentAgentMixin,
-    NoCouponCashflowMixin,
     PAMCoreMixin,
+    NoCouponCashflowMixin,
+    PrincipalPaymentAgentMixin,
+    NoCouponTransferAgentMixin,
     state_totals=StateTotals(
         global_bytes=cfg.GLOBAL_BYTES,
         global_uints=cfg.GLOBAL_UINTS,

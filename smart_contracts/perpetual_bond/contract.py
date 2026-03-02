@@ -13,11 +13,11 @@ from . import config as cfg
 
 
 class PerpetualBond(
-    CouponTransferAgentMixin,
-    CouponPaymentAgentMixin,
-    NoPrincipalPaymentMixin,
     PBNCoreMixin,
     PerpetualCouponCashflowMixin,
+    NoPrincipalPaymentMixin,
+    CouponPaymentAgentMixin,
+    CouponTransferAgentMixin,
     state_totals=StateTotals(
         global_bytes=cfg.GLOBAL_BYTES,
         global_uints=cfg.GLOBAL_UINTS,
