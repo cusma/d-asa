@@ -59,8 +59,10 @@
   - [Close](interfaces/account/close.md)
   - [Governance Suspension](interfaces/account/gov-suspension.md)
   - [Get Info](interfaces/account/get-info.md)
+  - [Get Account Units Value](./getters/interface-get-account-units-value.md)
+  - [Get Account Units Current Value](./getters/interface-get-account-units-current-value.md)
 
-- [Methods]()
+- [Asset]()
   - [Asset Config](./methods/interface-asset-config.md)
   - [Set Asset Metadata](./methods/interface-set-asset-metadata.md)
   - [Set Amortizing Rates](./methods/interface-set-amortizing-rates.md)
@@ -68,22 +70,14 @@
   - [Set Early Repayment Option](./methods/interface-set-early-repayment-option.md)
   - [Set Variable Interest Rate](./methods/interface-set-variable-interest-rate.md)
   - [Primary Distribution](./methods/interface-primary-distribution.md)
-  - [Pay Principal](./methods/interface-pay-principal.md)
-  - [Pay Coupon](./methods/interface-pay-coupon.md)
-  - [Early Repayment](./methods/interface-early-repayment.md)
-  - [Asset Transfer](./methods/interface-asset-transfer.md)
   - [Update Total Units](./methods/interface-update-total-units.md)
   - [Update Global Unit Value](./methods/interface-update-global-unit-value.md)
   - [Update Interest Rate](./methods/interface-update-interest-rate.md)
   - [Update Coupon Rates](./methods/interface-update-coupon-rates.md)
   - [Update Time Events](./methods/interface-update-time-events.md)
   - [Update Time Periods](./methods/interface-update-time-periods.md)
-
-- [Getters]()
   - [Get Asset Info](./getters/interface-get-asset-info.md)
   - [Get Asset Metadata](./getters/interface-get-asset-metadata.md)
-  - [Get Account Units Value](./getters/interface-get-account-units-value.md)
-  - [Get Account Units Current Value](./getters/interface-get-account-units-current-value.md)
   - [Get Time Events](./getters/interface-get-time-events.md)
   - [Get Time Periods](./getters/interface-get-time-periods.md)
   - [Get Payment Amount](./getters/interface-get-payment-amount.md)
@@ -93,6 +87,14 @@
   - [Get Secondary Market Schedule](./getters/interface-get-secondary-market-schedule.md)
   - [Get Early Repayment Schedule](./getters/interface-get-early-repayment-schedule.md)
 
+- [Payment Agent]()
+  - [Pay Coupon](./interfaces/payment-agent/pay-coupon.md)
+  - [Pay Principal](./interfaces/payment-agent/pay-principal.md)
+  - [Early Repayment](interfaces/payment-agent/early-repayment.md)
+
+- [Transfer Agent]()
+  - [Asset Transfer](./interfaces/transfer-agent/asset-transfer.md)
+
 # Rationale
 
 - [Rationale](./rationale.md)
@@ -100,6 +102,7 @@
 # Reference Implementation
 
 - [Reference Implementation](./implementation/reference-implementation.md)
+  - [Architecture](./implementation/architecture.md)
   - [Zero Coupon Bond](./implementation/ref-zero-coupon-bond.md)
   - [Fixed Coupon Bond](./implementation/ref-fixed-coupon-bond.md)
   - [Perpetual Bond](./implementation/ref-perpetual-bond.md)
