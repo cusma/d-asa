@@ -50,3 +50,19 @@ def test_pass_rbac_get_address_roles_for_unassigned_account(
 ) -> None:
     roles = rbac_client.send.rbac_get_address_roles(no_role_account.address).abi_return
     assert roles == (False, False, False, False, False)
+
+
+def test_concrete_pass_rbac_get_address_roles(
+    no_role_account: SigningAccount,
+    shared_account_manager,
+    shared_client_empty,
+) -> None:
+    manager_roles = shared_client_empty.send.rbac_get_address_roles(
+        (shared_account_manager.address,)
+    ).abi_return
+    assert manager_roles == (True, False, False, False, False)
+
+    unassigned_roles = shared_client_empty.send.rbac_get_address_roles(
+        (no_role_account.address,)
+    ).abi_return
+    assert unassigned_roles == (False, False, False, False, False)

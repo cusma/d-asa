@@ -60,3 +60,41 @@ def test_fail_invalid_role_address(
                 role_address=no_role_account.address,
             )
         )
+
+
+def test_concrete_pass_rbac_get_role_config(
+    shared_account_manager,
+    shared_client_empty,
+) -> None:
+    config = shared_client_empty.send.rbac_get_role_config(
+        (sc_cst.ROLE_ACCOUNT_MANAGER, shared_account_manager.address)
+    ).abi_return
+    assert config.role_validity_start == 0
+    assert config.role_validity_end == 2**64 - 1
+
+
+def test_concrete_pass_rbac_get_arranger_role_config(shared_client_empty) -> None:
+    arranger = shared_client_empty.state.global_state.arranger
+    config = shared_client_empty.send.rbac_get_role_config(
+        (sc_cst.ROLE_ARRANGER, arranger)
+    ).abi_return
+    assert config.role_validity_start == 0
+    assert config.role_validity_end == 0
+
+
+def test_concrete_fail_invalid_role(
+    no_role_account,
+    shared_client_empty,
+) -> None:
+    with pytest.raises(LogicError, match=err.INVALID_ROLE):
+        shared_client_empty.send.rbac_get_role_config((0, no_role_account.address))
+
+
+def test_concrete_fail_invalid_role_address(
+    no_role_account,
+    shared_client_empty,
+) -> None:
+    with pytest.raises(LogicError, match=err.INVALID_ROLE_ADDRESS):
+        shared_client_empty.send.rbac_get_role_config(
+            (sc_cst.ROLE_ACCOUNT_MANAGER, no_role_account.address)
+        )
