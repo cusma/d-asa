@@ -47,3 +47,16 @@ def authority(
         accounting_client,
         rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
+
+
+@pytest.fixture(scope="function")
+def trustee(
+    algorand: AlgorandClient,
+    accounting_client: MockAccountingModuleClient,
+) -> utils.DAsaTrustee:
+    return helpers.create_role_account(
+        algorand,
+        utils.DAsaTrustee,
+        accounting_client,
+        rbac_assign_role_args_class=RbacAssignRoleArgs,
+    )

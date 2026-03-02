@@ -9,12 +9,14 @@ from algokit_utils import (
 
 from smart_contracts import errors as err
 from smart_contracts.artifacts.mock_module_accounting.mock_accounting_module_client import (
+    AccountCloseArgs,
     AccountGetInfoArgs,
     AccountOpenArgs,
     MockAccountingModuleClient,
     RbacGovAssetSuspensionArgs,
+    SetDefaultStatusArgs,
 )
-from tests.utils import DAsaAccountManager, DAsaAuthority
+from tests.utils import DAsaAccountManager, DAsaAuthority, DAsaTrustee
 
 ACCOUNT_TEST_UNITS: Final[int] = 7
 
@@ -66,12 +68,50 @@ def test_fail_unauthorized_caller(
         )
 
 
-def test_fail_unauthorized_status() -> None:
-    pass  # TODO
+def test_fail_unauthorized_status(
+    no_role_account: SigningAccount,
+    account_manager: DAsaAccountManager,
+    accounting_client: MockAccountingModuleClient,
+) -> None:
+    accounting_client.send.account_open(
+        AccountOpenArgs(
+            holding_address=no_role_account.address,
+            payment_address=no_role_account.address,
+        ),
+        params=CommonAppCallParams(sender=account_manager.address),
+    )
+    accounting_client.send.account_close(
+        AccountCloseArgs(holding_address=no_role_account.address),
+        params=CommonAppCallParams(sender=account_manager.address),
+    )
+    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
+        accounting_client.send.account_open(
+            AccountOpenArgs(
+                holding_address=no_role_account.address,
+                payment_address=no_role_account.address,
+            ),
+            params=CommonAppCallParams(sender=account_manager.address),
+        )
 
 
-def test_fail_defaulted_status() -> None:
-    pass  # TODO
+def test_fail_defaulted_status(
+    no_role_account: SigningAccount,
+    trustee: DAsaTrustee,
+    account_manager: DAsaAccountManager,
+    accounting_client: MockAccountingModuleClient,
+) -> None:
+    accounting_client.send.set_default_status(
+        SetDefaultStatusArgs(defaulted=True),
+        params=CommonAppCallParams(sender=trustee.address),
+    )
+    with pytest.raises(LogicError, match=err.DEFAULTED):
+        accounting_client.send.account_open(
+            AccountOpenArgs(
+                holding_address=no_role_account.address,
+                payment_address=no_role_account.address,
+            ),
+            params=CommonAppCallParams(sender=account_manager.address),
+        )
 
 
 def test_fail_suspended(
