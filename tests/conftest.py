@@ -101,5 +101,5 @@ def currency(algorand: AlgorandClient, bank: SigningAccount) -> utils.Currency:
 
 
 @pytest.fixture(scope="function", params=DAY_COUNT_CONVENTION)
-def day_count_convention(request) -> int:  # noqa: ANN001
+def day_count_convention(request) -> int:
     return request.param

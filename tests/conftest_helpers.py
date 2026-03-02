@@ -1,5 +1,3 @@
-# ruff: noqa: ANN401
-
 from collections.abc import Callable
 from typing import Any, TypeVar
 
