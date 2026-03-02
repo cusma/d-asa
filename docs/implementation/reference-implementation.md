@@ -8,7 +8,7 @@
 
 The reference implementation provides the following features:
 
-- RBAC:
+- RBAC and Accounting:
   - Arranger: creates, configures and updates the D-ASA
   - Account Manager: opens and closes accounts (proxy a KYC process)
   - Primary Dealer: performs the primary distribution on the primary market
@@ -41,6 +41,24 @@ The reference implementation provides the following features:
 - Notarize metadata (e.g., prospectus, etc.)
 
 - Updatable program (restricted to the Arranger)
+
+##  Architecture
+
+The reference implementation architecture is structured in composable modules with
+a clear separation of concerns:
+
+- RBAC Module
+- Accounting Module
+- Core Financial Module
+  - Common Cashflow Utilities
+  - Coupon Cashflow
+  - No-coupon Cashflow
+- Payment Agent
+- Transfer Agent
+ 
+The concrete financial contract inheriths mixins to achieve compile-time specialization
+across the ACTUS Contract Types (e.g., `PAM`, `PBN`), so each deployed contract includes
+only the logic it actually needs.
 
 ## Deployments {#deployments}
 
