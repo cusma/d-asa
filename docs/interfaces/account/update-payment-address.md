@@ -2,7 +2,7 @@
 
 ```json
 {
-  "name": "update_payment_address",
+  "name": "account_update_payment_address",
   "desc": "Update Payment Address of an account",
   "readonly": false,
   "args": [
