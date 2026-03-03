@@ -2,7 +2,7 @@ import pytest
 from algokit_utils import CommonAppCallParams, LogicError, SigningAccount
 
 from smart_contracts import errors as err
-from smart_contracts.artifacts.mock_rbac_module.mock_rbac_module_client import (
+from smart_contracts.artifacts.mock_module_rbac.mock_rbac_module_client import (
     MockRbacModuleClient,
     RbacGovAssetSuspensionArgs,
 )
