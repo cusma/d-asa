@@ -13,9 +13,8 @@ from algosdk.constants import min_txn_fee
 from algosdk.v2client.algod import AlgodClient
 
 from smart_contracts import constants as sc_cst
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
+from smart_contracts.artifacts.mock_module_accounting.mock_accounting_module_client import (
     AccountGetInfoArgs,
-    BaseDAsaClient,
 )
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
@@ -104,8 +103,7 @@ class DAsaInterestOracle(SigningAccount):
 class DAsaAccount(SigningAccount):
     holding_address: str
     d_asa_client: (
-        BaseDAsaClient
-        | ZeroCouponBondClient
+        ZeroCouponBondClient
         | FixedCouponBondClient
         | PerpetualBondClient
     )
