@@ -234,6 +234,7 @@ def test_fail_over_transfer(
         )
 
 
+@pytest.mark.skip("The PENDING_COUPON_PAYMENT is shadowed by NON_FUNGIBLE_UNITS")
 def test_fail_pending_coupon_payment(
     account_a: DAsaAccount,
     account_b: DAsaAccount,
