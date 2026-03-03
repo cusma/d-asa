@@ -9,7 +9,7 @@ from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
     AssetConfigArgs,
     ZeroCouponBondClient,
 )
-from smart_contracts.base_d_asa import config as sc_cfg
+from smart_contracts import config as sc_cfg
 from tests.utils import Currency, DAsaConfig
 
 
