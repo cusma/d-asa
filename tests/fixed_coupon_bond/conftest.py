@@ -9,6 +9,7 @@ from algokit_utils import (
     SigningAccount,
 )
 
+from smart_contracts import config as sc_cfg
 from smart_contracts import constants as sc_cst
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     AccountOpenArgs,
@@ -24,7 +25,6 @@ from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import
     SetDefaultStatusArgs,
     SetSecondaryTimeEventsArgs,
 )
-from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests import conftest_helpers as helpers
 from tests import utils
 from tests.conftest import (
