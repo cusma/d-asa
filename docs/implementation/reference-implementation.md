@@ -42,7 +42,7 @@ The reference implementation provides the following features:
 
 - Updatable program (restricted to the Arranger)
 
-##  Architecture
+## Architecture
 
 The reference implementation architecture is structured in composable modules with
 a clear separation of concerns:
@@ -55,10 +55,10 @@ a clear separation of concerns:
   - No-coupon Cashflow
 - Payment Agent
 - Transfer Agent
- 
+
 The concrete financial contract inheriths mixins to achieve compile-time specialization
-across the ACTUS Contract Types (e.g., `PAM`, `PBN`), so each deployed contract includes
-only the logic it actually needs.
+across the ACTUS Contract Types (e.g., `PAM`, `PBN`), so each deployed contract
+includes only the logic it actually needs.
 
 ## Deployments {#deployments}
 
