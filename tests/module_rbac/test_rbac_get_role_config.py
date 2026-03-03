@@ -23,9 +23,13 @@ def test_pass_rbac_get_role_config(
     ).abi_return
 
     expected = utils.set_role_config()
-    expected_cfg = type(config).from_bytes(expected)
-    assert config.role_validity_start == expected_cfg.role_validity_start
-    assert config.role_validity_end == expected_cfg.role_validity_end
+    # Decode the expected bytes manually (2 uint64 values = 16 bytes total, big-endian)
+    import struct
+
+    expected_start, expected_end = struct.unpack(">QQ", expected)
+
+    assert config.role_validity_start == expected_start
+    assert config.role_validity_end == expected_end
 
 
 def test_pass_rbac_get_arranger_role_config(

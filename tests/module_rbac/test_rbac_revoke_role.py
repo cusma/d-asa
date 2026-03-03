@@ -6,6 +6,7 @@ from smart_contracts import errors as err
 from smart_contracts.artifacts.mock_module_rbac.mock_rbac_module_client import (
     MockRbacModuleClient,
     RbacAssignRoleArgs,
+    RbacGetAddressRolesArgs,
     RbacRevokeRoleArgs,
     SetDefaultStatusArgs,
 )
@@ -32,7 +33,9 @@ def test_pass_rbac_revoke_role(
         )
     )
 
-    roles = rbac_client.send.rbac_get_address_roles(no_role_account.address).abi_return
+    roles = rbac_client.send.rbac_get_address_roles(
+        RbacGetAddressRolesArgs(address=no_role_account.address),
+    ).abi_return
     assert not roles[3]
 
 
