@@ -152,9 +152,11 @@ class CoreFinancialCommonMixin(AccountingModule):
     def assert_is_secondary_market_open(self) -> None:
         assert (
             self.status_is_active()
-            and self.secondary_market_opening_date
-            <= Global.latest_timestamp
-            < self.secondary_market_closure_date
+            and self.secondary_market_opening_date <= Global.latest_timestamp
+            and (
+                not self.secondary_market_closure_date
+                or Global.latest_timestamp < self.secondary_market_closure_date
+            )
         ), err.SECONDARY_MARKET_CLOSED
 
     def days_in(self, time_period: UInt64) -> UInt64:
