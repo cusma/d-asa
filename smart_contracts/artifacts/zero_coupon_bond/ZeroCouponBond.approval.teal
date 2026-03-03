@@ -1348,7 +1348,7 @@ asset_transfer_bool_merge@21:
     assert // Sender and receiver units are not fungible
 
 asset_transfer_after_if_else@10:
-    // smart_contracts/modules/transfer_agent/no_coupon.py:44-45
+    // smart_contracts/modules/transfer_agent/no_coupon.py:43-44
     // # Transferred units value (must be computed before the transfer)
     // sender_unit_value = self.account[sender_holding_address].unit_value
     dig 6
@@ -1426,7 +1426,7 @@ asset_transfer_after_if_else@16:
     intc_2 // 32
     uncover 2
     box_replace
-    // smart_contracts/modules/transfer_agent/no_coupon.py:51
+    // smart_contracts/modules/transfer_agent/no_coupon.py:50
     // return units * sender_unit_value + accrued_interest
     dig 4
     *
