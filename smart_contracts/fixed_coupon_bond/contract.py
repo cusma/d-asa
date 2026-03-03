@@ -26,6 +26,7 @@ class FixedCouponBond(
         local_bytes=cfg.LOCAL_BYTES,
         local_uints=cfg.LOCAL_UINTS,
     ),
+    avm_version=12,
 ):
     def __init__(self) -> None:
         super().__init__()

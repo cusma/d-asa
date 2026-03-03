@@ -1,4 +1,4 @@
-#pragma version 11
+#pragma version 12
 #pragma typetrack false
 
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
@@ -127,31 +127,31 @@ main:
     bytec 27 // "due_coupons_watermark"
     intc_0 // 0
     app_global_put
-    // smart_contracts/fixed_coupon_bond/contract.py:32
+    // smart_contracts/fixed_coupon_bond/contract.py:33
     // assert Txn.global_num_byte_slice == cfg.GLOBAL_BYTES, err.WRONG_GLOBAL_BYTES
     txn GlobalNumByteSlice
     pushint 2
     ==
     assert // Wrong Global Bytes allocation
-    // smart_contracts/fixed_coupon_bond/contract.py:33
+    // smart_contracts/fixed_coupon_bond/contract.py:34
     // assert Txn.global_num_uint == cfg.GLOBAL_UINTS, err.WRONG_GLOBAL_UINTS
     txn GlobalNumUint
     pushint 20
     ==
     assert // Wrong Global UInts allocation
-    // smart_contracts/fixed_coupon_bond/contract.py:34
+    // smart_contracts/fixed_coupon_bond/contract.py:35
     // assert Txn.local_num_byte_slice == cfg.LOCAL_BYTES, err.WRONG_LOCAL_BYTES
     txn LocalNumByteSlice
     !
     assert // Wrong Local Bytes allocation
-    // smart_contracts/fixed_coupon_bond/contract.py:35
+    // smart_contracts/fixed_coupon_bond/contract.py:36
     // assert Txn.local_num_uint == cfg.LOCAL_UINTS, err.WRONG_LOCAL_UINTS
     txn LocalNumUint
     !
     assert // Wrong Local UInts allocation
 
 main_after_if_else@2:
-    // smart_contracts/fixed_coupon_bond/contract.py:17-29
+    // smart_contracts/fixed_coupon_bond/contract.py:17-30
     // class FixedCouponBond(
     //     PAMCoreMixin,
     //     FixedCouponCashflowMixin,
@@ -164,13 +164,14 @@ main_after_if_else@2:
     //         local_bytes=cfg.LOCAL_BYTES,
     //         local_uints=cfg.LOCAL_UINTS,
     //     ),
+    //     avm_version=12,
     // ):
     pushbytes 0x25dba95b // method "asset_update((uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void"
     txna ApplicationArgs 0
     match main_asset_update_route@4
 
 main_switch_case_next@5:
-    // smart_contracts/fixed_coupon_bond/contract.py:17-29
+    // smart_contracts/fixed_coupon_bond/contract.py:17-30
     // class FixedCouponBond(
     //     PAMCoreMixin,
     //     FixedCouponCashflowMixin,
@@ -183,6 +184,7 @@ main_switch_case_next@5:
     //         local_bytes=cfg.LOCAL_BYTES,
     //         local_uints=cfg.LOCAL_UINTS,
     //     ),
+    //     avm_version=12,
     // ):
     txn OnCompletion
     !
@@ -195,7 +197,7 @@ main_switch_case_next@5:
     err
 
 main_create_NoOp@35:
-    // smart_contracts/fixed_coupon_bond/contract.py:17-29
+    // smart_contracts/fixed_coupon_bond/contract.py:17-30
     // class FixedCouponBond(
     //     PAMCoreMixin,
     //     FixedCouponCashflowMixin,
@@ -208,6 +210,7 @@ main_create_NoOp@35:
     //         local_bytes=cfg.LOCAL_BYTES,
     //         local_uints=cfg.LOCAL_UINTS,
     //     ),
+    //     avm_version=12,
     // ):
     pushbytes 0x3f0efc6c // method "asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void"
     txna ApplicationArgs 0

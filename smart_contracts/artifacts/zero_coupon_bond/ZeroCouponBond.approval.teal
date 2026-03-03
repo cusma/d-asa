@@ -1,4 +1,4 @@
-#pragma version 11
+#pragma version 12
 #pragma typetrack false
 
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
@@ -117,31 +117,31 @@ main:
     bytec_3 // "maturity_date"
     intc_0 // 0
     app_global_put
-    // smart_contracts/zero_coupon_bond/contract.py:26
+    // smart_contracts/zero_coupon_bond/contract.py:27
     // assert Txn.global_num_byte_slice == cfg.GLOBAL_BYTES, err.WRONG_GLOBAL_BYTES
     txn GlobalNumByteSlice
     pushint 2
     ==
     assert // Wrong Global Bytes allocation
-    // smart_contracts/zero_coupon_bond/contract.py:27
+    // smart_contracts/zero_coupon_bond/contract.py:28
     // assert Txn.global_num_uint == cfg.GLOBAL_UINTS, err.WRONG_GLOBAL_UINTS
     txn GlobalNumUint
     pushint 18
     ==
     assert // Wrong Global UInts allocation
-    // smart_contracts/zero_coupon_bond/contract.py:28
+    // smart_contracts/zero_coupon_bond/contract.py:29
     // assert Txn.local_num_byte_slice == cfg.LOCAL_BYTES, err.WRONG_LOCAL_BYTES
     txn LocalNumByteSlice
     !
     assert // Wrong Local Bytes allocation
-    // smart_contracts/zero_coupon_bond/contract.py:29
+    // smart_contracts/zero_coupon_bond/contract.py:30
     // assert Txn.local_num_uint == cfg.LOCAL_UINTS, err.WRONG_LOCAL_UINTS
     txn LocalNumUint
     !
     assert // Wrong Local UInts allocation
 
 main_after_if_else@2:
-    // smart_contracts/zero_coupon_bond/contract.py:12-23
+    // smart_contracts/zero_coupon_bond/contract.py:12-24
     // class ZeroCouponBond(
     //     PAMCoreMixin,
     //     NoCouponCashflowMixin,
@@ -153,13 +153,14 @@ main_after_if_else@2:
     //         local_bytes=cfg.LOCAL_BYTES,
     //         local_uints=cfg.LOCAL_UINTS,
     //     ),
+    //     avm_version=12,
     // ):
     pushbytes 0x25dba95b // method "asset_update((uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void"
     txna ApplicationArgs 0
     match main_asset_update_route@4
 
 main_switch_case_next@5:
-    // smart_contracts/zero_coupon_bond/contract.py:12-23
+    // smart_contracts/zero_coupon_bond/contract.py:12-24
     // class ZeroCouponBond(
     //     PAMCoreMixin,
     //     NoCouponCashflowMixin,
@@ -171,6 +172,7 @@ main_switch_case_next@5:
     //         local_bytes=cfg.LOCAL_BYTES,
     //         local_uints=cfg.LOCAL_UINTS,
     //     ),
+    //     avm_version=12,
     // ):
     txn OnCompletion
     !
@@ -183,7 +185,7 @@ main_switch_case_next@5:
     err
 
 main_create_NoOp@32:
-    // smart_contracts/zero_coupon_bond/contract.py:12-23
+    // smart_contracts/zero_coupon_bond/contract.py:12-24
     // class ZeroCouponBond(
     //     PAMCoreMixin,
     //     NoCouponCashflowMixin,
@@ -195,6 +197,7 @@ main_create_NoOp@32:
     //         local_bytes=cfg.LOCAL_BYTES,
     //         local_uints=cfg.LOCAL_UINTS,
     //     ),
+    //     avm_version=12,
     // ):
     pushbytes 0x3f0efc6c // method "asset_create(address,(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string))void"
     txna ApplicationArgs 0
