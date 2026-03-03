@@ -56,7 +56,7 @@ a clear separation of concerns:
 - Payment Agent
 - Transfer Agent
 
-The concrete financial contract inheriths mixins to achieve compile-time specialization
+The concrete financial contract inherits mixins to achieve compile-time specialization
 across the ACTUS Contract Types (e.g., `PAM`, `PBN`), so each deployed contract
 includes only the logic it actually needs.
 
