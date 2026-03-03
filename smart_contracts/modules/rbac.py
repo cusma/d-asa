@@ -143,8 +143,17 @@ class RbacModule(ARC4Contract):
             assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
             del self.interest_oracle[role_address]
 
-    @arc4.abimethod  # TODO: Add specs and tests
+    @arc4.abimethod
     def rbac_rotate_arranger(self, *, new_arranger: Account) -> UInt64:
+        """
+        Rotate the Arranger address
+
+        Args:
+            new_arranger: New Arranger address
+
+        Returns:
+            Timestamp of the role assignment
+        """
         self.assert_caller_is_arranger()
         self.arranger.value = new_arranger
         return Global.latest_timestamp
@@ -239,12 +248,27 @@ class RbacModule(ARC4Contract):
 
     @arc4.abimethod(readonly=True)  # TODO: Add specs
     def rbac_get_arranger(self) -> Account:
+        """
+        Get Arranger address
+
+        Returns:
+            Arranger address
+        """
         return self.arranger.value
 
-    @arc4.abimethod(readonly=True)  # TODO: Add specs
+    @arc4.abimethod(readonly=True)
     def rbac_get_address_roles(
         self, address: Account
     ) -> tuple[bool, bool, bool, bool, bool]:
+        """
+        Non-normative - Get roles assigned to an address
+
+        Args:
+            address: Address to get roles for
+
+        Returns:
+            Roles mask: (Account Manager, Primary Dealer, Trustee, Authority, Interest Oracle)
+        """
         return (
             self._role_is_active(self.account_manager, address),
             self._role_is_active(self.primary_dealer, address),
@@ -253,10 +277,20 @@ class RbacModule(ARC4Contract):
             self._role_is_active(self.interest_oracle, address),
         )
 
-    @arc4.abimethod(readonly=True)  # TODO: Add specs
+    @arc4.abimethod(readonly=True)
     def rbac_get_role_config(
         self, *, role_id: arc4.UInt8, role_address: Account
     ) -> typ.RoleConfig:
+        """
+        Get role configuration
+
+        Args:
+            role_id: Role Identifier
+            role_address: Account Role Address
+
+        Returns:
+            Role configuration
+        """
         role = role_id.as_uint64()
         self._assert_valid_role(role)
         match role:
