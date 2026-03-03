@@ -174,12 +174,24 @@ class AccountingModule(RbacModule):
         self.end_if_no_circulating_units()
         return closed_units, Global.latest_timestamp
 
-    @arc4.abimethod  # TODO: Add specs and tests
+    @arc4.abimethod
     def account_update_payment_address(
         self, *, holding_address: Account, payment_address: Account
     ) -> UInt64:
-        self.assert_valid_holding_address(holding_address)
+        """
+        Update the Payment Address of an account
+
+        Args:
+            holding_address: Account Holding Address
+            payment_address: Account Payment Address
+
+        Returns:
+            Timestamp of the account update
+        """
         assert Txn.sender == holding_address, err.UNAUTHORIZED
+        self.assert_is_not_asset_defaulted()
+        self.assert_is_not_asset_suspended()
+        self.assert_valid_holding_address(holding_address)
         self.account[holding_address].payment_address = payment_address
         return Global.latest_timestamp
 
@@ -199,10 +211,3 @@ class AccountingModule(RbacModule):
         """
         self.assert_valid_holding_address(holding_address)
         return self.account[holding_address]
-
-    # TODO: This seems contract-type dependent, not enough general for accounting
-    # @arc4.abimethod(readonly=True)
-    # def account_get_units_value(self, *, holding_address: Account, units: UInt64) -> UInt64:
-    #     self.assert_valid_holding_address(holding_address)
-    #     assert 0 < units <= self.account[holding_address].units, err.INVALID_UNITS
-    #     return self.account_units_value(holding_address, units)
