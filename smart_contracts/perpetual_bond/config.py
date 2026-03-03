@@ -1,6 +1,6 @@
 from typing import Final
 
-from smart_contracts.base_d_asa import config as base_cfg
+from smart_contracts import config as base_cfg
 
 # State Schema
 GLOBAL_BYTES: Final[int] = base_cfg.GLOBAL_BYTES
