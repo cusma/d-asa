@@ -338,6 +338,22 @@ class CoreFinancialCommonMixin(AccountingModule):
         )
 
     @arc4.abimethod
+    def set_default_status(self, *, defaulted: bool) -> UInt64:
+        """
+        Set D-ASA default status
+
+        Args:
+            defaulted: Default status
+
+        Raises:
+            UNAUTHORIZED: Not authorized
+        """
+
+        self.assert_caller_is_trustee()
+        self.asset_defaulted = defaulted
+        return Global.latest_timestamp
+
+    @arc4.abimethod
     def primary_distribution(
         self, *, holding_address: Account, units: UInt64
     ) -> UInt64:

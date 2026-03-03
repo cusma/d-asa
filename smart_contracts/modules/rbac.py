@@ -230,22 +230,6 @@ class RbacModule(ARC4Contract):
         self.asset_suspended = suspended
         return Global.latest_timestamp
 
-    @arc4.abimethod  # TODO: Move to contract performance module
-    def set_default_status(self, *, defaulted: bool) -> UInt64:
-        """
-        Set D-ASA default status
-
-        Args:
-            defaulted: Default status
-
-        Raises:
-            UNAUTHORIZED: Not authorized
-        """
-
-        self.assert_caller_is_trustee()
-        self.asset_defaulted = defaulted
-        return Global.latest_timestamp
-
     @arc4.abimethod(readonly=True)
     def rbac_get_arranger(self) -> Account:
         """
