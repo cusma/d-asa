@@ -21,13 +21,13 @@ keywords = [
 [tool.poetry.dependencies]
 python = "^3.13"
 algokit-utils = "^4.2.3"
-python-dotenv = "^1.2.1"
+python-dotenv = "^1.2.2"
 algorand-python = "^3.4.0"
 
 [tool.poetry.group.dev.dependencies]
 algokit-client-generator = "^2.2.0"
 black = { extras = ["d"], version = "^26.1.0" }
-ruff = "^0.15.2"
+ruff = "^0.15.4"
 mypy = "^1.19.1"
 pytest = "^9.0.2"
 pytest-cov = "^7.0.0"
