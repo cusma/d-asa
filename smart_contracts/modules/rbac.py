@@ -246,7 +246,7 @@ class RbacModule(ARC4Contract):
         self.asset_defaulted = defaulted
         return Global.latest_timestamp
 
-    @arc4.abimethod(readonly=True)  # TODO: Add specs
+    @arc4.abimethod(readonly=True)
     def rbac_get_arranger(self) -> Account:
         """
         Get Arranger address
