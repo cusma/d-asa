@@ -25,5 +25,4 @@
 }
 ```
 
-The call **MUST** fail with the `UNAUTHORIZED` error code if not called by an
-authorized.
+The call **MUST** fail with the `UNAUTHORIZED` error code if not called by the Arranger.
