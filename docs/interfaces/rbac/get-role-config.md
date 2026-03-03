@@ -7,14 +7,14 @@
   "readonly": true,
   "args": [
     {
+      "type": "uint8",
+      "name": "role_id",
+      "desc": "Role Identifier"
+    },
+    {
       "type": "address",
       "name": "role_address",
       "desc": "Account Role Address"
-    },
-    {
-      "type": "uint8",
-      "name": "role",
-      "desc": "Role identifier"
     }
   ],
   "returns": {

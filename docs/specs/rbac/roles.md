@@ -38,8 +38,11 @@ The Arranger role **MUST** be identified with the reserved ID `20`.
 
 The Arranger **SHALL** configure the D-ASA using the `asset_config` method.
 
+The Arranger **MAY** rotate its Algorand Address using the `rbac_rotate_arranger`
+method.
+
 The Arranger **MAY** configure the D-ASA *role-based access control* with the **OPTIONAL**
-`assign_role` and `rbac_revoke_role` methods.
+`rbac_assign_role` and `rbac_revoke_role` methods.
 
 ## Investor (Lender)
 

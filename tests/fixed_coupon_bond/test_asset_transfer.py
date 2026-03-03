@@ -7,6 +7,7 @@ from algokit_utils import (
     SigningAccount,
 )
 
+from smart_contracts import config as sc_cfg
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     AssetTransferArgs,
@@ -14,7 +15,6 @@ from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import
     GetAccountUnitsCurrentValueArgs,
     PayCouponArgs,
 )
-from smart_contracts.base_d_asa import config as sc_cfg
 from tests.utils import DAsaAccount, DAsaConfig, time_warp
 
 
