@@ -230,7 +230,7 @@ main_asset_update_route@4:
 asset_config:
     pushbytes ""
     dup
-    // smart_contracts/actus/pbn.py:25
+    // smart_contracts/actus/pbn.py:29
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -552,30 +552,46 @@ asset_config_after_if_else@11:
     bytec 31 // 0x74696d654576656e7473
     dig 1
     box_put
-    // smart_contracts/actus/pbn.py:20
-    // self.primary_distribution_opening_date = time_events[cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX]
+    // smart_contracts/actus/pbn.py:20-22
+    // self.primary_distribution_opening_date = time_events[
+    //     cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX
+    // ]
     dup
     pushint 2
     extract_uint64
+    // smart_contracts/actus/pbn.py:20
+    // self.primary_distribution_opening_date = time_events[
     bytec 7 // "primary_distribution_opening_date"
+    // smart_contracts/actus/pbn.py:20-22
+    // self.primary_distribution_opening_date = time_events[
+    //     cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX
+    // ]
     swap
     app_global_put
-    // smart_contracts/actus/pbn.py:21
-    // self.primary_distribution_closure_date = time_events[cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX]
+    // smart_contracts/actus/pbn.py:23-25
+    // self.primary_distribution_closure_date = time_events[
+    //     cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
+    // ]
     dup
     pushint 10
     extract_uint64
+    // smart_contracts/actus/pbn.py:23
+    // self.primary_distribution_closure_date = time_events[
     bytec 25 // "primary_distribution_closure_date"
+    // smart_contracts/actus/pbn.py:23-25
+    // self.primary_distribution_closure_date = time_events[
+    //     cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
+    // ]
     swap
     app_global_put
     pushint 18
-    // smart_contracts/actus/pbn.py:22
+    // smart_contracts/actus/pbn.py:26
     // self.issuance_date = time_events[cfg.ISSUANCE_DATE_IDX]
     extract_uint64
     bytec_3 // "issuance_date"
     swap
     app_global_put
-    // smart_contracts/actus/pbn.py:23
+    // smart_contracts/actus/pbn.py:27
     // self.maturity_date = UInt64(0)
     bytec 9 // "maturity_date"
     intc_0 // 0
@@ -629,7 +645,7 @@ asset_config_after_if_else@11:
     bytec_2 // "status"
     pushint 100
     app_global_put
-    // smart_contracts/actus/pbn.py:25
+    // smart_contracts/actus/pbn.py:29
     // @arc4.abimethod
     intc_1 // 1
     return
@@ -645,7 +661,7 @@ asset_config_bool_false@4:
 
 // smart_contracts.actus.pbn.PBNCoreMixin.update_interest_rate[routing]() -> void:
 update_interest_rate:
-    // smart_contracts/actus/pbn.py:82
+    // smart_contracts/actus/pbn.py:86
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -659,30 +675,30 @@ update_interest_rate:
     txn Sender
     callsub _role_is_active
     assert // Not authorized
-    // smart_contracts/actus/pbn.py:100
+    // smart_contracts/actus/pbn.py:104
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
-    // smart_contracts/actus/pbn.py:101
+    // smart_contracts/actus/pbn.py:105
     // self.assert_is_not_asset_suspended()
     callsub assert_is_not_asset_suspended
-    // smart_contracts/actus/pbn.py:102
+    // smart_contracts/actus/pbn.py:106
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
-    // smart_contracts/actus/pbn.py:103
+    // smart_contracts/actus/pbn.py:107
     // assert self.all_due_coupons_paid(due_coupons), err.PENDING_COUPON_PAYMENT
     callsub all_due_coupons_paid
     assert // Pending due coupon payment
-    // smart_contracts/actus/pbn.py:105-106
+    // smart_contracts/actus/pbn.py:109-110
     // # Update interest rate
     // self.interest_rate = interest_rate.as_uint64()
     btoi
     bytec 5 // "interest_rate"
     swap
     app_global_put
-    // smart_contracts/actus/pbn.py:107
+    // smart_contracts/actus/pbn.py:111
     // return Global.latest_timestamp
     global LatestTimestamp
-    // smart_contracts/actus/pbn.py:82
+    // smart_contracts/actus/pbn.py:86
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
