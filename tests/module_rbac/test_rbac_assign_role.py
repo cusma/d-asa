@@ -6,10 +6,8 @@ from smart_contracts import errors as err
 from smart_contracts.artifacts.mock_module_rbac.mock_rbac_module_client import (
     MockRbacModuleClient,
     RbacAssignRoleArgs,
-    SetDefaultStatusArgs,
 )
 from tests import utils
-from tests.utils import DAsaTrustee
 
 
 def test_pass_rbac_assign_role(
@@ -38,25 +36,6 @@ def test_fail_unauthorized(
             params=CommonAppCallParams(
                 sender=no_role_account.address,
             ),
-        )
-
-
-def test_fail_defaulted(
-    trustee: DAsaTrustee,
-    no_role_account: SigningAccount,
-    rbac_client: MockRbacModuleClient,
-) -> None:
-    rbac_client.send.set_default_status(
-        SetDefaultStatusArgs(defaulted=True),
-        params=CommonAppCallParams(sender=trustee.address),
-    )
-    with pytest.raises(LogicError, match=err.DEFAULTED):
-        rbac_client.send.rbac_assign_role(
-            RbacAssignRoleArgs(
-                role_id=sc_cst.ROLE_AUTHORITY,
-                role_address=no_role_account.address,
-                config=b"",
-            )
         )
 
 

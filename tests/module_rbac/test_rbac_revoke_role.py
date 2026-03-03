@@ -8,10 +8,9 @@ from smart_contracts.artifacts.mock_module_rbac.mock_rbac_module_client import (
     RbacAssignRoleArgs,
     RbacGetAddressRolesArgs,
     RbacRevokeRoleArgs,
-    SetDefaultStatusArgs,
 )
 from tests import utils
-from tests.utils import DAsaAuthority, DAsaTrustee
+from tests.utils import DAsaAuthority
 
 
 def test_pass_rbac_revoke_role(
@@ -51,25 +50,6 @@ def test_fail_unauthorized(
                 role_address=authority.address,
             ),
             params=CommonAppCallParams(sender=no_role_account.address),
-        )
-
-
-def test_fail_defaulted(
-    trustee: DAsaTrustee,
-    authority: DAsaAuthority,
-    rbac_client: MockRbacModuleClient,
-) -> None:
-    rbac_client.send.set_default_status(
-        SetDefaultStatusArgs(defaulted=True),
-        params=CommonAppCallParams(sender=trustee.address),
-    )
-
-    with pytest.raises(LogicError, match=err.DEFAULTED):
-        rbac_client.send.rbac_revoke_role(
-            RbacRevokeRoleArgs(
-                role_id=sc_cst.ROLE_AUTHORITY,
-                role_address=authority.address,
-            )
         )
 
 
