@@ -8,7 +8,7 @@
   "args": [
     {
       "type": "address",
-      "name": "new_address",
+      "name": "new_arranger",
       "desc": "New Arranger address"
     }
   ],
