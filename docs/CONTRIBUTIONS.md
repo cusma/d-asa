@@ -39,7 +39,7 @@ docs/                    -> mdBook source code
 └── interfaces/          -> D-ASA interfaces
 |   └── rbac/            -> Role-Based Access Control (RBAC) interfaces
 |   └── account/         -> Accounting interfaces
-|   └── asset/           -> Asset interfaces
+|   └── contract/        -> Contract interfaces
 |   └── payment-agent/   -> Payment Agent interfaces
 |   └── transfer-agent/  -> Transfer Agent interfaces
 └── specs/               -> D-ASA specifications
