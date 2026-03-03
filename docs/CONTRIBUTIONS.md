@@ -33,14 +33,26 @@ The source code is structured as follows:
 .algokit/                -> AlgoKit configurations
 .github/                 -> GitHub actions and CI/CD workflows
 docs/                    -> mdBook source code
-└── _include/            -> ABI Interfaces, templates, etc.
+└── _include/            -> Templates, etc.
 └── images/              -> Image files
-└── getters/             -> D-ASA Getters interfaces
-└── methods/             -> D-ASA Methods interfaces
-└── SUMMARY.md, ...      -> mdBook SUMMARY.md, cover, chapters, sections, etc.
+└── images/              -> D-ASA implementation documents
+└── interfaces/          -> D-ASA interfaces
+|   └── rbac/            -> Role-Based Access Control (RBAC) interfaces
+|   └── account/         -> Accounting interfaces
+|   └── asset/           -> Asset interfaces
+|   └── payment-agent/   -> Payment Agent interfaces
+|   └── transfer-agent/  -> Transfer Agent interfaces
+└── specs/               -> D-ASA specifications
+|   └── rbac/            -> Role-Based Access Control (RBAC) specifications
+|   └── account/         -> Accounting specifications
+|   └── contract/        -> Contract (ACTUS) specifications
+|   └── execution/       -> Contract execution specifications
+└── SUMMARY.md, ...      -> mdBook SUMMARY.md, COVER.md, etc.
 smart_contracts/         -> D-ASA Smart Contracts
 └── artifacts/           -> AlgoKit auto-generated artifacts
-└── base_d_asa/          -> Base D-ASA Contract from which others inherit
+└── actus/               -> ACTUS high level mixins
+└── modules/             -> Low level mixins
+└── mock_module_.../     -> Mocked modules for tests
 └── contract_a/          -> Contract Type A
 └── contract_b/          -> Contract Type B
 └── contract_.../        -> Contract Type ...
@@ -48,7 +60,8 @@ smart_contracts/         -> D-ASA Smart Contracts
     └── contract.py      -> Contract implementation
     └── deploy_config.py -> Contract deployment configuration
 tests/                   -> Tests of D-ASA Smart Contracts
-└── base_d_asa/          -> Tests of Base D-ASA
+└── shared/              -> Shared test fixtures and mixins tests
+└── module_.../          -> Mocked module tests
 └── contract_a/          -> Tests of Contract Type A
 |   └── conftest.py      -> Contract Type A test fixtures
 |   └── test_method_1.py -> Tests of Contract Type A Method 1
