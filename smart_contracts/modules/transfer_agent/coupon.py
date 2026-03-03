@@ -33,6 +33,7 @@ class CouponTransferAgentMixin(TransferAgentCommonMixin):
             SECONDARY_MARKET_CLOSED: Secondary market is closed
             OVER_TRANSFER: Insufficient sender units to transfer
             NON_FUNGIBLE_UNITS: Sender and receiver units are not fungible
+            PENDING_COUPON_PAYMENT: Pending due coupon payment
         """
         self.assert_asset_transfer_preconditions(
             sender_holding_address,
