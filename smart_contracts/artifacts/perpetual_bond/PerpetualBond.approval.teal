@@ -528,13 +528,13 @@ asset_config_after_if_else@11:
     bytec 30 // "total_coupons"
     dig 1
     app_global_put
-    // smart_contracts/actus/pbn.py:14
+    // smart_contracts/actus/pbn.py:15
     // time_events.length == self.total_coupons + 3
     pushint 3
     +
     dig 3
     ==
-    // smart_contracts/actus/pbn.py:12-15
+    // smart_contracts/actus/pbn.py:13-16
     // # PBN has no maturity date in the static schedule
     // assert (
     //     time_events.length == self.total_coupons + 3
@@ -544,8 +544,7 @@ asset_config_after_if_else@11:
     // self.assert_time_events_sorted(time_events)
     dig 3
     callsub assert_time_events_sorted
-    // smart_contracts/actus/pbn.py:18-19
-    // # TODO: Use constants
+    // smart_contracts/actus/pbn.py:19
     // self.time_events.value = time_events.copy()
     bytec 31 // 0x74696d654576656e7473
     box_del
@@ -554,7 +553,7 @@ asset_config_after_if_else@11:
     dig 1
     box_put
     // smart_contracts/actus/pbn.py:20
-    // self.primary_distribution_opening_date = time_events[0]
+    // self.primary_distribution_opening_date = time_events[cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX]
     dup
     pushint 2
     extract_uint64
@@ -562,7 +561,7 @@ asset_config_after_if_else@11:
     swap
     app_global_put
     // smart_contracts/actus/pbn.py:21
-    // self.primary_distribution_closure_date = time_events[1]
+    // self.primary_distribution_closure_date = time_events[cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX]
     dup
     pushint 10
     extract_uint64
@@ -571,7 +570,7 @@ asset_config_after_if_else@11:
     app_global_put
     pushint 18
     // smart_contracts/actus/pbn.py:22
-    // self.issuance_date = time_events[2]
+    // self.issuance_date = time_events[cfg.ISSUANCE_DATE_IDX]
     extract_uint64
     bytec_3 // "issuance_date"
     swap
