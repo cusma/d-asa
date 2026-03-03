@@ -4,7 +4,7 @@
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
     intcblock 0 1 32 8 255 448 200 86400
-    bytecblock 0x151f7c75 0x52333023 "status" "circulating_units" "issuance_date" "maturity_date" "total_coupons" 0x52323023 "settlement_asset_id" "primary_distribution_opening_date" "secondary_market_closure_date" 0x74696d654576656e7473 0x52373023 0x52343023 "total_units" "unit_value" "day_count_convention" "secondary_market_opening_date" 0x636f75706f6e5261746573 0x52353023 0x52363023 "asset_suspended" "asset_defaulted" "metadata" "principal_discount" "primary_distribution_closure_date" "paid_coupon_units" "due_coupons_watermark" 0x00 0x52383023 "denomination_asset_id" "interest_rate" 0x068101 0x0000 0x0012
+    bytecblock 0x151f7c75 0x52333023 "status" "circulating_units" "issuance_date" "maturity_date" "total_coupons" 0x52323023 "settlement_asset_id" "primary_distribution_opening_date" "secondary_market_closure_date" 0x74696d654576656e7473 0x52373023 0x52343023 "total_units" "unit_value" "day_count_convention" "secondary_market_opening_date" 0x636f75706f6e5261746573 0x52363023 0x52353023 "asset_suspended" "asset_defaulted" "metadata" "principal_discount" "primary_distribution_closure_date" "paid_coupon_units" "due_coupons_watermark" 0x00 0x52383023 "denomination_asset_id" "interest_rate" 0x068101 0x0000 0x0012
     txn ApplicationID
     bnz main_after_if_else@2
     // smart_contracts/modules/rbac.py:30-31
@@ -189,9 +189,9 @@ main_switch_case_next@5:
     assert
     txn ApplicationID
     bz main_create_NoOp@35
-    pushbytess 0x89474134 0x44363d49 0x53bef045 0x67db4f20 0xf6a96c8d 0x8cf14b51 0x9c76b6a3 0x4fd6a3cc 0x1d6fc255 0x6c85e3ee 0x402dba47 0xfad2173e 0x08efea35 0xe4a5ab54 0xdc063b35 0x14fc10ef 0x4c113ed5 0x74a7297f 0x105c184e 0x82f71b2d 0x03b83329 0x3dbe80bd 0xdf54e82c 0x25e9997f 0x010c8299 0x7406acd2 0xc3e4b297 // method "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_coupon_rates()uint16[]", method "get_payment_amount(address)(uint64,uint64)", method "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)", method "pay_coupon(address,byte[])(uint64,uint64,byte[])", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "asset_transfer(address,address,uint64)uint64", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "primary_distribution(address,uint64)uint64", method "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)", method "account_gov_suspension(address,bool)uint64", method "account_open(address,address)uint64", method "account_close(address)(uint64,uint64)", method "account_update_payment_address(address,address)uint64", method "account_get_info(address)(address,uint64,uint64,uint64,bool)", method "rbac_rotate_arranger(address)uint64", method "rbac_assign_role(uint8,address,byte[])uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_gov_asset_suspension(bool)uint64", method "set_default_status(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_config(uint8,address)(uint64,uint64)"
+    pushbytess 0x89474134 0x44363d49 0x53bef045 0x67db4f20 0xf6a96c8d 0x8cf14b51 0x9c76b6a3 0x4fd6a3cc 0x1d6fc255 0x25e9997f 0x6c85e3ee 0x402dba47 0xfad2173e 0x08efea35 0xe4a5ab54 0xdc063b35 0x14fc10ef 0x4c113ed5 0x74a7297f 0x105c184e 0x82f71b2d 0x03b83329 0x3dbe80bd 0xdf54e82c 0x010c8299 0x7406acd2 0xc3e4b297 // method "asset_config(uint64,uint64,uint64,uint64,uint64,uint8,uint16,uint16[],uint64[],(uint64,uint64)[])void", method "get_account_units_current_value(address,uint64)(uint64,uint64,(uint64,uint64))", method "get_coupon_rates()uint16[]", method "get_payment_amount(address)(uint64,uint64)", method "get_coupons_status()(uint64,uint64,uint64,(uint64,uint64),bool)", method "pay_coupon(address,byte[])(uint64,uint64,byte[])", method "pay_principal(address,byte[])(uint64,uint64,byte[])", method "asset_transfer(address,address,uint64)uint64", method "set_secondary_time_events(uint64[])(uint64,uint64)", method "set_default_status(bool)uint64", method "primary_distribution(address,uint64)uint64", method "get_asset_info()(uint64,uint64,uint64,uint64,uint8,uint16,uint16,uint64,uint64,uint64,uint64,uint64,uint64,bool,uint8)", method "get_time_events()uint64[]", method "get_secondary_market_schedule()uint64[]", method "get_asset_metadata()(uint8,uint8,uint8,uint8,uint8,uint8,byte[32],string)", method "account_gov_suspension(address,bool)uint64", method "account_open(address,address)uint64", method "account_close(address)(uint64,uint64)", method "account_update_payment_address(address,address)uint64", method "account_get_info(address)(address,uint64,uint64,uint64,bool)", method "rbac_rotate_arranger(address)uint64", method "rbac_assign_role(uint8,address,byte[])uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_gov_asset_suspension(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_config(uint8,address)(uint64,uint64)"
     txna ApplicationArgs 0
-    match asset_config get_account_units_current_value get_coupon_rates get_payment_amount get_coupons_status pay_coupon pay_principal asset_transfer set_secondary_time_events primary_distribution get_asset_info get_time_events get_secondary_market_schedule get_asset_metadata account_gov_suspension account_open account_close account_update_payment_address account_get_info rbac_rotate_arranger rbac_assign_role rbac_revoke_role rbac_gov_asset_suspension set_default_status rbac_get_arranger rbac_get_address_roles rbac_get_role_config
+    match asset_config get_account_units_current_value get_coupon_rates get_payment_amount get_coupons_status pay_coupon pay_principal asset_transfer set_secondary_time_events set_default_status primary_distribution get_asset_info get_time_events get_secondary_market_schedule get_asset_metadata account_gov_suspension account_open account_close account_update_payment_address account_get_info rbac_rotate_arranger rbac_assign_role rbac_revoke_role rbac_gov_asset_suspension rbac_get_arranger rbac_get_address_roles rbac_get_role_config
     err
 
 main_create_NoOp@35:
@@ -2066,10 +2066,47 @@ set_secondary_time_events_after_if_else@5:
     return
 
 
+// smart_contracts.modules.core_financial.common.CoreFinancialCommonMixin.set_default_status[routing]() -> void:
+set_default_status:
+    // smart_contracts/modules/core_financial/common.py:340
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_1 // 1
+    ==
+    assert // invalid number of bytes for arc4.bool
+    intc_0 // 0
+    getbit
+    // smart_contracts/modules/rbac.py:73
+    // assert self._role_is_active(self.trustee, Txn.sender), err.UNAUTHORIZED
+    bytec 19 // 0x52363023
+    txn Sender
+    callsub _role_is_active
+    assert // Not authorized
+    // smart_contracts/modules/core_financial/common.py:353
+    // self.asset_defaulted = defaulted
+    bytec 22 // "asset_defaulted"
+    swap
+    app_global_put
+    // smart_contracts/modules/core_financial/common.py:354
+    // return Global.latest_timestamp
+    global LatestTimestamp
+    // smart_contracts/modules/core_financial/common.py:340
+    // @arc4.abimethod
+    itob
+    bytec_0 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
 // smart_contracts.modules.core_financial.common.CoreFinancialCommonMixin.primary_distribution[routing]() -> void:
 primary_distribution:
     pushbytes ""
-    // smart_contracts/modules/core_financial/common.py:340
+    // smart_contracts/modules/core_financial/common.py:356
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2147,7 +2184,7 @@ primary_distribution_bool_merge@6:
     assert // Primary distribution is closed
     // smart_contracts/modules/rbac.py:70
     // assert self._role_is_active(self.primary_dealer, Txn.sender), err.UNAUTHORIZED
-    bytec 19 // 0x52353023
+    bytec 20 // 0x52353023
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -2160,18 +2197,18 @@ primary_distribution_bool_merge@6:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/modules/core_financial/common.py:368
+    // smart_contracts/modules/core_financial/common.py:384
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
-    // smart_contracts/modules/core_financial/common.py:369
+    // smart_contracts/modules/core_financial/common.py:385
     // self.assert_is_not_asset_suspended()
     callsub assert_is_not_asset_suspended
-    // smart_contracts/modules/core_financial/common.py:370
+    // smart_contracts/modules/core_financial/common.py:386
     // assert units > 0, err.ZERO_UNITS
     dig 1
     dup
     assert // Can not distribute zero units
-    // smart_contracts/modules/core_financial/common.py:371
+    // smart_contracts/modules/core_financial/common.py:387
     // assert self.circulating_units + units <= self.total_units, err.OVER_DISTRIBUTION
     intc_0 // 0
     bytec_3 // "circulating_units"
@@ -2186,12 +2223,12 @@ primary_distribution_bool_merge@6:
     dig 1
     >=
     assert // Insufficient remaining D-ASA units
-    // smart_contracts/modules/core_financial/common.py:373
+    // smart_contracts/modules/core_financial/common.py:389
     // self.circulating_units += units
     bytec_3 // "circulating_units"
     dig 1
     app_global_put
-    // smart_contracts/modules/core_financial/common.py:374
+    // smart_contracts/modules/core_financial/common.py:390
     // self.account[holding_address].units += units
     dig 2
     box_get
@@ -2205,7 +2242,7 @@ primary_distribution_bool_merge@6:
     intc_2 // 32
     uncover 2
     box_replace
-    // smart_contracts/modules/core_financial/common.py:375
+    // smart_contracts/modules/core_financial/common.py:391
     // self.account[holding_address].unit_value = self.unit_value
     intc_0 // 0
     bytec 15 // "unit_value"
@@ -2216,7 +2253,7 @@ primary_distribution_bool_merge@6:
     pushint 40
     uncover 2
     box_replace
-    // smart_contracts/modules/core_financial/common.py:376
+    // smart_contracts/modules/core_financial/common.py:392
     // return self.total_units - self.circulating_units
     intc_0 // 0
     bytec 14 // "total_units"
@@ -2224,7 +2261,7 @@ primary_distribution_bool_merge@6:
     assert // check self.total_units exists
     swap
     -
-    // smart_contracts/modules/core_financial/common.py:340
+    // smart_contracts/modules/core_financial/common.py:356
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -2241,10 +2278,10 @@ primary_distribution_bool_false@5:
 
 // smart_contracts.modules.core_financial.common.CoreFinancialCommonMixin.get_asset_info[routing]() -> void:
 get_asset_info:
-    // smart_contracts/modules/core_financial/common.py:388
+    // smart_contracts/modules/core_financial/common.py:404
     // performance = UInt64(cst.PRF_PERFORMANT)
     intc_0 // 0
-    // smart_contracts/modules/core_financial/common.py:389
+    // smart_contracts/modules/core_financial/common.py:405
     // if Global.latest_timestamp > self.maturity_date > 0:
     global LatestTimestamp
     intc_0 // 0
@@ -2259,13 +2296,13 @@ get_asset_info:
     bz get_asset_info_after_if_else@4
     dup
     bz get_asset_info_after_if_else@4
-    // smart_contracts/modules/core_financial/common.py:390
+    // smart_contracts/modules/core_financial/common.py:406
     // performance = UInt64(cst.PRF_MATURED)
     pushint 4
     bury 2
 
 get_asset_info_after_if_else@4:
-    // smart_contracts/modules/core_financial/common.py:391-392
+    // smart_contracts/modules/core_financial/common.py:407-408
     // # The reference implementation has no grace or delinquency periods
     // if self.asset_defaulted:
     intc_0 // 0
@@ -2273,19 +2310,19 @@ get_asset_info_after_if_else@4:
     app_global_get_ex
     assert // check self.asset_defaulted exists
     bz get_asset_info_after_if_else@6
-    // smart_contracts/modules/core_financial/common.py:393
+    // smart_contracts/modules/core_financial/common.py:409
     // performance = UInt64(cst.PRF_DEFAULTED)
     pushint 3
     bury 2
 
 get_asset_info_after_if_else@6:
-    // smart_contracts/modules/core_financial/common.py:396
+    // smart_contracts/modules/core_financial/common.py:412
     // denomination_asset_id=self.denomination_asset_id,
     intc_0 // 0
     bytec 30 // "denomination_asset_id"
     app_global_get_ex
     assert // check self.denomination_asset_id exists
-    // smart_contracts/modules/core_financial/common.py:397
+    // smart_contracts/modules/core_financial/common.py:413
     // settlement_asset_id=self.settlement_asset_id,
     intc_0 // 0
     bytec 8 // "settlement_asset_id"
@@ -2303,7 +2340,7 @@ get_asset_info_after_if_else@6:
     assert // check self.unit_value exists
     dup2
     *
-    // smart_contracts/modules/core_financial/common.py:400
+    // smart_contracts/modules/core_financial/common.py:416
     // day_count_convention=arc4.UInt8(self.day_count_convention),
     intc_0 // 0
     bytec 16 // "day_count_convention"
@@ -2316,7 +2353,7 @@ get_asset_info_after_if_else@6:
     <=
     assert // overflow
     extract 7 1
-    // smart_contracts/modules/core_financial/common.py:401
+    // smart_contracts/modules/core_financial/common.py:417
     // principal_discount=arc4.UInt16(self.principal_discount),
     intc_0 // 0
     bytec 24 // "principal_discount"
@@ -2329,7 +2366,7 @@ get_asset_info_after_if_else@6:
     <=
     assert // overflow
     extract 6 2
-    // smart_contracts/modules/core_financial/common.py:402
+    // smart_contracts/modules/core_financial/common.py:418
     // interest_rate=arc4.UInt16(self.interest_rate),
     intc_0 // 0
     bytec 31 // "interest_rate"
@@ -2342,43 +2379,43 @@ get_asset_info_after_if_else@6:
     <=
     assert // overflow
     extract 6 2
-    // smart_contracts/modules/core_financial/common.py:403
+    // smart_contracts/modules/core_financial/common.py:419
     // total_supply=self.total_units,
     intc_0 // 0
     bytec 14 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
-    // smart_contracts/modules/core_financial/common.py:405
+    // smart_contracts/modules/core_financial/common.py:421
     // primary_distribution_opening_date=self.primary_distribution_opening_date,
     intc_0 // 0
     bytec 9 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
-    // smart_contracts/modules/core_financial/common.py:406
+    // smart_contracts/modules/core_financial/common.py:422
     // primary_distribution_closure_date=self.primary_distribution_closure_date,
     intc_0 // 0
     bytec 25 // "primary_distribution_closure_date"
     app_global_get_ex
     assert // check self.primary_distribution_closure_date exists
-    // smart_contracts/modules/core_financial/common.py:407
+    // smart_contracts/modules/core_financial/common.py:423
     // issuance_date=self.issuance_date,
     intc_0 // 0
     bytec 4 // "issuance_date"
     app_global_get_ex
     assert // check self.issuance_date exists
-    // smart_contracts/modules/core_financial/common.py:408
+    // smart_contracts/modules/core_financial/common.py:424
     // maturity_date=self.maturity_date,
     intc_0 // 0
     bytec 5 // "maturity_date"
     app_global_get_ex
     assert // check self.maturity_date exists
-    // smart_contracts/modules/core_financial/common.py:409
+    // smart_contracts/modules/core_financial/common.py:425
     // suspended=self.asset_suspended,
     intc_0 // 0
     bytec 21 // "asset_suspended"
     app_global_get_ex
     assert // check self.asset_suspended exists
-    // smart_contracts/modules/core_financial/common.py:410
+    // smart_contracts/modules/core_financial/common.py:426
     // performance=arc4.UInt8(performance),
     dig 15
     itob
@@ -2388,7 +2425,7 @@ get_asset_info_after_if_else@6:
     <=
     assert // overflow
     extract 7 1
-    // smart_contracts/modules/core_financial/common.py:395-411
+    // smart_contracts/modules/core_financial/common.py:411-427
     // return typ.AssetInfo(
     //     denomination_asset_id=self.denomination_asset_id,
     //     settlement_asset_id=self.settlement_asset_id,
@@ -2448,7 +2485,7 @@ get_asset_info_after_if_else@6:
     concat
     swap
     concat
-    // smart_contracts/modules/core_financial/common.py:378
+    // smart_contracts/modules/core_financial/common.py:394
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -2460,7 +2497,7 @@ get_asset_info_after_if_else@6:
 
 // smart_contracts.modules.core_financial.common.CoreFinancialCommonMixin.get_time_events[routing]() -> void:
 get_time_events:
-    // smart_contracts/modules/core_financial/common.py:421
+    // smart_contracts/modules/core_financial/common.py:437
     // time_events = typ.TimeEvents()
     bytec 33 // 0x0000
     // smart_contracts/modules/accounting.py:25
@@ -2471,10 +2508,10 @@ get_time_events:
     assert // check self.status exists
     pushint 100
     ==
-    // smart_contracts/modules/core_financial/common.py:422
+    // smart_contracts/modules/core_financial/common.py:438
     // if self.status_is_active():
     bz get_time_events_after_if_else@3
-    // smart_contracts/modules/core_financial/common.py:423
+    // smart_contracts/modules/core_financial/common.py:439
     // time_events = self.time_events.value.copy()
     bytec 11 // 0x74696d654576656e7473
     box_get
@@ -2483,7 +2520,7 @@ get_time_events:
     assert // check self.time_events exists
 
 get_time_events_after_if_else@3:
-    // smart_contracts/modules/core_financial/common.py:413
+    // smart_contracts/modules/core_financial/common.py:429
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     dig 1
@@ -2495,7 +2532,7 @@ get_time_events_after_if_else@3:
 
 // smart_contracts.modules.core_financial.common.CoreFinancialCommonMixin.get_secondary_market_schedule[routing]() -> void:
 get_secondary_market_schedule:
-    // smart_contracts/modules/core_financial/common.py:435
+    // smart_contracts/modules/core_financial/common.py:451
     // (self.secondary_market_opening_date, self.secondary_market_closure_date)
     intc_0 // 0
     bytec 17 // "secondary_market_opening_date"
@@ -2505,7 +2542,7 @@ get_secondary_market_schedule:
     bytec 10 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
-    // smart_contracts/modules/core_financial/common.py:434-436
+    // smart_contracts/modules/core_financial/common.py:450-452
     // return typ.TimeEvents(
     //     (self.secondary_market_opening_date, self.secondary_market_closure_date)
     // )
@@ -2517,7 +2554,7 @@ get_secondary_market_schedule:
     swap
     itob
     concat
-    // smart_contracts/modules/core_financial/common.py:426
+    // smart_contracts/modules/core_financial/common.py:442
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -2529,13 +2566,13 @@ get_secondary_market_schedule:
 
 // smart_contracts.modules.core_financial.common.CoreFinancialCommonMixin.get_asset_metadata[routing]() -> void:
 get_asset_metadata:
-    // smart_contracts/modules/core_financial/common.py:447
+    // smart_contracts/modules/core_financial/common.py:463
     // return typ.AssetMetadata.from_bytes(self.metadata)
     intc_0 // 0
     bytec 23 // "metadata"
     app_global_get_ex
     assert // check self.metadata exists
-    // smart_contracts/modules/core_financial/common.py:438
+    // smart_contracts/modules/core_financial/common.py:454
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -2982,7 +3019,7 @@ rbac_assign_role_after_if_else@5:
     bz rbac_assign_role_after_if_else@7
     // smart_contracts/modules/rbac.py:109
     // assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 19 // 0x52353023
+    bytec 20 // 0x52353023
     dig 3
     concat
     dup
@@ -3007,7 +3044,7 @@ rbac_assign_role_after_if_else@7:
     bz rbac_assign_role_after_if_else@9
     // smart_contracts/modules/rbac.py:113
     // assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 20 // 0x52363023
+    bytec 19 // 0x52363023
     dig 3
     concat
     dup
@@ -3148,7 +3185,7 @@ rbac_revoke_role_after_if_else@3:
     bz rbac_revoke_role_after_if_else@5
     // smart_contracts/modules/rbac.py:131
     // assert role_address in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 19 // 0x52353023
+    bytec 20 // 0x52353023
     dig 2
     concat
     dup
@@ -3172,7 +3209,7 @@ rbac_revoke_role_after_if_else@5:
     bz rbac_revoke_role_after_if_else@7
     // smart_contracts/modules/rbac.py:135
     // assert role_address in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 20 // 0x52363023
+    bytec 19 // 0x52363023
     dig 2
     concat
     dup
@@ -3271,52 +3308,15 @@ rbac_gov_asset_suspension:
     return
 
 
-// smart_contracts.modules.rbac.RbacModule.set_default_status[routing]() -> void:
-set_default_status:
-    // smart_contracts/modules/rbac.py:233
-    // @arc4.abimethod  # TODO: Move to contract performance module
-    txna ApplicationArgs 1
-    dup
-    len
-    intc_1 // 1
-    ==
-    assert // invalid number of bytes for arc4.bool
-    intc_0 // 0
-    getbit
-    // smart_contracts/modules/rbac.py:73
-    // assert self._role_is_active(self.trustee, Txn.sender), err.UNAUTHORIZED
-    bytec 20 // 0x52363023
-    txn Sender
-    callsub _role_is_active
-    assert // Not authorized
-    // smart_contracts/modules/rbac.py:246
-    // self.asset_defaulted = defaulted
-    bytec 22 // "asset_defaulted"
-    swap
-    app_global_put
-    // smart_contracts/modules/rbac.py:247
-    // return Global.latest_timestamp
-    global LatestTimestamp
-    // smart_contracts/modules/rbac.py:233
-    // @arc4.abimethod  # TODO: Move to contract performance module
-    itob
-    bytec_0 // 0x151f7c75
-    swap
-    concat
-    log
-    intc_1 // 1
-    return
-
-
 // smart_contracts.modules.rbac.RbacModule.rbac_get_arranger[routing]() -> void:
 rbac_get_arranger:
-    // smart_contracts/modules/rbac.py:257
+    // smart_contracts/modules/rbac.py:241
     // return self.arranger.value
     intc_0 // 0
     bytec 7 // 0x52323023
     app_global_get_ex
     assert // check self.arranger exists
-    // smart_contracts/modules/rbac.py:249
+    // smart_contracts/modules/rbac.py:233
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -3328,7 +3328,7 @@ rbac_get_arranger:
 
 // smart_contracts.modules.rbac.RbacModule.rbac_get_address_roles[routing]() -> void:
 rbac_get_address_roles:
-    // smart_contracts/modules/rbac.py:259
+    // smart_contracts/modules/rbac.py:243
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -3336,32 +3336,32 @@ rbac_get_address_roles:
     intc_2 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // smart_contracts/modules/rbac.py:273
+    // smart_contracts/modules/rbac.py:257
     // self._role_is_active(self.account_manager, address),
     bytec 13 // 0x52343023
     dig 1
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:274
+    // smart_contracts/modules/rbac.py:258
     // self._role_is_active(self.primary_dealer, address),
-    bytec 19 // 0x52353023
+    bytec 20 // 0x52353023
     dig 2
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:275
+    // smart_contracts/modules/rbac.py:259
     // self._role_is_active(self.trustee, address),
-    bytec 20 // 0x52363023
+    bytec 19 // 0x52363023
     dig 3
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:276
+    // smart_contracts/modules/rbac.py:260
     // self._role_is_active(self.authority, address),
     bytec 12 // 0x52373023
     dig 4
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:277
+    // smart_contracts/modules/rbac.py:261
     // self._role_is_active(self.interest_oracle, address),
     bytec 29 // 0x52383023
     uncover 5
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:259
+    // smart_contracts/modules/rbac.py:243
     // @arc4.abimethod(readonly=True)
     bytec 28 // 0x00
     intc_0 // 0
@@ -3389,7 +3389,7 @@ rbac_get_address_roles:
 
 // smart_contracts.modules.rbac.RbacModule.rbac_get_role_config[routing]() -> void:
 rbac_get_role_config:
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -3404,17 +3404,17 @@ rbac_get_role_config:
     intc_2 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // smart_contracts/modules/rbac.py:294
+    // smart_contracts/modules/rbac.py:278
     // role = role_id.as_uint64()
     btoi
-    // smart_contracts/modules/rbac.py:295
+    // smart_contracts/modules/rbac.py:279
     // self._assert_valid_role(role)
     dup
     callsub _assert_valid_role
-    // smart_contracts/modules/rbac.py:297
+    // smart_contracts/modules/rbac.py:281
     // case UInt64(cst.ROLE_ARRANGER):
     pushints 20 40 50 60 70 80
-    // smart_contracts/modules/rbac.py:296-327
+    // smart_contracts/modules/rbac.py:280-311
     // match role:
     //     case UInt64(cst.ROLE_ARRANGER):
     //         return typ.RoleConfig(
@@ -3449,12 +3449,12 @@ rbac_get_role_config:
     //         op.err(err.INVALID_ROLE)
     uncover 6
     match rbac_get_role_config_switch_case_0@2 rbac_get_role_config_switch_case_1@3 rbac_get_role_config_switch_case_2@4 rbac_get_role_config_switch_case_3@5 rbac_get_role_config_switch_case_4@6 rbac_get_role_config_switch_case_5@7
-    // smart_contracts/modules/rbac.py:327
+    // smart_contracts/modules/rbac.py:311
     // op.err(err.INVALID_ROLE)
     err // Invalid role identifier
 
 rbac_get_role_config_switch_case_5@7:
-    // smart_contracts/modules/rbac.py:323
+    // smart_contracts/modules/rbac.py:307
     // self.interest_oracle, role_address
     bytec 29 // 0x52383023
     // smart_contracts/modules/rbac.py:54
@@ -3464,18 +3464,18 @@ rbac_get_role_config_switch_case_5@7:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:322-324
+    // smart_contracts/modules/rbac.py:306-308
     // assert self._has_role(
     //     self.interest_oracle, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:325
+    // smart_contracts/modules/rbac.py:309
     // return self.interest_oracle[role_address]
     box_get
     pop
 
 rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9:
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -3485,7 +3485,7 @@ rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_
     return
 
 rbac_get_role_config_switch_case_4@6:
-    // smart_contracts/modules/rbac.py:318
+    // smart_contracts/modules/rbac.py:302
     // self.authority, role_address
     bytec 12 // 0x52373023
     // smart_contracts/modules/rbac.py:54
@@ -3495,23 +3495,23 @@ rbac_get_role_config_switch_case_4@6:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:317-319
+    // smart_contracts/modules/rbac.py:301-303
     // assert self._has_role(
     //     self.authority, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:320
+    // smart_contracts/modules/rbac.py:304
     // return self.authority[role_address]
     box_get
     pop
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_3@5:
-    // smart_contracts/modules/rbac.py:313
+    // smart_contracts/modules/rbac.py:297
     // self.trustee, role_address
-    bytec 20 // 0x52363023
+    bytec 19 // 0x52363023
     // smart_contracts/modules/rbac.py:54
     // return role_address in role_map
     dig 1
@@ -3519,23 +3519,23 @@ rbac_get_role_config_switch_case_3@5:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:312-314
+    // smart_contracts/modules/rbac.py:296-298
     // assert self._has_role(
     //     self.trustee, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:315
+    // smart_contracts/modules/rbac.py:299
     // return self.trustee[role_address]
     box_get
     pop
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_2@4:
-    // smart_contracts/modules/rbac.py:308
+    // smart_contracts/modules/rbac.py:292
     // self.primary_dealer, role_address
-    bytec 19 // 0x52353023
+    bytec 20 // 0x52353023
     // smart_contracts/modules/rbac.py:54
     // return role_address in role_map
     dig 1
@@ -3543,21 +3543,21 @@ rbac_get_role_config_switch_case_2@4:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:307-309
+    // smart_contracts/modules/rbac.py:291-293
     // assert self._has_role(
     //     self.primary_dealer, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:310
+    // smart_contracts/modules/rbac.py:294
     // return self.primary_dealer[role_address]
     box_get
     pop
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_1@3:
-    // smart_contracts/modules/rbac.py:303
+    // smart_contracts/modules/rbac.py:287
     // self.account_manager, role_address
     bytec 13 // 0x52343023
     // smart_contracts/modules/rbac.py:54
@@ -3567,26 +3567,26 @@ rbac_get_role_config_switch_case_1@3:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:302-304
+    // smart_contracts/modules/rbac.py:286-288
     // assert self._has_role(
     //     self.account_manager, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:305
+    // smart_contracts/modules/rbac.py:289
     // return self.account_manager[role_address]
     box_get
     pop
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_0@2:
-    // smart_contracts/modules/rbac.py:298-300
+    // smart_contracts/modules/rbac.py:282-284
     // return typ.RoleConfig(
     //     role_validity_start=UInt64(0), role_validity_end=UInt64(0)
     // )
     pushbytes 0x00000000000000000000000000000000
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 

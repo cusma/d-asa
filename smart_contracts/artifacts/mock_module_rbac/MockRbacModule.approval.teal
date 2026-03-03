@@ -4,7 +4,7 @@
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
     intcblock 1 0 32 20
-    bytecblock 0x151f7c75 0x52323023 0x52363023 0x52373023 0x52343023 0x52353023 0x52383023 "asset_defaulted" "asset_suspended"
+    bytecblock 0x151f7c75 0x52323023 0x52373023 0x52343023 0x52353023 0x52363023 0x52383023 "asset_suspended" "asset_defaulted"
     txn ApplicationID
     bnz main_after_if_else@2
     // smart_contracts/modules/rbac.py:30-31
@@ -16,12 +16,12 @@ main:
     // smart_contracts/modules/rbac.py:46-47
     // # D-ASA Governance
     // self.asset_suspended = False
-    bytec 8 // "asset_suspended"
+    bytec 7 // "asset_suspended"
     intc_1 // 0
     app_global_put
     // smart_contracts/modules/rbac.py:48
     // self.asset_defaulted = False
-    bytec 7 // "asset_defaulted"
+    bytec 8 // "asset_defaulted"
     intc_1 // 0
     app_global_put
 
@@ -29,18 +29,18 @@ main_after_if_else@2:
     // smart_contracts/mock_module_rbac/contract.py:6
     // class MockRbacModule(RbacModule):
     txn NumAppArgs
-    bz main_create@17
+    bz main_create@16
     txn OnCompletion
     !
     assert
     txn ApplicationID
     assert
-    pushbytess 0x82f71b2d 0x03b83329 0x3dbe80bd 0xdf54e82c 0x25e9997f 0x010c8299 0x7406acd2 0xc3e4b297 // method "rbac_rotate_arranger(address)uint64", method "rbac_assign_role(uint8,address,byte[])uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_gov_asset_suspension(bool)uint64", method "set_default_status(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_config(uint8,address)(uint64,uint64)"
+    pushbytess 0x82f71b2d 0x03b83329 0x3dbe80bd 0xdf54e82c 0x010c8299 0x7406acd2 0xc3e4b297 // method "rbac_rotate_arranger(address)uint64", method "rbac_assign_role(uint8,address,byte[])uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_gov_asset_suspension(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_config(uint8,address)(uint64,uint64)"
     txna ApplicationArgs 0
-    match rbac_rotate_arranger rbac_assign_role rbac_revoke_role rbac_gov_asset_suspension set_default_status rbac_get_arranger rbac_get_address_roles rbac_get_role_config
+    match rbac_rotate_arranger rbac_assign_role rbac_revoke_role rbac_gov_asset_suspension rbac_get_arranger rbac_get_address_roles rbac_get_role_config
     err
 
-main_create@17:
+main_create@16:
     // smart_contracts/mock_module_rbac/contract.py:14
     // @arc4.baremethod(create="require")
     txn OnCompletion
@@ -166,7 +166,7 @@ rbac_assign_role_after_if_else@3:
     bz rbac_assign_role_after_if_else@5
     // smart_contracts/modules/rbac.py:105
     // assert role_address not in self.account_manager, err.INVALID_ROLE_ADDRESS
-    bytec 4 // 0x52343023
+    bytec_3 // 0x52343023
     dig 3
     concat
     dup
@@ -191,7 +191,7 @@ rbac_assign_role_after_if_else@5:
     bz rbac_assign_role_after_if_else@7
     // smart_contracts/modules/rbac.py:109
     // assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 5 // 0x52353023
+    bytec 4 // 0x52353023
     dig 3
     concat
     dup
@@ -216,7 +216,7 @@ rbac_assign_role_after_if_else@7:
     bz rbac_assign_role_after_if_else@9
     // smart_contracts/modules/rbac.py:113
     // assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec_2 // 0x52363023
+    bytec 5 // 0x52363023
     dig 3
     concat
     dup
@@ -241,7 +241,7 @@ rbac_assign_role_after_if_else@9:
     bz rbac_assign_role_after_if_else@11
     // smart_contracts/modules/rbac.py:117
     // assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec_3 // 0x52373023
+    bytec_2 // 0x52373023
     dig 3
     concat
     dup
@@ -322,7 +322,7 @@ rbac_revoke_role:
     bz rbac_revoke_role_after_if_else@3
     // smart_contracts/modules/rbac.py:127
     // assert role_address in self.account_manager, err.INVALID_ROLE_ADDRESS
-    bytec 4 // 0x52343023
+    bytec_3 // 0x52343023
     dig 2
     concat
     dup
@@ -357,7 +357,7 @@ rbac_revoke_role_after_if_else@3:
     bz rbac_revoke_role_after_if_else@5
     // smart_contracts/modules/rbac.py:131
     // assert role_address in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 5 // 0x52353023
+    bytec 4 // 0x52353023
     dig 2
     concat
     dup
@@ -381,7 +381,7 @@ rbac_revoke_role_after_if_else@5:
     bz rbac_revoke_role_after_if_else@7
     // smart_contracts/modules/rbac.py:135
     // assert role_address in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec_2 // 0x52363023
+    bytec 5 // 0x52363023
     dig 2
     concat
     dup
@@ -405,7 +405,7 @@ rbac_revoke_role_after_if_else@7:
     bz rbac_revoke_role_after_if_else@9
     // smart_contracts/modules/rbac.py:139
     // assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec_3 // 0x52373023
+    bytec_2 // 0x52373023
     dig 2
     concat
     dup
@@ -457,13 +457,13 @@ rbac_gov_asset_suspension:
     getbit
     // smart_contracts/modules/rbac.py:76
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
-    bytec_3 // 0x52373023
+    bytec_2 // 0x52373023
     txn Sender
     callsub _role_is_active
     assert // Not authorized
     // smart_contracts/modules/rbac.py:230
     // self.asset_suspended = suspended
-    bytec 8 // "asset_suspended"
+    bytec 7 // "asset_suspended"
     swap
     app_global_put
     // smart_contracts/modules/rbac.py:231
@@ -480,52 +480,15 @@ rbac_gov_asset_suspension:
     return
 
 
-// smart_contracts.modules.rbac.RbacModule.set_default_status[routing]() -> void:
-set_default_status:
-    // smart_contracts/modules/rbac.py:233
-    // @arc4.abimethod  # TODO: Move to contract performance module
-    txna ApplicationArgs 1
-    dup
-    len
-    intc_0 // 1
-    ==
-    assert // invalid number of bytes for arc4.bool
-    intc_1 // 0
-    getbit
-    // smart_contracts/modules/rbac.py:73
-    // assert self._role_is_active(self.trustee, Txn.sender), err.UNAUTHORIZED
-    bytec_2 // 0x52363023
-    txn Sender
-    callsub _role_is_active
-    assert // Not authorized
-    // smart_contracts/modules/rbac.py:246
-    // self.asset_defaulted = defaulted
-    bytec 7 // "asset_defaulted"
-    swap
-    app_global_put
-    // smart_contracts/modules/rbac.py:247
-    // return Global.latest_timestamp
-    global LatestTimestamp
-    // smart_contracts/modules/rbac.py:233
-    // @arc4.abimethod  # TODO: Move to contract performance module
-    itob
-    bytec_0 // 0x151f7c75
-    swap
-    concat
-    log
-    intc_0 // 1
-    return
-
-
 // smart_contracts.modules.rbac.RbacModule.rbac_get_arranger[routing]() -> void:
 rbac_get_arranger:
-    // smart_contracts/modules/rbac.py:257
+    // smart_contracts/modules/rbac.py:241
     // return self.arranger.value
     intc_1 // 0
     bytec_1 // 0x52323023
     app_global_get_ex
     assert // check self.arranger exists
-    // smart_contracts/modules/rbac.py:249
+    // smart_contracts/modules/rbac.py:233
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -537,7 +500,7 @@ rbac_get_arranger:
 
 // smart_contracts.modules.rbac.RbacModule.rbac_get_address_roles[routing]() -> void:
 rbac_get_address_roles:
-    // smart_contracts/modules/rbac.py:259
+    // smart_contracts/modules/rbac.py:243
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -545,32 +508,32 @@ rbac_get_address_roles:
     intc_2 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // smart_contracts/modules/rbac.py:273
+    // smart_contracts/modules/rbac.py:257
     // self._role_is_active(self.account_manager, address),
-    bytec 4 // 0x52343023
+    bytec_3 // 0x52343023
     dig 1
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:274
+    // smart_contracts/modules/rbac.py:258
     // self._role_is_active(self.primary_dealer, address),
-    bytec 5 // 0x52353023
+    bytec 4 // 0x52353023
     dig 2
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:275
+    // smart_contracts/modules/rbac.py:259
     // self._role_is_active(self.trustee, address),
-    bytec_2 // 0x52363023
+    bytec 5 // 0x52363023
     dig 3
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:276
+    // smart_contracts/modules/rbac.py:260
     // self._role_is_active(self.authority, address),
-    bytec_3 // 0x52373023
+    bytec_2 // 0x52373023
     dig 4
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:277
+    // smart_contracts/modules/rbac.py:261
     // self._role_is_active(self.interest_oracle, address),
     bytec 6 // 0x52383023
     uncover 5
     callsub _role_is_active
-    // smart_contracts/modules/rbac.py:259
+    // smart_contracts/modules/rbac.py:243
     // @arc4.abimethod(readonly=True)
     pushbytes 0x00
     intc_1 // 0
@@ -598,7 +561,7 @@ rbac_get_address_roles:
 
 // smart_contracts.modules.rbac.RbacModule.rbac_get_role_config[routing]() -> void:
 rbac_get_role_config:
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -613,20 +576,20 @@ rbac_get_role_config:
     intc_2 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // smart_contracts/modules/rbac.py:294
+    // smart_contracts/modules/rbac.py:278
     // role = role_id.as_uint64()
     btoi
-    // smart_contracts/modules/rbac.py:295
+    // smart_contracts/modules/rbac.py:279
     // self._assert_valid_role(role)
     dup
     callsub _assert_valid_role
-    // smart_contracts/modules/rbac.py:297
+    // smart_contracts/modules/rbac.py:281
     // case UInt64(cst.ROLE_ARRANGER):
     intc_3 // 20
-    // smart_contracts/modules/rbac.py:301
+    // smart_contracts/modules/rbac.py:285
     // case UInt64(cst.ROLE_ACCOUNT_MANAGER):
     pushints 40 50 60 70 80
-    // smart_contracts/modules/rbac.py:296-327
+    // smart_contracts/modules/rbac.py:280-311
     // match role:
     //     case UInt64(cst.ROLE_ARRANGER):
     //         return typ.RoleConfig(
@@ -661,12 +624,12 @@ rbac_get_role_config:
     //         op.err(err.INVALID_ROLE)
     uncover 6
     match rbac_get_role_config_switch_case_0@2 rbac_get_role_config_switch_case_1@3 rbac_get_role_config_switch_case_2@4 rbac_get_role_config_switch_case_3@5 rbac_get_role_config_switch_case_4@6 rbac_get_role_config_switch_case_5@7
-    // smart_contracts/modules/rbac.py:327
+    // smart_contracts/modules/rbac.py:311
     // op.err(err.INVALID_ROLE)
     err // Invalid role identifier
 
 rbac_get_role_config_switch_case_5@7:
-    // smart_contracts/modules/rbac.py:323
+    // smart_contracts/modules/rbac.py:307
     // self.interest_oracle, role_address
     bytec 6 // 0x52383023
     // smart_contracts/modules/rbac.py:54
@@ -676,18 +639,18 @@ rbac_get_role_config_switch_case_5@7:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:322-324
+    // smart_contracts/modules/rbac.py:306-308
     // assert self._has_role(
     //     self.interest_oracle, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:325
+    // smart_contracts/modules/rbac.py:309
     // return self.interest_oracle[role_address]
     box_get
     pop
 
 rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9:
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -697,9 +660,9 @@ rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_
     return
 
 rbac_get_role_config_switch_case_4@6:
-    // smart_contracts/modules/rbac.py:318
+    // smart_contracts/modules/rbac.py:302
     // self.authority, role_address
-    bytec_3 // 0x52373023
+    bytec_2 // 0x52373023
     // smart_contracts/modules/rbac.py:54
     // return role_address in role_map
     dig 1
@@ -707,23 +670,23 @@ rbac_get_role_config_switch_case_4@6:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:317-319
+    // smart_contracts/modules/rbac.py:301-303
     // assert self._has_role(
     //     self.authority, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:320
+    // smart_contracts/modules/rbac.py:304
     // return self.authority[role_address]
     box_get
     pop
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_3@5:
-    // smart_contracts/modules/rbac.py:313
+    // smart_contracts/modules/rbac.py:297
     // self.trustee, role_address
-    bytec_2 // 0x52363023
+    bytec 5 // 0x52363023
     // smart_contracts/modules/rbac.py:54
     // return role_address in role_map
     dig 1
@@ -731,23 +694,23 @@ rbac_get_role_config_switch_case_3@5:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:312-314
+    // smart_contracts/modules/rbac.py:296-298
     // assert self._has_role(
     //     self.trustee, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:315
+    // smart_contracts/modules/rbac.py:299
     // return self.trustee[role_address]
     box_get
     pop
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_2@4:
-    // smart_contracts/modules/rbac.py:308
+    // smart_contracts/modules/rbac.py:292
     // self.primary_dealer, role_address
-    bytec 5 // 0x52353023
+    bytec 4 // 0x52353023
     // smart_contracts/modules/rbac.py:54
     // return role_address in role_map
     dig 1
@@ -755,23 +718,23 @@ rbac_get_role_config_switch_case_2@4:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:307-309
+    // smart_contracts/modules/rbac.py:291-293
     // assert self._has_role(
     //     self.primary_dealer, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:310
+    // smart_contracts/modules/rbac.py:294
     // return self.primary_dealer[role_address]
     box_get
     pop
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_1@3:
-    // smart_contracts/modules/rbac.py:303
+    // smart_contracts/modules/rbac.py:287
     // self.account_manager, role_address
-    bytec 4 // 0x52343023
+    bytec_3 // 0x52343023
     // smart_contracts/modules/rbac.py:54
     // return role_address in role_map
     dig 1
@@ -779,26 +742,26 @@ rbac_get_role_config_switch_case_1@3:
     dup
     box_len
     bury 1
-    // smart_contracts/modules/rbac.py:302-304
+    // smart_contracts/modules/rbac.py:286-288
     // assert self._has_role(
     //     self.account_manager, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // smart_contracts/modules/rbac.py:305
+    // smart_contracts/modules/rbac.py:289
     // return self.account_manager[role_address]
     box_get
     pop
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
 rbac_get_role_config_switch_case_0@2:
-    // smart_contracts/modules/rbac.py:298-300
+    // smart_contracts/modules/rbac.py:282-284
     // return typ.RoleConfig(
     //     role_validity_start=UInt64(0), role_validity_end=UInt64(0)
     // )
     pushbytes 0x00000000000000000000000000000000
-    // smart_contracts/modules/rbac.py:280
+    // smart_contracts/modules/rbac.py:264
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9
 
@@ -902,7 +865,7 @@ assert_is_not_asset_defaulted:
     // smart_contracts/modules/rbac.py:82
     // assert not self.asset_defaulted, err.DEFAULTED
     intc_1 // 0
-    bytec 7 // "asset_defaulted"
+    bytec 8 // "asset_defaulted"
     app_global_get_ex
     assert // check self.asset_defaulted exists
     !
