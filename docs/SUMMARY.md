@@ -44,14 +44,13 @@
 # Interfaces
 
 - [RBAC]()
-  - [Rotate Arranger]()
+  - [Rotate Arranger](./interfaces/rbac/rotate-arranger.md)
   - [Assign Role](./interfaces/rbac/assign-role.md)
   - [Revoke Role](./interfaces/rbac/revoke-role.md)
   - [Governance Asset Suspension](interfaces/rbac/gov-asset-suspension.md)
   - [Set Default Status](./interfaces/rbac/set-default-status.md)
-  - [Get Arranger]()
+  - [Get Arranger](./interfaces/rbac/get-arranger.md)
   - [Get Roles](./interfaces/rbac/get-roles.md)
-  - [Get Address Roles]()
   - [Get Role Config](./interfaces/rbac/get-role-config.md)
 
 - [Account]()
