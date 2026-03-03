@@ -216,7 +216,7 @@ main_asset_update_route@4:
 // smart_contracts.actus.pam.PAMCoreMixin.asset_config[routing]() -> void:
 asset_config:
     pushbytes ""
-    // smart_contracts/actus/pam.py:23
+    // smart_contracts/actus/pam.py:26
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -591,7 +591,7 @@ asset_config_bool_merge@9:
     bytec_2 // "status"
     pushint 100
     app_global_put
-    // smart_contracts/actus/pam.py:23
+    // smart_contracts/actus/pam.py:26
     // @arc4.abimethod
     intc_1 // 1
     return
@@ -913,14 +913,14 @@ pay_principal:
     assert // check self.status exists
     pushint 100
     ==
-    // smart_contracts/actus/pam.py:13-14
+    // smart_contracts/actus/pam.py:16-17
     // # The reference implementation does not restrict caller authorization
     // assert self.status_is_active(), err.UNAUTHORIZED
     assert // Not authorized
-    // smart_contracts/actus/pam.py:15
+    // smart_contracts/actus/pam.py:18
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
-    // smart_contracts/actus/pam.py:16
+    // smart_contracts/actus/pam.py:19
     // self.assert_is_not_asset_suspended()
     callsub assert_is_not_asset_suspended
     // smart_contracts/modules/accounting.py:31
@@ -934,17 +934,17 @@ pay_principal:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/actus/pam.py:18
+    // smart_contracts/actus/pam.py:21
     // units = self.account[holding_address].units
     dup
     box_get
     pop
     intc_2 // 32
     extract_uint64
-    // smart_contracts/actus/pam.py:19
+    // smart_contracts/actus/pam.py:22
     // assert units > 0, err.NO_UNITS
     assert // No D-ASA units
-    // smart_contracts/actus/pam.py:20
+    // smart_contracts/actus/pam.py:23
     // assert Global.latest_timestamp >= self.maturity_date, err.NOT_MATURE
     global LatestTimestamp
     intc_0 // 0
@@ -2975,7 +2975,7 @@ rbac_get_arranger:
     app_global_get_ex
     assert // check self.arranger exists
     // smart_contracts/modules/rbac.py:249
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs
+    // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
     concat

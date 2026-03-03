@@ -860,7 +860,7 @@ rbac_get_arranger:
     app_global_get_ex
     assert // check self.arranger exists
     // smart_contracts/modules/rbac.py:249
-    // @arc4.abimethod(readonly=True)  # TODO: Add specs
+    // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
     concat
