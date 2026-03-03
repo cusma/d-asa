@@ -176,14 +176,9 @@ account_open:
     // smart_contracts/modules/accounting.py:137
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
-    // smart_contracts/modules/rbac.py:85
-    // assert not self.asset_suspended, err.SUSPENDED
-    intc_1 // 0
-    bytec 8 // "asset_suspended"
-    app_global_get_ex
-    assert // check self.asset_suspended exists
-    !
-    assert // Suspended operations
+    // smart_contracts/modules/accounting.py:138
+    // self.assert_is_not_asset_suspended()
+    callsub assert_is_not_asset_suspended
     // smart_contracts/modules/accounting.py:139
     // assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 4 // 0x52333023
@@ -313,7 +308,7 @@ account_close_after_if_else@3:
 // smart_contracts.modules.accounting.AccountingModule.account_update_payment_address[routing]() -> void:
 account_update_payment_address:
     // smart_contracts/modules/accounting.py:177
-    // @arc4.abimethod  # TODO: Add specs and tests
+    // @arc4.abimethod
     txna ApplicationArgs 1
     dup
     len
@@ -326,31 +321,37 @@ account_update_payment_address:
     intc_2 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // smart_contracts/modules/accounting.py:191
+    // assert Txn.sender == holding_address, err.UNAUTHORIZED
+    txn Sender
+    dig 2
+    ==
+    assert // Not authorized
+    // smart_contracts/modules/accounting.py:192
+    // self.assert_is_not_asset_defaulted()
+    callsub assert_is_not_asset_defaulted
+    // smart_contracts/modules/accounting.py:193
+    // self.assert_is_not_asset_suspended()
+    callsub assert_is_not_asset_suspended
     // smart_contracts/modules/accounting.py:31
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 4 // 0x52333023
-    dig 2
+    uncover 2
     concat
     dup
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/modules/accounting.py:182
-    // assert Txn.sender == holding_address, err.UNAUTHORIZED
-    txn Sender
-    uncover 3
-    ==
-    assert // Not authorized
-    // smart_contracts/modules/accounting.py:183
+    // smart_contracts/modules/accounting.py:195
     // self.account[holding_address].payment_address = payment_address
     intc_1 // 0
     uncover 2
     box_replace
-    // smart_contracts/modules/accounting.py:184
+    // smart_contracts/modules/accounting.py:196
     // return Global.latest_timestamp
     global LatestTimestamp
     // smart_contracts/modules/accounting.py:177
-    // @arc4.abimethod  # TODO: Add specs and tests
+    // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
     swap
@@ -362,7 +363,7 @@ account_update_payment_address:
 
 // smart_contracts.modules.accounting.AccountingModule.account_get_info[routing]() -> void:
 account_get_info:
-    // smart_contracts/modules/accounting.py:186
+    // smart_contracts/modules/accounting.py:198
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -379,11 +380,11 @@ account_get_info:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/modules/accounting.py:201
+    // smart_contracts/modules/accounting.py:213
     // return self.account[holding_address]
     box_get
     pop
-    // smart_contracts/modules/accounting.py:186
+    // smart_contracts/modules/accounting.py:198
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -1240,6 +1241,19 @@ assert_is_not_asset_defaulted:
     assert // check self.asset_defaulted exists
     !
     assert // Defaulted
+    retsub
+
+
+// smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_suspended() -> void:
+assert_is_not_asset_suspended:
+    // smart_contracts/modules/rbac.py:85
+    // assert not self.asset_suspended, err.SUSPENDED
+    intc_1 // 0
+    bytec 8 // "asset_suspended"
+    app_global_get_ex
+    assert // check self.asset_suspended exists
+    !
+    assert // Suspended operations
     retsub
 
 
