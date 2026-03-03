@@ -1,11 +1,11 @@
 from collections.abc import Callable
 from typing import Final
 
+from smart_contracts import config as sc_cfg
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
     PayCouponArgs,
 )
-from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests.utils import DAsaAccount, DAsaConfig, time_warp
 
 D_ASA_TEST_UNITS: Final[int] = 3

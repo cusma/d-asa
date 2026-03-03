@@ -3,13 +3,13 @@ from collections.abc import Callable
 import pytest
 from algokit_utils import LogicError, SigningAccount
 
+from smart_contracts import config as sc_cfg
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
     GetPaymentAmountArgs,
     PayCouponArgs,
 )
-from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
 
 

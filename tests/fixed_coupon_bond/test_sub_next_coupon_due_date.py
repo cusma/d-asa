@@ -5,10 +5,10 @@ from algokit_utils import (
     SigningAccount,
 )
 
+from smart_contracts import config as sc_cfg
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
 )
-from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests.utils import DAsaConfig, max_fee_per_coupon, time_warp
 
 TIME_LEFT_TO_DUE_DATE = 100  # Seconds

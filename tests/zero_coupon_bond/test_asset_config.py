@@ -3,13 +3,13 @@ from copy import deepcopy
 import pytest
 from algokit_utils import LogicError
 
+from smart_contracts import config as sc_cfg
 from smart_contracts import enums
 from smart_contracts import errors as err
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
     AssetConfigArgs,
     ZeroCouponBondClient,
 )
-from smart_contracts import config as sc_cfg
 from tests.utils import Currency, DAsaConfig
 
 
