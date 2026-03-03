@@ -9,6 +9,9 @@ from smart_contracts.modules.core_financial.common import CoreFinancialCommonMix
 class PAMCoreMixin(CoreFinancialCommonMixin):
     """Principal at Maturity (PAM) core."""
 
+    def __init__(self) -> None:
+        super().__init__()
+
     def assert_pay_principal_authorization(self, holding_address: Account) -> None:
         # The reference implementation does not restrict caller authorization
         assert self.status_is_active(), err.UNAUTHORIZED

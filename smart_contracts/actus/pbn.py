@@ -9,6 +9,9 @@ from smart_contracts.modules.core_financial.common import CoreFinancialCommonMix
 class PBNCoreMixin(CoreFinancialCommonMixin):
     """Perpetual Bond (PBN) core."""
 
+    def __init__(self) -> None:
+        super().__init__()
+
     def assert_time_schedule_limits(self, time_events: typ.TimeEvents) -> None:
         # PBN has no maturity date in the static schedule
         assert (
