@@ -15,10 +15,10 @@ from algopy import (
 )
 
 from smart_contracts import abi_types as typ
+from smart_contracts import config as cfg
 from smart_contracts import constants as cst
 from smart_contracts import enums
 from smart_contracts import errors as err
-from smart_contracts import config as cfg
 from smart_contracts.modules.accounting import AccountingModule
 
 

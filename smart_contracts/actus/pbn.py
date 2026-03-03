@@ -1,8 +1,8 @@
 from algopy import Global, UInt64, arc4
 
 from smart_contracts import abi_types as typ
-from smart_contracts import errors as err
 from smart_contracts import config as cfg
+from smart_contracts import errors as err
 from smart_contracts.modules.core_financial.common import CoreFinancialCommonMixin
 
 
@@ -17,8 +17,12 @@ class PBNCoreMixin(CoreFinancialCommonMixin):
 
     def set_time_events(self, time_events: typ.TimeEvents) -> None:
         self.time_events.value = time_events.copy()
-        self.primary_distribution_opening_date = time_events[cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX]
-        self.primary_distribution_closure_date = time_events[cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX]
+        self.primary_distribution_opening_date = time_events[
+            cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX
+        ]
+        self.primary_distribution_closure_date = time_events[
+            cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
+        ]
         self.issuance_date = time_events[cfg.ISSUANCE_DATE_IDX]
         self.maturity_date = UInt64(0)
 

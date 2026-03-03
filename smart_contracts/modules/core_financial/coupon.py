@@ -1,9 +1,9 @@
 from algopy import Account, Box, Global, OpUpFeeSource, UInt64, arc4, ensure_budget
 
 from smart_contracts import abi_types as typ
+from smart_contracts import config as fixed_cfg
 from smart_contracts import constants as cst
 from smart_contracts import errors as err
-from smart_contracts import config as fixed_cfg
 
 from .common import CoreFinancialCommonMixin
 
