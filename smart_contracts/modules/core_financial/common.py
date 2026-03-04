@@ -203,13 +203,13 @@ class CoreFinancialCommonMixin(AccountingModule):
 
     # Hook defaults for feature-specialized mixins.
     def count_due_coupons(self) -> UInt64:
-        return UInt64()
+        op.err(err.INVALID_MIXIN_COMPOSITION)
 
     def all_due_coupons_paid(self, _due_coupons: UInt64) -> bool:
-        return True
+        op.err(err.INVALID_MIXIN_COMPOSITION)
 
     def assert_pay_principal_authorization(self, _holding_address: Account) -> None:
-        op.err(err.UNAUTHORIZED)
+        op.err(err.INVALID_MIXIN_COMPOSITION)
 
     def _configure_asset_terms(
         self,

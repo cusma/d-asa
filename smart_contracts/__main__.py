@@ -10,6 +10,10 @@ from shutil import rmtree
 from algokit_utils.config import config
 from dotenv import load_dotenv
 
+from smart_contracts import errors as err
+
+from .mixin_composition import CompositionValidationError, validate_contract_composition
+
 # Set up logging and load environment variables.
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s %(levelname)-10s: %(message)s"
@@ -75,6 +79,10 @@ contracts: list[SmartContract] = [
 # -------------------------- Build Logic -------------------------- #
 
 deployment_extension = "py"
+INVALID_MIXIN_MARKERS: tuple[str, ...] = (
+    "INVALID_MIXIN_COMPOSITION",
+    err.INVALID_MIXIN_COMPOSITION,
+)
 
 
 def _get_output_path(output_dir: Path, deployment_extension: str) -> Path:
@@ -86,11 +94,36 @@ def _get_output_path(output_dir: Path, deployment_extension: str) -> Path:
     )
 
 
+def _assert_no_invalid_mixin_markers(output_dir: Path) -> None:
+    scanned_files = list(output_dir.glob("*.teal")) + list(
+        output_dir.glob("*.arc56.json")
+    )
+    offending: list[Path] = []
+    for artifact_file in scanned_files:
+        content = artifact_file.read_text(encoding="utf-8")
+        if any(marker in content for marker in INVALID_MIXIN_MARKERS):
+            offending.append(artifact_file)
+    if offending:
+        file_list = "\n".join(f"- {file}" for file in offending)
+        raise Exception(
+            "Invalid mixin composition marker found in compiled artifacts:\n"
+            f"{file_list}\n"
+            "This indicates a broken MRO/composition, aborting."
+        )
+
+
 def build(output_dir: Path, contract_path: Path) -> Path:
     """
     Builds the contract by exporting (compiling) its source and generating a client.
     If the output directory already exists, it is cleared.
     """
+    try:
+        validate_contract_composition(contract_path, root_path)
+    except CompositionValidationError as exc:
+        raise Exception(
+            f"Could not build contract due to invalid mixin composition:\n{exc}"
+        ) from exc
+
     output_dir = output_dir.resolve()
     if output_dir.exists():
         rmtree(output_dir)
@@ -152,6 +185,9 @@ def build(output_dir: Path, contract_path: Path) -> Path:
                     raise Exception(
                         f"Could not generate typed client:\n{generate_result.stdout}"
                     )
+
+    _assert_no_invalid_mixin_markers(output_dir)
+
     if client_file:
         return output_dir / client_file
     return output_dir
@@ -188,6 +224,7 @@ def main(action: str, contract_name: str | None = None) -> None:
                 )
                 if app_spec_file_name is None:
                     raise Exception("Could not deploy app, .arc56.json file not found")
+                _assert_no_invalid_mixin_markers(output_dir)
                 if contract.deploy:
                     logger.info(f"Deploying app {contract.name}")
                     contract.deploy()
@@ -195,6 +232,7 @@ def main(action: str, contract_name: str | None = None) -> None:
             for contract in filtered_contracts:
                 logger.info(f"Building app at {contract.path}")
                 build(artifact_path / contract.name, contract.path)
+                _assert_no_invalid_mixin_markers(artifact_path / contract.name)
                 if contract.deploy:
                     logger.info(f"Deploying {contract.name}")
                     contract.deploy()
