@@ -1,3 +1,6 @@
+# Build
+INVALID_MIXIN_COMPOSITION = "Invalid mixin composition"
+
 # State Schema
 WRONG_GLOBAL_BYTES = "Wrong Global Bytes allocation"
 WRONG_GLOBAL_UINTS = "Wrong Global UInts allocation"

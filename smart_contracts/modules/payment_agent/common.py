@@ -1,4 +1,4 @@
-from algopy import Account, Global, UInt64, itxn
+from algopy import Account, Global, UInt64, itxn, op
 
 from smart_contracts import errors as err
 from smart_contracts.modules.core_financial.common import (
@@ -35,15 +35,15 @@ class PaymentAgentCommonMixin(CoreFinancialCommonMixin):
     def core_prepare_coupon_payment(
         self, _holding_address: Account
     ) -> tuple[UInt64, UInt64]:
-        return UInt64(), UInt64()
+        op.err(err.INVALID_MIXIN_COMPOSITION)
 
     def core_apply_coupon_payment(
         self, _holding_address: Account, _units: UInt64
     ) -> None:
-        pass
+        op.err(err.INVALID_MIXIN_COMPOSITION)
 
     def core_prepare_principal_payment(self, _holding_address: Account) -> UInt64:
-        return UInt64()
+        op.err(err.INVALID_MIXIN_COMPOSITION)
 
     def core_apply_principal_payment(self, _holding_address: Account) -> None:
-        pass
+        op.err(err.INVALID_MIXIN_COMPOSITION)
