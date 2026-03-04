@@ -1,11 +1,11 @@
 {
   "version": 3,
   "sources": [
-    "../../mock_module_accounting/contract.py",
-    "../../modules/accounting.py",
-    "../../modules/rbac.py"
+    "../../../modules/accounting.py",
+    "../../../modules/rbac.py",
+    "../../mock_module_accounting/contract.py"
   ],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AE8BmD;AAAf;;AAA5B;AAC4C;;AAAf;;AAA7B;AAgBA;;AAAuB;AAAvB;AACA;;AAAuB;AAAvB;AD9BA;;;;;;;;;;;;;AAAmB;AAAnB;AACA;;AAAyB;AAAzB;AACA;;;;;;;;;;;;AAAkB;AAAlB;AACA;;AAAc;AAAd;ADhBR;;AAAA;;;AAAA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;;;AAAA;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAQK;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAEG;AAAsB;;AAAtB;AAFH;AAAA;ACgFA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;ACjB+B;AAAgB;;AAArC;;;AAAP;AD9C0B;;AAAnB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AAmFA;AAAA;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;;AAAA;AAAA;AACO;;AArBV;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAuBA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;AAAA;AAAA;AAAA;ACjD+B;AAAsB;;AAA3C;;;AAAP;ADxCO;AAAA;;AAAA;AAAA;AAAe;;;AAAf;AA+GA;AAAP;AACA;;;AACA;;;AAC8B;;AAAvB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAP;AAIU;AAFsB;AAAA;;AAAA;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAhC;AAOO;;AAlCV;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAoCA;;;AAAA;AAAA;AAAA;AAAA;AAAA;ACrF+B;AAAsB;;AAA3C;;;AAAP;ADuGA;;;AA5I0B;;AAAnB;AAAA;AAAA;AAAA;AAAA;;AAAP;AA+Ie;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;AACf;;AACA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA;;AAAA;AAhIR;;;AACY;;AAAc;;;AAAd;AAiIiB;;AAzBxB;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AA2BA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAoBU;;AAAA;;AAAA;AAAP;AACA;;;AACA;;;AA3K0B;;AAAnB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AA6KA;AAAA;;AAAA;AACO;;AAzBV;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AA2BA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAhL6B;;AAAnB;AAAA;AAAA;AAAA;AAAA;;AAAP;AA+LO;AAAA;AAfV;AAAA;AAAA;AAAA;AAAA;AAAA;AC5DA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAWG;;;AACA;AAAA;AAAA;AACO;;AAbV;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAeA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAWG;;;AACA;;AAAA;AAAA;AACO;;AAbV;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAeA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAsBG;;;AACA;;;AACwB;AAAA;;AAAxB;;;AApGc;AAAX;AAAX;;;AACY;AAAA;;AAAA;AAqGG;;AA1BV;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAxEM;AAAW;;AAAX;AAAX;;;AACuC;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAP;AACA;;AAAA;AA+FJ;;;AA7FG;AAAW;;AAAX;AAAX;;;AACuC;;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAP;AACA;;AAAA;AA2FJ;;;AAzFG;AAAW;;AAAX;AAAX;;;AACuC;;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAP;AACA;;AAAA;AAuFJ;;;AArFG;AAAW;;AAAX;AAAX;;;AACuC;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAP;AACA;;AAAA;AAmFJ;;;AAjFG;AAAW;;AAAX;AAAX;;;AACuC;;AAApB;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAP;AACA;;AAAA;;;;AAkFP;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAmBG;;;AACA;;;AACwB;AAAA;;AAAxB;;;AApGO;AAAW;AAAX;AAAP;AACc;;AAAX;AAAX;;;AACmC;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;AAmGG;;AAvBV;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AA1EM;AAAW;;AAAX;AAAX;;;AACmC;;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;AA8FJ;;;AA5FG;AAAW;;AAAX;AAAX;;;AACmC;;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;AA0FJ;;;AAxFG;AAAW;;AAAX;AAAX;;;AACmC;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;AAsFJ;;;AApFG;AAAW;;AAAX;AAAX;;;AACmC;;AAAhB;;AAAA;AAAA;AAAA;AAAA;;AAAP;AACA;;;;;AAqFP;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAzJ+B;AAAgB;;AAArC;;;AAAP;AAyKA;;AAAA;AAAA;AACO;;AAjBV;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AA2BU;AAAA;AAAA;AAAA;AARV;AAAA;AAAA;AAAA;AAAA;AAAA;AAUA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAc4B;AAArB;;AAAA;;;AACqB;;AAArB;;AAAA;;;AACqB;;AAArB;;AAAA;;;AACqB;AAArB;;AAAA;;;AACqB;;AAArB;;AAAA;;;AAlBP;;;AAAA;AAAA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;AAAA;;AAAA;AAAA;;AAAA;;AAAA;AAAA;;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAqBA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAcU;AACP;AAAA;;;AAES;AAIA;;;;;;;AALT;;AAAA;;;;;;;;;;;;;;AA+BQ;AAJI;;AA5QL;;AAAA;AAAA;AAAA;AAAA;;AA2QC;AAGO;AAAA;AA7ClB;AAAA;AAAA;AAAA;AAAA;AAAA;AAsCe;AAvQL;;AAAA;AAAA;AAAA;AAAA;;AAsQC;AAGO;AAAA;AAxClB;;;AAiCe;;AAlQL;;AAAA;AAAA;AAAA;AAAA;;AAiQC;AAGO;AAAA;AAnClB;;;AA4Be;;AA7PL;;AAAA;AAAA;AAAA;AAAA;;AA4PC;AAGO;AAAA;AA9BlB;;;AAuBe;AAxPL;;AAAA;AAAA;AAAA;AAAA;;AAuPC;AAGO;AAAA;AAzBlB;;;AAkBkB;;;;;;;;;;;;;;;;;;AAlBlB;;;AA/ND;;;;;AAFW;;AAAA;;AAAA;AAAA;AAAA;AAAA;;AAGA;;;AACH;;AAAA;AAAA;AAAA;AAAA;AACG;;AAAA;AAAA;;AADH;AAAA;;;AAEG;;AAAA;AAAA;AAAA;;AAAA;AADA;;AAAA;AADH;;;;AADJ;;AAAA;;;;;AAOyB;;AAbF;AAAA;AAAA;AAAA;AAAhB;AAaP;;AAkBW;AAAA;;AAAA;AAAA;AAAJ;AAAP;;AAGW;AAAA;;AAAA;AAAA;AAAJ;AAAP;;AAEJ;;;AACW;;AACH;AADG;AAAA;;;AAAA;;AAEH;;AAFG;AAAA;;;AAAA;;AAGH;;AAHG;AAAA;;;AAAA;;AAIH;;AAJG;AAAA;;;AAAA;;AAKH;;AALG;AAAA;;;AAAA;;AAMH;;AANG;AAAA;;;;AAAP;;;",
+  "mappings": "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",
   "op_pc_offset": 0,
   "pc_events": {
     "1": {
@@ -421,7 +421,7 @@
       "stack_out": []
     },
     "295": {
-      "subroutine": "smart_contracts.modules.accounting.AccountingModule.account_gov_suspension[routing]",
+      "subroutine": "modules.accounting.AccountingModule.account_gov_suspension[routing]",
       "params": {},
       "block": "account_gov_suspension",
       "stack_in": [],
@@ -612,7 +612,7 @@
       ]
     },
     "316": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "callsub": "modules.rbac.RbacModule._role_is_active",
       "op": "callsub _role_is_active",
       "defined_out": [
         "holding_address#0",
@@ -859,7 +859,7 @@
       "stack_out": []
     },
     "352": {
-      "subroutine": "smart_contracts.modules.accounting.AccountingModule.account_open[routing]",
+      "subroutine": "modules.accounting.AccountingModule.account_open[routing]",
       "params": {},
       "block": "account_open",
       "stack_in": [],
@@ -1020,7 +1020,7 @@
       ]
     },
     "371": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "callsub": "modules.rbac.RbacModule._role_is_active",
       "op": "callsub _role_is_active",
       "defined_out": [
         "holding_address#0",
@@ -1138,11 +1138,11 @@
       ]
     },
     "386": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_defaulted",
+      "callsub": "modules.rbac.RbacModule.assert_is_not_asset_defaulted",
       "op": "callsub assert_is_not_asset_defaulted"
     },
     "389": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_suspended",
+      "callsub": "modules.rbac.RbacModule.assert_is_not_asset_suspended",
       "op": "callsub assert_is_not_asset_suspended"
     },
     "392": {
@@ -1423,7 +1423,7 @@
       "stack_out": []
     },
     "429": {
-      "subroutine": "smart_contracts.modules.accounting.AccountingModule.account_close[routing]",
+      "subroutine": "modules.accounting.AccountingModule.account_close[routing]",
       "params": {},
       "block": "account_close",
       "stack_in": [],
@@ -1513,7 +1513,7 @@
       ]
     },
     "440": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "callsub": "modules.rbac.RbacModule._role_is_active",
       "op": "callsub _role_is_active",
       "defined_out": [
         "holding_address#0",
@@ -1532,7 +1532,7 @@
       ]
     },
     "444": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_defaulted",
+      "callsub": "modules.rbac.RbacModule.assert_is_not_asset_defaulted",
       "op": "callsub assert_is_not_asset_defaulted"
     },
     "447": {
@@ -1942,7 +1942,7 @@
       ]
     },
     "501": {
-      "subroutine": "smart_contracts.modules.accounting.AccountingModule.account_update_payment_address[routing]",
+      "subroutine": "modules.accounting.AccountingModule.account_update_payment_address[routing]",
       "params": {},
       "block": "account_update_payment_address",
       "stack_in": [],
@@ -2118,11 +2118,11 @@
       ]
     },
     "523": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_defaulted",
+      "callsub": "modules.rbac.RbacModule.assert_is_not_asset_defaulted",
       "op": "callsub assert_is_not_asset_defaulted"
     },
     "526": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_suspended",
+      "callsub": "modules.rbac.RbacModule.assert_is_not_asset_suspended",
       "op": "callsub assert_is_not_asset_suspended"
     },
     "529": {
@@ -2289,7 +2289,7 @@
       "stack_out": []
     },
     "552": {
-      "subroutine": "smart_contracts.modules.accounting.AccountingModule.account_get_info[routing]",
+      "subroutine": "modules.accounting.AccountingModule.account_get_info[routing]",
       "params": {},
       "block": "account_get_info",
       "stack_in": [],
@@ -2481,7 +2481,7 @@
       "stack_out": []
     },
     "577": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.rbac_rotate_arranger[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_rotate_arranger[routing]",
       "params": {},
       "block": "rbac_rotate_arranger",
       "stack_in": [],
@@ -2547,7 +2547,7 @@
       ]
     },
     "585": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_caller_is_arranger",
+      "callsub": "modules.rbac.RbacModule.assert_caller_is_arranger",
       "op": "callsub assert_caller_is_arranger"
     },
     "588": {
@@ -2635,7 +2635,7 @@
       "stack_out": []
     },
     "600": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.rbac_set_op_daemon[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_set_op_daemon[routing]",
       "params": {},
       "block": "rbac_set_op_daemon",
       "stack_in": [],
@@ -2701,7 +2701,7 @@
       ]
     },
     "608": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_caller_is_arranger",
+      "callsub": "modules.rbac.RbacModule.assert_caller_is_arranger",
       "op": "callsub assert_caller_is_arranger"
     },
     "611": {
@@ -2789,7 +2789,7 @@
       "stack_out": []
     },
     "624": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.rbac_assign_role[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_assign_role[routing]",
       "params": {},
       "block": "rbac_assign_role",
       "stack_in": [],
@@ -3094,11 +3094,11 @@
       ]
     },
     "660": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_caller_is_arranger",
+      "callsub": "modules.rbac.RbacModule.assert_caller_is_arranger",
       "op": "callsub assert_caller_is_arranger"
     },
     "663": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_defaulted",
+      "callsub": "modules.rbac.RbacModule.assert_is_not_asset_defaulted",
       "op": "callsub assert_is_not_asset_defaulted"
     },
     "666": {
@@ -3131,7 +3131,7 @@
       ]
     },
     "669": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._assert_valid_role",
+      "callsub": "modules.rbac.RbacModule._assert_valid_role",
       "op": "callsub _assert_valid_role",
       "stack_out": [
         "role_address#0",
@@ -3213,7 +3213,7 @@
       ]
     },
     "681": {
-      "block": "rbac_assign_role_after_inlined_smart_contracts.modules.rbac.RbacModule._upsert_role@14",
+      "block": "rbac_assign_role_after_inlined_modules.rbac.RbacModule._upsert_role@14",
       "stack_in": [
         "role_address#0",
         "config#0",
@@ -3496,7 +3496,7 @@
       ]
     },
     "710": {
-      "op": "b rbac_assign_role_after_inlined_smart_contracts.modules.rbac.RbacModule._upsert_role@14"
+      "op": "b rbac_assign_role_after_inlined_modules.rbac.RbacModule._upsert_role@14"
     },
     "713": {
       "block": "rbac_assign_role_after_if_else@5",
@@ -3688,7 +3688,7 @@
       ]
     },
     "734": {
-      "op": "b rbac_assign_role_after_inlined_smart_contracts.modules.rbac.RbacModule._upsert_role@14"
+      "op": "b rbac_assign_role_after_inlined_modules.rbac.RbacModule._upsert_role@14"
     },
     "737": {
       "block": "rbac_assign_role_after_if_else@7",
@@ -3880,7 +3880,7 @@
       ]
     },
     "758": {
-      "op": "b rbac_assign_role_after_inlined_smart_contracts.modules.rbac.RbacModule._upsert_role@14"
+      "op": "b rbac_assign_role_after_inlined_modules.rbac.RbacModule._upsert_role@14"
     },
     "761": {
       "block": "rbac_assign_role_after_if_else@9",
@@ -4072,7 +4072,7 @@
       ]
     },
     "781": {
-      "op": "b rbac_assign_role_after_inlined_smart_contracts.modules.rbac.RbacModule._upsert_role@14"
+      "op": "b rbac_assign_role_after_inlined_modules.rbac.RbacModule._upsert_role@14"
     },
     "784": {
       "block": "rbac_assign_role_after_if_else@11",
@@ -4120,7 +4120,7 @@
       ]
     },
     "788": {
-      "op": "bz rbac_assign_role_after_inlined_smart_contracts.modules.rbac.RbacModule._upsert_role@14",
+      "op": "bz rbac_assign_role_after_inlined_modules.rbac.RbacModule._upsert_role@14",
       "stack_out": [
         "role_address#0",
         "config#0",
@@ -4264,10 +4264,10 @@
       ]
     },
     "805": {
-      "op": "b rbac_assign_role_after_inlined_smart_contracts.modules.rbac.RbacModule._upsert_role@14"
+      "op": "b rbac_assign_role_after_inlined_modules.rbac.RbacModule._upsert_role@14"
     },
     "808": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.rbac_revoke_role[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_revoke_role[routing]",
       "params": {},
       "block": "rbac_revoke_role",
       "stack_in": [],
@@ -4409,11 +4409,11 @@
       ]
     },
     "826": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_caller_is_arranger",
+      "callsub": "modules.rbac.RbacModule.assert_caller_is_arranger",
       "op": "callsub assert_caller_is_arranger"
     },
     "829": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_defaulted",
+      "callsub": "modules.rbac.RbacModule.assert_is_not_asset_defaulted",
       "op": "callsub assert_is_not_asset_defaulted"
     },
     "832": {
@@ -4442,7 +4442,7 @@
       ]
     },
     "835": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._assert_valid_role",
+      "callsub": "modules.rbac.RbacModule._assert_valid_role",
       "op": "callsub _assert_valid_role",
       "stack_out": [
         "role_address#0",
@@ -4638,7 +4638,7 @@
       ]
     },
     "859": {
-      "block": "rbac_revoke_role_after_inlined_smart_contracts.modules.rbac.RbacModule._delete_role@12",
+      "block": "rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12",
       "stack_in": [
         "role_address#0",
         "role_id#1"
@@ -4880,7 +4880,7 @@
       ]
     },
     "887": {
-      "op": "b rbac_revoke_role_after_inlined_smart_contracts.modules.rbac.RbacModule._delete_role@12"
+      "op": "b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12"
     },
     "890": {
       "block": "rbac_revoke_role_after_if_else@5",
@@ -5040,7 +5040,7 @@
       ]
     },
     "909": {
-      "op": "b rbac_revoke_role_after_inlined_smart_contracts.modules.rbac.RbacModule._delete_role@12"
+      "op": "b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12"
     },
     "912": {
       "block": "rbac_revoke_role_after_if_else@7",
@@ -5200,7 +5200,7 @@
       ]
     },
     "930": {
-      "op": "b rbac_revoke_role_after_inlined_smart_contracts.modules.rbac.RbacModule._delete_role@12"
+      "op": "b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12"
     },
     "933": {
       "block": "rbac_revoke_role_after_if_else@9",
@@ -5244,7 +5244,7 @@
       ]
     },
     "937": {
-      "op": "bz rbac_revoke_role_after_inlined_smart_contracts.modules.rbac.RbacModule._delete_role@12",
+      "op": "bz rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12",
       "stack_out": [
         "role_address#0",
         "role_id#1"
@@ -5360,10 +5360,10 @@
       ]
     },
     "952": {
-      "op": "b rbac_revoke_role_after_inlined_smart_contracts.modules.rbac.RbacModule._delete_role@12"
+      "op": "b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12"
     },
     "955": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.rbac_gov_asset_suspension[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_gov_asset_suspension[routing]",
       "params": {},
       "block": "rbac_gov_asset_suspension",
       "stack_in": [],
@@ -5473,7 +5473,7 @@
       ]
     },
     "968": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "callsub": "modules.rbac.RbacModule._role_is_active",
       "op": "callsub _role_is_active",
       "defined_out": [
         "suspended#0",
@@ -5573,7 +5573,7 @@
       "stack_out": []
     },
     "985": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.rbac_get_arranger[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_get_arranger[routing]",
       "params": {},
       "block": "rbac_get_arranger",
       "stack_in": [],
@@ -5659,7 +5659,7 @@
       "stack_out": []
     },
     "995": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.rbac_get_address_roles[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_get_address_roles[routing]",
       "params": {},
       "block": "rbac_get_address_roles",
       "stack_in": [],
@@ -5744,7 +5744,7 @@
       ]
     },
     "1006": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "callsub": "modules.rbac.RbacModule._role_is_active",
       "op": "callsub _role_is_active",
       "defined_out": [
         "address#0",
@@ -5778,7 +5778,7 @@
       ]
     },
     "1013": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "callsub": "modules.rbac.RbacModule._role_is_active",
       "op": "callsub _role_is_active",
       "defined_out": [
         "address#0",
@@ -5817,7 +5817,7 @@
       ]
     },
     "1020": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "callsub": "modules.rbac.RbacModule._role_is_active",
       "op": "callsub _role_is_active",
       "defined_out": [
         "address#0",
@@ -5861,7 +5861,7 @@
       ]
     },
     "1026": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "callsub": "modules.rbac.RbacModule._role_is_active",
       "op": "callsub _role_is_active",
       "defined_out": [
         "address#0",
@@ -5909,7 +5909,7 @@
       ]
     },
     "1033": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "callsub": "modules.rbac.RbacModule._role_is_active",
       "op": "callsub _role_is_active",
       "defined_out": [
         "tmp%0#1",
@@ -6187,7 +6187,7 @@
       "stack_out": []
     },
     "1068": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.rbac_get_role_config[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_get_role_config[routing]",
       "params": {},
       "block": "rbac_get_role_config",
       "stack_in": [],
@@ -6353,7 +6353,7 @@
       ]
     },
     "1088": {
-      "callsub": "smart_contracts.modules.rbac.RbacModule._assert_valid_role",
+      "callsub": "modules.rbac.RbacModule._assert_valid_role",
       "op": "callsub _assert_valid_role",
       "stack_out": [
         "role_address#0",
@@ -6525,7 +6525,7 @@
       ]
     },
     "1128": {
-      "block": "rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9",
+      "block": "rbac_get_role_config_after_inlined_modules.rbac.RbacModule.rbac_get_role_config@9",
       "stack_in": [
         "role_address#0",
         "tmp%3#0"
@@ -6690,7 +6690,7 @@
       ]
     },
     "1145": {
-      "op": "b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9"
+      "op": "b rbac_get_role_config_after_inlined_modules.rbac.RbacModule.rbac_get_role_config@9"
     },
     "1148": {
       "block": "rbac_get_role_config_switch_case_3@5",
@@ -6798,7 +6798,7 @@
       ]
     },
     "1160": {
-      "op": "b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9"
+      "op": "b rbac_get_role_config_after_inlined_modules.rbac.RbacModule.rbac_get_role_config@9"
     },
     "1163": {
       "block": "rbac_get_role_config_switch_case_2@4",
@@ -6906,7 +6906,7 @@
       ]
     },
     "1175": {
-      "op": "b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9"
+      "op": "b rbac_get_role_config_after_inlined_modules.rbac.RbacModule.rbac_get_role_config@9"
     },
     "1178": {
       "block": "rbac_get_role_config_switch_case_1@3",
@@ -7014,7 +7014,7 @@
       ]
     },
     "1189": {
-      "op": "b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9"
+      "op": "b rbac_get_role_config_after_inlined_modules.rbac.RbacModule.rbac_get_role_config@9"
     },
     "1192": {
       "block": "rbac_get_role_config_switch_case_0@2",
@@ -7031,10 +7031,10 @@
       ]
     },
     "1210": {
-      "op": "b rbac_get_role_config_after_inlined_smart_contracts.modules.rbac.RbacModule.rbac_get_role_config@9"
+      "op": "b rbac_get_role_config_after_inlined_modules.rbac.RbacModule.rbac_get_role_config@9"
     },
     "1213": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule._role_is_active",
+      "subroutine": "modules.rbac.RbacModule._role_is_active",
       "params": {
         "role_map#0": "bytes",
         "role_address#0": "bytes"
@@ -7363,7 +7363,7 @@
       "op": "b _role_is_active_bool_merge@5"
     },
     "1266": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.assert_caller_is_arranger",
+      "subroutine": "modules.rbac.RbacModule.assert_caller_is_arranger",
       "params": {},
       "block": "assert_caller_is_arranger",
       "stack_in": [],
@@ -7439,7 +7439,7 @@
       "op": "retsub"
     },
     "1275": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_defaulted",
+      "subroutine": "modules.rbac.RbacModule.assert_is_not_asset_defaulted",
       "params": {},
       "block": "assert_is_not_asset_defaulted",
       "stack_in": [],
@@ -7499,7 +7499,7 @@
       "op": "retsub"
     },
     "1283": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule.assert_is_not_asset_suspended",
+      "subroutine": "modules.rbac.RbacModule.assert_is_not_asset_suspended",
       "params": {},
       "block": "assert_is_not_asset_suspended",
       "stack_in": [],
@@ -7559,7 +7559,7 @@
       "op": "retsub"
     },
     "1291": {
-      "subroutine": "smart_contracts.modules.rbac.RbacModule._assert_valid_role",
+      "subroutine": "modules.rbac.RbacModule._assert_valid_role",
       "params": {
         "role_id#0": "uint64"
       },
