@@ -154,7 +154,7 @@ sequenceDiagram
   CF-->>TA: "accrued amount + transfer guards"
   TA->>ACC: "transfer ownership units"
 
-  Note over PA,TA: "Agents orchestrate execution only; formulas remain in CoreFinancial"
+  Note over PA,TA: "Agents orchestrate execution, formulas in CoreFinancial"
 ```
 
 ## Contract API surface
