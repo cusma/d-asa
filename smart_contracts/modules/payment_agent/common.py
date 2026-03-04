@@ -1,4 +1,4 @@
-from algopy import Account, Asset, Global, UInt64, itxn
+from algopy import Account, Global, UInt64, itxn
 
 from smart_contracts import errors as err
 from smart_contracts.modules.core_financial.common import (
@@ -12,14 +12,14 @@ class PaymentAgentCommonMixin(CoreFinancialCommonMixin):
     def is_payment_executable(self, holding_address: Account) -> bool:
         return (
             self.account[holding_address].payment_address.is_opted_in(
-                Asset(self.settlement_asset_id)
+                self.settlement_asset_id
             )
             and not self.account[holding_address].suspended
         )
 
     def assert_enough_funds(self, payment_amount: UInt64) -> None:
         assert (
-            Asset(self.settlement_asset_id).balance(Global.current_application_address)
+            self.settlement_asset_id.balance(Global.current_application_address)
             >= payment_amount
         ), err.NOT_ENOUGH_FUNDS
 

@@ -1,5 +1,5 @@
 # pyright: reportMissingModuleSource=false
-from algopy import Account, Global, UInt64, arc4
+from algopy import Account, Asset, Global, UInt64, arc4
 
 from smart_contracts import abi_types as typ
 from smart_contracts import errors as err
@@ -27,8 +27,8 @@ class PAMCoreMixin(CoreFinancialCommonMixin):
     def asset_config(
         self,
         *,
-        denomination_asset_id: UInt64,
-        settlement_asset_id: UInt64,
+        denomination_asset_id: Asset,
+        settlement_asset_id: Asset,
         principal: UInt64,
         principal_discount: UInt64,
         minimum_denomination: UInt64,

@@ -48,6 +48,14 @@
       "message": "Secondary market is closed"
     },
     {
+      "code": "SELF_TRANSFER",
+      "message": "Sender and receiver must be different"
+    },
+    {
+      "code": "NULL_TRANSFER",
+      "message": "Transfer units must be greater than zero"
+    },
+    {
       "code": "OVER_TRANSFER",
       "message": "Insufficient sender units to transfer"
     },
@@ -79,6 +87,12 @@ or Receiver Holding Address is invalid.
 
 The call **MUST** fail with the `SECONDARY_MARKET_CLOSED` error code if the secondary
 market is closed.
+
+The call **MUST** fail with the `SELF_TRANSFER` error code if the Sender and Receiver
+Holding Addresses are the same.
+
+The call **MUST** fail with the `NULL_TRANSFER` error code if the transfer units
+are zero.
 
 The call **MUST** fail with the `OVER_TRANSFER` error code if the Sender Account
 Holding Address has insufficient D-ASA units to transfer.

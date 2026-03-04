@@ -29,8 +29,8 @@ class CoreFinancialCommonMixin(AccountingModule):
         super().__init__()
 
         # Asset Configuration
-        self.denomination_asset_id = UInt64()
-        self.settlement_asset_id = UInt64()
+        self.denomination_asset_id = Asset()
+        self.settlement_asset_id = Asset()
         self.unit_value = UInt64()
         self.day_count_convention = UInt64()
 
@@ -51,22 +51,22 @@ class CoreFinancialCommonMixin(AccountingModule):
         self.secondary_market_closure_date = UInt64()
         self.maturity_date = UInt64()
 
-    def assert_denomination_asset(self, denomination_asset_id: UInt64) -> None:
+    def assert_denomination_asset(self, denomination_asset_id: Asset) -> None:
         # The reference implementation has on-chain denomination with ASA
         assert (
-            denomination_asset_id != UInt64(0) and Asset(denomination_asset_id).creator
+            denomination_asset_id.id != UInt64(0) and denomination_asset_id.creator
         ), err.INVALID_DENOMINATION
 
-    def set_denomination_asset(self, denomination_asset_id: UInt64) -> None:
+    def set_denomination_asset(self, denomination_asset_id: Asset) -> None:
         self.denomination_asset_id = denomination_asset_id
 
-    def assert_settlement_asset(self, settlement_asset_id: UInt64) -> None:
+    def assert_settlement_asset(self, settlement_asset_id: Asset) -> None:
         # The reference implementation settlement asset is the denomination asset
         assert (
             settlement_asset_id == self.denomination_asset_id
         ), err.INVALID_SETTLEMENT_ASSET
 
-    def set_settlement_asset(self, settlement_asset_id: UInt64) -> None:
+    def set_settlement_asset(self, settlement_asset_id: Asset) -> None:
         self.settlement_asset_id = settlement_asset_id
         # The reference implementation has on-chain settlement with ASA
         itxn.AssetTransfer(
@@ -166,7 +166,6 @@ class CoreFinancialCommonMixin(AccountingModule):
         self,
         sender_holding_address: Account,
         receiver_holding_address: Account,
-        units: UInt64,
     ) -> None:
         # The reference implementation grants transfer right to D-ASA owners. Other implementations may relay on other
         # roles, external Apps through C2C calls (e.g., an order book), or off-chain transfer agents.
@@ -175,9 +174,8 @@ class CoreFinancialCommonMixin(AccountingModule):
         self.assert_is_not_asset_suspended()
         self.assert_valid_holding_address(sender_holding_address)
         self.assert_valid_holding_address(receiver_holding_address)
-        assert not self.account[sender_holding_address].suspended, err.SUSPENDED
-        assert not self.account[receiver_holding_address].suspended, err.SUSPENDED
-        assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
+        self.assert_is_not_account_suspended(sender_holding_address)
+        self.assert_is_not_account_suspended(receiver_holding_address)
 
     def assert_asset_transfer_preconditions(
         self,
@@ -189,8 +187,10 @@ class CoreFinancialCommonMixin(AccountingModule):
         self.assert_asset_transfer_authorization(
             sender_holding_address,
             receiver_holding_address,
-            units,
         )
+        assert sender_holding_address != receiver_holding_address, err.SELF_TRANSFER
+        assert units > 0, err.NULL_TRANSFER
+        assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
         self.assert_fungible_transfer(
             sender_holding_address,
             receiver_holding_address,
@@ -214,8 +214,8 @@ class CoreFinancialCommonMixin(AccountingModule):
     def _configure_asset_terms(
         self,
         *,
-        denomination_asset_id: UInt64,
-        settlement_asset_id: UInt64,
+        denomination_asset_id: Asset,
+        settlement_asset_id: Asset,
         principal: UInt64,
         principal_discount: UInt64,
         minimum_denomination: UInt64,
@@ -409,8 +409,8 @@ class CoreFinancialCommonMixin(AccountingModule):
             performance = UInt64(cst.PRF_DEFAULTED)
 
         return typ.AssetInfo(
-            denomination_asset_id=self.denomination_asset_id,
-            settlement_asset_id=self.settlement_asset_id,
+            denomination_asset_id=self.denomination_asset_id.id,
+            settlement_asset_id=self.settlement_asset_id.id,
             outstanding_principal=self.outstanding_principal(),
             unit_value=self.unit_value,
             day_count_convention=arc4.UInt8(self.day_count_convention),

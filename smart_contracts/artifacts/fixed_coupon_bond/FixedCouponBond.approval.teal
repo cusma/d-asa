@@ -3,7 +3,7 @@
 
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
-    intcblock 0 1 32 8 255 448 200 86400
+    intcblock 0 1 32 8 255 200 86400
     bytecblock 0x151f7c75 0x52333023 "status" "circulating_units" "issuance_date" "maturity_date" "total_coupons" 0x52323023 "settlement_asset_id" "primary_distribution_opening_date" "secondary_market_closure_date" 0x74696d654576656e7473 0x52373023 0x52343023 "total_units" "unit_value" "day_count_convention" "secondary_market_opening_date" 0x636f75706f6e5261746573 0x52363023 0x52353023 "asset_suspended" "asset_defaulted" "metadata" "principal_discount" "primary_distribution_closure_date" "paid_coupon_units" "due_coupons_watermark" 0x00 0x52383023 "denomination_asset_id" "interest_rate" 0x068101 0x0000 0x0012
     txn ApplicationID
     bnz main_after_if_else@2
@@ -46,12 +46,12 @@ main:
     app_global_put
     // smart_contracts/modules/core_financial/common.py:31-32
     // # Asset Configuration
-    // self.denomination_asset_id = UInt64()
+    // self.denomination_asset_id = Asset()
     bytec 30 // "denomination_asset_id"
     intc_0 // 0
     app_global_put
     // smart_contracts/modules/core_financial/common.py:33
-    // self.settlement_asset_id = UInt64()
+    // self.settlement_asset_id = Asset()
     bytec 8 // "settlement_asset_id"
     intc_0 // 0
     app_global_put
@@ -389,7 +389,7 @@ asset_config:
     !
     assert // D-ASA already configured
     // smart_contracts/modules/core_financial/common.py:57
-    // denomination_asset_id != UInt64(0) and Asset(denomination_asset_id).creator
+    // denomination_asset_id.id != UInt64(0) and denomination_asset_id.creator
     bz asset_config_bool_false@4
     dig 11
     asset_params_get AssetCreator
@@ -403,7 +403,7 @@ asset_config_bool_merge@5:
     // smart_contracts/modules/core_financial/common.py:55-58
     // # The reference implementation has on-chain denomination with ASA
     // assert (
-    //     denomination_asset_id != UInt64(0) and Asset(denomination_asset_id).creator
+    //     denomination_asset_id.id != UInt64(0) and denomination_asset_id.creator
     // ), err.INVALID_DENOMINATION
     assert // Denomination asset is not properly set
     // smart_contracts/modules/core_financial/common.py:61
@@ -1562,7 +1562,7 @@ asset_transfer_bool_merge@7:
     //     )
     // ), err.SECONDARY_MARKET_CLOSED
     assert // Secondary market is closed
-    // smart_contracts/modules/core_financial/common.py:171-173
+    // smart_contracts/modules/core_financial/common.py:170-172
     // # The reference implementation grants transfer right to D-ASA owners. Other implementations may relay on other
     // # roles, external Apps through C2C calls (e.g., an order book), or off-chain transfer agents.
     // assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
@@ -1572,71 +1572,76 @@ asset_transfer_bool_merge@7:
     cover 2
     ==
     assert // Not authorized
-    // smart_contracts/modules/core_financial/common.py:174
+    // smart_contracts/modules/core_financial/common.py:173
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
-    // smart_contracts/modules/core_financial/common.py:175
+    // smart_contracts/modules/core_financial/common.py:174
     // self.assert_is_not_asset_suspended()
     callsub assert_is_not_asset_suspended
     // smart_contracts/modules/accounting.py:31
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec_1 // 0x52333023
-    swap
+    dig 1
     concat
     dup
-    bury 8
+    bury 9
     dup
     box_len
     bury 1
     assert // Invalid account holding address
     bytec_1 // 0x52333023
-    dig 3
+    dig 4
+    dup
+    cover 2
     concat
     dup
-    bury 8
+    bury 10
     dup
     box_len
     bury 1
     assert // Invalid account holding address
+    // smart_contracts/modules/core_financial/common.py:177
+    // self.assert_is_not_account_suspended(sender_holding_address)
+    dig 3
+    callsub assert_is_not_account_suspended
     // smart_contracts/modules/core_financial/common.py:178
-    // assert not self.account[sender_holding_address].suspended, err.SUSPENDED
-    swap
-    box_get
-    pop
-    dup
-    intc 5 // 448
-    getbit
-    !
-    assert // Suspended operations
-    // smart_contracts/modules/core_financial/common.py:179
-    // assert not self.account[receiver_holding_address].suspended, err.SUSPENDED
-    swap
-    box_get
-    pop
-    dup
-    intc 5 // 448
-    getbit
-    !
-    assert // Suspended operations
-    // smart_contracts/modules/core_financial/common.py:180
-    // assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
+    // self.assert_is_not_account_suspended(receiver_holding_address)
     dig 1
+    callsub assert_is_not_account_suspended
+    // smart_contracts/modules/core_financial/common.py:191
+    // assert sender_holding_address != receiver_holding_address, err.SELF_TRANSFER
+    uncover 3
+    uncover 2
+    !=
+    assert // Sender and receiver must be different
+    // smart_contracts/modules/core_financial/common.py:192
+    // assert units > 0, err.NULL_TRANSFER
+    dig 2
+    dup
+    assert // Transfer units must be greater than zero
+    // smart_contracts/modules/core_financial/common.py:193
+    // assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
+    uncover 2
+    box_get
+    assert // check self.account entry exists
+    dup
     intc_2 // 32
     extract_uint64
-    dig 3
+    uncover 2
     >=
     assert // Insufficient sender units to transfer
-    // smart_contracts/modules/accounting.py:60
+    // smart_contracts/modules/accounting.py:63
     // sender_unit_value = self.account[sender].unit_value
-    swap
     extract 40 8
     bury 9
-    // smart_contracts/modules/accounting.py:61
+    // smart_contracts/modules/accounting.py:64
     // if self.account[receiver].units > UInt64(0):
+    box_get
+    assert // check self.account entry exists
     intc_2 // 32
     extract_uint64
     bz asset_transfer_else_body@9
-    // smart_contracts/modules/accounting.py:55
+    // smart_contracts/modules/accounting.py:58
     // self.account[sender].unit_value == self.account[receiver].unit_value
     dig 6
     box_get
@@ -1649,11 +1654,11 @@ asset_transfer_bool_merge@7:
     pushint 40
     extract_uint64
     ==
-    // smart_contracts/modules/accounting.py:55-56
+    // smart_contracts/modules/accounting.py:58-59
     // self.account[sender].unit_value == self.account[receiver].unit_value
     // and self.account[sender].paid_coupons == self.account[receiver].paid_coupons
     bz asset_transfer_bool_false@20
-    // smart_contracts/modules/accounting.py:56
+    // smart_contracts/modules/accounting.py:59
     // and self.account[sender].paid_coupons == self.account[receiver].paid_coupons
     dig 6
     box_get
@@ -1666,14 +1671,14 @@ asset_transfer_bool_merge@7:
     pushint 48
     extract_uint64
     ==
-    // smart_contracts/modules/accounting.py:55-56
+    // smart_contracts/modules/accounting.py:58-59
     // self.account[sender].unit_value == self.account[receiver].unit_value
     // and self.account[sender].paid_coupons == self.account[receiver].paid_coupons
     bz asset_transfer_bool_false@20
     intc_1 // 1
 
 asset_transfer_bool_merge@21:
-    // smart_contracts/modules/accounting.py:54-57
+    // smart_contracts/modules/accounting.py:57-60
     // assert (
     //     self.account[sender].unit_value == self.account[receiver].unit_value
     //     and self.account[sender].paid_coupons == self.account[receiver].paid_coupons
@@ -1681,7 +1686,7 @@ asset_transfer_bool_merge@21:
     assert // Sender and receiver units are not fungible
 
 asset_transfer_after_if_else@10:
-    // smart_contracts/modules/transfer_agent/coupon.py:44-45
+    // smart_contracts/modules/transfer_agent/coupon.py:46-47
     // # Transferred units value (must be computed before the transfer)
     // sender_unit_value = self.account[sender_holding_address].unit_value
     dig 6
@@ -1711,7 +1716,7 @@ asset_transfer_after_if_else@10:
     uncover 2
     callsub accrued_interest_amount
     bury 7
-    // smart_contracts/modules/accounting.py:68
+    // smart_contracts/modules/accounting.py:71
     // assert units <= self.account[holding_address].units, err.OVER_TRANSFER
     dig 1
     box_get
@@ -1721,7 +1726,7 @@ asset_transfer_after_if_else@10:
     dup2
     <=
     assert // Insufficient sender units to transfer
-    // smart_contracts/modules/accounting.py:69
+    // smart_contracts/modules/accounting.py:72
     // self.account[holding_address].units -= units
     swap
     -
@@ -1730,14 +1735,14 @@ asset_transfer_after_if_else@10:
     intc_2 // 32
     uncover 2
     box_replace
-    // smart_contracts/modules/accounting.py:49
+    // smart_contracts/modules/accounting.py:52
     // if self.account[holding_address].units == UInt64(0):
     box_get
     pop
     intc_2 // 32
     extract_uint64
     bnz asset_transfer_after_if_else@16
-    // smart_contracts/modules/accounting.py:50
+    // smart_contracts/modules/accounting.py:53
     // self.account[holding_address].unit_value = UInt64(0)
     intc_0 // 0
     itob
@@ -1747,14 +1752,14 @@ asset_transfer_after_if_else@10:
     pushint 40
     dig 2
     box_replace
-    // smart_contracts/modules/accounting.py:51
+    // smart_contracts/modules/accounting.py:54
     // self.account[holding_address].paid_coupons = UInt64(0)
     pushint 48
     swap
     box_replace
 
 asset_transfer_after_if_else@16:
-    // smart_contracts/modules/accounting.py:73
+    // smart_contracts/modules/accounting.py:76
     // self.account[holding_address].units += units
     dig 5
     dup
@@ -1771,7 +1776,7 @@ asset_transfer_after_if_else@16:
     intc_2 // 32
     uncover 2
     box_replace
-    // smart_contracts/modules/transfer_agent/coupon.py:51
+    // smart_contracts/modules/transfer_agent/coupon.py:53
     // return units * sender_unit_value + accrued_interest
     dig 4
     *
@@ -1792,14 +1797,14 @@ asset_transfer_bool_false@20:
     b asset_transfer_bool_merge@21
 
 asset_transfer_else_body@9:
-    // smart_contracts/modules/accounting.py:64
+    // smart_contracts/modules/accounting.py:67
     // self.account[receiver].unit_value = sender_unit_value
     dig 5
     dup
     pushint 40
     dig 10
     box_replace
-    // smart_contracts/modules/accounting.py:65
+    // smart_contracts/modules/accounting.py:68
     // self.account[receiver].paid_coupons = self.account[sender].paid_coupons
     dig 7
     box_get
@@ -1929,7 +1934,7 @@ set_secondary_time_events:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    intc 6 // 200
+    intc 5 // 200
     ==
     // smart_contracts/modules/core_financial/common.py:313
     // assert not self.status_is_ended(), err.UNAUTHORIZED
@@ -2320,18 +2325,18 @@ get_asset_info_after_if_else@4:
 
 get_asset_info_after_if_else@6:
     // smart_contracts/modules/core_financial/common.py:412
-    // denomination_asset_id=self.denomination_asset_id,
+    // denomination_asset_id=self.denomination_asset_id.id,
     intc_0 // 0
     bytec 30 // "denomination_asset_id"
     app_global_get_ex
     assert // check self.denomination_asset_id exists
     // smart_contracts/modules/core_financial/common.py:413
-    // settlement_asset_id=self.settlement_asset_id,
+    // settlement_asset_id=self.settlement_asset_id.id,
     intc_0 // 0
     bytec 8 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
-    // smart_contracts/modules/accounting.py:42
+    // smart_contracts/modules/accounting.py:45
     // return self.circulating_units * self.unit_value
     intc_0 // 0
     bytec_3 // "circulating_units"
@@ -2430,8 +2435,8 @@ get_asset_info_after_if_else@6:
     extract 7 1
     // smart_contracts/modules/core_financial/common.py:411-427
     // return typ.AssetInfo(
-    //     denomination_asset_id=self.denomination_asset_id,
-    //     settlement_asset_id=self.settlement_asset_id,
+    //     denomination_asset_id=self.denomination_asset_id.id,
+    //     settlement_asset_id=self.settlement_asset_id.id,
     //     outstanding_principal=self.outstanding_principal(),
     //     unit_value=self.unit_value,
     //     day_count_convention=arc4.UInt8(self.day_count_convention),
@@ -2587,7 +2592,7 @@ get_asset_metadata:
 
 // smart_contracts.modules.accounting.AccountingModule.account_gov_suspension[routing]() -> void:
 account_gov_suspension:
-    // smart_contracts/modules/accounting.py:91
+    // smart_contracts/modules/accounting.py:94
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2618,7 +2623,7 @@ account_gov_suspension:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/modules/accounting.py:111
+    // smart_contracts/modules/accounting.py:114
     // self.account[holding_address].suspended = suspended
     dup
     pushint 56
@@ -2630,10 +2635,10 @@ account_gov_suspension:
     pushint 56
     swap
     box_replace
-    // smart_contracts/modules/accounting.py:112
+    // smart_contracts/modules/accounting.py:115
     // return Global.latest_timestamp
     global LatestTimestamp
-    // smart_contracts/modules/accounting.py:91
+    // smart_contracts/modules/accounting.py:94
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -2646,7 +2651,7 @@ account_gov_suspension:
 
 // smart_contracts.modules.accounting.AccountingModule.account_open[routing]() -> void:
 account_open:
-    // smart_contracts/modules/accounting.py:114
+    // smart_contracts/modules/accounting.py:117
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2672,19 +2677,19 @@ account_open:
     bytec_2 // "status"
     app_global_get_ex
     assert // check self.status exists
-    intc 6 // 200
+    intc 5 // 200
     ==
-    // smart_contracts/modules/accounting.py:136
+    // smart_contracts/modules/accounting.py:139
     // assert not self.status_is_ended(), err.UNAUTHORIZED
     !
     assert // Not authorized
-    // smart_contracts/modules/accounting.py:137
+    // smart_contracts/modules/accounting.py:140
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
-    // smart_contracts/modules/accounting.py:138
+    // smart_contracts/modules/accounting.py:141
     // self.assert_is_not_asset_suspended()
     callsub assert_is_not_asset_suspended
-    // smart_contracts/modules/accounting.py:139
+    // smart_contracts/modules/accounting.py:142
     // assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
     bytec_1 // 0x52333023
     uncover 2
@@ -2694,10 +2699,10 @@ account_open:
     bury 1
     !
     assert // Invalid account holding address
-    // smart_contracts/modules/accounting.py:143
+    // smart_contracts/modules/accounting.py:146
     // units=UInt64(0),
     intc_0 // 0
-    // smart_contracts/modules/accounting.py:141-147
+    // smart_contracts/modules/accounting.py:144-150
     // self.account[holding_address] = typ.AccountInfo(
     //     payment_address=payment_address,
     //     units=UInt64(0),
@@ -2716,10 +2721,10 @@ account_open:
     bytec 28 // 0x00
     concat
     box_put
-    // smart_contracts/modules/accounting.py:148
+    // smart_contracts/modules/accounting.py:151
     // return Global.latest_timestamp
     global LatestTimestamp
-    // smart_contracts/modules/accounting.py:114
+    // smart_contracts/modules/accounting.py:117
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -2732,7 +2737,7 @@ account_open:
 
 // smart_contracts.modules.accounting.AccountingModule.account_close[routing]() -> void:
 account_close:
-    // smart_contracts/modules/accounting.py:150
+    // smart_contracts/modules/accounting.py:153
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2746,7 +2751,7 @@ account_close:
     txn Sender
     callsub _role_is_active
     assert // Not authorized
-    // smart_contracts/modules/accounting.py:168
+    // smart_contracts/modules/accounting.py:171
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
     // smart_contracts/modules/accounting.py:31
@@ -2758,19 +2763,19 @@ account_close:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/modules/accounting.py:171
+    // smart_contracts/modules/accounting.py:174
     // closed_units = self.account[holding_address].units
     dup
     box_get
     pop
     intc_2 // 32
     extract_uint64
-    // smart_contracts/modules/accounting.py:172
+    // smart_contracts/modules/accounting.py:175
     // del self.account[holding_address]
     swap
     box_del
     pop
-    // smart_contracts/modules/accounting.py:173
+    // smart_contracts/modules/accounting.py:176
     // self.circulating_units -= closed_units
     intc_0 // 0
     bytec_3 // "circulating_units"
@@ -2781,13 +2786,13 @@ account_close:
     bytec_3 // "circulating_units"
     swap
     app_global_put
-    // smart_contracts/modules/accounting.py:174
+    // smart_contracts/modules/accounting.py:177
     // self.end_if_no_circulating_units()
     callsub end_if_no_circulating_units
-    // smart_contracts/modules/accounting.py:175
+    // smart_contracts/modules/accounting.py:178
     // return closed_units, Global.latest_timestamp
     global LatestTimestamp
-    // smart_contracts/modules/accounting.py:150
+    // smart_contracts/modules/accounting.py:153
     // @arc4.abimethod
     swap
     itob
@@ -2804,7 +2809,7 @@ account_close:
 
 // smart_contracts.modules.accounting.AccountingModule.account_update_payment_address[routing]() -> void:
 account_update_payment_address:
-    // smart_contracts/modules/accounting.py:177
+    // smart_contracts/modules/accounting.py:180
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2818,16 +2823,16 @@ account_update_payment_address:
     intc_2 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // smart_contracts/modules/accounting.py:191
+    // smart_contracts/modules/accounting.py:194
     // assert Txn.sender == holding_address, err.UNAUTHORIZED
     txn Sender
     dig 2
     ==
     assert // Not authorized
-    // smart_contracts/modules/accounting.py:192
+    // smart_contracts/modules/accounting.py:195
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
-    // smart_contracts/modules/accounting.py:193
+    // smart_contracts/modules/accounting.py:196
     // self.assert_is_not_asset_suspended()
     callsub assert_is_not_asset_suspended
     // smart_contracts/modules/accounting.py:31
@@ -2839,15 +2844,15 @@ account_update_payment_address:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/modules/accounting.py:195
+    // smart_contracts/modules/accounting.py:198
     // self.account[holding_address].payment_address = payment_address
     intc_0 // 0
     uncover 2
     box_replace
-    // smart_contracts/modules/accounting.py:196
+    // smart_contracts/modules/accounting.py:199
     // return Global.latest_timestamp
     global LatestTimestamp
-    // smart_contracts/modules/accounting.py:177
+    // smart_contracts/modules/accounting.py:180
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -2860,7 +2865,7 @@ account_update_payment_address:
 
 // smart_contracts.modules.accounting.AccountingModule.account_get_info[routing]() -> void:
 account_get_info:
-    // smart_contracts/modules/accounting.py:198
+    // smart_contracts/modules/accounting.py:201
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -2877,11 +2882,11 @@ account_get_info:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/modules/accounting.py:213
+    // smart_contracts/modules/accounting.py:216
     // return self.account[holding_address]
     box_get
     pop
-    // smart_contracts/modules/accounting.py:198
+    // smart_contracts/modules/accounting.py:201
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -3851,10 +3856,10 @@ day_count_factor_after_if_else@3:
     // smart_contracts/modules/core_financial/common.py:163
     // return time_period // UInt64(cst.DAY_2_SEC)
     frame_dig 0
-    intc 7 // 86400
+    intc 6 // 86400
     /
     frame_bury 0
-    intc 7 // 86400
+    intc 6 // 86400
     /
 
 day_count_factor_after_if_else@5:
@@ -4091,20 +4096,20 @@ is_payment_executable:
     assert // check self.account entry exists
     extract 0 32
     // smart_contracts/modules/payment_agent/common.py:15
-    // Asset(self.settlement_asset_id)
+    // self.settlement_asset_id
     intc_0 // 0
     bytec 8 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
     // smart_contracts/modules/payment_agent/common.py:14-16
     // self.account[holding_address].payment_address.is_opted_in(
-    //     Asset(self.settlement_asset_id)
+    //     self.settlement_asset_id
     // )
     asset_holding_get AssetBalance
     bury 1
     // smart_contracts/modules/payment_agent/common.py:14-17
     // self.account[holding_address].payment_address.is_opted_in(
-    //     Asset(self.settlement_asset_id)
+    //     self.settlement_asset_id
     // )
     // and not self.account[holding_address].suspended
     bz is_payment_executable_bool_false@3
@@ -4113,7 +4118,7 @@ is_payment_executable:
     frame_dig 0
     box_get
     assert // check self.account entry exists
-    intc 5 // 448
+    pushint 448
     getbit
     bnz is_payment_executable_bool_false@3
     intc_1 // 1
@@ -4122,7 +4127,7 @@ is_payment_executable_bool_merge@4:
     // smart_contracts/modules/payment_agent/common.py:13-18
     // return (
     //     self.account[holding_address].payment_address.is_opted_in(
-    //         Asset(self.settlement_asset_id)
+    //         self.settlement_asset_id
     //     )
     //     and not self.account[holding_address].suspended
     // )
@@ -4140,7 +4145,7 @@ assert_enough_funds:
     // def assert_enough_funds(self, payment_amount: UInt64) -> None:
     proto 1 0
     // smart_contracts/modules/payment_agent/common.py:22
-    // Asset(self.settlement_asset_id).balance(Global.current_application_address)
+    // self.settlement_asset_id.balance(Global.current_application_address)
     global CurrentApplicationAddress
     intc_0 // 0
     bytec 8 // "settlement_asset_id"
@@ -4149,13 +4154,13 @@ assert_enough_funds:
     asset_holding_get AssetBalance
     assert // account opted into asset
     // smart_contracts/modules/payment_agent/common.py:22-23
-    // Asset(self.settlement_asset_id).balance(Global.current_application_address)
+    // self.settlement_asset_id.balance(Global.current_application_address)
     // >= payment_amount
     frame_dig -1
     >=
     // smart_contracts/modules/payment_agent/common.py:21-24
     // assert (
-    //     Asset(self.settlement_asset_id).balance(Global.current_application_address)
+    //     self.settlement_asset_id.balance(Global.current_application_address)
     //     >= payment_amount
     // ), err.NOT_ENOUGH_FUNDS
     assert // Not enough funds for the payment
@@ -4309,7 +4314,7 @@ assert_time_events_sorted_for_header@1:
     // assert (time_f - time_i) % UInt64(
     //     cst.DAY_2_SEC
     // ) == 0, err.INVALID_TIME_PERIOD
-    intc 7 // 86400
+    intc 6 // 86400
     %
     !
     assert // Time periods in Actual/Actual day count convention must be multiples of a day (in seconds)
@@ -4325,12 +4330,31 @@ assert_time_events_sorted_after_for@6:
     retsub
 
 
+// smart_contracts.modules.accounting.AccountingModule.assert_is_not_account_suspended(holding_address: bytes) -> void:
+assert_is_not_account_suspended:
+    // smart_contracts/modules/accounting.py:33
+    // def assert_is_not_account_suspended(self, holding_address: Account) -> None:
+    proto 1 0
+    // smart_contracts/modules/accounting.py:34
+    // assert not self.account[holding_address].suspended, err.SUSPENDED
+    bytec_1 // 0x52333023
+    frame_dig -1
+    concat
+    box_get
+    assert // check self.account entry exists
+    pushint 448
+    getbit
+    !
+    assert // Suspended operations
+    retsub
+
+
 // smart_contracts.modules.accounting.AccountingModule.account_units_value(holding_address: bytes, units: uint64) -> uint64:
 account_units_value:
-    // smart_contracts/modules/accounting.py:33
+    // smart_contracts/modules/accounting.py:36
     // def account_units_value(self, holding_address: Account, units: UInt64) -> UInt64:
     proto 2 1
-    // smart_contracts/modules/accounting.py:34
+    // smart_contracts/modules/accounting.py:37
     // return units * self.account[holding_address].unit_value
     bytec_1 // 0x52333023
     frame_dig -2
@@ -4346,10 +4370,10 @@ account_units_value:
 
 // smart_contracts.modules.accounting.AccountingModule.account_total_units_value(holding_address: bytes) -> uint64:
 account_total_units_value:
-    // smart_contracts/modules/accounting.py:36
+    // smart_contracts/modules/accounting.py:39
     // def account_total_units_value(self, holding_address: Account) -> UInt64:
     proto 1 1
-    // smart_contracts/modules/accounting.py:38
+    // smart_contracts/modules/accounting.py:41
     // holding_address, self.account[holding_address].units
     bytec_1 // 0x52333023
     frame_dig -1
@@ -4358,7 +4382,7 @@ account_total_units_value:
     assert // check self.account entry exists
     intc_2 // 32
     extract_uint64
-    // smart_contracts/modules/accounting.py:37-39
+    // smart_contracts/modules/accounting.py:40-42
     // return self.account_units_value(
     //     holding_address, self.account[holding_address].units
     // )
@@ -4370,17 +4394,17 @@ account_total_units_value:
 
 // smart_contracts.modules.accounting.AccountingModule.end_if_no_circulating_units() -> void:
 end_if_no_circulating_units:
-    // smart_contracts/modules/accounting.py:45
+    // smart_contracts/modules/accounting.py:48
     // if self.circulating_units == UInt64(0):
     intc_0 // 0
     bytec_3 // "circulating_units"
     app_global_get_ex
     assert // check self.circulating_units exists
     bnz end_if_no_circulating_units_after_if_else@2
-    // smart_contracts/modules/accounting.py:46
+    // smart_contracts/modules/accounting.py:49
     // self.status = UInt64(enm.STATUS_ENDED)
     bytec_2 // "status"
-    intc 6 // 200
+    intc 5 // 200
     app_global_put
 
 end_if_no_circulating_units_after_if_else@2:
