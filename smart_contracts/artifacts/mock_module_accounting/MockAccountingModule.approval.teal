@@ -30,17 +30,17 @@ main:
     intc_1 // 0
     app_global_put
     // smart_contracts/modules/accounting.py:19
-    // self.total_units = UInt64(0)
+    // self.total_units = UInt64()
     pushbytes "total_units"
     intc_1 // 0
     app_global_put
     // smart_contracts/modules/accounting.py:20
-    // self.circulating_units = UInt64(0)
+    // self.circulating_units = UInt64()
     bytec 9 // "circulating_units"
     intc_1 // 0
     app_global_put
     // smart_contracts/modules/accounting.py:21
-    // self.unit_value = UInt64(0)
+    // self.unit_value = UInt64()
     pushbytes "unit_value"
     intc_1 // 0
     app_global_put
@@ -326,16 +326,16 @@ account_update_payment_address:
     intc_2 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // smart_contracts/modules/accounting.py:194
+    // smart_contracts/modules/accounting.py:200
     // assert Txn.sender == holding_address, err.UNAUTHORIZED
     txn Sender
     dig 2
     ==
     assert // Not authorized
-    // smart_contracts/modules/accounting.py:195
+    // smart_contracts/modules/accounting.py:201
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
-    // smart_contracts/modules/accounting.py:196
+    // smart_contracts/modules/accounting.py:202
     // self.assert_is_not_asset_suspended()
     callsub assert_is_not_asset_suspended
     // smart_contracts/modules/accounting.py:31
@@ -347,12 +347,12 @@ account_update_payment_address:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/modules/accounting.py:198
+    // smart_contracts/modules/accounting.py:204
     // self.account[holding_address].payment_address = payment_address
     intc_1 // 0
     uncover 2
     box_replace
-    // smart_contracts/modules/accounting.py:199
+    // smart_contracts/modules/accounting.py:205
     // return Global.latest_timestamp
     global LatestTimestamp
     // smart_contracts/modules/accounting.py:180
@@ -368,7 +368,7 @@ account_update_payment_address:
 
 // smart_contracts.modules.accounting.AccountingModule.account_get_info[routing]() -> void:
 account_get_info:
-    // smart_contracts/modules/accounting.py:201
+    // smart_contracts/modules/accounting.py:207
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -385,11 +385,11 @@ account_get_info:
     box_len
     bury 1
     assert // Invalid account holding address
-    // smart_contracts/modules/accounting.py:216
+    // smart_contracts/modules/accounting.py:222
     // return self.account[holding_address]
     box_get
     pop
-    // smart_contracts/modules/accounting.py:201
+    // smart_contracts/modules/accounting.py:207
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
