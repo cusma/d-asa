@@ -48,10 +48,9 @@ docs/                    -> mdBook source code
 |   └── contract/        -> Contract (ACTUS) specifications
 |   └── execution/       -> Contract execution specifications
 └── SUMMARY.md, ...      -> mdBook SUMMARY.md, COVER.md, etc.
+modules/                 -> D-ASA Modules
 smart_contracts/         -> D-ASA Smart Contracts
 └── artifacts/           -> AlgoKit auto-generated artifacts
-└── actus/               -> ACTUS high level mixins
-└── modules/             -> Low level mixins
 └── mock_module_.../     -> Mocked modules for tests
 └── contract_a/          -> Contract Type A
 └── contract_b/          -> Contract Type B
