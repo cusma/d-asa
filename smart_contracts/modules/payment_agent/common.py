@@ -10,11 +10,11 @@ class PaymentAgentCommonMixin(CoreFinancialCommonMixin):
     """Settlement execution helpers used by payment methods."""
 
     def assert_payment_authorization(self, holding_address: Account) -> None:
-        assert Txn.sender == self.account[holding_address].payment_address or (
-            Txn.sender == self.op_daemon.value
-            if self.op_daemon.value != Global.zero_address
-            else True
-        ), err.UNAUTHORIZED
+        if self.op_daemon.value != Global.zero_address:
+            assert (
+                Txn.sender == self.op_daemon.value
+                or Txn.sender == self.account[holding_address].payment_address
+            ), err.UNAUTHORIZED
 
     def is_payment_executable(self, holding_address: Account) -> bool:
         return (
