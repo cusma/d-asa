@@ -9,7 +9,7 @@ policy and the secondary market.
 
 The sender and receiver of the D-ASA transfer:
 
-- **MUST** have a valid Holding Addresses, and
+- **MUST** have a valid Holding Addresse, and
 - **MUST** be different from each other, and
 - **MUST NOT** be suspended from operations.
 
