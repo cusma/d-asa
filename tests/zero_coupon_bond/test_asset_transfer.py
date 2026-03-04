@@ -160,7 +160,7 @@ def test_fail_secondary_market_not_open_yet(
 
 
 def test_fail_unauthorized(
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     account_a: DAsaAccount,
     account_b: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
@@ -172,7 +172,7 @@ def test_fail_unauthorized(
                 receiver_holding_address=account_b.holding_address,
                 units=1,
             ),
-            params=CommonAppCallParams(sender=oscar.address),
+            params=CommonAppCallParams(sender=no_role_account.address),
         )
 
 
@@ -193,23 +193,23 @@ def test_fail_suspended(
 
 
 def test_fail_invalid_sender(
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     account_a: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         zero_coupon_bond_client_ongoing.send.asset_transfer(
             AssetTransferArgs(
-                sender_holding_address=oscar.address,
+                sender_holding_address=no_role_account.address,
                 receiver_holding_address=account_a.holding_address,
                 units=1,
             ),
-            params=CommonAppCallParams(sender=oscar.address),
+            params=CommonAppCallParams(sender=no_role_account.address),
         )
 
 
 def test_fail_invalid_receiver(
-    oscar: SigningAccount,
+    no_role_account: SigningAccount,
     account_a: DAsaAccount,
     zero_coupon_bond_client_ongoing: ZeroCouponBondClient,
 ) -> None:
@@ -217,7 +217,7 @@ def test_fail_invalid_receiver(
         zero_coupon_bond_client_ongoing.send.asset_transfer(
             AssetTransferArgs(
                 sender_holding_address=account_a.holding_address,
-                receiver_holding_address=oscar.address,
+                receiver_holding_address=no_role_account.address,
                 units=1,
             ),
             params=CommonAppCallParams(sender=account_a.address),
@@ -233,6 +233,14 @@ def test_fail_suspended_sender() -> None:
 
 
 def test_fail_suspended_receiver() -> None:
+    pass  # TODO
+
+
+def test_fail_self_transfer() -> None:
+    pass  # TODO
+
+
+def test_fail_null_transfer() -> None:
     pass  # TODO
 
 

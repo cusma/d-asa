@@ -1,0 +1,14 @@
+# Get Time Events
+
+```json
+{
+  "name": "get_time_events",
+  "desc": "Get D-ASA time events",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "uint64[]",
+    "desc": "Time events"
+  }
+}
+```

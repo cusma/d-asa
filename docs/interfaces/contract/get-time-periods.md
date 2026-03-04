@@ -1,0 +1,14 @@
+# Get Time Periods
+
+```json
+{
+  "name": "get_time_periods",
+  "desc": "Get D-ASA time periods",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "(uint64,uint64)[]",
+    "desc": "Time periods"
+  }
+}
+```

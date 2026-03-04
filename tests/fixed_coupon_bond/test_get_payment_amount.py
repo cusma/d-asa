@@ -4,6 +4,7 @@ from typing import Final
 import pytest
 from algokit_utils import LogicError, SigningAccount
 
+from smart_contracts import config as sc_cfg
 from smart_contracts import constants as sc_cst
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
@@ -11,7 +12,6 @@ from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import
     GetPaymentAmountArgs,
     PayCouponArgs,
 )
-from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
 
 D_ASA_TEST_UNITS: Final[int] = 3
@@ -85,9 +85,10 @@ def test_pass_not_configured(
 
 
 def test_fail_invalid_holding_address(
-    oscar: SigningAccount, fixed_coupon_bond_client_at_maturity: FixedCouponBondClient
+    no_role_account: SigningAccount,
+    fixed_coupon_bond_client_at_maturity: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_at_maturity.send.get_payment_amount(
-            GetPaymentAmountArgs(holding_address=oscar.address),
+            GetPaymentAmountArgs(holding_address=no_role_account.address),
         )

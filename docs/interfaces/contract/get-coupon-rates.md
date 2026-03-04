@@ -1,0 +1,14 @@
+# Get Coupon Rates
+
+```json
+{
+  "name": "get_coupons_rates",
+  "desc": "Get D-ASA coupon rates",
+  "readonly": true,
+  "args": [],
+  "returns": {
+    "type": "uint16[]",
+    "desc": "Coupon rates"
+  }
+}
+```

@@ -13,12 +13,11 @@ from algosdk.constants import min_txn_fee
 from algosdk.v2client.algod import AlgodClient
 
 from smart_contracts import constants as sc_cst
-from smart_contracts.artifacts.base_d_asa.base_d_asa_client import (
-    BaseDAsaClient,
-    GetAccountInfoArgs,
-)
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
+)
+from smart_contracts.artifacts.mock_module_accounting.mock_accounting_module_client import (
+    AccountGetInfoArgs,
 )
 from smart_contracts.artifacts.perpetual_bond.perpetual_bond_client import (
     PerpetualBondClient,
@@ -103,43 +102,38 @@ class DAsaInterestOracle(SigningAccount):
 @dataclass(kw_only=True)
 class DAsaAccount(SigningAccount):
     holding_address: str
-    d_asa_client: (
-        BaseDAsaClient
-        | ZeroCouponBondClient
-        | FixedCouponBondClient
-        | PerpetualBondClient
-    )
+    d_asa_client: ZeroCouponBondClient | FixedCouponBondClient | PerpetualBondClient
 
     @property
     def payment_address(self) -> str:
-        return self.d_asa_client.send.get_account_info(
-            GetAccountInfoArgs(
+        return self.d_asa_client.send.account_get_info(
+            AccountGetInfoArgs(
                 holding_address=self.holding_address,
             )
         ).abi_return.payment_address
 
     @property
     def units(self) -> int:
-        return self.d_asa_client.send.get_account_info(
-            GetAccountInfoArgs(holding_address=self.holding_address)
+        return self.d_asa_client.send.account_get_info(
+            AccountGetInfoArgs(holding_address=self.holding_address)
         ).abi_return.units
 
     @property
     def unit_value(self) -> int:
-        return self.d_asa_client.send.get_account_info(
-            GetAccountInfoArgs(holding_address=self.holding_address)
+        return self.d_asa_client.send.account_get_info(
+            AccountGetInfoArgs(holding_address=self.holding_address)
         ).abi_return.unit_value
 
     @property
     def paid_coupons(self) -> int:
-        return self.d_asa_client.send.get_account_info(
-            GetAccountInfoArgs(holding_address=self.holding_address)
+        return self.d_asa_client.send.account_get_info(
+            AccountGetInfoArgs(holding_address=self.holding_address)
         ).abi_return.paid_coupons
 
     @property
     def suspended(self) -> bool:
-        return self.d_asa_client.send.get_account_info(
-            GetAccountInfoArgs(holding_address=self.holding_address)
+        return self.d_asa_client.send.account_get_info(
+            AccountGetInfoArgs(holding_address=self.holding_address)
         ).abi_return.suspended
 
     @property

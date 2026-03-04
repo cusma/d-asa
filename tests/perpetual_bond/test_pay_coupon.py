@@ -179,6 +179,10 @@ def test_pass_skip_not_opted_in_account() -> None:
     pass  # TODO
 
 
+def test_fail_unauthorized() -> None:
+    pass  # TODO
+
+
 def test_fail_unauthorized_status() -> None:
     pass  # TODO
 
@@ -192,12 +196,12 @@ def test_fail_suspended() -> None:
 
 
 def test_fail_invalid_holding_address(
-    oscar: SigningAccount, perpetual_bond_client_ongoing: PerpetualBondClient
+    no_role_account: SigningAccount, perpetual_bond_client_ongoing: PerpetualBondClient
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         perpetual_bond_client_ongoing.send.pay_coupon(
             PayCouponArgs(
-                holding_address=oscar.address,
+                holding_address=no_role_account.address,
                 payment_info=b"",
             )
         )

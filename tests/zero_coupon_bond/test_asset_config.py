@@ -3,12 +3,13 @@ from copy import deepcopy
 import pytest
 from algokit_utils import LogicError
 
+from smart_contracts import config as sc_cfg
+from smart_contracts import enums
 from smart_contracts import errors as err
 from smart_contracts.artifacts.zero_coupon_bond.zero_coupon_bond_client import (
     AssetConfigArgs,
     ZeroCouponBondClient,
 )
-from smart_contracts.base_d_asa import config as sc_cfg
 from tests.utils import Currency, DAsaConfig
 
 
@@ -79,15 +80,27 @@ def test_pass_asset_config(
     )
 
     # Status
-    assert state.status == sc_cfg.STATUS_ACTIVE
-    assert not state.suspended
+    assert state.status == enums.STATUS_ACTIVE
+    assert not state.asset_suspended
 
 
-def test_fail_invalid_interest_rate() -> None:
+def test_fail_unauthorized() -> None:
     pass  # TODO
 
 
-def test_fail_invalid_coupon_rates() -> None:
+def test_fail_already_configured() -> None:
+    pass  # TODO
+
+
+def test_fail_invalid_denomination() -> None:
+    pass  # TODO
+
+
+def test_fail_invalid_minimum_denomination() -> None:
+    pass  # TODO
+
+
+def test_fail_invalid_interest_rate() -> None:
     pass  # TODO
 
 
@@ -132,6 +145,26 @@ def test_fail_invalid_sorting(
         zero_coupon_bond_client_empty.send.asset_config(
             AssetConfigArgs(**wrong_d_asa_cfg.dictify())
         )
+
+
+def test_fail_invalid_time_period_duration() -> None:
+    pass  # TODO
+
+
+def test_fail_invalid_settlement_asset() -> None:
+    pass  # TODO
+
+
+def test_fail_invalid_time_periods() -> None:
+    pass  # TODO
+
+
+def test_fail_invalid_time_period_representations() -> None:
+    pass  # TODO
+
+
+def test_fail_invalid_coupon_rates() -> None:
+    pass  # TODO
 
 
 # TODO: Test INVALID_TIME_PERIOD for Actual/Actual convention

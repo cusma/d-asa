@@ -54,9 +54,10 @@ def test_pass_not_configured(
 
 
 def test_fail_invalid_holding_address(
-    oscar: SigningAccount, zero_coupon_bond_client_primary: FixedCouponBondClient
+    no_role_account: SigningAccount,
+    zero_coupon_bond_client_primary: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         zero_coupon_bond_client_primary.send.get_payment_amount(
-            GetPaymentAmountArgs(holding_address=oscar.address)
+            GetPaymentAmountArgs(holding_address=no_role_account.address)
         )

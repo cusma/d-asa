@@ -3,13 +3,13 @@ from collections.abc import Callable
 import pytest
 from algokit_utils import LogicError, SigningAccount
 
+from smart_contracts import config as sc_cfg
 from smart_contracts import errors as err
 from smart_contracts.artifacts.fixed_coupon_bond.fixed_coupon_bond_client import (
     FixedCouponBondClient,
     GetPaymentAmountArgs,
     PayCouponArgs,
 )
-from smart_contracts.fixed_coupon_bond import config as sc_cfg
 from tests.utils import Currency, DAsaAccount, DAsaConfig, time_warp
 
 
@@ -173,6 +173,10 @@ def test_pass_skip_not_opted_in_account() -> None:
     pass  # TODO
 
 
+def test_fail_unauthorized() -> None:
+    pass  # TODO
+
+
 def test_fail_unauthorized_status() -> None:
     pass  # TODO
 
@@ -186,12 +190,13 @@ def test_fail_suspended() -> None:
 
 
 def test_fail_invalid_holding_address(
-    oscar: SigningAccount, fixed_coupon_bond_client_at_maturity: FixedCouponBondClient
+    no_role_account: SigningAccount,
+    fixed_coupon_bond_client_at_maturity: FixedCouponBondClient,
 ) -> None:
     with pytest.raises(LogicError, match=err.INVALID_HOLDING_ADDRESS):
         fixed_coupon_bond_client_at_maturity.send.pay_coupon(
             PayCouponArgs(
-                holding_address=oscar.address,
+                holding_address=no_role_account.address,
                 payment_info=b"",
             )
         )
