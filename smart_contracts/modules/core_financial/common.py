@@ -53,9 +53,8 @@ class CoreFinancialCommonMixin(AccountingModule):
 
     def assert_denomination_asset(self, denomination_asset_id: Asset) -> None:
         # The reference implementation has on-chain denomination with ASA
-        assert (
-            denomination_asset_id.id != UInt64(0) and denomination_asset_id.creator
-        ), err.INVALID_DENOMINATION
+        _creator, exists = op.AssetParamsGet.asset_creator(denomination_asset_id)
+        assert exists, err.INVALID_DENOMINATION
 
     def set_denomination_asset(self, denomination_asset_id: Asset) -> None:
         self.denomination_asset_id = denomination_asset_id
@@ -370,7 +369,7 @@ class CoreFinancialCommonMixin(AccountingModule):
         Raises:
             UNAUTHORIZED: Not authorized
             DEFAULTED: Defaulted
-            SUSPENDED: Suspended
+            SUSPENDED: Suspended operations
             INVALID_HOLDING_ADDRESS: Invalid account holding address
             ZERO_UNITS: Cannot distribute zero units
             OVER_DISTRIBUTION: Insufficient remaining D-ASA units

@@ -100,7 +100,7 @@ class PBNCoreMixin(CoreFinancialCommonMixin):
         Raises:
             UNAUTHORIZED: Not authorized
             DEFAULTED: Defaulted
-            SUSPENDED: Suspended
+            SUSPENDED: Suspended operations
             PENDING_COUPON_PAYMENT: Pending due coupon payment
         """
         self.assert_caller_is_interest_oracle()

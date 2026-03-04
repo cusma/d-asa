@@ -29,6 +29,7 @@ class RbacModule(ARC4Contract):
     def __init__(self) -> None:
         # RBAC Roles
         self.arranger = GlobalState(Account(), key=cst.PREFIX_ID_ARRANGER)
+        self.op_daemon = GlobalState(Account(), key=cst.PREFIX_ID_OP_DAEMON)
         self.account_manager = BoxMap(
             Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_ACCOUNT_MANAGER
         )
@@ -156,6 +157,21 @@ class RbacModule(ARC4Contract):
         """
         self.assert_caller_is_arranger()
         self.arranger.value = new_arranger
+        return Global.latest_timestamp
+
+    @arc4.abimethod
+    def rbac_set_op_daemon(self, *, address: Account) -> UInt64:
+        """
+        Non-Normative: Set the Operation Daemon address
+
+        Args:
+            address: Operation Daemon address
+
+        Returns:
+            Timestamp of the role assignment
+        """
+        self.assert_caller_is_arranger()
+        self.op_daemon.value = address
         return Global.latest_timestamp
 
     @arc4.abimethod
