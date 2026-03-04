@@ -47,8 +47,8 @@ jobs:
       matrix:
         module:
           # Mocked modules
-          - module_rbac
-          - module_accounting
+          - mock_module_rbac
+          - mock_module_accounting
           # Contracts
           - zero_coupon_bond
           - fixed_coupon_bond
@@ -94,8 +94,7 @@ jobs:
         with:
           filters: |
             shared:
-              - 'smart_contracts/modules/**'
-              - 'smart_contracts/actus/**'
+              - 'modules/**'
               - 'smart_contracts/artifacts/zero_coupon_bond/**'
               - 'smart_contracts/artifacts/fixed_coupon_bond/**'
               - 'smart_contracts/artifacts/perpetual_bond/**'
