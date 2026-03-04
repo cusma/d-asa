@@ -46,12 +46,12 @@ main:
     app_global_put
     // smart_contracts/modules/core_financial/common.py:31-32
     // # Asset Configuration
-    // self.denomination_asset_id = UInt64()
+    // self.denomination_asset_id = Asset()
     bytec 29 // "denomination_asset_id"
     intc_0 // 0
     app_global_put
     // smart_contracts/modules/core_financial/common.py:33
-    // self.settlement_asset_id = UInt64()
+    // self.settlement_asset_id = Asset()
     bytec 14 // "settlement_asset_id"
     intc_0 // 0
     app_global_put
@@ -347,7 +347,7 @@ asset_config:
     !
     assert // D-ASA already configured
     // smart_contracts/modules/core_financial/common.py:57
-    // denomination_asset_id != UInt64(0) and Asset(denomination_asset_id).creator
+    // denomination_asset_id.id != UInt64(0) and denomination_asset_id.creator
     bz asset_config_bool_false@4
     dig 11
     asset_params_get AssetCreator
@@ -361,7 +361,7 @@ asset_config_bool_merge@5:
     // smart_contracts/modules/core_financial/common.py:55-58
     // # The reference implementation has on-chain denomination with ASA
     // assert (
-    //     denomination_asset_id != UInt64(0) and Asset(denomination_asset_id).creator
+    //     denomination_asset_id.id != UInt64(0) and denomination_asset_id.creator
     // ), err.INVALID_DENOMINATION
     assert // Denomination asset is not properly set
     // smart_contracts/modules/core_financial/common.py:61
@@ -1223,20 +1223,20 @@ pay_coupon:
     assert // check self.account entry exists
     extract 0 32
     // smart_contracts/modules/payment_agent/common.py:15
-    // Asset(self.settlement_asset_id)
+    // self.settlement_asset_id
     intc_0 // 0
     bytec 14 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
     // smart_contracts/modules/payment_agent/common.py:14-16
     // self.account[holding_address].payment_address.is_opted_in(
-    //     Asset(self.settlement_asset_id)
+    //     self.settlement_asset_id
     // )
     asset_holding_get AssetBalance
     bury 1
     // smart_contracts/modules/payment_agent/common.py:14-17
     // self.account[holding_address].payment_address.is_opted_in(
-    //     Asset(self.settlement_asset_id)
+    //     self.settlement_asset_id
     // )
     // and not self.account[holding_address].suspended
     bz pay_coupon_bool_false@16
@@ -1255,7 +1255,7 @@ pay_coupon_bool_merge@17:
     // if self.is_payment_executable(holding_address):
     bz pay_coupon_else_body@3
     // smart_contracts/modules/payment_agent/common.py:22
-    // Asset(self.settlement_asset_id).balance(Global.current_application_address)
+    // self.settlement_asset_id.balance(Global.current_application_address)
     global CurrentApplicationAddress
     intc_0 // 0
     bytec 14 // "settlement_asset_id"
@@ -1266,7 +1266,7 @@ pay_coupon_bool_merge@17:
     asset_holding_get AssetBalance
     assert // account opted into asset
     // smart_contracts/modules/payment_agent/common.py:22-23
-    // Asset(self.settlement_asset_id).balance(Global.current_application_address)
+    // self.settlement_asset_id.balance(Global.current_application_address)
     // >= payment_amount
     dig 2
     dup
@@ -1274,7 +1274,7 @@ pay_coupon_bool_merge@17:
     >=
     // smart_contracts/modules/payment_agent/common.py:21-24
     // assert (
-    //     Asset(self.settlement_asset_id).balance(Global.current_application_address)
+    //     self.settlement_asset_id.balance(Global.current_application_address)
     //     >= payment_amount
     // ), err.NOT_ENOUGH_FUNDS
     assert // Not enough funds for the payment
@@ -2249,13 +2249,13 @@ get_asset_info_after_if_else@4:
 
 get_asset_info_after_if_else@6:
     // smart_contracts/modules/core_financial/common.py:414
-    // denomination_asset_id=self.denomination_asset_id,
+    // denomination_asset_id=self.denomination_asset_id.id,
     intc_0 // 0
     bytec 29 // "denomination_asset_id"
     app_global_get_ex
     assert // check self.denomination_asset_id exists
     // smart_contracts/modules/core_financial/common.py:415
-    // settlement_asset_id=self.settlement_asset_id,
+    // settlement_asset_id=self.settlement_asset_id.id,
     intc_0 // 0
     bytec 14 // "settlement_asset_id"
     app_global_get_ex
@@ -2359,8 +2359,8 @@ get_asset_info_after_if_else@6:
     extract 7 1
     // smart_contracts/modules/core_financial/common.py:413-429
     // return typ.AssetInfo(
-    //     denomination_asset_id=self.denomination_asset_id,
-    //     settlement_asset_id=self.settlement_asset_id,
+    //     denomination_asset_id=self.denomination_asset_id.id,
+    //     settlement_asset_id=self.settlement_asset_id.id,
     //     outstanding_principal=self.outstanding_principal(),
     //     unit_value=self.unit_value,
     //     day_count_convention=arc4.UInt8(self.day_count_convention),
