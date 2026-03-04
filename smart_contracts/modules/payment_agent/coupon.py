@@ -25,7 +25,7 @@ class CouponPaymentAgentMixin(PaymentAgentCommonMixin):
         Raises:
             UNAUTHORIZED: Not authorized
             DEFAULTED: Defaulted
-            SUSPENDED: Suspended
+            SUSPENDED: Suspended operations
             INVALID_HOLDING_ADDRESS: Invalid account holding address
             NO_UNITS: No D-ASA units
             NO_DUE_COUPON: No due coupon to pay

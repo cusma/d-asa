@@ -25,7 +25,7 @@ class PrincipalPaymentAgentMixin(PaymentAgentCommonMixin):
         Raises:
             UNAUTHORIZED: Not authorized
             DEFAULTED: Defaulted
-            SUSPENDED: Suspended
+            SUSPENDED: Suspended operations
             INVALID_HOLDING_ADDRESS: Invalid account holding address
             NO_UNITS: No D-ASA units
             NOT_MATURE: Not mature
