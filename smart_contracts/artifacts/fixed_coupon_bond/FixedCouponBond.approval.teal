@@ -1101,10 +1101,6 @@ pay_coupon:
     assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
     extract 2 0
     swap
-    // smart_contracts/modules/payment_agent/coupon.py:34
-    // self.assert_payment_authorization(holding_address)
-    dup
-    callsub assert_payment_authorization
     // smart_contracts/modules/accounting.py:25
     // return self.status == enm.STATUS_ACTIVE
     intc_0 // 0
@@ -1185,6 +1181,10 @@ pay_coupon:
     // )
     callsub coupon_interest_amount
     swap
+    // smart_contracts/modules/payment_agent/coupon.py:35
+    // self.assert_payment_authorization(holding_address)
+    dup
+    callsub assert_payment_authorization
     // smart_contracts/modules/payment_agent/coupon.py:38
     // if self.is_payment_executable(holding_address):
     callsub is_payment_executable
@@ -1296,10 +1296,6 @@ pay_principal:
     assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
     extract 2 0
     swap
-    // smart_contracts/modules/payment_agent/principal.py:33
-    // self.assert_payment_authorization(holding_address)
-    dup
-    callsub assert_payment_authorization
     // smart_contracts/modules/accounting.py:25
     // return self.status == enm.STATUS_ACTIVE
     intc_0 // 0
@@ -1362,6 +1358,10 @@ pay_principal:
     dup
     callsub account_total_units_value
     swap
+    // smart_contracts/modules/payment_agent/principal.py:34
+    // self.assert_payment_authorization(holding_address)
+    dup
+    callsub assert_payment_authorization
     // smart_contracts/modules/payment_agent/principal.py:37
     // if self.is_payment_executable(holding_address):
     callsub is_payment_executable

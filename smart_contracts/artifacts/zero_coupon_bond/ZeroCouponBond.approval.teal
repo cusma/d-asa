@@ -867,8 +867,6 @@ get_payment_amount_after_if_else@3:
 
 // smart_contracts.modules.payment_agent.principal.PrincipalPaymentAgentMixin.pay_principal[routing]() -> void:
 pay_principal:
-    intc_0 // 0
-    pushbytes ""
     // smart_contracts/modules/payment_agent/principal.py:11
     // @arc4.abimethod
     txna ApplicationArgs 1
@@ -888,54 +886,7 @@ pay_principal:
     ==
     assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
     extract 2 0
-    // smart_contracts/modules/payment_agent/common.py:13
-    // if self.op_daemon.value != Global.zero_address:
-    intc_0 // 0
-    bytec 19 // 0x52323523
-    app_global_get_ex
-    assert // check self.op_daemon exists
-    global ZeroAddress
-    !=
-    bz pay_principal_after_if_else@17
-    // smart_contracts/modules/payment_agent/common.py:15
-    // Txn.sender == self.op_daemon.value
-    txn Sender
-    intc_0 // 0
-    bytec 19 // 0x52323523
-    app_global_get_ex
-    assert // check self.op_daemon exists
-    ==
-    // smart_contracts/modules/payment_agent/common.py:15-16
-    // Txn.sender == self.op_daemon.value
-    // or Txn.sender == self.account[holding_address].payment_address
-    bnz pay_principal_bool_true@14
-    // smart_contracts/modules/payment_agent/common.py:16
-    // or Txn.sender == self.account[holding_address].payment_address
-    txn Sender
-    bytec_1 // 0x52333023
-    dig 3
-    concat
-    box_get
-    assert // check self.account entry exists
-    extract 0 32
-    ==
-    // smart_contracts/modules/payment_agent/common.py:15-16
-    // Txn.sender == self.op_daemon.value
-    // or Txn.sender == self.account[holding_address].payment_address
-    bz pay_principal_bool_false@15
-
-pay_principal_bool_true@14:
-    intc_1 // 1
-
-pay_principal_bool_merge@16:
-    // smart_contracts/modules/payment_agent/common.py:14-17
-    // assert (
-    //     Txn.sender == self.op_daemon.value
-    //     or Txn.sender == self.account[holding_address].payment_address
-    // ), err.UNAUTHORIZED
-    assert // Not authorized
-
-pay_principal_after_if_else@17:
+    swap
     // smart_contracts/modules/accounting.py:25
     // return self.status == enm.STATUS_ACTIVE
     intc_0 // 0
@@ -957,19 +908,16 @@ pay_principal_after_if_else@17:
     // smart_contracts/modules/accounting.py:31
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec_1 // 0x52333023
-    dig 2
-    dup
-    cover 2
+    dig 1
     concat
     dup
-    bury 6
+    cover 2
     dup
     box_len
     bury 1
     assert // Invalid account holding address
     // smart_contracts/actus/pam.py:21
     // units = self.account[holding_address].units
-    dup
     box_get
     pop
     intc_2 // 32
@@ -988,11 +936,56 @@ pay_principal_after_if_else@17:
     assert // Not mature
     // smart_contracts/modules/core_financial/no_coupon.py:53
     // return self.account_total_units_value(holding_address)
-    swap
     callsub account_total_units_value
-    bury 4
+    // smart_contracts/modules/payment_agent/common.py:13
+    // if self.op_daemon.value != Global.zero_address:
+    intc_0 // 0
+    bytec 19 // 0x52323523
+    app_global_get_ex
+    assert // check self.op_daemon exists
+    global ZeroAddress
+    !=
+    bz pay_principal_after_if_else@19
+    // smart_contracts/modules/payment_agent/common.py:15
+    // Txn.sender == self.op_daemon.value
+    txn Sender
+    intc_0 // 0
+    bytec 19 // 0x52323523
+    app_global_get_ex
+    assert // check self.op_daemon exists
+    ==
+    // smart_contracts/modules/payment_agent/common.py:15-16
+    // Txn.sender == self.op_daemon.value
+    // or Txn.sender == self.account[holding_address].payment_address
+    bnz pay_principal_bool_true@16
+    // smart_contracts/modules/payment_agent/common.py:16
+    // or Txn.sender == self.account[holding_address].payment_address
+    txn Sender
+    dig 2
+    box_get
+    assert // check self.account entry exists
+    extract 0 32
+    ==
+    // smart_contracts/modules/payment_agent/common.py:15-16
+    // Txn.sender == self.op_daemon.value
+    // or Txn.sender == self.account[holding_address].payment_address
+    bz pay_principal_bool_false@17
+
+pay_principal_bool_true@16:
+    intc_1 // 1
+
+pay_principal_bool_merge@18:
+    // smart_contracts/modules/payment_agent/common.py:14-17
+    // assert (
+    //     Txn.sender == self.op_daemon.value
+    //     or Txn.sender == self.account[holding_address].payment_address
+    // ), err.UNAUTHORIZED
+    assert // Not authorized
+
+pay_principal_after_if_else@19:
     // smart_contracts/modules/payment_agent/common.py:21
     // self.account[holding_address].payment_address.is_opted_in(
+    dig 1
     box_get
     assert // check self.account entry exists
     extract 0 32
@@ -1016,7 +1009,7 @@ pay_principal_after_if_else@17:
     bz pay_principal_bool_false@24
     // smart_contracts/modules/payment_agent/common.py:24
     // and not self.account[holding_address].suspended
-    dig 3
+    dig 1
     box_get
     assert // check self.account entry exists
     pushint 448
@@ -1042,7 +1035,7 @@ pay_principal_bool_merge@25:
     // smart_contracts/modules/payment_agent/common.py:29-30
     // self.settlement_asset_id.balance(Global.current_application_address)
     // >= payment_amount
-    dig 4
+    dig 2
     dup
     cover 2
     >=
@@ -1055,7 +1048,7 @@ pay_principal_bool_merge@25:
     // smart_contracts/modules/payment_agent/principal.py:40-41
     // # The reference implementation has the same asset for denomination and settlement, no conversion needed
     // self.pay(self.account[holding_address].payment_address, payment_amount)
-    dig 5
+    dig 3
     box_get
     assert // check self.account entry exists
     extract 0 32
@@ -1097,7 +1090,7 @@ pay_principal_after_if_else@4:
     bytec 4 // "circulating_units"
     app_global_get_ex
     assert // check self.circulating_units exists
-    dig 4
+    dig 2
     dup
     cover 2
     box_get
@@ -1127,12 +1120,12 @@ pay_principal_after_if_else@4:
     //     timestamp=Global.latest_timestamp,
     //     context=payment_info,  # TODO: Add info on failed payment
     // )
-    dig 3
+    dig 1
     itob
     swap
     itob
     concat
-    dig 1
+    dig 3
     dup
     len
     itob
@@ -1158,16 +1151,16 @@ pay_principal_else_body@3:
     // # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
     // payment_amount = UInt64()
     intc_0 // 0
-    bury 3
+    bury 1
     b pay_principal_after_if_else@4
 
 pay_principal_bool_false@24:
     intc_0 // 0
     b pay_principal_bool_merge@25
 
-pay_principal_bool_false@15:
+pay_principal_bool_false@17:
     intc_0 // 0
-    b pay_principal_bool_merge@16
+    b pay_principal_bool_merge@18
 
 
 // smart_contracts.modules.transfer_agent.no_coupon.NoCouponTransferAgentMixin.asset_transfer[routing]() -> void:

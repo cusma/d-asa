@@ -30,8 +30,8 @@ class PrincipalPaymentAgentMixin(PaymentAgentCommonMixin):
             NO_UNITS: No D-ASA units
             NOT_MATURE: Not mature
         """
-        self.assert_payment_authorization(holding_address)
         payment_amount = self.core_prepare_principal_payment(holding_address)
+        self.assert_payment_authorization(holding_address)
         # The reference implementation does not assert if there is enough liquidity to pay the principal to all
 
         if self.is_payment_executable(holding_address):
