@@ -120,8 +120,6 @@ flowchart TD
   TRN["No-Coupon Transfer Agent"] --> Z
   TRC["Coupon Transfer Agent"] --> F
   TRC --> P
-
-  EXT["PBN + No-Coupon (Extension Point, Not Implemented)"]
 ```
 
 Current supported combinations:
@@ -129,7 +127,6 @@ Current supported combinations:
 - `PAM + no-coupon` -> `ZeroCouponBond`
 - `PAM + coupon` -> `FixedCouponBond`
 - `PBN + coupon` -> `PerpetualBond`
-- `PBN + no-coupon` -> extension point only (not implemented)
 
 ## Execution flow by agent
 
@@ -199,4 +196,3 @@ Examples:
 
 - `ZeroCouponBond` excludes `pay_coupon`.
 - `PerpetualBond` excludes `pay_principal`.
-- No runtime `instrument_type` switching is required in composition.
