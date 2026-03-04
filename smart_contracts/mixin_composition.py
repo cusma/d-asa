@@ -19,45 +19,45 @@ class CompositionValidationError(ValueError):
 
 _SAFETY_RULES: tuple[tuple[str, tuple[str, ...], str], ...] = (
     (
-        "smart_contracts.modules.transfer_agent.coupon.CouponTransferAgentMixin",
+        "modules.transfer_agent.coupon.CouponTransferAgentMixin",
         ("core_prepare_transfer_with_coupon",),
-        "smart_contracts.modules.transfer_agent.common.TransferAgentCommonMixin",
+        "modules.transfer_agent.common.TransferAgentCommonMixin",
     ),
     (
-        "smart_contracts.modules.transfer_agent.no_coupon.NoCouponTransferAgentMixin",
+        "modules.transfer_agent.no_coupon.NoCouponTransferAgentMixin",
         ("core_prepare_transfer_no_coupon",),
-        "smart_contracts.modules.transfer_agent.common.TransferAgentCommonMixin",
+        "modules.transfer_agent.common.TransferAgentCommonMixin",
     ),
     (
-        "smart_contracts.modules.payment_agent.coupon.CouponPaymentAgentMixin",
+        "modules.payment_agent.coupon.CouponPaymentAgentMixin",
         ("core_prepare_coupon_payment", "core_apply_coupon_payment"),
-        "smart_contracts.modules.payment_agent.common.PaymentAgentCommonMixin",
+        "modules.payment_agent.common.PaymentAgentCommonMixin",
     ),
     (
-        "smart_contracts.modules.payment_agent.principal.PrincipalPaymentAgentMixin",
+        "modules.payment_agent.principal.PrincipalPaymentAgentMixin",
         ("core_prepare_principal_payment", "core_apply_principal_payment"),
-        "smart_contracts.modules.payment_agent.common.PaymentAgentCommonMixin",
+        "modules.payment_agent.common.PaymentAgentCommonMixin",
     ),
     (
-        "smart_contracts.modules.transfer_agent.coupon.CouponTransferAgentMixin",
+        "modules.transfer_agent.coupon.CouponTransferAgentMixin",
         ("count_due_coupons", "all_due_coupons_paid"),
-        "smart_contracts.modules.core_financial.common.CoreFinancialCommonMixin",
+        "modules.core_financial.common.CoreFinancialCommonMixin",
     ),
     (
-        "smart_contracts.modules.payment_agent.coupon.CouponPaymentAgentMixin",
+        "modules.payment_agent.coupon.CouponPaymentAgentMixin",
         ("count_due_coupons", "all_due_coupons_paid"),
-        "smart_contracts.modules.core_financial.common.CoreFinancialCommonMixin",
+        "modules.core_financial.common.CoreFinancialCommonMixin",
     ),
     (
-        "smart_contracts.modules.payment_agent.principal.PrincipalPaymentAgentMixin",
+        "modules.payment_agent.principal.PrincipalPaymentAgentMixin",
         ("assert_pay_principal_authorization",),
-        "smart_contracts.modules.core_financial.common.CoreFinancialCommonMixin",
+        "modules.core_financial.common.CoreFinancialCommonMixin",
     ),
 )
 
 
 def validate_contract_composition(contract_path: Path, source_root: Path) -> None:
-    class_map, alias_map = _index_classes(source_root)
+    class_map, alias_map = _index_classes(_resolve_source_roots(source_root))
     normalized_contract_path = contract_path.resolve()
     target_classes = [
         info
@@ -182,45 +182,70 @@ def _c3_merge(sequences: list[list[str]]) -> tuple[str, ...]:
     return tuple(result)
 
 
-def _index_classes(source_root: Path) -> tuple[dict[str, ClassInfo], dict[str, str]]:
+def _resolve_source_roots(source_root: Path) -> tuple[Path, ...]:
+    """
+    Build source roots for composition indexing.
+
+    Contracts live under `smart_contracts/`, while shared mixins now live in the
+    sibling top-level `modules/` package.
+    """
+    resolved_source_root = source_root.resolve()
+    source_roots: list[Path] = [resolved_source_root]
+
+    sibling_modules_root = resolved_source_root.parent / "modules"
+    if sibling_modules_root.is_dir() and (sibling_modules_root / "__init__.py").exists():
+        source_roots.append(sibling_modules_root.resolve())
+
+    deduped_roots: list[Path] = []
+    seen_roots: set[Path] = set()
+    for root in source_roots:
+        if root in seen_roots:
+            continue
+        seen_roots.add(root)
+        deduped_roots.append(root)
+    return tuple(deduped_roots)
+
+
+def _index_classes(source_roots: tuple[Path, ...]) -> tuple[dict[str, ClassInfo], dict[str, str]]:
     class_map: dict[str, ClassInfo] = {}
     alias_map: dict[str, str] = {}
-    for source_file in source_root.rglob("*.py"):
-        if "artifacts" in source_file.parts:
-            continue
-
-        module_name = _module_name_from_path(source_file, source_root)
-        source_ast = ast.parse(source_file.read_text(encoding="utf-8"))
-        module_class_names = {
-            node.name for node in source_ast.body if isinstance(node, ast.ClassDef)
-        }
-        import_map = _build_import_map(
-            source_ast, module_name, is_package=source_file.name == "__init__.py"
-        )
-        for local_name, target_name in import_map.items():
-            alias_map[f"{module_name}.{local_name}"] = target_name
-
-        for node in source_ast.body:
-            if not isinstance(node, ast.ClassDef):
+    for source_root in source_roots:
+        for source_file in source_root.rglob("*.py"):
+            if "artifacts" in source_file.parts:
                 continue
-            base_names = tuple(
-                _resolve_base_name(base, module_name, import_map, module_class_names)
-                for base in node.bases
+
+            module_name = _module_name_from_path(source_file, source_root)
+            source_ast = ast.parse(source_file.read_text(encoding="utf-8"))
+            module_class_names = {
+                node.name for node in source_ast.body if isinstance(node, ast.ClassDef)
+            }
+            import_map = _build_import_map(
+                source_ast, module_name, is_package=source_file.name == "__init__.py"
             )
-            methods = frozenset(
-                child.name
-                for child in node.body
-                if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef))
-            )
-            fqcn = f"{module_name}.{node.name}"
-            class_map[fqcn] = ClassInfo(
-                fqcn=fqcn,
-                module=module_name,
-                name=node.name,
-                bases=base_names,
-                methods=methods,
-                path=source_file,
-            )
+            for local_name, target_name in import_map.items():
+                alias_map[f"{module_name}.{local_name}"] = target_name
+
+            for node in source_ast.body:
+                if not isinstance(node, ast.ClassDef):
+                    continue
+                base_names = tuple(
+                    _resolve_base_name(base, module_name, import_map, module_class_names)
+                    for base in node.bases
+                )
+                methods = frozenset(
+                    child.name
+                    for child in node.body
+                    if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef))
+                )
+                fqcn = f"{module_name}.{node.name}"
+                class_map[fqcn] = ClassInfo(
+                    fqcn=fqcn,
+                    module=module_name,
+                    name=node.name,
+                    bases=base_names,
+                    methods=methods,
+                    path=source_file,
+                )
     return class_map, alias_map
 
 
