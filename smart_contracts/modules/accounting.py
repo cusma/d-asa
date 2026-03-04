@@ -16,9 +16,9 @@ class AccountingModule(RbacModule):
         self.account = BoxMap(
             Account, typ.AccountInfo, key_prefix=cst.PREFIX_ID_ACCOUNT
         )
-        self.total_units = UInt64(0)
-        self.circulating_units = UInt64(0)
-        self.unit_value = UInt64(0)
+        self.total_units = UInt64()
+        self.circulating_units = UInt64()
+        self.unit_value = UInt64()
         self.status = UInt64(enm.STATUS_INACTIVE)
 
     def status_is_active(self) -> bool:
@@ -29,6 +29,9 @@ class AccountingModule(RbacModule):
 
     def assert_valid_holding_address(self, holding_address: Account) -> None:
         assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
+
+    def assert_is_not_account_suspended(self, holding_address: Account) -> None:
+        assert not self.account[holding_address].suspended, err.SUSPENDED
 
     def account_units_value(self, holding_address: Account, units: UInt64) -> UInt64:
         return units * self.account[holding_address].unit_value
@@ -128,7 +131,7 @@ class AccountingModule(RbacModule):
         Raises:
             UNAUTHORIZED: Not authorized
             DEFAULTED: Defaulted
-            SUSPENDED: Suspended
+            SUSPENDED: Suspended operations
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
 
@@ -187,6 +190,12 @@ class AccountingModule(RbacModule):
 
         Returns:
             Timestamp of the account update
+
+        Raises:
+            UNAUTHORIZED: Not authorized
+            DEFAULTED: Defaulted
+            SUSPENDED: Suspended operations
+            INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
         assert Txn.sender == holding_address, err.UNAUTHORIZED
         self.assert_is_not_asset_defaulted()

@@ -28,9 +28,11 @@ class CouponTransferAgentMixin(TransferAgentCommonMixin):
         Raises:
             UNAUTHORIZED: Not authorized
             DEFAULTED: Defaulted
-            SUSPENDED: Suspended
+            SUSPENDED: Suspended operations
             INVALID_HOLDING_ADDRESS: Invalid account holding address
             SECONDARY_MARKET_CLOSED: Secondary market is closed
+            SELF_TRANSFER: Sender and receiver must be different
+            NULL_TRANSFER: Transfer units must be greater than zero
             OVER_TRANSFER: Insufficient sender units to transfer
             NON_FUNGIBLE_UNITS: Sender and receiver units are not fungible
             PENDING_COUPON_PAYMENT: Pending due coupon payment

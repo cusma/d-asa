@@ -62,6 +62,7 @@ ROLE_INTEREST_ORACLE: Final[int] = 80
 
 # Role Keys Prefix
 PREFIX_ID_ARRANGER: Final[bytes] = b"R20#"
+PREFIX_ID_OP_DAEMON: Final[bytes] = b"R25#"
 PREFIX_ID_ACCOUNT: Final[bytes] = b"R30#"
 PREFIX_ID_ACCOUNT_MANAGER: Final[bytes] = b"R40#"
 PREFIX_ID_PRIMARY_DEALER: Final[bytes] = b"R50#"

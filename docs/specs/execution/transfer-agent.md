@@ -5,12 +5,22 @@
 > D-ASA supports both on-chain and off-chain transfer agents.
 
 The Transfer Agent **SHALL** authorize the D-ASA transfers according to the transferability
-policy.
+policy and the secondary market.
 
-The transferred D-ASA *units* **MUST** be *fungible* (see [D-ASA Units fungibility](../accounting/units.md#fungibility-fungibility)
-section).
+The sender and receiver of the D-ASA transfer:
 
-The transferred D-ASA *units* **MUST** record D-ASA *unit value* and *paid coupons*.
+- **MUST** have a valid Holding Addresse, and
+- **MUST** be different from each other, and
+- **MUST NOT** be suspended from operations.
+
+The sender of the D-ASA transfer **MUST** have sufficient D-ASA *units* to transfer.
+
+The transferred D-ASA *units*:
+
+- **MUST** be non-zero, and
+- **MUST** be *fungible* (see [D-ASA Units fungibility](../accounting/units.md#fungibility-fungibility)
+section), and
+- **MUST** record D-ASA *unit value* and *paid coupons*.
 
 D-ASA *units* **SHALL NOT** be transferred if the sender has pending due coupon
 payments.

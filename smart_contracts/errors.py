@@ -1,3 +1,6 @@
+# Build
+INVALID_MIXIN_COMPOSITION = "Invalid mixin composition"
+
 # State Schema
 WRONG_GLOBAL_BYTES = "Wrong Global Bytes allocation"
 WRONG_GLOBAL_UINTS = "Wrong Global UInts allocation"
@@ -48,6 +51,8 @@ PRIMARY_DISTRIBUTION_CLOSED = "Primary distribution is closed"
 
 # Asset Transfer
 SECONDARY_MARKET_CLOSED = "Secondary market is closed"
+SELF_TRANSFER = "Sender and receiver must be different"
+NULL_TRANSFER = "Transfer units must be greater than zero"
 OVER_TRANSFER = "Insufficient sender units to transfer"
 NON_FUNGIBLE_UNITS = "Sender and receiver units are not fungible"
 

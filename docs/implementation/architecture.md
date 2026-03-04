@@ -170,6 +170,25 @@ sequenceDiagram
 | Coupon getters (`get_coupon_rates`, `get_coupons_status`)                      | No   | Yes   | Yes       |
 | `get_time_periods`                                                             | No   | No    | Yes       |
 
+## Composition Safety
+
+Contract composition is validated at build time before contract compilation.
+
+- Agent mixins (`CouponTransferAgentMixin`, `NoCouponTransferAgentMixin`,
+  `CouponPaymentAgentMixin`, `PrincipalPaymentAgentMixin`) must resolve their core
+  hook methods to safe implementations.
+- If a hook resolves to an unsafe default in agent-common mixins, build validation
+  fails before compilation.
+- Core financial hook defaults also fail-closed with `INVALID_MIXIN_COMPOSITION`
+  and must be resolved by the expected cashflow/core mixins in the effective MRO.
+- Unsafe default hooks are fail-closed and abort with `INVALID_MIXIN_COMPOSITION`
+  if reached.
+- Build and deploy flows verify generated `.teal` and `.arc56.json` artifacts do
+  not contain `INVALID_MIXIN_COMPOSITION` markers.
+
+This prevents missing mixins or incorrect MRO ordering from silently producing
+fail-open settlement behavior.
+
 ## On-chain optimization outcome
 
 Contracts are assembled from only the mixins required for each product. This removes
