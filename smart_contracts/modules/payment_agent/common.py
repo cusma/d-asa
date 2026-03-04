@@ -1,4 +1,4 @@
-from algopy import Account, Global, UInt64, itxn, op
+from algopy import Account, Global, Txn, UInt64, itxn, op
 
 from smart_contracts import errors as err
 from smart_contracts.modules.core_financial.common import (
@@ -8,6 +8,13 @@ from smart_contracts.modules.core_financial.common import (
 
 class PaymentAgentCommonMixin(CoreFinancialCommonMixin):
     """Settlement execution helpers used by payment methods."""
+
+    def assert_payment_authorization(self, holding_address: Account) -> None:
+        assert Txn.sender == self.account[holding_address].payment_address or (
+            Txn.sender == self.op_daemon.value
+            if self.op_daemon.value != Global.zero_address
+            else True
+        ), err.UNAUTHORIZED
 
     def is_payment_executable(self, holding_address: Account) -> bool:
         return (

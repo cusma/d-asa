@@ -30,7 +30,7 @@ class PrincipalPaymentAgentMixin(PaymentAgentCommonMixin):
             NO_UNITS: No D-ASA units
             NOT_MATURE: Not mature
         """
-        # The reference implementation does not restrict caller authorization
+        self.assert_payment_authorization(holding_address)
         payment_amount = self.core_prepare_principal_payment(holding_address)
         # The reference implementation does not assert if there is enough liquidity to pay the principal to all
 

@@ -31,7 +31,7 @@ class CouponPaymentAgentMixin(PaymentAgentCommonMixin):
             NO_DUE_COUPON: No due coupon to pay
             PENDING_COUPON_PAYMENT: Pending due coupon payment
         """
-        # The reference implementation does not restrict caller authorization
+        self.assert_payment_authorization(holding_address)
         payment_amount, units = self.core_prepare_coupon_payment(holding_address)
         # The reference implementation does not assert if there is enough liquidity to pay current due coupon to all
 
