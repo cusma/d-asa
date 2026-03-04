@@ -175,9 +175,8 @@ class CoreFinancialCommonMixin(AccountingModule):
         self.assert_is_not_asset_suspended()
         self.assert_valid_holding_address(sender_holding_address)
         self.assert_valid_holding_address(receiver_holding_address)
-        assert not self.account[sender_holding_address].suspended, err.SUSPENDED
-        assert not self.account[receiver_holding_address].suspended, err.SUSPENDED
-        assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
+        self.assert_is_not_account_suspended(sender_holding_address)
+        self.assert_is_not_account_suspended(receiver_holding_address)
 
     def assert_asset_transfer_preconditions(
         self,
@@ -191,6 +190,9 @@ class CoreFinancialCommonMixin(AccountingModule):
             receiver_holding_address,
             units,
         )
+        assert sender_holding_address != receiver_holding_address, err.SELF_TRANSFER
+        assert units > 0, err.NULL_TRANSFER
+        assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
         self.assert_fungible_transfer(
             sender_holding_address,
             receiver_holding_address,
