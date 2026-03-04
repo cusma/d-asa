@@ -1,6 +1,6 @@
 from algopy import Txn, arc4
 
-from smart_contracts.modules.accounting import AccountingModule
+from modules.accounting import AccountingModule
 
 
 class MockAccountingModule(AccountingModule):

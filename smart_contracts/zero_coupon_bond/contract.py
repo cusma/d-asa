@@ -1,10 +1,10 @@
 from algopy import StateTotals, Txn
 
+from modules.actus import PAMCoreMixin
+from modules.core_financial import NoCouponCashflowMixin
+from modules.payment_agent import PrincipalPaymentAgentMixin
+from modules.transfer_agent import NoCouponTransferAgentMixin
 from smart_contracts import errors as err
-from smart_contracts.actus import PAMCoreMixin
-from smart_contracts.modules.core_financial import NoCouponCashflowMixin
-from smart_contracts.modules.payment_agent import PrincipalPaymentAgentMixin
-from smart_contracts.modules.transfer_agent import NoCouponTransferAgentMixin
 
 from . import config as cfg
 

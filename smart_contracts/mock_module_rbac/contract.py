@@ -1,6 +1,6 @@
 from algopy import Txn, arc4
 
-from smart_contracts.modules.rbac import RbacModule
+from modules.rbac import RbacModule
 
 
 class MockRbacModule(RbacModule):

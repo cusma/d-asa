@@ -1,4 +1,4 @@
-from smart_contracts.modules.core_financial.common import (
+from modules.core_financial.common import (
     CoreFinancialCommonMixin,
 )
 
