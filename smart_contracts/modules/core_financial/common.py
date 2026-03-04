@@ -166,7 +166,6 @@ class CoreFinancialCommonMixin(AccountingModule):
         self,
         sender_holding_address: Account,
         receiver_holding_address: Account,
-        units: UInt64,
     ) -> None:
         # The reference implementation grants transfer right to D-ASA owners. Other implementations may relay on other
         # roles, external Apps through C2C calls (e.g., an order book), or off-chain transfer agents.
@@ -188,7 +187,6 @@ class CoreFinancialCommonMixin(AccountingModule):
         self.assert_asset_transfer_authorization(
             sender_holding_address,
             receiver_holding_address,
-            units,
         )
         assert sender_holding_address != receiver_holding_address, err.SELF_TRANSFER
         assert units > 0, err.NULL_TRANSFER
