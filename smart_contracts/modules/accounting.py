@@ -30,6 +30,9 @@ class AccountingModule(RbacModule):
     def assert_valid_holding_address(self, holding_address: Account) -> None:
         assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
 
+    def assert_is_not_account_suspended(self, holding_address: Account) -> None:
+        assert not self.account[holding_address].suspended, err.SUSPENDED
+
     def account_units_value(self, holding_address: Account, units: UInt64) -> UInt64:
         return units * self.account[holding_address].unit_value
 
@@ -78,8 +81,6 @@ class AccountingModule(RbacModule):
         receiver_holding_address: Account,
         units: UInt64,
     ) -> None:
-        assert sender_holding_address != receiver_holding_address, err.SELF_TRANSFER
-        assert units > 0, err.NULL_TRANSFER
         self.debit_units(sender_holding_address, units)
         self.credit_units(receiver_holding_address, units)
 
