@@ -1283,12 +1283,12 @@ asset_transfer_bool_merge@7:
     uncover 3
     uncover 2
     !=
-    assert // Sender and receiver holding addresses must be different
+    assert // Sender and receiver must be different
     // smart_contracts/modules/core_financial/common.py:194
     // assert units > 0, err.NULL_TRANSFER
     dig 2
     dup
-    assert // Transfer amount must be greater than zero
+    assert // Transfer units must be greater than zero
     // smart_contracts/modules/core_financial/common.py:195
     // assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
     uncover 2

@@ -15331,8 +15331,8 @@
       ]
     },
     "2099": {
-      "error": "Sender and receiver holding addresses must be different",
-      "op": "assert // Sender and receiver holding addresses must be different",
+      "error": "Sender and receiver must be different",
+      "op": "assert // Sender and receiver must be different",
       "stack_out": [
         "aggregate%extract%1#0",
         "box_prefixed_key%0#2",
@@ -15395,8 +15395,8 @@
       ]
     },
     "2103": {
-      "error": "Transfer amount must be greater than zero",
-      "op": "assert // Transfer amount must be greater than zero",
+      "error": "Transfer units must be greater than zero",
+      "op": "assert // Transfer units must be greater than zero",
       "stack_out": [
         "aggregate%extract%1#0",
         "box_prefixed_key%0#2",
