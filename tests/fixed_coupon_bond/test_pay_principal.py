@@ -82,6 +82,10 @@ def test_pass_skip_not_opted_in_account() -> None:
     pass  # TODO
 
 
+def test_fail_unauthorized() -> None:
+    pass  # TODO
+
+
 def test_fail_unauthorized_status() -> None:
     pass  # TODO
 
