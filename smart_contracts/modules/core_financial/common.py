@@ -29,8 +29,8 @@ class CoreFinancialCommonMixin(AccountingModule):
         super().__init__()
 
         # Asset Configuration
-        self.denomination_asset_id = UInt64()
-        self.settlement_asset_id = UInt64()
+        self.denomination_asset_id = Asset()
+        self.settlement_asset_id = Asset()
         self.unit_value = UInt64()
         self.day_count_convention = UInt64()
 
@@ -51,22 +51,22 @@ class CoreFinancialCommonMixin(AccountingModule):
         self.secondary_market_closure_date = UInt64()
         self.maturity_date = UInt64()
 
-    def assert_denomination_asset(self, denomination_asset_id: UInt64) -> None:
+    def assert_denomination_asset(self, denomination_asset_id: Asset) -> None:
         # The reference implementation has on-chain denomination with ASA
         assert (
-            denomination_asset_id != UInt64(0) and Asset(denomination_asset_id).creator
+            denomination_asset_id.id != UInt64(0) and denomination_asset_id.creator
         ), err.INVALID_DENOMINATION
 
-    def set_denomination_asset(self, denomination_asset_id: UInt64) -> None:
+    def set_denomination_asset(self, denomination_asset_id: Asset) -> None:
         self.denomination_asset_id = denomination_asset_id
 
-    def assert_settlement_asset(self, settlement_asset_id: UInt64) -> None:
+    def assert_settlement_asset(self, settlement_asset_id: Asset) -> None:
         # The reference implementation settlement asset is the denomination asset
         assert (
             settlement_asset_id == self.denomination_asset_id
         ), err.INVALID_SETTLEMENT_ASSET
 
-    def set_settlement_asset(self, settlement_asset_id: UInt64) -> None:
+    def set_settlement_asset(self, settlement_asset_id: Asset) -> None:
         self.settlement_asset_id = settlement_asset_id
         # The reference implementation has on-chain settlement with ASA
         itxn.AssetTransfer(
@@ -216,8 +216,8 @@ class CoreFinancialCommonMixin(AccountingModule):
     def _configure_asset_terms(
         self,
         *,
-        denomination_asset_id: UInt64,
-        settlement_asset_id: UInt64,
+        denomination_asset_id: Asset,
+        settlement_asset_id: Asset,
         principal: UInt64,
         principal_discount: UInt64,
         minimum_denomination: UInt64,
@@ -411,8 +411,8 @@ class CoreFinancialCommonMixin(AccountingModule):
             performance = UInt64(cst.PRF_DEFAULTED)
 
         return typ.AssetInfo(
-            denomination_asset_id=self.denomination_asset_id,
-            settlement_asset_id=self.settlement_asset_id,
+            denomination_asset_id=self.denomination_asset_id.id,
+            settlement_asset_id=self.settlement_asset_id.id,
             outstanding_principal=self.outstanding_principal(),
             unit_value=self.unit_value,
             day_count_convention=arc4.UInt8(self.day_count_convention),
