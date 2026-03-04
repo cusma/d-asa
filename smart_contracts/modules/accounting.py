@@ -78,6 +78,8 @@ class AccountingModule(RbacModule):
         receiver_holding_address: Account,
         units: UInt64,
     ) -> None:
+        assert sender_holding_address != receiver_holding_address, err.SELF_TRANSFER
+        assert units > 0, err.NULL_TRANSFER
         self.debit_units(sender_holding_address, units)
         self.credit_units(receiver_holding_address, units)
 
