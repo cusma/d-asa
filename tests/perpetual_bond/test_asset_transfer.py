@@ -218,6 +218,14 @@ def test_fail_suspended_receiver(
         )
 
 
+def test_fail_self_transfer() -> None:
+    pass  # TODO
+
+
+def test_fail_null_transfer() -> None:
+    pass  # TODO
+
+
 def test_fail_over_transfer(
     account_a: DAsaAccount,
     account_b: DAsaAccount,
