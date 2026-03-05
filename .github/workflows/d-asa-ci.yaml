@@ -108,3 +108,9 @@ jobs:
         run: |
           set -o pipefail
           algokit project run test tests/shared
+
+      - name: Run helper tests
+        shell: bash
+        run: |
+          set -o pipefail
+          algokit project run test tests/test_utils.py tests/test_mixin_composition_guards.py
