@@ -193,7 +193,10 @@ def _resolve_source_roots(source_root: Path) -> tuple[Path, ...]:
     source_roots: list[Path] = [resolved_source_root]
 
     sibling_modules_root = resolved_source_root.parent / "modules"
-    if sibling_modules_root.is_dir() and (sibling_modules_root / "__init__.py").exists():
+    if (
+        sibling_modules_root.is_dir()
+        and (sibling_modules_root / "__init__.py").exists()
+    ):
         source_roots.append(sibling_modules_root.resolve())
 
     deduped_roots: list[Path] = []
@@ -206,7 +209,9 @@ def _resolve_source_roots(source_root: Path) -> tuple[Path, ...]:
     return tuple(deduped_roots)
 
 
-def _index_classes(source_roots: tuple[Path, ...]) -> tuple[dict[str, ClassInfo], dict[str, str]]:
+def _index_classes(
+    source_roots: tuple[Path, ...],
+) -> tuple[dict[str, ClassInfo], dict[str, str]]:
     class_map: dict[str, ClassInfo] = {}
     alias_map: dict[str, str] = {}
     for source_root in source_roots:
@@ -229,7 +234,9 @@ def _index_classes(source_roots: tuple[Path, ...]) -> tuple[dict[str, ClassInfo]
                 if not isinstance(node, ast.ClassDef):
                     continue
                 base_names = tuple(
-                    _resolve_base_name(base, module_name, import_map, module_class_names)
+                    _resolve_base_name(
+                        base, module_name, import_map, module_class_names
+                    )
                     for base in node.bases
                 )
                 methods = frozenset(
