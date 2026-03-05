@@ -107,6 +107,7 @@
   - [Fixed Coupon Bond](./implementation/ref-fixed-coupon-bond.md)
   - [Perpetual Bond](./implementation/ref-perpetual-bond.md)
 - [Tests](./implementation/reference-implementation-tests.md)
+- [DeepWiki (Experimental)](./implementation/deepwiki.md)
 
 ---
 
