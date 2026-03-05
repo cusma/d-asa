@@ -13,6 +13,7 @@ class PaymentAgentCommonMixin(CoreFinancialCommonMixin):
         if self.op_daemon.value != Global.zero_address:
             assert (
                 Txn.sender == self.op_daemon.value
+                or Txn.sender == holding_address
                 or Txn.sender == self.account[holding_address].payment_address
             ), err.UNAUTHORIZED
 
