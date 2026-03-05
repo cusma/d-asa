@@ -1,3 +1,5 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cusma/d-asa)
+
 # Debt Algorand Standard Application (D-ASA)
 
 Documentation: https://cusma.github.io/d-asa/
