@@ -8,7 +8,7 @@ from smart_contracts.mixin_composition import (
     validate_contract_composition,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[1]
 SMART_CONTRACTS_ROOT = REPO_ROOT / "smart_contracts"
 
 
@@ -22,6 +22,11 @@ def _validate_source(tmp_path: Path, source: str) -> None:
         validate_contract_composition(source_path, SMART_CONTRACTS_ROOT)
     finally:
         source_path.unlink(missing_ok=True)
+        # Remove directory if empty
+        try:
+            scratch_dir.rmdir()
+        except OSError:
+            pass
 
 
 def test_pass_existing_fixed_coupon_contract() -> None:
