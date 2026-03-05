@@ -4113,7 +4113,7 @@ assert_payment_authorization:
     assert // check self.op_daemon exists
     global ZeroAddress
     !=
-    bz assert_payment_authorization_after_if_else@6
+    bz assert_payment_authorization_after_if_else@7
     // modules/payment_agent/common.py:15
     // Txn.sender == self.op_daemon.value
     txn Sender
@@ -4122,11 +4122,22 @@ assert_payment_authorization:
     app_global_get_ex
     assert // check self.op_daemon exists
     ==
-    // modules/payment_agent/common.py:15-16
+    // modules/payment_agent/common.py:15-17
     // Txn.sender == self.op_daemon.value
+    // or Txn.sender == holding_address
     // or Txn.sender == self.account[holding_address].payment_address
-    bnz assert_payment_authorization_bool_true@3
+    bnz assert_payment_authorization_bool_true@4
     // modules/payment_agent/common.py:16
+    // or Txn.sender == holding_address
+    txn Sender
+    frame_dig -1
+    ==
+    // modules/payment_agent/common.py:15-17
+    // Txn.sender == self.op_daemon.value
+    // or Txn.sender == holding_address
+    // or Txn.sender == self.account[holding_address].payment_address
+    bnz assert_payment_authorization_bool_true@4
+    // modules/payment_agent/common.py:17
     // or Txn.sender == self.account[holding_address].payment_address
     txn Sender
     bytec_1 // 0x52333023
@@ -4136,36 +4147,38 @@ assert_payment_authorization:
     assert // check self.account entry exists
     extract 0 32
     ==
-    // modules/payment_agent/common.py:15-16
+    // modules/payment_agent/common.py:15-17
     // Txn.sender == self.op_daemon.value
+    // or Txn.sender == holding_address
     // or Txn.sender == self.account[holding_address].payment_address
-    bz assert_payment_authorization_bool_false@4
+    bz assert_payment_authorization_bool_false@5
 
-assert_payment_authorization_bool_true@3:
+assert_payment_authorization_bool_true@4:
     intc_1 // 1
 
-assert_payment_authorization_bool_merge@5:
-    // modules/payment_agent/common.py:14-17
+assert_payment_authorization_bool_merge@6:
+    // modules/payment_agent/common.py:14-18
     // assert (
     //     Txn.sender == self.op_daemon.value
+    //     or Txn.sender == holding_address
     //     or Txn.sender == self.account[holding_address].payment_address
     // ), err.UNAUTHORIZED
     assert // Not authorized
 
-assert_payment_authorization_after_if_else@6:
+assert_payment_authorization_after_if_else@7:
     retsub
 
-assert_payment_authorization_bool_false@4:
+assert_payment_authorization_bool_false@5:
     intc_0 // 0
-    b assert_payment_authorization_bool_merge@5
+    b assert_payment_authorization_bool_merge@6
 
 
 // modules.payment_agent.common.PaymentAgentCommonMixin.is_payment_executable(holding_address: bytes) -> uint64:
 is_payment_executable:
-    // modules/payment_agent/common.py:19
+    // modules/payment_agent/common.py:20
     // def is_payment_executable(self, holding_address: Account) -> bool:
     proto 1 1
-    // modules/payment_agent/common.py:21
+    // modules/payment_agent/common.py:22
     // self.account[holding_address].payment_address.is_opted_in(
     bytec_1 // 0x52333023
     frame_dig -1
@@ -4174,25 +4187,25 @@ is_payment_executable:
     box_get
     assert // check self.account entry exists
     extract 0 32
-    // modules/payment_agent/common.py:22
+    // modules/payment_agent/common.py:23
     // self.settlement_asset_id
     intc_0 // 0
     bytec 8 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
-    // modules/payment_agent/common.py:21-23
+    // modules/payment_agent/common.py:22-24
     // self.account[holding_address].payment_address.is_opted_in(
     //     self.settlement_asset_id
     // )
     asset_holding_get AssetBalance
     bury 1
-    // modules/payment_agent/common.py:21-24
+    // modules/payment_agent/common.py:22-25
     // self.account[holding_address].payment_address.is_opted_in(
     //     self.settlement_asset_id
     // )
     // and not self.account[holding_address].suspended
     bz is_payment_executable_bool_false@3
-    // modules/payment_agent/common.py:24
+    // modules/payment_agent/common.py:25
     // and not self.account[holding_address].suspended
     frame_dig 0
     box_get
@@ -4203,7 +4216,7 @@ is_payment_executable:
     intc_1 // 1
 
 is_payment_executable_bool_merge@4:
-    // modules/payment_agent/common.py:20-25
+    // modules/payment_agent/common.py:21-26
     // return (
     //     self.account[holding_address].payment_address.is_opted_in(
     //         self.settlement_asset_id
@@ -4220,10 +4233,10 @@ is_payment_executable_bool_false@3:
 
 // modules.payment_agent.common.PaymentAgentCommonMixin.assert_enough_funds(payment_amount: uint64) -> void:
 assert_enough_funds:
-    // modules/payment_agent/common.py:27
+    // modules/payment_agent/common.py:28
     // def assert_enough_funds(self, payment_amount: UInt64) -> None:
     proto 1 0
-    // modules/payment_agent/common.py:29
+    // modules/payment_agent/common.py:30
     // self.settlement_asset_id.balance(Global.current_application_address)
     global CurrentApplicationAddress
     intc_0 // 0
@@ -4232,12 +4245,12 @@ assert_enough_funds:
     assert // check self.settlement_asset_id exists
     asset_holding_get AssetBalance
     assert // account opted into asset
-    // modules/payment_agent/common.py:29-30
+    // modules/payment_agent/common.py:30-31
     // self.settlement_asset_id.balance(Global.current_application_address)
     // >= payment_amount
     frame_dig -1
     >=
-    // modules/payment_agent/common.py:28-31
+    // modules/payment_agent/common.py:29-32
     // assert (
     //     self.settlement_asset_id.balance(Global.current_application_address)
     //     >= payment_amount
@@ -4248,10 +4261,10 @@ assert_enough_funds:
 
 // modules.payment_agent.common.PaymentAgentCommonMixin.pay(receiver: bytes, amount: uint64) -> void:
 pay:
-    // modules/payment_agent/common.py:33
+    // modules/payment_agent/common.py:34
     // def pay(self, receiver: Account, amount: UInt64) -> None:
     proto 2 0
-    // modules/payment_agent/common.py:34-39
+    // modules/payment_agent/common.py:35-40
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
     //     asset_receiver=receiver,
@@ -4259,10 +4272,10 @@ pay:
     //     fee=Global.min_txn_fee,
     // ).submit()
     itxn_begin
-    // modules/payment_agent/common.py:38
+    // modules/payment_agent/common.py:39
     // fee=Global.min_txn_fee,
     global MinTxnFee
-    // modules/payment_agent/common.py:35
+    // modules/payment_agent/common.py:36
     // xfer_asset=self.settlement_asset_id,
     intc_0 // 0
     bytec 8 // "settlement_asset_id"
@@ -4273,12 +4286,12 @@ pay:
     frame_dig -2
     itxn_field AssetReceiver
     itxn_field XferAsset
-    // modules/payment_agent/common.py:34
+    // modules/payment_agent/common.py:35
     // itxn.AssetTransfer(
     pushint 4 // axfer
     itxn_field TypeEnum
     itxn_field Fee
-    // modules/payment_agent/common.py:34-39
+    // modules/payment_agent/common.py:35-40
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
     //     asset_receiver=receiver,

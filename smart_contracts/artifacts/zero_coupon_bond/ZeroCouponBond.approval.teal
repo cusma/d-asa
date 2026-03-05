@@ -870,7 +870,7 @@ pay_principal:
     // modules/payment_agent/principal.py:11
     // @arc4.abimethod
     txna ApplicationArgs 1
-    dup
+    dupn 2
     len
     intc_2 // 32
     ==
@@ -945,7 +945,7 @@ pay_principal:
     assert // check self.op_daemon exists
     global ZeroAddress
     !=
-    bz pay_principal_after_if_else@19
+    bz pay_principal_after_if_else@20
     // modules/payment_agent/common.py:15
     // Txn.sender == self.op_daemon.value
     txn Sender
@@ -954,11 +954,22 @@ pay_principal:
     app_global_get_ex
     assert // check self.op_daemon exists
     ==
-    // modules/payment_agent/common.py:15-16
+    // modules/payment_agent/common.py:15-17
     // Txn.sender == self.op_daemon.value
+    // or Txn.sender == holding_address
     // or Txn.sender == self.account[holding_address].payment_address
-    bnz pay_principal_bool_true@16
+    bnz pay_principal_bool_true@17
     // modules/payment_agent/common.py:16
+    // or Txn.sender == holding_address
+    txn Sender
+    dig 4
+    ==
+    // modules/payment_agent/common.py:15-17
+    // Txn.sender == self.op_daemon.value
+    // or Txn.sender == holding_address
+    // or Txn.sender == self.account[holding_address].payment_address
+    bnz pay_principal_bool_true@17
+    // modules/payment_agent/common.py:17
     // or Txn.sender == self.account[holding_address].payment_address
     txn Sender
     dig 2
@@ -966,62 +977,64 @@ pay_principal:
     assert // check self.account entry exists
     extract 0 32
     ==
-    // modules/payment_agent/common.py:15-16
+    // modules/payment_agent/common.py:15-17
     // Txn.sender == self.op_daemon.value
+    // or Txn.sender == holding_address
     // or Txn.sender == self.account[holding_address].payment_address
-    bz pay_principal_bool_false@17
+    bz pay_principal_bool_false@18
 
-pay_principal_bool_true@16:
+pay_principal_bool_true@17:
     intc_1 // 1
 
-pay_principal_bool_merge@18:
-    // modules/payment_agent/common.py:14-17
+pay_principal_bool_merge@19:
+    // modules/payment_agent/common.py:14-18
     // assert (
     //     Txn.sender == self.op_daemon.value
+    //     or Txn.sender == holding_address
     //     or Txn.sender == self.account[holding_address].payment_address
     // ), err.UNAUTHORIZED
     assert // Not authorized
 
-pay_principal_after_if_else@19:
-    // modules/payment_agent/common.py:21
+pay_principal_after_if_else@20:
+    // modules/payment_agent/common.py:22
     // self.account[holding_address].payment_address.is_opted_in(
     dig 1
     box_get
     assert // check self.account entry exists
     extract 0 32
-    // modules/payment_agent/common.py:22
+    // modules/payment_agent/common.py:23
     // self.settlement_asset_id
     intc_0 // 0
     bytec 13 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
-    // modules/payment_agent/common.py:21-23
+    // modules/payment_agent/common.py:22-24
     // self.account[holding_address].payment_address.is_opted_in(
     //     self.settlement_asset_id
     // )
     asset_holding_get AssetBalance
     bury 1
-    // modules/payment_agent/common.py:21-24
+    // modules/payment_agent/common.py:22-25
     // self.account[holding_address].payment_address.is_opted_in(
     //     self.settlement_asset_id
     // )
     // and not self.account[holding_address].suspended
-    bz pay_principal_bool_false@24
-    // modules/payment_agent/common.py:24
+    bz pay_principal_bool_false@25
+    // modules/payment_agent/common.py:25
     // and not self.account[holding_address].suspended
     dig 1
     box_get
     assert // check self.account entry exists
     pushint 448
     getbit
-    bnz pay_principal_bool_false@24
+    bnz pay_principal_bool_false@25
     intc_1 // 1
 
-pay_principal_bool_merge@25:
+pay_principal_bool_merge@26:
     // modules/payment_agent/principal.py:37
     // if self.is_payment_executable(holding_address):
     bz pay_principal_else_body@3
-    // modules/payment_agent/common.py:29
+    // modules/payment_agent/common.py:30
     // self.settlement_asset_id.balance(Global.current_application_address)
     global CurrentApplicationAddress
     intc_0 // 0
@@ -1032,14 +1045,14 @@ pay_principal_bool_merge@25:
     dig 1
     asset_holding_get AssetBalance
     assert // account opted into asset
-    // modules/payment_agent/common.py:29-30
+    // modules/payment_agent/common.py:30-31
     // self.settlement_asset_id.balance(Global.current_application_address)
     // >= payment_amount
     dig 2
     dup
     cover 2
     >=
-    // modules/payment_agent/common.py:28-31
+    // modules/payment_agent/common.py:29-32
     // assert (
     //     self.settlement_asset_id.balance(Global.current_application_address)
     //     >= payment_amount
@@ -1052,7 +1065,7 @@ pay_principal_bool_merge@25:
     box_get
     assert // check self.account entry exists
     extract 0 32
-    // modules/payment_agent/common.py:34-39
+    // modules/payment_agent/common.py:35-40
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
     //     asset_receiver=receiver,
@@ -1060,7 +1073,7 @@ pay_principal_bool_merge@25:
     //     fee=Global.min_txn_fee,
     // ).submit()
     itxn_begin
-    // modules/payment_agent/common.py:38
+    // modules/payment_agent/common.py:39
     // fee=Global.min_txn_fee,
     global MinTxnFee
     uncover 2
@@ -1069,12 +1082,12 @@ pay_principal_bool_merge@25:
     itxn_field AssetReceiver
     swap
     itxn_field XferAsset
-    // modules/payment_agent/common.py:34
+    // modules/payment_agent/common.py:35
     // itxn.AssetTransfer(
     pushint 4 // axfer
     itxn_field TypeEnum
     itxn_field Fee
-    // modules/payment_agent/common.py:34-39
+    // modules/payment_agent/common.py:35-40
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
     //     asset_receiver=receiver,
@@ -1154,13 +1167,13 @@ pay_principal_else_body@3:
     bury 1
     b pay_principal_after_if_else@4
 
-pay_principal_bool_false@24:
+pay_principal_bool_false@25:
     intc_0 // 0
-    b pay_principal_bool_merge@25
+    b pay_principal_bool_merge@26
 
-pay_principal_bool_false@17:
+pay_principal_bool_false@18:
     intc_0 // 0
-    b pay_principal_bool_merge@18
+    b pay_principal_bool_merge@19
 
 
 // modules.transfer_agent.no_coupon.NoCouponTransferAgentMixin.asset_transfer[routing]() -> void:
