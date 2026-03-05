@@ -1,9 +1,9 @@
 from algopy import Account, UInt64, op
 
-from smart_contracts import errors as err
-from smart_contracts.modules.core_financial.common import (
+from modules.core_financial.common import (
     CoreFinancialCommonMixin,
 )
+from smart_contracts import errors as err
 
 
 class TransferAgentCommonMixin(CoreFinancialCommonMixin):

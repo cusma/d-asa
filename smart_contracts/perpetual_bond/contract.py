@@ -1,13 +1,13 @@
 from algopy import StateTotals, Txn
 
-from smart_contracts import errors as err
-from smart_contracts.actus import PBNCoreMixin
-from smart_contracts.modules.core_financial import PerpetualCouponCashflowMixin
-from smart_contracts.modules.payment_agent import (
+from modules.actus import PBNCoreMixin
+from modules.core_financial import PerpetualCouponCashflowMixin
+from modules.payment_agent import (
     CouponPaymentAgentMixin,
     NoPrincipalPaymentMixin,
 )
-from smart_contracts.modules.transfer_agent import CouponTransferAgentMixin
+from modules.transfer_agent import CouponTransferAgentMixin
+from smart_contracts import errors as err
 
 from . import config as cfg
 

@@ -38,7 +38,7 @@ def test_fail_coupon_transfer_without_coupon_cashflow(tmp_path: Path) -> None:
         _validate_source(
             tmp_path,
             """
-            from smart_contracts.modules.transfer_agent import CouponTransferAgentMixin
+            from modules.transfer_agent import CouponTransferAgentMixin
 
 
             class BrokenCouponTransfer(CouponTransferAgentMixin):
@@ -54,8 +54,8 @@ def test_fail_coupon_transfer_wrong_mro_default_wins(tmp_path: Path) -> None:
         _validate_source(
             tmp_path,
             """
-            from smart_contracts.modules.core_financial import FixedCouponCashflowMixin
-            from smart_contracts.modules.transfer_agent import CouponTransferAgentMixin
+            from modules.core_financial import FixedCouponCashflowMixin
+            from modules.transfer_agent import CouponTransferAgentMixin
 
 
             class WrongOrderCouponTransfer(
@@ -72,7 +72,7 @@ def test_fail_coupon_payment_without_coupon_cashflow(tmp_path: Path) -> None:
         _validate_source(
             tmp_path,
             """
-            from smart_contracts.modules.payment_agent import CouponPaymentAgentMixin
+            from modules.payment_agent import CouponPaymentAgentMixin
 
 
             class BrokenCouponPayment(CouponPaymentAgentMixin):
@@ -86,8 +86,8 @@ def test_fail_coupon_counting_hook_not_overridden(tmp_path: Path) -> None:
         _validate_source(
             tmp_path,
             """
-            from smart_contracts.modules.core_financial import CouponCashflowMixin
-            from smart_contracts.modules.payment_agent import CouponPaymentAgentMixin
+            from modules.core_financial import CouponCashflowMixin
+            from modules.payment_agent import CouponPaymentAgentMixin
 
 
             class BrokenCouponCounting(CouponCashflowMixin, CouponPaymentAgentMixin):
@@ -103,7 +103,7 @@ def test_fail_principal_payment_without_cashflow_provider(tmp_path: Path) -> Non
         _validate_source(
             tmp_path,
             """
-            from smart_contracts.modules.payment_agent import PrincipalPaymentAgentMixin
+            from modules.payment_agent import PrincipalPaymentAgentMixin
 
 
             class BrokenPrincipalPayment(PrincipalPaymentAgentMixin):
@@ -119,8 +119,8 @@ def test_fail_principal_authorization_hook_not_overridden(tmp_path: Path) -> Non
         _validate_source(
             tmp_path,
             """
-            from smart_contracts.modules.core_financial import NoCouponCashflowMixin
-            from smart_contracts.modules.payment_agent import PrincipalPaymentAgentMixin
+            from modules.core_financial import NoCouponCashflowMixin
+            from modules.payment_agent import PrincipalPaymentAgentMixin
 
 
             class BrokenPrincipalAuthorization(

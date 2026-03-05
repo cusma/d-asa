@@ -48,10 +48,9 @@ docs/                    -> mdBook source code
 |   └── contract/        -> Contract (ACTUS) specifications
 |   └── execution/       -> Contract execution specifications
 └── SUMMARY.md, ...      -> mdBook SUMMARY.md, COVER.md, etc.
+modules/                 -> D-ASA Modules
 smart_contracts/         -> D-ASA Smart Contracts
 └── artifacts/           -> AlgoKit auto-generated artifacts
-└── actus/               -> ACTUS high level mixins
-└── modules/             -> Low level mixins
 └── mock_module_.../     -> Mocked modules for tests
 └── contract_a/          -> Contract Type A
 └── contract_b/          -> Contract Type B
@@ -61,7 +60,7 @@ smart_contracts/         -> D-ASA Smart Contracts
     └── deploy_config.py -> Contract deployment configuration
 tests/                   -> Tests of D-ASA Smart Contracts
 └── shared/              -> Shared test fixtures and mixins tests
-└── module_.../          -> Mocked module tests
+└── mock_module_.../          -> Mocked module tests
 └── contract_a/          -> Tests of Contract Type A
 |   └── conftest.py      -> Contract Type A test fixtures
 |   └── test_method_1.py -> Tests of Contract Type A Method 1

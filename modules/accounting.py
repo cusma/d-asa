@@ -2,11 +2,11 @@
 
 from algopy import Account, BoxMap, Global, Txn, UInt64, arc4
 
+from modules.rbac import RbacModule
 from smart_contracts import abi_types as typ
 from smart_contracts import constants as cst
 from smart_contracts import enums as enm
 from smart_contracts import errors as err
-from smart_contracts.modules.rbac import RbacModule
 
 
 class AccountingModule(RbacModule):
