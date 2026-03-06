@@ -4,34 +4,34 @@
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
     intcblock 0 1 32 8 255 200 86400
-    bytecblock 0x151f7c75 0x52333023 "status" "circulating_units" "issuance_date" "maturity_date" "total_coupons" 0x52323023 "settlement_asset_id" "primary_distribution_opening_date" "secondary_market_closure_date" 0x74696d654576656e7473 0x52373023 0x52343023 "total_units" "unit_value" "day_count_convention" "secondary_market_opening_date" 0x636f75706f6e5261746573 0x52363023 0x52353023 0x52323523 "asset_suspended" "asset_defaulted" "metadata" "principal_discount" "primary_distribution_closure_date" "paid_coupon_units" "due_coupons_watermark" 0x00 0x52383023 "denomination_asset_id" "interest_rate" 0x068101 0x0000 0x0012
+    bytecblock 0x151f7c75 0x52333023 "status" "circulating_units" "issuance_date" "maturity_date" "unit_value" "total_coupons" 0x52323023 "settlement_asset_id" "primary_distribution_opening_date" "secondary_market_closure_date" 0x74696d654576656e7473 0x52373023 0x52343023 "total_units" "denomination_asset_id" "day_count_convention" "secondary_market_opening_date" 0x636f75706f6e5261746573 0x52363023 0x52353023 0x52323523 "asset_suspended" "asset_defaulted" "metadata" "principal_discount" "primary_distribution_closure_date" "paid_coupon_units" "due_coupons_watermark" 0x0000 0x00 0x52383023 "interest_rate" 0x068101 0x003b 0x8c29904e 0x0012
     txn ApplicationID
     bnz main_after_if_else@2
     // modules/rbac.py:30-31
     // # RBAC Roles
     // self.arranger = GlobalState(Account(), key=cst.PREFIX_ID_ARRANGER)
-    bytec 7 // 0x52323023
+    bytec 8 // 0x52323023
     global ZeroAddress
     app_global_put
     // modules/rbac.py:32
     // self.op_daemon = GlobalState(Account(), key=cst.PREFIX_ID_OP_DAEMON)
-    bytec 21 // 0x52323523
+    bytec 22 // 0x52323523
     global ZeroAddress
     app_global_put
     // modules/rbac.py:47-48
     // # D-ASA Governance
     // self.asset_suspended = False
-    bytec 22 // "asset_suspended"
+    bytec 23 // "asset_suspended"
     intc_0 // 0
     app_global_put
     // modules/rbac.py:49
     // self.asset_defaulted = False
-    bytec 23 // "asset_defaulted"
+    bytec 24 // "asset_defaulted"
     intc_0 // 0
     app_global_put
     // modules/accounting.py:19
     // self.total_units = UInt64()
-    bytec 14 // "total_units"
+    bytec 15 // "total_units"
     intc_0 // 0
     app_global_put
     // modules/accounting.py:20
@@ -41,7 +41,7 @@ main:
     app_global_put
     // modules/accounting.py:21
     // self.unit_value = UInt64()
-    bytec 15 // "unit_value"
+    bytec 6 // "unit_value"
     intc_0 // 0
     app_global_put
     // modules/accounting.py:22
@@ -52,54 +52,54 @@ main:
     // modules/core_financial/common.py:31-32
     // # Asset Configuration
     // self.denomination_asset_id = Asset()
-    bytec 31 // "denomination_asset_id"
+    bytec 16 // "denomination_asset_id"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:33
     // self.settlement_asset_id = Asset()
-    bytec 8 // "settlement_asset_id"
+    bytec 9 // "settlement_asset_id"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:34
     // self.unit_value = UInt64()
-    bytec 15 // "unit_value"
+    bytec 6 // "unit_value"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:35
     // self.day_count_convention = UInt64()
-    bytec 16 // "day_count_convention"
+    bytec 17 // "day_count_convention"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:37-38
     // # Metadata
     // self.metadata = Bytes()
-    bytec 24 // "metadata"
+    bytec 25 // "metadata"
     pushbytes 0x
     app_global_put
     // modules/core_financial/common.py:40-41
     // # Principal / Rates
     // self.principal_discount = UInt64()
-    bytec 25 // "principal_discount"
+    bytec 26 // "principal_discount"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:42
     // self.interest_rate = UInt64()
-    bytec 32 // "interest_rate"
+    bytec 33 // "interest_rate"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:43
     // self.total_coupons = UInt64()
-    bytec 6 // "total_coupons"
+    bytec 7 // "total_coupons"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:47
     // self.primary_distribution_opening_date = UInt64()
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:48
     // self.primary_distribution_closure_date = UInt64()
-    bytec 26 // "primary_distribution_closure_date"
+    bytec 27 // "primary_distribution_closure_date"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:49
@@ -109,12 +109,12 @@ main:
     app_global_put
     // modules/core_financial/common.py:50
     // self.secondary_market_opening_date = UInt64()
-    bytec 17 // "secondary_market_opening_date"
+    bytec 18 // "secondary_market_opening_date"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:51
     // self.secondary_market_closure_date = UInt64()
-    bytec 10 // "secondary_market_closure_date"
+    bytec 11 // "secondary_market_closure_date"
     intc_0 // 0
     app_global_put
     // modules/core_financial/common.py:52
@@ -122,14 +122,14 @@ main:
     bytec 5 // "maturity_date"
     intc_0 // 0
     app_global_put
-    // modules/core_financial/coupon.py:16
+    // modules/core_financial/coupon.py:24
     // self.paid_coupon_units = UInt64()
-    bytec 27 // "paid_coupon_units"
+    bytec 28 // "paid_coupon_units"
     intc_0 // 0
     app_global_put
-    // modules/core_financial/coupon.py:94
+    // modules/core_financial/coupon.py:102
     // self.due_coupons_watermark = UInt64()
-    bytec 28 // "due_coupons_watermark"
+    bytec 29 // "due_coupons_watermark"
     intc_0 // 0
     app_global_put
     // smart_contracts/fixed_coupon_bond/contract.py:33
@@ -251,9 +251,9 @@ ensure_budget_while_top@1:
     itxn_field TypeEnum
     pushint 5 // DeleteApplication
     itxn_field OnCompletion
-    bytec 33 // 0x068101
+    bytec 34 // 0x068101
     itxn_field ApprovalProgram
-    bytec 33 // 0x068101
+    bytec 34 // 0x068101
     itxn_field ClearStateProgram
     frame_dig -1
     switch ensure_budget_switch_case_0@3 ensure_budget_switch_case_1@4
@@ -397,7 +397,7 @@ asset_config:
     assert // Denomination asset is not properly set
     // modules/core_financial/common.py:60
     // self.denomination_asset_id = denomination_asset_id
-    bytec 31 // "denomination_asset_id"
+    bytec 16 // "denomination_asset_id"
     dig 6
     app_global_put
     // modules/core_financial/common.py:65
@@ -413,7 +413,7 @@ asset_config:
     assert // Different settlement asset not supported, must be equal to denomination asset
     // modules/core_financial/common.py:69
     // self.settlement_asset_id = settlement_asset_id
-    bytec 8 // "settlement_asset_id"
+    bytec 9 // "settlement_asset_id"
     dig 5
     app_global_put
     // modules/core_financial/common.py:70-76
@@ -463,7 +463,7 @@ asset_config:
     assert // Minimum denomination is not a divisor of principal
     // modules/core_financial/common.py:240
     // self.unit_value = minimum_denomination
-    bytec 15 // "unit_value"
+    bytec 6 // "unit_value"
     dig 2
     app_global_put
     // modules/core_financial/common.py:241
@@ -471,12 +471,12 @@ asset_config:
     uncover 3
     uncover 2
     /
-    bytec 14 // "total_units"
+    bytec 15 // "total_units"
     swap
     app_global_put
     // modules/core_financial/common.py:242
     // self.principal_discount = principal_discount
-    bytec 25 // "principal_discount"
+    bytec 26 // "principal_discount"
     uncover 2
     app_global_put
     // modules/core_financial/common.py:244-245
@@ -517,7 +517,7 @@ asset_config_bool_merge@5:
     assert // Invalid day-count convention ID
     // modules/core_financial/common.py:86
     // self.day_count_convention = day_count_convention
-    bytec 16 // "day_count_convention"
+    bytec 17 // "day_count_convention"
     dig 1
     app_global_put
     // modules/core_financial/common.py:248-249
@@ -530,7 +530,7 @@ asset_config_bool_merge@5:
     // # This subroutine must be used after the principal discount has been set
     // if not self.principal_discount:
     intc_0 // 0
-    bytec 25 // "principal_discount"
+    bytec 26 // "principal_discount"
     app_global_get_ex
     assert // check self.principal_discount exists
     bnz asset_config_after_if_else@7
@@ -542,25 +542,25 @@ asset_config_bool_merge@5:
 asset_config_after_if_else@7:
     // modules/core_financial/common.py:94
     // self.interest_rate = interest_rate
-    bytec 32 // "interest_rate"
+    bytec 33 // "interest_rate"
     dig 8
     app_global_put
-    // modules/core_financial/coupon.py:97
+    // modules/core_financial/coupon.py:105
     // assert coupon_rates.length, err.INVALID_COUPON_RATES
     dig 4
     dup
     assert // Coupon rates are not properly defined
-    // modules/core_financial/coupon.py:100
+    // modules/core_financial/coupon.py:108
     // self.total_coupons = coupon_rates.length
-    bytec 6 // "total_coupons"
+    bytec 7 // "total_coupons"
     dig 1
     app_global_put
-    // modules/core_financial/coupon.py:101
+    // modules/core_financial/coupon.py:109
     // self.coupon_rates.value = coupon_rates.copy()
-    bytec 18 // 0x636f75706f6e5261746573
+    bytec 19 // 0x636f75706f6e5261746573
     box_del
     pop
-    bytec 18 // 0x636f75706f6e5261746573
+    bytec 19 // 0x636f75706f6e5261746573
     dig 7
     box_put
     // modules/core_financial/common.py:104
@@ -580,10 +580,10 @@ asset_config_after_if_else@7:
     callsub assert_time_events_sorted
     // modules/core_financial/common.py:127
     // self.time_events.value = time_events.copy()
-    bytec 11 // 0x74696d654576656e7473
+    bytec 12 // 0x74696d654576656e7473
     box_del
     pop
-    bytec 11 // 0x74696d654576656e7473
+    bytec 12 // 0x74696d654576656e7473
     dig 1
     box_put
     // modules/core_financial/common.py:128-130
@@ -597,7 +597,7 @@ asset_config_after_if_else@7:
     extract_uint64
     // modules/core_financial/common.py:128
     // self.primary_distribution_opening_date = time_events[
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     // modules/core_financial/common.py:128-130
     // self.primary_distribution_opening_date = time_events[
     //     cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX
@@ -613,7 +613,7 @@ asset_config_after_if_else@7:
     extract_uint64
     // modules/core_financial/common.py:131
     // self.primary_distribution_closure_date = time_events[
-    bytec 26 // "primary_distribution_closure_date"
+    bytec 27 // "primary_distribution_closure_date"
     // modules/core_financial/common.py:131-133
     // self.primary_distribution_closure_date = time_events[
     //     cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
@@ -666,7 +666,7 @@ get_account_units_current_value:
     intc_0 // 0
     pushbytes ""
     dupn 4
-    // modules/core_financial/coupon.py:193
+    // modules/core_financial/coupon.py:201
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -681,32 +681,32 @@ get_account_units_current_value:
     ==
     assert // invalid number of bytes for arc4.uint64
     btoi
-    // modules/core_financial/coupon.py:214
+    // modules/core_financial/coupon.py:222
     // self.primary_distribution_opening_date
     intc_0 // 0
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
-    // modules/core_financial/coupon.py:214-215
+    // modules/core_financial/coupon.py:222-223
     // self.primary_distribution_opening_date
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     bz get_account_units_current_value_bool_false@4
-    // modules/core_financial/coupon.py:215
+    // modules/core_financial/coupon.py:223
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     global LatestTimestamp
     intc_0 // 0
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
     >=
-    // modules/core_financial/coupon.py:214-215
+    // modules/core_financial/coupon.py:222-223
     // self.primary_distribution_opening_date
     // and Global.latest_timestamp >= self.primary_distribution_opening_date
     bz get_account_units_current_value_bool_false@4
     intc_1 // 1
 
 get_account_units_current_value_bool_merge@5:
-    // modules/core_financial/coupon.py:213-216
+    // modules/core_financial/coupon.py:221-224
     // assert (
     //     self.primary_distribution_opening_date
     //     and Global.latest_timestamp >= self.primary_distribution_opening_date
@@ -722,7 +722,7 @@ get_account_units_current_value_bool_merge@5:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/core_financial/coupon.py:218
+    // modules/core_financial/coupon.py:226
     // assert 0 < units <= self.account[holding_address].units, err.INVALID_UNITS
     dup
     bz get_account_units_current_value_bool_false@8
@@ -737,10 +737,10 @@ get_account_units_current_value_bool_merge@5:
     intc_1 // 1
 
 get_account_units_current_value_bool_merge@9:
-    // modules/core_financial/coupon.py:218
+    // modules/core_financial/coupon.py:226
     // assert 0 < units <= self.account[holding_address].units, err.INVALID_UNITS
     assert // Invalid amount of units for the account
-    // modules/core_financial/coupon.py:220-221
+    // modules/core_financial/coupon.py:228-229
     // # Value during primary distribution and at maturity
     // account_units_nominal_value = self.account_units_value(holding_address, units)
     dig 1
@@ -748,40 +748,40 @@ get_account_units_current_value_bool_merge@9:
     dig 2
     callsub account_units_value
     bury 8
-    // modules/core_financial/coupon.py:222-223
+    // modules/core_financial/coupon.py:230-231
     // # Accruing interest during primary distribution and at maturity
     // accrued_interest = UInt64()
     intc_0 // 0
     bury 7
-    // modules/core_financial/coupon.py:224
+    // modules/core_financial/coupon.py:232
     // numerator = UInt64()
     intc_0 // 0
     bury 4
-    // modules/core_financial/coupon.py:225
+    // modules/core_financial/coupon.py:233
     // denominator = UInt64()
     intc_0 // 0
     bury 6
-    // modules/core_financial/coupon.py:227-228
+    // modules/core_financial/coupon.py:235-236
     // # Accruing interest
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
     dup
     bury 6
-    // modules/core_financial/coupon.py:229
+    // modules/core_financial/coupon.py:237
     // self.assert_no_pending_coupon_payment(holding_address, due_coupons)
     swap
     dig 1
     callsub assert_no_pending_coupon_payment
-    // modules/core_financial/coupon.py:230
+    // modules/core_financial/coupon.py:238
     // if self.is_accruing_interest(due_coupons):
     callsub is_accruing_interest
     bz get_account_units_current_value_after_if_else@11
-    // modules/core_financial/coupon.py:231
+    // modules/core_financial/coupon.py:239
     // day_count_factor = self.day_count_factor(due_coupons)
     dig 3
     dup
     callsub day_count_factor
-    // modules/core_financial/coupon.py:232-234
+    // modules/core_financial/coupon.py:240-242
     // accrued_interest = self.accrued_interest_amount(
     //     holding_address, units, due_coupons
     // )
@@ -790,20 +790,20 @@ get_account_units_current_value_bool_merge@9:
     uncover 3
     callsub accrued_interest_amount
     bury 7
-    // modules/core_financial/coupon.py:235
+    // modules/core_financial/coupon.py:243
     // numerator = day_count_factor.numerator
     dup
     intc_0 // 0
     extract_uint64
     bury 4
-    // modules/core_financial/coupon.py:236
+    // modules/core_financial/coupon.py:244
     // denominator = day_count_factor.denominator
     intc_3 // 8
     extract_uint64
     bury 5
 
 get_account_units_current_value_after_if_else@11:
-    // modules/core_financial/coupon.py:241-244
+    // modules/core_financial/coupon.py:249-252
     // day_count_factor=typ.DayCountFactor(
     //     numerator=numerator,
     //     denominator=denominator,
@@ -813,7 +813,7 @@ get_account_units_current_value_after_if_else@11:
     dig 5
     itob
     concat
-    // modules/core_financial/coupon.py:238-245
+    // modules/core_financial/coupon.py:246-253
     // return typ.CurrentUnitsValue(
     //     units_value=account_units_nominal_value,
     //     accrued_interest=accrued_interest,
@@ -829,7 +829,7 @@ get_account_units_current_value_after_if_else@11:
     concat
     swap
     concat
-    // modules/core_financial/coupon.py:193
+    // modules/core_financial/coupon.py:201
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -849,9 +849,9 @@ get_account_units_current_value_bool_false@4:
 
 // modules.core_financial.coupon.FixedCouponCashflowMixin.get_coupon_rates[routing]() -> void:
 get_coupon_rates:
-    // modules/core_financial/coupon.py:255
+    // modules/core_financial/coupon.py:263
     // coupon_rates = typ.CouponRates()
-    bytec 34 // 0x0000
+    bytec 30 // 0x0000
     // modules/accounting.py:25
     // return self.status == enm.STATUS_ACTIVE
     intc_0 // 0
@@ -860,19 +860,19 @@ get_coupon_rates:
     assert // check self.status exists
     pushint 100
     ==
-    // modules/core_financial/coupon.py:256
+    // modules/core_financial/coupon.py:264
     // if self.status_is_active():
     bz get_coupon_rates_after_if_else@3
-    // modules/core_financial/coupon.py:257
+    // modules/core_financial/coupon.py:265
     // coupon_rates = self.coupon_rates.value.copy()
-    bytec 18 // 0x636f75706f6e5261746573
+    bytec 19 // 0x636f75706f6e5261746573
     box_get
     swap
     bury 2
     assert // check self.coupon_rates exists
 
 get_coupon_rates_after_if_else@3:
-    // modules/core_financial/coupon.py:247
+    // modules/core_financial/coupon.py:255
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     dig 1
@@ -885,7 +885,7 @@ get_coupon_rates_after_if_else@3:
 // modules.core_financial.coupon.FixedCouponCashflowMixin.get_payment_amount[routing]() -> void:
 get_payment_amount:
     pushbytes ""
-    // modules/core_financial/coupon.py:260
+    // modules/core_financial/coupon.py:268
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dupn 2
@@ -902,10 +902,10 @@ get_payment_amount:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/core_financial/coupon.py:275
+    // modules/core_financial/coupon.py:283
     // interest_amount = UInt64()
     intc_0 // 0
-    // modules/core_financial/coupon.py:276
+    // modules/core_financial/coupon.py:284
     // principal_amount = UInt64()
     dupn 2
     // modules/accounting.py:25
@@ -915,10 +915,10 @@ get_payment_amount:
     assert // check self.status exists
     pushint 100
     ==
-    // modules/core_financial/coupon.py:277
+    // modules/core_financial/coupon.py:285
     // if self.status_is_active():
     bz get_payment_amount_after_if_else@6
-    // modules/core_financial/coupon.py:278
+    // modules/core_financial/coupon.py:286
     // paid_coupons = self.account[holding_address].paid_coupons
     dig 2
     box_get
@@ -927,24 +927,24 @@ get_payment_amount:
     extract_uint64
     dup
     bury 6
-    // modules/core_financial/coupon.py:279
+    // modules/core_financial/coupon.py:287
     // if paid_coupons < self.total_coupons:
     intc_0 // 0
-    bytec 6 // "total_coupons"
+    bytec 7 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
     <
     bz get_payment_amount_else_body@4
-    // modules/core_financial/coupon.py:282
+    // modules/core_financial/coupon.py:290
     // self.account_total_units_value(holding_address),
     dig 3
     callsub account_total_units_value
-    // modules/core_financial/coupon.py:283
+    // modules/core_financial/coupon.py:291
     // paid_coupons + 1,
     dig 5
     intc_1 // 1
     +
-    // modules/core_financial/coupon.py:280-284
+    // modules/core_financial/coupon.py:288-292
     // # Coupon Payment
     // interest_amount = self.coupon_interest_amount(
     //     self.account_total_units_value(holding_address),
@@ -954,7 +954,7 @@ get_payment_amount:
     bury 2
 
 get_payment_amount_after_if_else@6:
-    // modules/core_financial/coupon.py:288-291
+    // modules/core_financial/coupon.py:296-299
     // return typ.PaymentAmounts(
     //     interest=interest_amount,
     //     principal=principal_amount,
@@ -964,7 +964,7 @@ get_payment_amount_after_if_else@6:
     dig 1
     itob
     concat
-    // modules/core_financial/coupon.py:260
+    // modules/core_financial/coupon.py:268
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -974,7 +974,7 @@ get_payment_amount_after_if_else@6:
     return
 
 get_payment_amount_else_body@4:
-    // modules/core_financial/coupon.py:286-287
+    // modules/core_financial/coupon.py:294-295
     // # Principal Payment
     // principal_amount = self.account_total_units_value(holding_address)
     dig 3
@@ -985,55 +985,55 @@ get_payment_amount_else_body@4:
 
 // modules.core_financial.coupon.FixedCouponCashflowMixin.get_coupons_status[routing]() -> void:
 get_coupons_status:
-    // modules/core_financial/coupon.py:302
+    // modules/core_financial/coupon.py:310
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
     dupn 2
-    // modules/core_financial/coupon.py:303
+    // modules/core_financial/coupon.py:311
     // next_coupon_due_date = self.next_coupon_due_date(due_coupons)
     callsub next_coupon_due_date
     swap
-    // modules/core_financial/coupon.py:304
+    // modules/core_financial/coupon.py:312
     // all_due_coupons_paid = self.all_due_coupons_paid(due_coupons)
     dup
     callsub all_due_coupons_paid
     swap
-    // modules/core_financial/coupon.py:305
+    // modules/core_financial/coupon.py:313
     // numerator = UInt64()
     intc_0 // 0
     swap
-    // modules/core_financial/coupon.py:306
+    // modules/core_financial/coupon.py:314
     // denominator = UInt64()
     intc_0 // 0
     swap
-    // modules/core_financial/coupon.py:307
+    // modules/core_financial/coupon.py:315
     // if self.is_accruing_interest(due_coupons):
     callsub is_accruing_interest
     bz get_coupons_status_after_if_else@3
-    // modules/core_financial/coupon.py:308
+    // modules/core_financial/coupon.py:316
     // day_count_factor = self.day_count_factor(due_coupons)
     dig 4
     callsub day_count_factor
-    // modules/core_financial/coupon.py:309
+    // modules/core_financial/coupon.py:317
     // numerator = day_count_factor.numerator
     dup
     intc_0 // 0
     extract_uint64
     bury 3
-    // modules/core_financial/coupon.py:310
+    // modules/core_financial/coupon.py:318
     // denominator = day_count_factor.denominator
     intc_3 // 8
     extract_uint64
     bury 1
 
 get_coupons_status_after_if_else@3:
-    // modules/core_financial/coupon.py:312
+    // modules/core_financial/coupon.py:320
     // total_coupons=self.total_coupons,
     intc_0 // 0
-    bytec 6 // "total_coupons"
+    bytec 7 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
-    // modules/core_financial/coupon.py:315-318
+    // modules/core_financial/coupon.py:323-326
     // day_count_factor=typ.DayCountFactor(
     //     numerator=numerator,
     //     denominator=denominator,
@@ -1043,7 +1043,7 @@ get_coupons_status_after_if_else@3:
     dig 2
     itob
     concat
-    // modules/core_financial/coupon.py:311-320
+    // modules/core_financial/coupon.py:319-328
     // return typ.CouponsInfo(
     //     total_coupons=self.total_coupons,
     //     due_coupons=due_coupons,
@@ -1064,12 +1064,12 @@ get_coupons_status_after_if_else@3:
     concat
     swap
     concat
-    bytec 29 // 0x00
+    bytec 31 // 0x00
     intc_0 // 0
     dig 5
     setbit
     concat
-    // modules/core_financial/coupon.py:293
+    // modules/core_financial/coupon.py:301
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -1081,7 +1081,7 @@ get_coupons_status_after_if_else@3:
 
 // modules.payment_agent.coupon.CouponPaymentAgentMixin.pay_coupon[routing]() -> void:
 pay_coupon:
-    // modules/payment_agent/coupon.py:11
+    // modules/payment_agent/coupon.py:30
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -1109,13 +1109,13 @@ pay_coupon:
     assert // check self.status exists
     pushint 100
     ==
-    // modules/core_financial/coupon.py:31
+    // modules/core_financial/coupon.py:39
     // assert self.status_is_active(), err.UNAUTHORIZED
     assert // Not authorized
-    // modules/core_financial/coupon.py:32
+    // modules/core_financial/coupon.py:40
     // self.assert_is_not_asset_defaulted()
     callsub assert_is_not_asset_defaulted
-    // modules/core_financial/coupon.py:33
+    // modules/core_financial/coupon.py:41
     // self.assert_is_not_asset_suspended()
     callsub assert_is_not_asset_suspended
     // modules/accounting.py:31
@@ -1129,7 +1129,7 @@ pay_coupon:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/core_financial/coupon.py:36
+    // modules/core_financial/coupon.py:44
     // units = self.account[holding_address].units
     dup
     box_get
@@ -1138,26 +1138,26 @@ pay_coupon:
     extract_uint64
     dup
     cover 3
-    // modules/core_financial/coupon.py:37
+    // modules/core_financial/coupon.py:45
     // assert units > 0, err.NO_UNITS
     assert // No D-ASA units
-    // modules/core_financial/coupon.py:39
+    // modules/core_financial/coupon.py:47
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
-    // modules/core_financial/coupon.py:40
+    // modules/core_financial/coupon.py:48
     // account_paid_coupons = self.account[holding_address].paid_coupons
     swap
     box_get
     assert // check self.account entry exists
     pushint 48
     extract_uint64
-    // modules/core_financial/coupon.py:41
+    // modules/core_financial/coupon.py:49
     // assert due_coupons > account_paid_coupons, err.NO_DUE_COUPON
     swap
     dig 1
     >
     assert // No due coupon to pay
-    // modules/core_financial/coupon.py:42-45
+    // modules/core_financial/coupon.py:50-53
     // # The following conditions verify if other accounts are still waiting for the payment of previous coupons
     // assert self.all_due_coupons_paid(
     //     account_paid_coupons
@@ -1165,36 +1165,36 @@ pay_coupon:
     dup
     callsub all_due_coupons_paid
     assert // Pending due coupon payment
-    // modules/core_financial/coupon.py:189
+    // modules/core_financial/coupon.py:197
     // self.account_total_units_value(holding_address),
     dig 1
     callsub account_total_units_value
-    // modules/core_financial/coupon.py:190
+    // modules/core_financial/coupon.py:198
     // account_paid_coupons + 1,
     swap
     intc_1 // 1
     +
-    // modules/core_financial/coupon.py:188-191
+    // modules/core_financial/coupon.py:196-199
     // return self.coupon_interest_amount(
     //     self.account_total_units_value(holding_address),
     //     account_paid_coupons + 1,
     // )
     callsub coupon_interest_amount
     swap
-    // modules/payment_agent/coupon.py:35
+    // modules/payment_agent/coupon.py:54
     // self.assert_payment_authorization(holding_address)
     dup
     callsub assert_payment_authorization
-    // modules/payment_agent/coupon.py:38
+    // modules/payment_agent/coupon.py:57
     // if self.is_payment_executable(holding_address):
     callsub is_payment_executable
     bz pay_coupon_else_body@3
-    // modules/payment_agent/coupon.py:39-40
+    // modules/payment_agent/coupon.py:58-59
     // # The reference implementation has on-chain payment agent
     // self.assert_enough_funds(payment_amount)
     dupn 2
     callsub assert_enough_funds
-    // modules/payment_agent/coupon.py:41-42
+    // modules/payment_agent/coupon.py:60-61
     // # The reference implementation has the same asset for denomination and settlement, no conversion needed
     // self.pay(self.account[holding_address].payment_address, payment_amount)
     dig 3
@@ -1205,7 +1205,7 @@ pay_coupon:
     callsub pay
 
 pay_coupon_after_if_else@4:
-    // modules/core_financial/coupon.py:55
+    // modules/core_financial/coupon.py:63
     // self.account[holding_address].paid_coupons += 1
     dig 2
     dup
@@ -1219,29 +1219,152 @@ pay_coupon_after_if_else@4:
     pushint 48
     swap
     box_replace
-    // modules/core_financial/coupon.py:56
+    // modules/core_financial/coupon.py:64
     // self.paid_coupon_units += units
     intc_0 // 0
-    bytec 27 // "paid_coupon_units"
+    bytec 28 // "paid_coupon_units"
     app_global_get_ex
     assert // check self.paid_coupon_units exists
     dig 2
     +
-    bytec 27 // "paid_coupon_units"
+    bytec 28 // "paid_coupon_units"
     swap
     app_global_put
-    // modules/payment_agent/coupon.py:50
+    // modules/payment_agent/coupon.py:17
+    // contract_id=Global.current_application_id.id,
+    global CurrentApplicationID
+    // modules/payment_agent/coupon.py:20
+    // time=Global.latest_timestamp,
+    global LatestTimestamp
+    // modules/payment_agent/coupon.py:22
+    // currency_id=self.denomination_asset_id.id,
+    intc_0 // 0
+    bytec 16 // "denomination_asset_id"
+    app_global_get_ex
+    assert // check self.denomination_asset_id exists
+    // modules/payment_agent/coupon.py:23
+    // currency_unit=self.denomination_asset_id.unit_name,
+    dup
+    asset_params_get AssetUnitName
+    assert // asset exists
+    // modules/payment_agent/coupon.py:24
+    // nominal_value=self.circulating_units * self.unit_value,
+    intc_0 // 0
+    bytec_3 // "circulating_units"
+    app_global_get_ex
+    assert // check self.circulating_units exists
+    intc_0 // 0
+    bytec 6 // "unit_value"
+    app_global_get_ex
+    assert // check self.unit_value exists
+    *
+    // modules/payment_agent/coupon.py:16-27
+    // Event(
+    //     contract_id=Global.current_application_id.id,
+    //     type=arc4.UInt8(enums.EVT_TYPE_IP),
+    //     type_name=String("IP"),
+    //     time=Global.latest_timestamp,
+    //     payoff=payoff,
+    //     currency_id=self.denomination_asset_id.id,
+    //     currency_unit=self.denomination_asset_id.unit_name,
+    //     nominal_value=self.circulating_units * self.unit_value,
+    //     nominal_rate_bps=arc4.UInt16(0),  # TODO: Add interest rate
+    //     nominal_accrued=UInt64(0),
+    // )
+    uncover 4
+    itob
+    pushbytes 0x080037
+    concat
+    uncover 4
+    itob
+    concat
+    dig 4
+    itob
+    swap
+    dig 1
+    concat
+    uncover 4
+    itob
+    concat
+    dig 3
+    len
+    itob
+    extract 6 2
+    uncover 4
+    concat
+    swap
+    bytec 35 // 0x003b
+    concat
+    uncover 3
+    itob
+    concat
+    // modules/payment_agent/coupon.py:25
+    // nominal_rate_bps=arc4.UInt16(0),  # TODO: Add interest rate
+    bytec 30 // 0x0000
+    // modules/payment_agent/coupon.py:16-27
+    // Event(
+    //     contract_id=Global.current_application_id.id,
+    //     type=arc4.UInt8(enums.EVT_TYPE_IP),
+    //     type_name=String("IP"),
+    //     time=Global.latest_timestamp,
+    //     payoff=payoff,
+    //     currency_id=self.denomination_asset_id.id,
+    //     currency_unit=self.denomination_asset_id.unit_name,
+    //     nominal_value=self.circulating_units * self.unit_value,
+    //     nominal_rate_bps=arc4.UInt16(0),  # TODO: Add interest rate
+    //     nominal_accrued=UInt64(0),
+    // )
+    concat
+    // modules/payment_agent/coupon.py:26
+    // nominal_accrued=UInt64(0),
+    intc_0 // 0
+    // modules/payment_agent/coupon.py:16-27
+    // Event(
+    //     contract_id=Global.current_application_id.id,
+    //     type=arc4.UInt8(enums.EVT_TYPE_IP),
+    //     type_name=String("IP"),
+    //     time=Global.latest_timestamp,
+    //     payoff=payoff,
+    //     currency_id=self.denomination_asset_id.id,
+    //     currency_unit=self.denomination_asset_id.unit_name,
+    //     nominal_value=self.circulating_units * self.unit_value,
+    //     nominal_rate_bps=arc4.UInt16(0),  # TODO: Add interest rate
+    //     nominal_accrued=UInt64(0),
+    // )
+    itob
+    concat
+    pushbytes 0x00024950
+    concat
+    swap
+    concat
+    // modules/payment_agent/coupon.py:15-28
+    // arc4.emit(
+    //     Event(
+    //         contract_id=Global.current_application_id.id,
+    //         type=arc4.UInt8(enums.EVT_TYPE_IP),
+    //         type_name=String("IP"),
+    //         time=Global.latest_timestamp,
+    //         payoff=payoff,
+    //         currency_id=self.denomination_asset_id.id,
+    //         currency_unit=self.denomination_asset_id.unit_name,
+    //         nominal_value=self.circulating_units * self.unit_value,
+    //         nominal_rate_bps=arc4.UInt16(0),  # TODO: Add interest rate
+    //         nominal_accrued=UInt64(0),
+    //     )
+    // )
+    bytec 36 // method "Event(uint64,uint8,string,uint64,uint64,uint64,byte[],uint64,uint16,uint64)"
+    swap
+    concat
+    log
+    // modules/payment_agent/coupon.py:70
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // modules/payment_agent/coupon.py:48-52
+    // modules/payment_agent/coupon.py:68-72
     // return typ.PaymentResult(
     //     amount=payment_amount,
     //     timestamp=Global.latest_timestamp,
     //     context=payment_info,  # TODO: Add info on failed payment
     // )
-    dig 1
-    itob
-    swap
     itob
     concat
     dig 4
@@ -1252,11 +1375,11 @@ pay_coupon_after_if_else@4:
     swap
     concat
     swap
-    bytec 35 // 0x0012
+    bytec 37 // 0x0012
     concat
     swap
     concat
-    // modules/payment_agent/coupon.py:11
+    // modules/payment_agent/coupon.py:30
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     swap
@@ -1266,7 +1389,7 @@ pay_coupon_after_if_else@4:
     return
 
 pay_coupon_else_body@3:
-    // modules/payment_agent/coupon.py:44-45
+    // modules/payment_agent/coupon.py:63-64
     // # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
     // payment_amount = UInt64()
     intc_0 // 0
@@ -1276,7 +1399,7 @@ pay_coupon_else_body@3:
 
 // modules.payment_agent.principal.PrincipalPaymentAgentMixin.pay_principal[routing]() -> void:
 pay_principal:
-    // modules/payment_agent/principal.py:11
+    // modules/payment_agent/principal.py:30
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -1343,35 +1466,35 @@ pay_principal:
     assert // check self.maturity_date exists
     >=
     assert // Not mature
-    // modules/core_financial/coupon.py:70
+    // modules/core_financial/coupon.py:78
     // self.count_due_coupons()
     callsub count_due_coupons
-    // modules/core_financial/coupon.py:68-71
+    // modules/core_financial/coupon.py:76-79
     // # Principal payment is forbidden in case of pending coupon payments
     // assert self.all_due_coupons_paid(
     //     self.count_due_coupons()
     // ), err.PENDING_COUPON_PAYMENT
     callsub all_due_coupons_paid
     assert // Pending due coupon payment
-    // modules/core_financial/coupon.py:72
+    // modules/core_financial/coupon.py:80
     // return self.account_total_units_value(holding_address)
     dup
     callsub account_total_units_value
     swap
-    // modules/payment_agent/principal.py:34
+    // modules/payment_agent/principal.py:53
     // self.assert_payment_authorization(holding_address)
     dup
     callsub assert_payment_authorization
-    // modules/payment_agent/principal.py:37
+    // modules/payment_agent/principal.py:56
     // if self.is_payment_executable(holding_address):
     callsub is_payment_executable
     bz pay_principal_else_body@3
-    // modules/payment_agent/principal.py:38-39
+    // modules/payment_agent/principal.py:57-58
     // # The reference implementation has on-chain payment agent
     // self.assert_enough_funds(payment_amount)
     dupn 2
     callsub assert_enough_funds
-    // modules/payment_agent/principal.py:40-41
+    // modules/payment_agent/principal.py:59-60
     // # The reference implementation has the same asset for denomination and settlement, no conversion needed
     // self.pay(self.account[holding_address].payment_address, payment_amount)
     dig 2
@@ -1403,24 +1526,132 @@ pay_principal_after_if_else@4:
     // self.account[holding_address].units = UInt64()
     intc_0 // 0
     itob
-    intc_2 // 32
     swap
+    intc_2 // 32
+    dig 2
     box_replace
     // modules/core_financial/common.py:201
     // self.end_if_no_circulating_units()
     callsub end_if_no_circulating_units
-    // modules/payment_agent/principal.py:49
+    // modules/payment_agent/principal.py:17
+    // contract_id=Global.current_application_id.id,
+    global CurrentApplicationID
+    // modules/payment_agent/principal.py:20
+    // time=Global.latest_timestamp,
+    global LatestTimestamp
+    // modules/payment_agent/principal.py:22
+    // currency_id=self.denomination_asset_id.id,
+    intc_0 // 0
+    bytec 16 // "denomination_asset_id"
+    app_global_get_ex
+    assert // check self.denomination_asset_id exists
+    // modules/payment_agent/principal.py:23
+    // currency_unit=self.denomination_asset_id.unit_name,
+    dup
+    asset_params_get AssetUnitName
+    assert // asset exists
+    // modules/payment_agent/principal.py:24
+    // nominal_value=self.circulating_units * self.unit_value,
+    intc_0 // 0
+    bytec_3 // "circulating_units"
+    app_global_get_ex
+    assert // check self.circulating_units exists
+    intc_0 // 0
+    bytec 6 // "unit_value"
+    app_global_get_ex
+    assert // check self.unit_value exists
+    *
+    // modules/payment_agent/principal.py:16-27
+    // Event(
+    //     contract_id=Global.current_application_id.id,
+    //     type=arc4.UInt8(enums.EVT_TYPE_PR),
+    //     type_name=String("PR"),
+    //     time=Global.latest_timestamp,
+    //     payoff=payoff,
+    //     currency_id=self.denomination_asset_id.id,
+    //     currency_unit=self.denomination_asset_id.unit_name,
+    //     nominal_value=self.circulating_units * self.unit_value,
+    //     nominal_rate_bps=arc4.UInt16(0),
+    //     nominal_accrued=UInt64(0),
+    // )
+    uncover 4
+    itob
+    pushbytes 0x030037
+    concat
+    uncover 4
+    itob
+    concat
+    dig 5
+    itob
+    swap
+    dig 1
+    concat
+    uncover 4
+    itob
+    concat
+    dig 3
+    len
+    itob
+    extract 6 2
+    uncover 4
+    concat
+    swap
+    bytec 35 // 0x003b
+    concat
+    uncover 3
+    itob
+    concat
+    // modules/payment_agent/principal.py:25
+    // nominal_rate_bps=arc4.UInt16(0),
+    bytec 30 // 0x0000
+    // modules/payment_agent/principal.py:16-27
+    // Event(
+    //     contract_id=Global.current_application_id.id,
+    //     type=arc4.UInt8(enums.EVT_TYPE_PR),
+    //     type_name=String("PR"),
+    //     time=Global.latest_timestamp,
+    //     payoff=payoff,
+    //     currency_id=self.denomination_asset_id.id,
+    //     currency_unit=self.denomination_asset_id.unit_name,
+    //     nominal_value=self.circulating_units * self.unit_value,
+    //     nominal_rate_bps=arc4.UInt16(0),
+    //     nominal_accrued=UInt64(0),
+    // )
+    concat
+    uncover 3
+    concat
+    pushbytes 0x00025052
+    concat
+    swap
+    concat
+    // modules/payment_agent/principal.py:15-28
+    // arc4.emit(
+    //     Event(
+    //         contract_id=Global.current_application_id.id,
+    //         type=arc4.UInt8(enums.EVT_TYPE_PR),
+    //         type_name=String("PR"),
+    //         time=Global.latest_timestamp,
+    //         payoff=payoff,
+    //         currency_id=self.denomination_asset_id.id,
+    //         currency_unit=self.denomination_asset_id.unit_name,
+    //         nominal_value=self.circulating_units * self.unit_value,
+    //         nominal_rate_bps=arc4.UInt16(0),
+    //         nominal_accrued=UInt64(0),
+    //     )
+    // )
+    bytec 36 // method "Event(uint64,uint8,string,uint64,uint64,uint64,byte[],uint64,uint16,uint64)"
+    swap
+    concat
+    log
+    // modules/payment_agent/principal.py:69
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // modules/payment_agent/principal.py:47-51
+    // modules/payment_agent/principal.py:67-71
     // return typ.PaymentResult(
     //     amount=payment_amount,
     //     timestamp=Global.latest_timestamp,
     //     context=payment_info,  # TODO: Add info on failed payment
     // )
-    dig 1
-    itob
-    swap
     itob
     concat
     dig 3
@@ -1431,11 +1662,11 @@ pay_principal_after_if_else@4:
     swap
     concat
     swap
-    bytec 35 // 0x0012
+    bytec 37 // 0x0012
     concat
     swap
     concat
-    // modules/payment_agent/principal.py:11
+    // modules/payment_agent/principal.py:30
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     swap
@@ -1445,7 +1676,7 @@ pay_principal_after_if_else@4:
     return
 
 pay_principal_else_body@3:
-    // modules/payment_agent/principal.py:43-44
+    // modules/payment_agent/principal.py:62-63
     // # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
     // payment_amount = UInt64()
     intc_0 // 0
@@ -1499,7 +1730,7 @@ asset_transfer:
     // modules/core_financial/common.py:154
     // and self.secondary_market_opening_date <= Global.latest_timestamp
     intc_0 // 0
-    bytec 17 // "secondary_market_opening_date"
+    bytec 18 // "secondary_market_opening_date"
     app_global_get_ex
     assert // check self.secondary_market_opening_date exists
     global LatestTimestamp
@@ -1515,7 +1746,7 @@ asset_transfer:
     // modules/core_financial/common.py:156
     // not self.secondary_market_closure_date
     intc_0 // 0
-    bytec 10 // "secondary_market_closure_date"
+    bytec 11 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
     // modules/core_financial/common.py:156-157
@@ -1526,7 +1757,7 @@ asset_transfer:
     // or Global.latest_timestamp < self.secondary_market_closure_date
     global LatestTimestamp
     intc_0 // 0
-    bytec 10 // "secondary_market_closure_date"
+    bytec 11 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
     <
@@ -1683,18 +1914,18 @@ asset_transfer_after_if_else@10:
     pushint 40
     extract_uint64
     bury 5
-    // modules/core_financial/coupon.py:61-62
+    // modules/core_financial/coupon.py:69-70
     // # Transfer is forbidden in case of pending coupon payments
     // due_coupons = self.count_due_coupons()
     callsub count_due_coupons
-    // modules/core_financial/coupon.py:63
+    // modules/core_financial/coupon.py:71
     // self.assert_no_pending_coupon_payment(sender_holding_address, due_coupons)
     dig 4
     dup
     cover 2
     dig 1
     callsub assert_no_pending_coupon_payment
-    // modules/core_financial/coupon.py:64
+    // modules/core_financial/coupon.py:72
     // return self.accrued_interest_amount(sender_holding_address, units, due_coupons)
     swap
     dig 3
@@ -1839,12 +2070,12 @@ asset_create:
     assert // invalid number of bytes for smart_contracts.abi_types.AssetMetadata
     // modules/core_financial/common.py:276
     // self.arranger.value = arranger
-    bytec 7 // 0x52323023
+    bytec 8 // 0x52323023
     uncover 2
     app_global_put
     // modules/core_financial/common.py:277
     // self.metadata = metadata.bytes
-    bytec 24 // "metadata"
+    bytec 25 // "metadata"
     swap
     app_global_put
     // modules/core_financial/common.py:267
@@ -1885,7 +2116,7 @@ asset_update:
     callsub assert_caller_is_arranger
     // modules/core_financial/common.py:288
     // self.metadata = metadata.bytes
-    bytec 24 // "metadata"
+    bytec 25 // "metadata"
     swap
     app_global_put
     // modules/core_financial/common.py:279
@@ -1974,7 +2205,7 @@ set_secondary_time_events_after_if_else@3:
     assert // Invalid secondary market opening date
     // modules/core_financial/common.py:323
     // self.secondary_market_opening_date = secondary_market_time_events[
-    bytec 17 // "secondary_market_opening_date"
+    bytec 18 // "secondary_market_opening_date"
     // modules/core_financial/common.py:323-325
     // self.secondary_market_opening_date = secondary_market_time_events[
     //     cfg.SECONDARY_MARKET_OPENING_DATE_IDX
@@ -2020,7 +2251,7 @@ set_secondary_time_events_after_if_else@3:
     assert // Invalid secondary market closure date
     // modules/core_financial/common.py:331
     // self.secondary_market_closure_date = secondary_market_time_events[
-    bytec 10 // "secondary_market_closure_date"
+    bytec 11 // "secondary_market_closure_date"
     // modules/core_financial/common.py:331-333
     // self.secondary_market_closure_date = secondary_market_time_events[
     //     cfg.SECONDARY_MARKET_CLOSURE_DATE_IDX
@@ -2032,13 +2263,13 @@ set_secondary_time_events_after_if_else@5:
     // modules/core_financial/common.py:335
     // secondary_market_opening_date=self.secondary_market_opening_date,
     intc_0 // 0
-    bytec 17 // "secondary_market_opening_date"
+    bytec 18 // "secondary_market_opening_date"
     app_global_get_ex
     assert // check self.secondary_market_opening_date exists
     // modules/core_financial/common.py:336
     // secondary_market_closure_date=self.secondary_market_closure_date,
     intc_0 // 0
-    bytec 10 // "secondary_market_closure_date"
+    bytec 11 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
     // modules/core_financial/common.py:334-337
@@ -2075,13 +2306,13 @@ set_default_status:
     getbit
     // modules/rbac.py:74
     // assert self._role_is_active(self.trustee, Txn.sender), err.UNAUTHORIZED
-    bytec 19 // 0x52363023
+    bytec 20 // 0x52363023
     txn Sender
     callsub _role_is_active
     assert // Not authorized
     // modules/core_financial/common.py:352
     // self.asset_defaulted = defaulted
-    bytec 23 // "asset_defaulted"
+    bytec 24 // "asset_defaulted"
     swap
     app_global_put
     // modules/core_financial/common.py:353
@@ -2133,7 +2364,7 @@ primary_distribution:
     // modules/core_financial/common.py:146
     // and self.primary_distribution_opening_date
     intc_0 // 0
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
     // modules/core_financial/common.py:147
@@ -2153,7 +2384,7 @@ primary_distribution:
     // modules/core_financial/common.py:148
     // < self.primary_distribution_closure_date
     intc_0 // 0
-    bytec 26 // "primary_distribution_closure_date"
+    bytec 27 // "primary_distribution_closure_date"
     app_global_get_ex
     assert // check self.primary_distribution_closure_date exists
     // modules/core_financial/common.py:147-148
@@ -2179,7 +2410,7 @@ primary_distribution_bool_merge@6:
     assert // Primary distribution is closed
     // modules/rbac.py:71
     // assert self._role_is_active(self.primary_dealer, Txn.sender), err.UNAUTHORIZED
-    bytec 20 // 0x52353023
+    bytec 21 // 0x52353023
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -2212,7 +2443,7 @@ primary_distribution_bool_merge@6:
     dig 1
     +
     intc_0 // 0
-    bytec 14 // "total_units"
+    bytec 15 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
     dig 1
@@ -2240,7 +2471,7 @@ primary_distribution_bool_merge@6:
     // modules/core_financial/common.py:390
     // self.account[holding_address].unit_value = self.unit_value
     intc_0 // 0
-    bytec 15 // "unit_value"
+    bytec 6 // "unit_value"
     app_global_get_ex
     assert // check self.unit_value exists
     itob
@@ -2251,7 +2482,7 @@ primary_distribution_bool_merge@6:
     // modules/core_financial/common.py:391
     // return self.total_units - self.circulating_units
     intc_0 // 0
-    bytec 14 // "total_units"
+    bytec 15 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
     swap
@@ -2301,7 +2532,7 @@ get_asset_info_after_if_else@4:
     // # The reference implementation has no grace or delinquency periods
     // if self.asset_defaulted:
     intc_0 // 0
-    bytec 23 // "asset_defaulted"
+    bytec 24 // "asset_defaulted"
     app_global_get_ex
     assert // check self.asset_defaulted exists
     bz get_asset_info_after_if_else@6
@@ -2314,13 +2545,13 @@ get_asset_info_after_if_else@6:
     // modules/core_financial/common.py:411
     // denomination_asset_id=self.denomination_asset_id.id,
     intc_0 // 0
-    bytec 31 // "denomination_asset_id"
+    bytec 16 // "denomination_asset_id"
     app_global_get_ex
     assert // check self.denomination_asset_id exists
     // modules/core_financial/common.py:412
     // settlement_asset_id=self.settlement_asset_id.id,
     intc_0 // 0
-    bytec 8 // "settlement_asset_id"
+    bytec 9 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
     // modules/accounting.py:45
@@ -2330,7 +2561,7 @@ get_asset_info_after_if_else@6:
     app_global_get_ex
     assert // check self.circulating_units exists
     intc_0 // 0
-    bytec 15 // "unit_value"
+    bytec 6 // "unit_value"
     app_global_get_ex
     assert // check self.unit_value exists
     dup2
@@ -2338,7 +2569,7 @@ get_asset_info_after_if_else@6:
     // modules/core_financial/common.py:415
     // day_count_convention=arc4.UInt8(self.day_count_convention),
     intc_0 // 0
-    bytec 16 // "day_count_convention"
+    bytec 17 // "day_count_convention"
     app_global_get_ex
     assert // check self.day_count_convention exists
     itob
@@ -2351,7 +2582,7 @@ get_asset_info_after_if_else@6:
     // modules/core_financial/common.py:416
     // principal_discount=arc4.UInt16(self.principal_discount),
     intc_0 // 0
-    bytec 25 // "principal_discount"
+    bytec 26 // "principal_discount"
     app_global_get_ex
     assert // check self.principal_discount exists
     itob
@@ -2364,7 +2595,7 @@ get_asset_info_after_if_else@6:
     // modules/core_financial/common.py:417
     // interest_rate=arc4.UInt16(self.interest_rate),
     intc_0 // 0
-    bytec 32 // "interest_rate"
+    bytec 33 // "interest_rate"
     app_global_get_ex
     assert // check self.interest_rate exists
     itob
@@ -2377,19 +2608,19 @@ get_asset_info_after_if_else@6:
     // modules/core_financial/common.py:418
     // total_supply=self.total_units,
     intc_0 // 0
-    bytec 14 // "total_units"
+    bytec 15 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
     // modules/core_financial/common.py:420
     // primary_distribution_opening_date=self.primary_distribution_opening_date,
     intc_0 // 0
-    bytec 9 // "primary_distribution_opening_date"
+    bytec 10 // "primary_distribution_opening_date"
     app_global_get_ex
     assert // check self.primary_distribution_opening_date exists
     // modules/core_financial/common.py:421
     // primary_distribution_closure_date=self.primary_distribution_closure_date,
     intc_0 // 0
-    bytec 26 // "primary_distribution_closure_date"
+    bytec 27 // "primary_distribution_closure_date"
     app_global_get_ex
     assert // check self.primary_distribution_closure_date exists
     // modules/core_financial/common.py:422
@@ -2407,7 +2638,7 @@ get_asset_info_after_if_else@6:
     // modules/core_financial/common.py:424
     // suspended=self.asset_suspended,
     intc_0 // 0
-    bytec 22 // "asset_suspended"
+    bytec 23 // "asset_suspended"
     app_global_get_ex
     assert // check self.asset_suspended exists
     // modules/core_financial/common.py:425
@@ -2473,7 +2704,7 @@ get_asset_info_after_if_else@6:
     uncover 3
     itob
     concat
-    bytec 29 // 0x00
+    bytec 31 // 0x00
     intc_0 // 0
     uncover 4
     setbit
@@ -2494,7 +2725,7 @@ get_asset_info_after_if_else@6:
 get_time_events:
     // modules/core_financial/common.py:436
     // time_events = typ.TimeEvents()
-    bytec 34 // 0x0000
+    bytec 30 // 0x0000
     // modules/accounting.py:25
     // return self.status == enm.STATUS_ACTIVE
     intc_0 // 0
@@ -2508,7 +2739,7 @@ get_time_events:
     bz get_time_events_after_if_else@3
     // modules/core_financial/common.py:438
     // time_events = self.time_events.value.copy()
-    bytec 11 // 0x74696d654576656e7473
+    bytec 12 // 0x74696d654576656e7473
     box_get
     swap
     bury 2
@@ -2530,11 +2761,11 @@ get_secondary_market_schedule:
     // modules/core_financial/common.py:450
     // (self.secondary_market_opening_date, self.secondary_market_closure_date)
     intc_0 // 0
-    bytec 17 // "secondary_market_opening_date"
+    bytec 18 // "secondary_market_opening_date"
     app_global_get_ex
     assert // check self.secondary_market_opening_date exists
     intc_0 // 0
-    bytec 10 // "secondary_market_closure_date"
+    bytec 11 // "secondary_market_closure_date"
     app_global_get_ex
     assert // check self.secondary_market_closure_date exists
     // modules/core_financial/common.py:449-451
@@ -2564,7 +2795,7 @@ get_asset_metadata:
     // modules/core_financial/common.py:462
     // return typ.AssetMetadata.from_bytes(self.metadata)
     intc_0 // 0
-    bytec 24 // "metadata"
+    bytec 25 // "metadata"
     app_global_get_ex
     assert // check self.metadata exists
     // modules/core_financial/common.py:453
@@ -2597,7 +2828,7 @@ account_gov_suspension:
     getbit
     // modules/rbac.py:77
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
-    bytec 12 // 0x52373023
+    bytec 13 // 0x52373023
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -2654,7 +2885,7 @@ account_open:
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
     // modules/rbac.py:68
     // assert self._role_is_active(self.account_manager, Txn.sender), err.UNAUTHORIZED
-    bytec 13 // 0x52343023
+    bytec 14 // 0x52343023
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -2705,7 +2936,7 @@ account_open:
     concat
     swap
     concat
-    bytec 29 // 0x00
+    bytec 31 // 0x00
     concat
     box_put
     // modules/accounting.py:151
@@ -2734,7 +2965,7 @@ account_close:
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
     // modules/rbac.py:68
     // assert self._role_is_active(self.account_manager, Txn.sender), err.UNAUTHORIZED
-    bytec 13 // 0x52343023
+    bytec 14 // 0x52343023
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -2898,7 +3129,7 @@ rbac_rotate_arranger:
     callsub assert_caller_is_arranger
     // modules/rbac.py:159
     // self.arranger.value = new_arranger
-    bytec 7 // 0x52323023
+    bytec 8 // 0x52323023
     swap
     app_global_put
     // modules/rbac.py:160
@@ -2930,7 +3161,7 @@ rbac_set_op_daemon:
     callsub assert_caller_is_arranger
     // modules/rbac.py:174
     // self.op_daemon.value = address
-    bytec 21 // 0x52323523
+    bytec 22 // 0x52323523
     swap
     app_global_put
     // modules/rbac.py:175
@@ -2994,7 +3225,7 @@ rbac_assign_role:
     bz rbac_assign_role_after_if_else@3
     // modules/rbac.py:102
     // self.arranger.value = role_address
-    bytec 7 // 0x52323023
+    bytec 8 // 0x52323023
     dig 3
     app_global_put
 
@@ -3021,7 +3252,7 @@ rbac_assign_role_after_if_else@3:
     bz rbac_assign_role_after_if_else@5
     // modules/rbac.py:106
     // assert role_address not in self.account_manager, err.INVALID_ROLE_ADDRESS
-    bytec 13 // 0x52343023
+    bytec 14 // 0x52343023
     dig 3
     concat
     dup
@@ -3046,7 +3277,7 @@ rbac_assign_role_after_if_else@5:
     bz rbac_assign_role_after_if_else@7
     // modules/rbac.py:110
     // assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 20 // 0x52353023
+    bytec 21 // 0x52353023
     dig 3
     concat
     dup
@@ -3071,7 +3302,7 @@ rbac_assign_role_after_if_else@7:
     bz rbac_assign_role_after_if_else@9
     // modules/rbac.py:114
     // assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 19 // 0x52363023
+    bytec 20 // 0x52363023
     dig 3
     concat
     dup
@@ -3096,7 +3327,7 @@ rbac_assign_role_after_if_else@9:
     bz rbac_assign_role_after_if_else@11
     // modules/rbac.py:118
     // assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec 12 // 0x52373023
+    bytec 13 // 0x52373023
     dig 3
     concat
     dup
@@ -3121,7 +3352,7 @@ rbac_assign_role_after_if_else@11:
     bz rbac_assign_role_after_inlined_modules.rbac.RbacModule._upsert_role@14
     // modules/rbac.py:122
     // assert role_address not in self.interest_oracle, err.INVALID_ROLE_ADDRESS
-    bytec 30 // 0x52383023
+    bytec 32 // 0x52383023
     dig 3
     concat
     dup
@@ -3177,7 +3408,7 @@ rbac_revoke_role:
     bz rbac_revoke_role_after_if_else@3
     // modules/rbac.py:128
     // assert role_address in self.account_manager, err.INVALID_ROLE_ADDRESS
-    bytec 13 // 0x52343023
+    bytec 14 // 0x52343023
     dig 2
     concat
     dup
@@ -3212,7 +3443,7 @@ rbac_revoke_role_after_if_else@3:
     bz rbac_revoke_role_after_if_else@5
     // modules/rbac.py:132
     // assert role_address in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 20 // 0x52353023
+    bytec 21 // 0x52353023
     dig 2
     concat
     dup
@@ -3236,7 +3467,7 @@ rbac_revoke_role_after_if_else@5:
     bz rbac_revoke_role_after_if_else@7
     // modules/rbac.py:136
     // assert role_address in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 19 // 0x52363023
+    bytec 20 // 0x52363023
     dig 2
     concat
     dup
@@ -3260,7 +3491,7 @@ rbac_revoke_role_after_if_else@7:
     bz rbac_revoke_role_after_if_else@9
     // modules/rbac.py:140
     // assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec 12 // 0x52373023
+    bytec 13 // 0x52373023
     dig 2
     concat
     dup
@@ -3284,7 +3515,7 @@ rbac_revoke_role_after_if_else@9:
     bz rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
     // modules/rbac.py:144
     // assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
-    bytec 30 // 0x52383023
+    bytec 32 // 0x52383023
     dig 2
     concat
     dup
@@ -3312,13 +3543,13 @@ rbac_gov_asset_suspension:
     getbit
     // modules/rbac.py:77
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
-    bytec 12 // 0x52373023
+    bytec 13 // 0x52373023
     txn Sender
     callsub _role_is_active
     assert // Not authorized
     // modules/rbac.py:246
     // self.asset_suspended = suspended
-    bytec 22 // "asset_suspended"
+    bytec 23 // "asset_suspended"
     swap
     app_global_put
     // modules/rbac.py:247
@@ -3340,7 +3571,7 @@ rbac_get_arranger:
     // modules/rbac.py:257
     // return self.arranger.value
     intc_0 // 0
-    bytec 7 // 0x52323023
+    bytec 8 // 0x52323023
     app_global_get_ex
     assert // check self.arranger exists
     // modules/rbac.py:249
@@ -3365,32 +3596,32 @@ rbac_get_address_roles:
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
     // modules/rbac.py:273
     // self._role_is_active(self.account_manager, address),
-    bytec 13 // 0x52343023
+    bytec 14 // 0x52343023
     dig 1
     callsub _role_is_active
     // modules/rbac.py:274
     // self._role_is_active(self.primary_dealer, address),
-    bytec 20 // 0x52353023
+    bytec 21 // 0x52353023
     dig 2
     callsub _role_is_active
     // modules/rbac.py:275
     // self._role_is_active(self.trustee, address),
-    bytec 19 // 0x52363023
+    bytec 20 // 0x52363023
     dig 3
     callsub _role_is_active
     // modules/rbac.py:276
     // self._role_is_active(self.authority, address),
-    bytec 12 // 0x52373023
+    bytec 13 // 0x52373023
     dig 4
     callsub _role_is_active
     // modules/rbac.py:277
     // self._role_is_active(self.interest_oracle, address),
-    bytec 30 // 0x52383023
+    bytec 32 // 0x52383023
     uncover 5
     callsub _role_is_active
     // modules/rbac.py:259
     // @arc4.abimethod(readonly=True)
-    bytec 29 // 0x00
+    bytec 31 // 0x00
     intc_0 // 0
     uncover 6
     setbit
@@ -3483,7 +3714,7 @@ rbac_get_role_config:
 rbac_get_role_config_switch_case_5@7:
     // modules/rbac.py:323
     // self.interest_oracle, role_address
-    bytec 30 // 0x52383023
+    bytec 32 // 0x52383023
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -3514,7 +3745,7 @@ rbac_get_role_config_after_inlined_modules.rbac.RbacModule.rbac_get_role_config@
 rbac_get_role_config_switch_case_4@6:
     // modules/rbac.py:318
     // self.authority, role_address
-    bytec 12 // 0x52373023
+    bytec 13 // 0x52373023
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -3538,7 +3769,7 @@ rbac_get_role_config_switch_case_4@6:
 rbac_get_role_config_switch_case_3@5:
     // modules/rbac.py:313
     // self.trustee, role_address
-    bytec 19 // 0x52363023
+    bytec 20 // 0x52363023
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -3562,7 +3793,7 @@ rbac_get_role_config_switch_case_3@5:
 rbac_get_role_config_switch_case_2@4:
     // modules/rbac.py:308
     // self.primary_dealer, role_address
-    bytec 20 // 0x52353023
+    bytec 21 // 0x52353023
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -3586,7 +3817,7 @@ rbac_get_role_config_switch_case_2@4:
 rbac_get_role_config_switch_case_1@3:
     // modules/rbac.py:303
     // self.account_manager, role_address
-    bytec 13 // 0x52343023
+    bytec 14 // 0x52343023
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -3620,23 +3851,23 @@ rbac_get_role_config_switch_case_0@2:
 
 // modules.core_financial.coupon.FixedCouponCashflowMixin.count_due_coupons() -> uint64:
 count_due_coupons:
-    // modules/core_financial/coupon.py:103
+    // modules/core_financial/coupon.py:111
     // def count_due_coupons(self) -> UInt64:
     proto 0 1
     pushbytes ""
-    // modules/core_financial/coupon.py:104
+    // modules/core_financial/coupon.py:112
     // current_ts = Global.latest_timestamp
     global LatestTimestamp
     dup
-    // modules/core_financial/coupon.py:105
+    // modules/core_financial/coupon.py:113
     // due_coupons = self.due_coupons_watermark
     intc_0 // 0
-    bytec 28 // "due_coupons_watermark"
+    bytec 29 // "due_coupons_watermark"
     app_global_get_ex
     swap
     cover 2
     assert // check self.due_coupons_watermark exists
-    // modules/core_financial/coupon.py:106
+    // modules/core_financial/coupon.py:114
     // if current_ts >= self.maturity_date:
     intc_0 // 0
     bytec 5 // "maturity_date"
@@ -3644,30 +3875,30 @@ count_due_coupons:
     assert // check self.maturity_date exists
     >=
     bz count_due_coupons_else_body@2
-    // modules/core_financial/coupon.py:107
+    // modules/core_financial/coupon.py:115
     // due_coupons = self.total_coupons
     intc_0 // 0
-    bytec 6 // "total_coupons"
+    bytec 7 // "total_coupons"
     app_global_get_ex
     swap
     frame_bury 2
     assert // check self.total_coupons exists
 
 count_due_coupons_after_if_else@8:
-    // modules/core_financial/coupon.py:121
+    // modules/core_financial/coupon.py:129
     // self.due_coupons_watermark = due_coupons
-    bytec 28 // "due_coupons_watermark"
+    bytec 29 // "due_coupons_watermark"
     frame_dig 2
     dup
     cover 2
     app_global_put
-    // modules/core_financial/coupon.py:122
+    // modules/core_financial/coupon.py:130
     // return due_coupons
     frame_bury 0
     retsub
 
 count_due_coupons_else_body@2:
-    // modules/core_financial/coupon.py:108
+    // modules/core_financial/coupon.py:116
     // elif current_ts > self.issuance_date:
     intc_0 // 0
     bytec 4 // "issuance_date"
@@ -3676,60 +3907,60 @@ count_due_coupons_else_body@2:
     frame_dig 1
     <
     bz count_due_coupons_after_if_else@8
-    // modules/core_financial/coupon.py:110
+    // modules/core_financial/coupon.py:118
     // UInt64(fixed_cfg.FIRST_COUPON_DATE_IDX) + self.due_coupons_watermark
     intc_0 // 0
-    bytec 28 // "due_coupons_watermark"
+    bytec 29 // "due_coupons_watermark"
     app_global_get_ex
     assert // check self.due_coupons_watermark exists
     pushint 3
     +
     dup
     frame_bury 0
-    // modules/core_financial/coupon.py:112
+    // modules/core_financial/coupon.py:120
     // coupon_due_date = self.time_events.value[coupon_idx]
     intc_3 // 8
     *
     pushint 2
     +
-    bytec 11 // 0x74696d654576656e7473
+    bytec 12 // 0x74696d654576656e7473
     swap
     intc_3 // 8
     box_extract
     btoi
 
 count_due_coupons_while_top@4:
-    // modules/core_financial/coupon.py:113
+    // modules/core_financial/coupon.py:121
     // while current_ts >= coupon_due_date:
     frame_dig 1
     <=
     bz count_due_coupons_after_while@6
-    // modules/core_financial/coupon.py:115
+    // modules/core_financial/coupon.py:123
     // required_budget=UInt64(fixed_cfg.OP_UP_COUPON_DUE_COUNTING),
     intc 4 // 255
-    // modules/core_financial/coupon.py:116
+    // modules/core_financial/coupon.py:124
     // fee_source=OpUpFeeSource.GroupCredit,
     intc_0 // 0
-    // modules/core_financial/coupon.py:114-117
+    // modules/core_financial/coupon.py:122-125
     // ensure_budget(
     //     required_budget=UInt64(fixed_cfg.OP_UP_COUPON_DUE_COUNTING),
     //     fee_source=OpUpFeeSource.GroupCredit,
     // )
     callsub ensure_budget
-    // modules/core_financial/coupon.py:118
+    // modules/core_financial/coupon.py:126
     // coupon_idx += 1
     frame_dig 0
     intc_1 // 1
     +
     dup
     frame_bury 0
-    // modules/core_financial/coupon.py:119
+    // modules/core_financial/coupon.py:127
     // coupon_due_date = self.time_events.value[coupon_idx]
     intc_3 // 8
     *
     pushint 2
     +
-    bytec 11 // 0x74696d654576656e7473
+    bytec 12 // 0x74696d654576656e7473
     swap
     intc_3 // 8
     box_extract
@@ -3737,7 +3968,7 @@ count_due_coupons_while_top@4:
     b count_due_coupons_while_top@4
 
 count_due_coupons_after_while@6:
-    // modules/core_financial/coupon.py:120
+    // modules/core_financial/coupon.py:128
     // due_coupons = coupon_idx - fixed_cfg.FIRST_COUPON_DATE_IDX
     frame_dig 0
     pushint 3
@@ -3748,10 +3979,10 @@ count_due_coupons_after_while@6:
 
 // modules.core_financial.coupon.FixedCouponCashflowMixin.coupon_due_date(coupon: uint64) -> uint64:
 coupon_due_date:
-    // modules/core_financial/coupon.py:124
+    // modules/core_financial/coupon.py:132
     // def coupon_due_date(self, coupon: UInt64) -> UInt64:
     proto 1 1
-    // modules/core_financial/coupon.py:125
+    // modules/core_financial/coupon.py:133
     // return self.time_events.value[fixed_cfg.FIRST_COUPON_DATE_IDX + coupon - 1]
     pushint 3
     frame_dig -1
@@ -3762,7 +3993,7 @@ coupon_due_date:
     *
     pushint 2
     +
-    bytec 11 // 0x74696d654576656e7473
+    bytec 12 // 0x74696d654576656e7473
     swap
     intc_3 // 8
     box_extract
@@ -3772,22 +4003,22 @@ coupon_due_date:
 
 // modules.core_financial.coupon.FixedCouponCashflowMixin.next_coupon_due_date(due_coupons: uint64) -> uint64:
 next_coupon_due_date:
-    // modules/core_financial/coupon.py:133
+    // modules/core_financial/coupon.py:141
     // def next_coupon_due_date(self, due_coupons: UInt64) -> UInt64:
     proto 1 1
-    // modules/core_financial/coupon.py:134
+    // modules/core_financial/coupon.py:142
     // coupon_due_date = UInt64()
     intc_0 // 0
-    // modules/core_financial/coupon.py:135
+    // modules/core_financial/coupon.py:143
     // if due_coupons < self.total_coupons:
     dup
-    bytec 6 // "total_coupons"
+    bytec 7 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
     frame_dig -1
     >
     bz next_coupon_due_date_after_if_else@2
-    // modules/core_financial/coupon.py:136
+    // modules/core_financial/coupon.py:144
     // coupon_due_date = self.coupon_due_date(due_coupons + 1)
     frame_dig -1
     intc_1 // 1
@@ -3796,7 +4027,7 @@ next_coupon_due_date:
     frame_bury 0
 
 next_coupon_due_date_after_if_else@2:
-    // modules/core_financial/coupon.py:137
+    // modules/core_financial/coupon.py:145
     // return coupon_due_date
     frame_dig 0
     swap
@@ -3805,12 +4036,12 @@ next_coupon_due_date_after_if_else@2:
 
 // modules.core_financial.coupon.FixedCouponCashflowMixin.coupon_interest_amount(principal_amount: uint64, coupon: uint64) -> uint64:
 coupon_interest_amount:
-    // modules/core_financial/coupon.py:139-141
+    // modules/core_financial/coupon.py:147-149
     // def coupon_interest_amount(
     //     self, principal_amount: UInt64, coupon: UInt64
     // ) -> UInt64:
     proto 2 1
-    // modules/core_financial/coupon.py:142
+    // modules/core_financial/coupon.py:150
     // coupon_rate_bps = self.coupon_rates.value[coupon - 1].as_uint64()
     frame_dig -1
     intc_1 // 1
@@ -3819,12 +4050,12 @@ coupon_interest_amount:
     *
     pushint 2
     +
-    bytec 18 // 0x636f75706f6e5261746573
+    bytec 19 // 0x636f75706f6e5261746573
     swap
     pushint 2
     box_extract
     btoi
-    // modules/core_financial/coupon.py:143
+    // modules/core_financial/coupon.py:151
     // return principal_amount * coupon_rate_bps // cst.BPS
     frame_dig -2
     *
@@ -3835,17 +4066,17 @@ coupon_interest_amount:
 
 // modules.core_financial.coupon.FixedCouponCashflowMixin.day_count_factor(due_coupons: uint64) -> bytes:
 day_count_factor:
-    // modules/core_financial/coupon.py:145
+    // modules/core_financial/coupon.py:153
     // def day_count_factor(self, due_coupons: UInt64) -> typ.DayCountFactor:
     proto 1 1
     pushbytes ""
     dup
-    // modules/core_financial/coupon.py:146-147
+    // modules/core_financial/coupon.py:154-155
     // # The reference implementation supports only the Actual/Actual and Continuous day-count conventions
     // if not due_coupons:
     frame_dig -1
     bnz day_count_factor_else_body@2
-    // modules/core_financial/coupon.py:148
+    // modules/core_financial/coupon.py:156
     // accruing_start_time = self.issuance_date
     intc_0 // 0
     bytec 4 // "issuance_date"
@@ -3853,22 +4084,22 @@ day_count_factor:
     assert // check self.issuance_date exists
 
 day_count_factor_after_if_else@3:
-    // modules/core_financial/coupon.py:151
+    // modules/core_financial/coupon.py:159
     // coupon_accrued_period = Global.latest_timestamp - accruing_start_time
     global LatestTimestamp
     dig 1
     -
     frame_bury 0
-    // modules/core_financial/coupon.py:152
+    // modules/core_financial/coupon.py:160
     // coupon_period = self.next_coupon_due_date(due_coupons) - accruing_start_time
     frame_dig -1
     callsub next_coupon_due_date
     swap
     -
-    // modules/core_financial/coupon.py:153
+    // modules/core_financial/coupon.py:161
     // if self.day_count_convention == UInt64(cst.DCC_A_A):
     intc_0 // 0
-    bytec 16 // "day_count_convention"
+    bytec 17 // "day_count_convention"
     app_global_get_ex
     assert // check self.day_count_convention exists
     bnz day_count_factor_after_if_else@5
@@ -3882,7 +4113,7 @@ day_count_factor_after_if_else@3:
     /
 
 day_count_factor_after_if_else@5:
-    // modules/core_financial/coupon.py:156-159
+    // modules/core_financial/coupon.py:164-167
     // return typ.DayCountFactor(
     //     numerator=coupon_accrued_period,
     //     denominator=coupon_period,
@@ -3896,15 +4127,15 @@ day_count_factor_after_if_else@5:
     retsub
 
 day_count_factor_else_body@2:
-    // modules/core_financial/coupon.py:128
+    // modules/core_financial/coupon.py:136
     // coupon_due_date = UInt64()
     intc_0 // 0
     frame_bury 1
-    // modules/core_financial/coupon.py:129
+    // modules/core_financial/coupon.py:137
     // if due_coupons >= UInt64(1):
     frame_dig -1
     bz day_count_factor_after_if_else@8
-    // modules/core_financial/coupon.py:130
+    // modules/core_financial/coupon.py:138
     // coupon_due_date = self.coupon_due_date(due_coupons)
     frame_dig -1
     callsub coupon_due_date
@@ -3917,21 +4148,21 @@ day_count_factor_after_if_else@8:
 
 // modules.core_financial.coupon.FixedCouponCashflowMixin.is_accruing_interest(due_coupons: uint64) -> uint64:
 is_accruing_interest:
-    // modules/core_financial/coupon.py:161
+    // modules/core_financial/coupon.py:169
     // def is_accruing_interest(self, due_coupons: UInt64) -> bool:
     proto 1 1
-    // modules/core_financial/coupon.py:163
+    // modules/core_financial/coupon.py:171
     // self.issuance_date != 0
     intc_0 // 0
     bytec 4 // "issuance_date"
     app_global_get_ex
     assert // check self.issuance_date exists
-    // modules/core_financial/coupon.py:163-165
+    // modules/core_financial/coupon.py:171-173
     // self.issuance_date != 0
     // and Global.latest_timestamp >= self.issuance_date
     // and due_coupons < self.total_coupons
     bz is_accruing_interest_bool_false@4
-    // modules/core_financial/coupon.py:164
+    // modules/core_financial/coupon.py:172
     // and Global.latest_timestamp >= self.issuance_date
     global LatestTimestamp
     intc_0 // 0
@@ -3939,26 +4170,26 @@ is_accruing_interest:
     app_global_get_ex
     assert // check self.issuance_date exists
     >=
-    // modules/core_financial/coupon.py:163-165
+    // modules/core_financial/coupon.py:171-173
     // self.issuance_date != 0
     // and Global.latest_timestamp >= self.issuance_date
     // and due_coupons < self.total_coupons
     bz is_accruing_interest_bool_false@4
-    // modules/core_financial/coupon.py:165
+    // modules/core_financial/coupon.py:173
     // and due_coupons < self.total_coupons
     intc_0 // 0
-    bytec 6 // "total_coupons"
+    bytec 7 // "total_coupons"
     app_global_get_ex
     assert // check self.total_coupons exists
     frame_dig -1
     >
-    // modules/core_financial/coupon.py:163-165
+    // modules/core_financial/coupon.py:171-173
     // self.issuance_date != 0
     // and Global.latest_timestamp >= self.issuance_date
     // and due_coupons < self.total_coupons
     bz is_accruing_interest_bool_false@4
     intc_1 // 1
-    // modules/core_financial/coupon.py:162-166
+    // modules/core_financial/coupon.py:170-174
     // return (
     //     self.issuance_date != 0
     //     and Global.latest_timestamp >= self.issuance_date
@@ -3968,7 +4199,7 @@ is_accruing_interest:
 
 is_accruing_interest_bool_false@4:
     intc_0 // 0
-    // modules/core_financial/coupon.py:162-166
+    // modules/core_financial/coupon.py:170-174
     // return (
     //     self.issuance_date != 0
     //     and Global.latest_timestamp >= self.issuance_date
@@ -3979,70 +4210,70 @@ is_accruing_interest_bool_false@4:
 
 // modules.core_financial.coupon.FixedCouponCashflowMixin.accrued_interest_amount(holding_address: bytes, units: uint64, due_coupons: uint64) -> uint64:
 accrued_interest_amount:
-    // modules/core_financial/coupon.py:168-170
+    // modules/core_financial/coupon.py:176-178
     // def accrued_interest_amount(
     //     self, holding_address: Account, units: UInt64, due_coupons: UInt64
     // ) -> UInt64:
     proto 3 1
-    // modules/core_financial/coupon.py:171-172
+    // modules/core_financial/coupon.py:179-180
     // # The following assert safeguards the subroutine from forbidden invocations
     // self.assert_no_pending_coupon_payment(holding_address, due_coupons)
     frame_dig -3
     frame_dig -1
     callsub assert_no_pending_coupon_payment
-    // modules/core_financial/coupon.py:173
+    // modules/core_financial/coupon.py:181
     // day_count_factor = self.day_count_factor(due_coupons)
     frame_dig -1
     callsub day_count_factor
-    // modules/core_financial/coupon.py:174
+    // modules/core_financial/coupon.py:182
     // coupon_accrued_period = day_count_factor.numerator
     dup
     intc_0 // 0
     extract_uint64
-    // modules/core_financial/coupon.py:175
+    // modules/core_financial/coupon.py:183
     // coupon_period = day_count_factor.denominator
     swap
     intc_3 // 8
     extract_uint64
-    // modules/core_financial/coupon.py:176
+    // modules/core_financial/coupon.py:184
     // next_coupon_rate_bps = self.coupon_rates.value[due_coupons].as_uint64()
     frame_dig -1
     pushint 2
     *
     pushint 2
     +
-    bytec 18 // 0x636f75706f6e5261746573
+    bytec 19 // 0x636f75706f6e5261746573
     swap
     pushint 2
     box_extract
     btoi
-    // modules/core_financial/coupon.py:179
+    // modules/core_financial/coupon.py:187
     // self.account_units_value(holding_address, units)
     frame_dig -3
     frame_dig -2
     callsub account_units_value
-    // modules/core_financial/coupon.py:179-180
+    // modules/core_financial/coupon.py:187-188
     // self.account_units_value(holding_address, units)
     // * next_coupon_rate_bps
     *
-    // modules/core_financial/coupon.py:179-181
+    // modules/core_financial/coupon.py:187-189
     // self.account_units_value(holding_address, units)
     // * next_coupon_rate_bps
     // * coupon_accrued_period
     uncover 2
     *
-    // modules/core_financial/coupon.py:182
+    // modules/core_financial/coupon.py:190
     // // (cst.BPS * coupon_period)
     pushint 10000
     uncover 2
     *
-    // modules/core_financial/coupon.py:179-182
+    // modules/core_financial/coupon.py:187-190
     // self.account_units_value(holding_address, units)
     // * next_coupon_rate_bps
     // * coupon_accrued_period
     // // (cst.BPS * coupon_period)
     /
-    // modules/core_financial/coupon.py:177-183
+    // modules/core_financial/coupon.py:185-191
     // # due_coupons is equal to the 0-base idx of next coupon
     // return (
     //     self.account_units_value(holding_address, units)
@@ -4055,13 +4286,13 @@ accrued_interest_amount:
 
 // modules.core_financial.coupon.CouponCashflowMixin.all_due_coupons_paid(due_coupons: uint64) -> uint64:
 all_due_coupons_paid:
-    // modules/core_financial/coupon.py:18
+    // modules/core_financial/coupon.py:26
     // def all_due_coupons_paid(self, due_coupons: UInt64) -> bool:
     proto 1 1
-    // modules/core_financial/coupon.py:19
+    // modules/core_financial/coupon.py:27
     // return self.paid_coupon_units >= self.circulating_units * due_coupons
     intc_0 // 0
-    bytec 27 // "paid_coupon_units"
+    bytec 28 // "paid_coupon_units"
     app_global_get_ex
     assert // check self.paid_coupon_units exists
     intc_0 // 0
@@ -4076,12 +4307,12 @@ all_due_coupons_paid:
 
 // modules.core_financial.coupon.CouponCashflowMixin.assert_no_pending_coupon_payment(holding_address: bytes, due_coupons: uint64) -> void:
 assert_no_pending_coupon_payment:
-    // modules/core_financial/coupon.py:21-23
+    // modules/core_financial/coupon.py:29-31
     // def assert_no_pending_coupon_payment(
     //     self, holding_address: Account, due_coupons: UInt64
     // ) -> None:
     proto 2 0
-    // modules/core_financial/coupon.py:25
+    // modules/core_financial/coupon.py:33
     // self.account[holding_address].paid_coupons == due_coupons
     bytec_1 // 0x52333023
     frame_dig -2
@@ -4092,7 +4323,7 @@ assert_no_pending_coupon_payment:
     extract_uint64
     frame_dig -1
     ==
-    // modules/core_financial/coupon.py:24-26
+    // modules/core_financial/coupon.py:32-34
     // assert (
     //     self.account[holding_address].paid_coupons == due_coupons
     // ), err.PENDING_COUPON_PAYMENT
@@ -4108,7 +4339,7 @@ assert_payment_authorization:
     // modules/payment_agent/common.py:13
     // if self.op_daemon.value != Global.zero_address:
     intc_0 // 0
-    bytec 21 // 0x52323523
+    bytec 22 // 0x52323523
     app_global_get_ex
     assert // check self.op_daemon exists
     global ZeroAddress
@@ -4118,7 +4349,7 @@ assert_payment_authorization:
     // Txn.sender == self.op_daemon.value
     txn Sender
     intc_0 // 0
-    bytec 21 // 0x52323523
+    bytec 22 // 0x52323523
     app_global_get_ex
     assert // check self.op_daemon exists
     ==
@@ -4190,7 +4421,7 @@ is_payment_executable:
     // modules/payment_agent/common.py:23
     // self.settlement_asset_id
     intc_0 // 0
-    bytec 8 // "settlement_asset_id"
+    bytec 9 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
     // modules/payment_agent/common.py:22-24
@@ -4240,7 +4471,7 @@ assert_enough_funds:
     // self.settlement_asset_id.balance(Global.current_application_address)
     global CurrentApplicationAddress
     intc_0 // 0
-    bytec 8 // "settlement_asset_id"
+    bytec 9 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
     asset_holding_get AssetBalance
@@ -4278,7 +4509,7 @@ pay:
     // modules/payment_agent/common.py:36
     // xfer_asset=self.settlement_asset_id,
     intc_0 // 0
-    bytec 8 // "settlement_asset_id"
+    bytec 9 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
     frame_dig -1
@@ -4389,7 +4620,7 @@ assert_time_events_sorted_for_header@1:
     // modules/core_financial/common.py:120
     // if self.day_count_convention != UInt64(cst.DCC_CONT):
     intc_0 // 0
-    bytec 16 // "day_count_convention"
+    bytec 17 // "day_count_convention"
     app_global_get_ex
     assert // check self.day_count_convention exists
     intc 4 // 255
@@ -4587,7 +4818,7 @@ assert_caller_is_arranger:
     // modules/rbac.py:52
     // return role_address == self.arranger.value
     intc_0 // 0
-    bytec 7 // 0x52323023
+    bytec 8 // 0x52323023
     app_global_get_ex
     assert // check self.arranger exists
     ==
@@ -4602,7 +4833,7 @@ assert_is_not_asset_defaulted:
     // modules/rbac.py:83
     // assert not self.asset_defaulted, err.DEFAULTED
     intc_0 // 0
-    bytec 23 // "asset_defaulted"
+    bytec 24 // "asset_defaulted"
     app_global_get_ex
     assert // check self.asset_defaulted exists
     !
@@ -4615,7 +4846,7 @@ assert_is_not_asset_suspended:
     // modules/rbac.py:86
     // assert not self.asset_suspended, err.SUSPENDED
     intc_0 // 0
-    bytec 22 // "asset_suspended"
+    bytec 23 // "asset_suspended"
     app_global_get_ex
     assert // check self.asset_suspended exists
     !

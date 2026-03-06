@@ -17,6 +17,11 @@
       "desc": "Additional payment information (Optional)"
     }
   ],
+  "events": [
+    {
+      "type_name": "PR"
+    }
+  ],
   "returns": {
     "type": "(uint64, uint64, byte[])",
     "desc": "Paid principal amount in denomination asset, Payment timestamp, Payment context"

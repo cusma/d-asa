@@ -114,3 +114,20 @@ jobs:
         run: |
           set -o pipefail
           algokit project run test tests/test_utils.py tests/test_mixin_composition_guards.py
+
+  test-events:
+    name: Test ACTUS events
+    if: '! github.event.pull_request.draft'
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Set up AlgoKit
+        uses: ./.github/actions/algokit-setup
+
+      - name: Run Fixed Coupon Bond ACTUS events test
+        shell: bash
+        run: |
+          set -o pipefail
+          poetry run pytest -s -v tests/fixed_coupon_bond/test_actus_events.py

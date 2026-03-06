@@ -41,6 +41,10 @@
   - [Transfer Agent](./specs/execution/transfer-agent.md)
   - [Secondary Market](./specs/execution/secondary-market.md)
 
+# Events
+
+- [Events](./events/events.md)
+
 # Interfaces
 
 - [RBAC]()

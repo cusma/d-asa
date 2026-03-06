@@ -1,4 +1,5 @@
 import math
+from base64 import b64decode
 from dataclasses import asdict, dataclass
 from typing import TypeAlias
 
@@ -6,6 +7,7 @@ from algokit_utils import (
     AlgoAmount,
     AlgorandClient,
     PaymentParams,
+    SendAppTransactionResult,
     SigningAccount,
 )
 from algosdk.abi import TupleType, UintType
@@ -211,3 +213,117 @@ def set_role_config(validity_start: int = 0, validity_end: int = 2**64 - 1) -> b
     return TupleType([UintType(64), UintType(64)]).encode(
         [validity_start, validity_end]
     )
+
+
+def get_event_from_call_result(call_result: SendAppTransactionResult) -> bytes:
+    # Contract emits ACTUS events right before the ARC-4 (which is the last log)
+    event = call_result.returns[0].tx_info["logs"][-2]
+    # Stripping ARC-28 4-bytes event signature prefix
+    event_bytes = b64decode(event)
+    return event_bytes[4:]
+
+
+def decode_actus_event(event_bytes: bytes) -> dict:
+    """
+    Decode an ACTUS ARC-28 Event from bytes using ARC-4 encoding.
+
+    In ARC-4, structs with dynamic types (String, Bytes) use offsets:
+    - Fixed-size fields are stored inline
+    - Dynamic fields are stored as 2-byte offsets pointing to data at the end
+
+    Event structure (ARC-4 encoding):
+    Fixed part (head):
+    - contract_id: UInt64 (8 bytes)
+    - type: arc4.UInt8 (1 byte)
+    - type_name: offset (2 bytes) -> points to String data in tail
+    - time: UInt64 (8 bytes)
+    - payoff: UInt64 (8 bytes)
+    - currency_id: UInt64 (8 bytes)
+    - currency_unit: offset (2 bytes) -> points to Bytes data in tail
+    - nominal_value: UInt64 (8 bytes)
+    - nominal_rate_bps: arc4.UInt16 (2 bytes)
+    - nominal_accrued: UInt64 (8 bytes)
+
+    Dynamic part (tail):
+    - String data for type_name (2 bytes length + UTF-8 data)
+    - Bytes data for currency_unit (2 bytes length + raw data)
+
+    Args:
+        event_bytes: The raw event bytes (after removing the 4-byte event signature)
+
+    Returns:
+        Dictionary with decoded event fields
+    """
+    import struct
+
+    offset = 0
+
+    # Read contract_id (UInt64 - 8 bytes)
+    contract_id = struct.unpack(">Q", event_bytes[offset : offset + 8])[0]
+    offset += 8
+
+    # Read type (arc4.UInt8 - 1 byte)
+    event_type = event_bytes[offset]
+    offset += 1
+
+    # Read type_name offset (2 bytes)
+    type_name_offset = struct.unpack(">H", event_bytes[offset : offset + 2])[0]
+    offset += 2
+
+    # Read time (UInt64 - 8 bytes)
+    time = struct.unpack(">Q", event_bytes[offset : offset + 8])[0]
+    offset += 8
+
+    # Read payoff (UInt64 - 8 bytes)
+    payoff = struct.unpack(">Q", event_bytes[offset : offset + 8])[0]
+    offset += 8
+
+    # Read currency_id (UInt64 - 8 bytes)
+    currency_id = struct.unpack(">Q", event_bytes[offset : offset + 8])[0]
+    offset += 8
+
+    # Read currency_unit offset (2 bytes)
+    currency_unit_offset = struct.unpack(">H", event_bytes[offset : offset + 2])[0]
+    offset += 2
+
+    # Read nominal_value (UInt64 - 8 bytes)
+    nominal_value = struct.unpack(">Q", event_bytes[offset : offset + 8])[0]
+    offset += 8
+
+    # Read nominal_rate_bps (arc4.UInt16 - 2 bytes)
+    nominal_rate_bps = struct.unpack(">H", event_bytes[offset : offset + 2])[0]
+    offset += 2
+
+    # Read nominal_accrued (UInt64 - 8 bytes)
+    nominal_accrued = struct.unpack(">Q", event_bytes[offset : offset + 8])[0]
+    offset += 8
+
+    # Now decode the dynamic fields using their offsets
+    # Read type_name from tail
+    type_name_length = struct.unpack(
+        ">H", event_bytes[type_name_offset : type_name_offset + 2]
+    )[0]
+    type_name = event_bytes[
+        type_name_offset + 2 : type_name_offset + 2 + type_name_length
+    ].decode("utf-8")
+
+    # Read currency_unit from tail
+    currency_unit_length = struct.unpack(
+        ">H", event_bytes[currency_unit_offset : currency_unit_offset + 2]
+    )[0]
+    currency_unit = event_bytes[
+        currency_unit_offset + 2 : currency_unit_offset + 2 + currency_unit_length
+    ].decode("utf-8")
+
+    return {
+        "contract_id": contract_id,
+        "type": event_type,
+        "type_name": type_name,
+        "time": time,
+        "payoff": payoff,
+        "currency_id": currency_id,
+        "currency_unit": currency_unit,
+        "nominal_value": nominal_value,
+        "nominal_rate_bps": nominal_rate_bps,
+        "nominal_accrued": nominal_accrued,
+    }
