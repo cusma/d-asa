@@ -42,7 +42,7 @@ def test_actus_events(
     arranger: SigningAccount,
 ) -> None:
     """
-    Test ACTUS events (IED, IP, PR) for a fixed coupon bond.
+    Test ACTUS events (IP, PR) for a fixed coupon bond.
 
     All dates are calculated relative to the LocalNet time.
     """
