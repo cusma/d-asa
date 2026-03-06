@@ -1,4 +1,12 @@
-from algopy import Account, Box, Global, OpUpFeeSource, UInt64, arc4, ensure_budget
+from algopy import (
+    Account,
+    Box,
+    Global,
+    OpUpFeeSource,
+    UInt64,
+    arc4,
+    ensure_budget,
+)
 
 from smart_contracts import abi_types as typ
 from smart_contracts import config as fixed_cfg
