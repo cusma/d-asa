@@ -5,7 +5,6 @@ from algopy import (
     Bytes,
     Global,
     OpUpFeeSource,
-    String,
     Txn,
     UInt64,
     arc4,
@@ -21,7 +20,6 @@ from smart_contracts import config as cfg
 from smart_contracts import constants as cst
 from smart_contracts import enums
 from smart_contracts import errors as err
-from smart_contracts.events import Event
 
 
 class CoreFinancialCommonMixin(AccountingModule):
@@ -212,23 +210,6 @@ class CoreFinancialCommonMixin(AccountingModule):
     def assert_pay_principal_authorization(self, _holding_address: Account) -> None:
         op.err(err.INVALID_MIXIN_COMPOSITION)
 
-    def _emit_ied(self, *, payoff: UInt64) -> None:
-        """Emit Initial Exchange (IED) event."""
-        arc4.emit(
-            Event(
-                contract_id=Global.current_application_id.id,
-                type=arc4.UInt8(enums.EVT_TYPE_IED),
-                type_name=String("IED"),
-                time=Global.latest_timestamp,
-                payoff=payoff,
-                currency_id=self.denomination_asset_id.id,
-                currency_unit=self.denomination_asset_id.unit_name,
-                nominal_value=self.total_units * self.unit_value,
-                nominal_rate_bps=arc4.UInt16(0),
-                nominal_accrued=UInt64(0),
-            )
-        )
-
     def _configure_asset_terms(
         self,
         *,
@@ -407,9 +388,6 @@ class CoreFinancialCommonMixin(AccountingModule):
         self.circulating_units += units
         self.account[holding_address].units += units
         self.account[holding_address].unit_value = self.unit_value
-
-        self._emit_ied(payoff=self.unit_value * units)
-
         return self.total_units - self.circulating_units
 
     @arc4.abimethod(readonly=True)
