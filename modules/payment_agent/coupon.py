@@ -21,7 +21,7 @@ class CouponPaymentAgentMixin(PaymentAgentCommonMixin):
                 payoff=payoff,
                 currency_id=self.denomination_asset_id.id,
                 currency_unit=self.denomination_asset_id.unit_name,
-                nominal_value=self.total_units * self.unit_value,
+                nominal_value=self.circulating_units * self.unit_value,
                 nominal_rate_bps=arc4.UInt16(0),  # TODO: Add interest rate
                 nominal_accrued=UInt64(0),
             )
@@ -59,12 +59,12 @@ class CouponPaymentAgentMixin(PaymentAgentCommonMixin):
             self.assert_enough_funds(payment_amount)
             # The reference implementation has the same asset for denomination and settlement, no conversion needed
             self.pay(self.account[holding_address].payment_address, payment_amount)
-            self._emit_ip(payoff=payment_amount)
         else:
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
             payment_amount = UInt64()
 
         self.core_apply_coupon_payment(holding_address, units)
+        self._emit_ip(payoff=payment_amount)
         return typ.PaymentResult(
             amount=payment_amount,
             timestamp=Global.latest_timestamp,
