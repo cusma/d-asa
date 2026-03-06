@@ -218,7 +218,7 @@ def set_role_config(validity_start: int = 0, validity_end: int = 2**64 - 1) -> b
 def get_event_from_call_result(call_result: SendAppTransactionResult) -> bytes:
     # Contract emits ACTUS events right before the ARC-4 (which is the last log)
     event = call_result.returns[0].tx_info["logs"][-2]
-    # Ripping ARC-28 4-bytes event signature prefix
+    # Stripping ARC-28 4-bytes event signature prefix
     event_bytes = b64decode(event)
     return event_bytes[4:]
 
@@ -255,12 +255,6 @@ def decode_actus_event(event_bytes: bytes) -> dict:
         Dictionary with decoded event fields
     """
     import struct
-
-    # Fixed part is 49 bytes total:
-    # 8 (contract_id) + 1 (type) + 2 (type_name offset) + 8 (time) + 8 (payoff) +
-    # 8 (currency_id) + 2 (currency_unit offset) + 8 (nominal_value) + 2 (nominal_rate_bps) + 2 (nominal_accrued offset) = 49
-    # Wait, nominal_accrued is UInt64 not dynamic, so it's 8 bytes inline
-    # Let me recalculate: 8 + 1 + 2 + 8 + 8 + 8 + 2 + 8 + 2 + 8 = 55 bytes
 
     offset = 0
 
