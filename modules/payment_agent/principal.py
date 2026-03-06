@@ -1,12 +1,31 @@
-from algopy import Account, Bytes, Global, UInt64, arc4
+from algopy import Account, Bytes, Global, String, UInt64, arc4
 
 from smart_contracts import abi_types as typ
+from smart_contracts import enums
+from smart_contracts.events import Event
 
 from .common import PaymentAgentCommonMixin
 
 
 class PrincipalPaymentAgentMixin(PaymentAgentCommonMixin):
     """Executes principal cashflows computed by the core financial module."""
+
+    def _emit_pr(self, *, payoff: UInt64) -> None:
+        """Emit Principal Redemption (PR) event."""
+        arc4.emit(
+            Event(
+                contract_id=Global.current_application_id.id,
+                type=arc4.UInt8(enums.EVT_TYPE_PR),
+                type_name=String("PR"),
+                time=Global.latest_timestamp,
+                payoff=payoff,
+                currency_id=self.denomination_asset_id.id,
+                currency_unit=self.denomination_asset_id.unit_name,
+                nominal_value=self.total_units * self.unit_value,
+                nominal_rate_bps=arc4.UInt16(0),
+                nominal_accrued=UInt64(0),
+            )
+        )
 
     @arc4.abimethod
     def pay_principal(
@@ -39,6 +58,7 @@ class PrincipalPaymentAgentMixin(PaymentAgentCommonMixin):
             self.assert_enough_funds(payment_amount)
             # The reference implementation has the same asset for denomination and settlement, no conversion needed
             self.pay(self.account[holding_address].payment_address, payment_amount)
+            self._emit_pr(payoff=payment_amount)
         else:
             # Accounts suspended or not opted in at the time of payments must not stall the D-ASA
             payment_amount = UInt64()
