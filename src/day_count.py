@@ -8,6 +8,47 @@ from smart_contracts.constants import DAY_2_SEC
 from .unix_time import UTCTimeStamp, timestamp_to_datetime
 
 
+class DayCountConvention(IntEnum):
+    """
+    Day Count Convention (DCC).
+
+    Method defining how days are counted between two dates. This defines the
+    year fraction in accrual calculations for interest and other computations.
+
+    The day count convention affects how interest accrues over time by defining:
+    - How many days are in a month
+    - How many days are in a year
+    - Special rules for month-end dates
+    """
+
+    ACTUAL_ACTUAL = enums.DCC_AA
+    """Actual/Actual (AA): Year fractions accrue on the basis of the actual
+    number of days per month and per year in the respective period."""
+
+    ACTUAL_360 = enums.DCC_A360
+    """Actual/360 (A360): Year fractions accrue on the basis of the actual
+    number of days per month and 360 days per year in the respective period."""
+
+    ACTUAL_365 = enums.DCC_A365
+    """Actual/365 (A365): Year fractions accrue on the basis of the actual
+    number of days per month and 365 days per year in the respective period."""
+
+    THIRTY_E_360_ISDA = enums.DCC_30E360ISDA
+    """30E/360 ISDA (30E360ISDA): Year fractions accrue on the basis of 30 days
+    per month and 360 days per year in the respective period (ISDA method)."""
+
+    THIRTY_E_360 = enums.DCC_30E360
+    """30E/360 (30E360): Year fractions accrue on the basis of 30 days per month
+    and 360 days per year in the respective period."""
+
+    # Aliases for convenience
+    AA = ACTUAL_ACTUAL
+    A360 = ACTUAL_360
+    A365 = ACTUAL_365
+    E30_360_ISDA = THIRTY_E_360_ISDA
+    E30_360 = THIRTY_E_360
+
+
 class Calendar(IntEnum):
     """
     Calendar (CLDR).
