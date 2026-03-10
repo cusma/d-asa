@@ -9,6 +9,7 @@ from algokit_utils import (
 )
 from algokit_utils.config import config
 
+from smart_contracts import enums
 from smart_contracts import constants as sc_cst
 from tests import utils
 
@@ -22,7 +23,7 @@ DENOMINATION_ASA_TOTAL: Final[int] = 10_000_000 * DENOMINATION_ASA_SCALE  # 10M 
 
 PRINCIPAL: Final[int] = 1_000_000 * DENOMINATION_ASA_SCALE  # 1M Euro
 MINIMUM_DENOMINATION: Final[int] = 1_000 * DENOMINATION_ASA_SCALE  # 1k Euro
-DAY_COUNT_CONVENTION: Final[list[int]] = [sc_cst.DCC_CONT, sc_cst.DCC_A_A]
+DAY_COUNT_CONVENTION: Final[list[int]] = [255, enums.DCC_AA]
 
 PRIMARY_DISTRIBUTION_DELAY: Final[int] = 1 * sc_cst.DAY_2_SEC
 PRIMARY_DISTRIBUTION_DURATION: Final[int] = 15 * sc_cst.DAY_2_SEC
