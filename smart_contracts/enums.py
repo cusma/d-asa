@@ -61,11 +61,20 @@ CLDR_CUST: Final[int] = 255
 # Business Day Convention
 ################################################################################
 BDC_NOS: Final[int] = 0
+BDC_SCF: Final[int] = 1
+BDC_SCMF: Final[int] = 2
+BDC_CSF: Final[int] = 3
+BDC_CSMF: Final[int] = 4
+BDC_SCP: Final[int] = 5
+BDC_SCMP: Final[int] = 6
+BDC_CSP: Final[int] = 7
+BDC_CSMP: Final[int] = 8
 
 ################################################################################
 # End of Month Convention
 ################################################################################
 EOMC_SD: Final[int] = 0
+EOMC_EOM: Final[int] = 1
 
 ################################################################################
 # Prepayment Effect
