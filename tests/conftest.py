@@ -9,8 +9,8 @@ from algokit_utils import (
 )
 from algokit_utils.config import config
 
-from smart_contracts import enums
 from smart_contracts import constants as sc_cst
+from smart_contracts import enums
 from tests import utils
 
 INITIAL_ALGO_FUNDS: Final[AlgoAmount] = AlgoAmount.from_algo(10_000)
