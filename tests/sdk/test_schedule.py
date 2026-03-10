@@ -487,8 +487,8 @@ class TestGenerateArraySchedule:
     def test_generate_array_schedule_sorts_dates(self) -> None:
         """Test array schedule returns sorted dates."""
         anchors = [
-            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=timezone.utc)),
             datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=timezone.utc)),
         ]
         cycles = ["1M", "1M"]
         end = datetime_to_timestamp(datetime(2024, 5, 1, 0, 0, 0, tzinfo=timezone.utc))
@@ -528,6 +528,85 @@ class TestGenerateArraySchedule:
 
         with pytest.raises(
             ValueError, match="anchors and cycles must have same length"
+        ):
+            generate_array_schedule(anchors, cycles, end)
+
+    def test_generate_array_schedule_empty_if_end_zero_or_negative(self) -> None:
+        """Test array schedule returns empty tuple if end <= 0."""
+        anchors = [
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+        ]
+        cycles = ["1M"]
+
+        assert generate_array_schedule(anchors, cycles, 0) == ()
+        assert generate_array_schedule(anchors, cycles, -1) == ()
+
+    def test_generate_array_schedule_empty_if_anchor_invalid(self) -> None:
+        """Test array schedule returns empty tuple if any anchor is invalid."""
+        end = datetime_to_timestamp(
+            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
+        )
+        cycles = ["1M"]
+
+        # Test anchor <= 0
+        assert generate_array_schedule([0], cycles, end) == ()
+        assert generate_array_schedule([-1], cycles, end) == ()
+
+        # Test anchor > end
+        anchors = [end + 1000]
+        assert generate_array_schedule(anchors, cycles, end) == ()
+
+    def test_generate_array_schedule_raises_if_anchors_descending(self) -> None:
+        """Test array schedule raises if anchors are in descending order."""
+        end = datetime_to_timestamp(
+            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
+        )
+        cycles = ["1M", "1M"]
+
+        # Test descending order
+        anchors = [
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+        ]
+        with pytest.raises(
+            ValueError, match="anchors must be in strictly ascending order"
+        ):
+            generate_array_schedule(anchors, cycles, end)
+
+    def test_generate_array_schedule_raises_if_anchors_equal(self) -> None:
+        """Test array schedule raises if anchors are equal (not strictly ascending)."""
+        end = datetime_to_timestamp(
+            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
+        )
+        cycles = ["1M", "1M"]
+
+        # Test equal anchors (not strictly ascending)
+        anchors = [
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+        ]
+        with pytest.raises(
+            ValueError, match="anchors must be in strictly ascending order"
+        ):
+            generate_array_schedule(anchors, cycles, end)
+
+    def test_generate_array_schedule_raises_if_anchors_partially_unsorted(
+        self,
+    ) -> None:
+        """Test array schedule raises if anchors are partially unsorted."""
+        end = datetime_to_timestamp(
+            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
+        )
+        cycles = ["1M", "1M", "1M"]
+
+        # First two in order, but third is out of order
+        anchors = [
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 2, 1, 0, 0, 0, tzinfo=timezone.utc)),
+        ]
+        with pytest.raises(
+            ValueError, match="anchors must be in strictly ascending order"
         ):
             generate_array_schedule(anchors, cycles, end)
 

@@ -1,4 +1,4 @@
-"""Tests for src.calendar module."""
+"""Tests for src.day_count module."""
 
 from __future__ import annotations
 

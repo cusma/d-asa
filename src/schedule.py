@@ -329,6 +329,17 @@ def generate_schedule(
         schedule.append(current)
         occurrence_index += 1
 
+    # Check if we hit max_iterations without completing the schedule
+    if occurrence_index >= max_iterations:
+        # Verify if we actually reached the end
+        last_date = schedule[-1] if schedule else start
+        if last_date <= end:
+            raise ValueError(
+                f"Schedule generation exceeded maximum iterations ({max_iterations}). "
+                f"Last generated date: {last_date}, target end: {end}. "
+                "This may indicate an invalid cycle or an extremely long schedule."
+            )
+
     return tuple(schedule)
 
 
@@ -360,10 +371,11 @@ def generate_array_schedule(
 
     Returns:
         Tuple of sorted, unique UTC UNIX timestamps covering all segments.
-        Returns empty tuple if anchors is empty.
+        Returns empty tuple if anchors is empty, end <= 0, or any anchor <= 0 or > end.
 
     Raises:
         ValueError: If anchors and cycles have different lengths
+        ValueError: If anchors are not in strictly ascending order
 
     Examples:
         >>> # Generate piecewise schedule with different cycles per segment
@@ -379,6 +391,20 @@ def generate_array_schedule(
         raise ValueError("anchors and cycles must have same length")
     if not anchors:
         return ()
+
+    # Validate end and anchors to align with generate_schedule behavior
+    if end <= 0:
+        return ()
+    if any(anchor <= 0 or anchor > end for anchor in anchors):
+        return ()
+
+    # Validate that anchors are in strictly ascending order
+    for i in range(len(anchors) - 1):
+        if anchors[i] >= anchors[i + 1]:
+            raise ValueError(
+                f"anchors must be in strictly ascending order: "
+                f"anchors[{i}]={anchors[i]} >= anchors[{i + 1}]={anchors[i + 1]}"
+            )
 
     # Use a set for efficient deduplication
     all_dates_set: set[int] = set()
@@ -460,7 +486,7 @@ def resolve_cycle_schedule(
 def resolve_array_schedule(
     anchors: Sequence[UTCTimeStamp],
     cycles: Sequence[object],
-    end: int,
+    end: UTCTimeStamp,
     *,
     end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
     business_day_convention: BusinessDayConvention = BusinessDayConvention.NOS,
