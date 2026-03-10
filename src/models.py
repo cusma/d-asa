@@ -1,18 +1,6 @@
 from __future__ import annotations
 
-import json
-from dataclasses import asdict, dataclass
-from hashlib import sha256
-from typing import Any
-
-
-def _hash_payload(payload: dict[str, Any]) -> bytes:
-    """Hash a canonical JSON payload for deterministic terms and schedule digests."""
-    return sha256(
-        json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str).encode(
-            "utf-8"
-        )
-    ).digest()
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True, slots=True)
@@ -21,6 +9,7 @@ class ExecutionTerms:
 
     unit_value: int
     total_units: int
+    fixed_point_scale: int
     secondary_market_opening_date: int | None
     secondary_market_closure_date: int | None
 
@@ -50,16 +39,6 @@ class NormalizedActusTerms(ExecutionTerms):
     has_rate_reset_floor: bool
     has_rate_reset_cap: bool
     dynamic_principal_redemption: bool
-    fixed_point_scale: int
-
-    def canonical_payload(self) -> dict[str, Any]:
-        """Return the canonical on-chain terms payload used for deployment hashing."""
-        payload = asdict(self)
-        return payload
-
-    def digest(self) -> bytes:
-        """Return the SHA-256 digest of the canonical terms payload."""
-        return _hash_payload(self.canonical_payload())
 
 
 @dataclass(frozen=True, slots=True)
@@ -76,10 +55,6 @@ class ExecutionScheduleEntry:
     next_outstanding_principal: int
     flags: int = 0
 
-    def canonical_payload(self) -> dict[str, Any]:
-        """Return the canonical serializable payload for schedule hashing."""
-        return asdict(self)
-
 
 @dataclass(frozen=True, slots=True)
 class InitialKernelState:
@@ -94,8 +69,6 @@ class InitialKernelState:
     next_principal_redemption: int
     cumulative_interest_index: int
     cumulative_principal_index: int
-    terms_hash: bytes
-    schedule_hash: bytes
 
 
 @dataclass(frozen=True, slots=True)
@@ -149,16 +122,6 @@ class NormalizationResult:
     terms: NormalizedActusTerms
     schedule: tuple[ExecutionScheduleEntry, ...]
     initial_state: InitialKernelState
-
-    @property
-    def terms_hash(self) -> bytes:
-        """Expose the canonical terms hash carried by the initial kernel state."""
-        return self.initial_state.terms_hash
-
-    @property
-    def schedule_hash(self) -> bytes:
-        """Expose the canonical schedule hash carried by the initial kernel state."""
-        return self.initial_state.schedule_hash
 
     def schedule_pages(
         self, page_size: int

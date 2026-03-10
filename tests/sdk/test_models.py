@@ -56,8 +56,6 @@ def test_schedule_pages_chunk_entries() -> None:
         next_principal_redemption=0,
         cumulative_interest_index=0,
         cumulative_principal_index=0,
-        terms_hash=terms.digest(),
-        schedule_hash=b"\0" * 32,
     )
     result = NormalizationResult(terms=terms, schedule=schedule, initial_state=state)
 
