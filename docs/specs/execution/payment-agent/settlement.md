@@ -30,7 +30,7 @@ asset (App), or the ALGO.
 The *settlement asset identifier* **MUST** be the ASA ID, the App ID, or `0` for
 ALGO.
 
-If asset is ALGO (`0`): amount is in microALGOs (\\( 10{^-6} \\) ALGO).
+If asset is ALGO (`0`): amount is in microALGOs (\\( 10^{-6} \\) ALGO).
 
 If asset is ASA or App: amount is in base units as per that asset’s `decimals`.
 
