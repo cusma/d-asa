@@ -24,7 +24,7 @@ The contents are structured on four functional layers:
 control model to manage the fixed income contract and comply with regulatory frameworks;
 1. *Contract*: this layer provides the algorithmic definitions of the debt instrument
 (data model, attributes, and cash flows);
-1. *Ownership*: this layer defines the tokenization of the contract;
+1. *Accounting*: this layer defines the tokenization of the contract;
 1. *Execution*: this layer defines the execution of the contract, both the distribution,
 cash flows and transfers.
 
