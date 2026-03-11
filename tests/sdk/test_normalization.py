@@ -1235,6 +1235,304 @@ def test_nam_capitalizes_unpaid_interest():
         ), "Outstanding should continue to increase in subsequent periods"
 
 
+class TestRateResetInterpolation:
+    """Test that rate reset events have correct balance interpolation."""
+
+    def test_lam_with_interleaved_rate_resets_has_correct_balance(self):
+        """
+        Test LAM with monthly principal redemptions and semiannual rate resets.
+
+        The rate reset events that fall between principal redemption dates should
+        have the interpolated balance at that timestamp, not the final balance.
+        """
+        # Setup: 120k initial, 10k monthly redemptions, 6-month rate resets
+        # At month 6 (reset), balance should be 70k (120k - 5*10k from months 1-5)
+        status_ts = 1704067200  # 2024-01-01 00:00:00 UTC
+        start_ts = status_ts + 24 * 60 * 60  # 2024-01-02 (IED must be after status)
+        month_1 = start_ts + 31 * 24 * 60 * 60  # Feb 1
+        month_6 = start_ts + 181 * 24 * 60 * 60  # Jul 1 (approx)
+
+        contract = ContractAttributes(
+            contract_id=1,
+            contract_type="LAM",
+            status_date=status_ts,
+            initial_exchange_date=start_ts,
+            maturity_date=start_ts + 365 * 24 * 60 * 60,  # 1 year
+            notional_principal=120_000,
+            premium_discount_at_ied=0,
+            nominal_interest_rate=0.05,
+            next_principal_redemption_amount=10_000,
+            principal_redemption_anchor=month_1,
+            principal_redemption_cycle=Cycle(count=1, unit="M"),  # Monthly
+            rate_reset_anchor=month_6,
+            rate_reset_cycle=Cycle(count=6, unit="M"),  # Semiannual
+            rate_reset_next=0.06,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
+        )
+
+        result = normalize_contract_attributes(
+            contract,
+            denomination_asset_id=100,
+            denomination_asset_decimals=6,
+            notional_unit_value=1,
+            secondary_market_opening_date=start_ts,
+            secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
+        )
+        schedule = result.schedule
+
+        # Find RR events
+        rr_events = [e for e in schedule if e.event_type in ("RR", "RRF")]
+        assert len(rr_events) > 0, "Should have rate reset events"
+
+        # Find the first RR event (should be around month 6)
+        first_rr = rr_events[0]
+
+        # Count PR events before first reset
+        pr_before_reset = [
+            e
+            for e in schedule
+            if e.event_type == "PR" and e.scheduled_time < first_rr.scheduled_time
+        ]
+
+        # With monthly redemptions and 6-month reset, should have ~5 PRs before reset
+        assert (
+            len(pr_before_reset) >= 5
+        ), f"Expected at least 5 PR events before first reset, got {len(pr_before_reset)}"
+
+        # The balance at the reset should reflect those redemptions
+        # Not the terminal balance (which would be 0 or close to 0)
+        initial_balance = 120_000_000_000  # 120k in micro-units
+
+        # First RR should NOT have terminal balance of 0
+        assert (
+            first_rr.next_outstanding_principal > 0
+        ), "First RR event should not have terminal balance"
+
+        # First RR should have less than initial (some payments made)
+        assert (
+            first_rr.next_outstanding_principal < initial_balance
+        ), f"First RR event should have reduced balance after {len(pr_before_reset)} PR events"
+
+    def test_ann_with_interleaved_rate_resets_has_correct_balance(self):
+        """
+        Test ANN with quarterly principal redemptions and semiannual rate resets.
+
+        Rate reset events between redemption dates should capture the correct
+        interpolated balance, not the terminal balance.
+        """
+        status_ts = 1704067200  # 2024-01-01 00:00:00 UTC
+        start_ts = status_ts + 24 * 60 * 60  # 2024-01-02
+        quarter_1 = start_ts + 90 * 24 * 60 * 60  # Apr 1 (approx)
+        month_6 = start_ts + 181 * 24 * 60 * 60  # Jul 1 (approx)
+
+        contract = ContractAttributes(
+            contract_id=2,
+            contract_type="ANN",
+            status_date=status_ts,
+            initial_exchange_date=start_ts,
+            maturity_date=start_ts + 365 * 24 * 60 * 60,
+            notional_principal=100_000,
+            premium_discount_at_ied=0,
+            nominal_interest_rate=0.06,
+            next_principal_redemption_amount=7_000,
+            principal_redemption_anchor=quarter_1,
+            principal_redemption_cycle=Cycle(count=3, unit="M"),  # Quarterly
+            rate_reset_anchor=month_6,
+            rate_reset_cycle=Cycle(count=6, unit="M"),  # Semiannual
+            rate_reset_next=0.065,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
+        )
+
+        result = normalize_contract_attributes(
+            contract,
+            denomination_asset_id=100,
+            denomination_asset_decimals=6,
+            notional_unit_value=1,
+            secondary_market_opening_date=status_ts,
+            secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
+        )
+        schedule = result.schedule
+
+        # Find RR events
+        rr_events = [e for e in schedule if e.event_type in ("RR", "RRF")]
+
+        if len(rr_events) > 0:
+            first_rr = rr_events[0]
+
+            # Find the most recent PR event before or at the reset to determine expected balance
+            pr_events_before_reset = [
+                e
+                for e in schedule
+                if e.event_type == "PR" and e.scheduled_time <= first_rr.scheduled_time
+            ]
+
+            if pr_events_before_reset:
+                # Sort by time and get the last one
+                pr_events_before_reset.sort(key=lambda e: e.scheduled_time)
+                expected_balance = pr_events_before_reset[-1].next_outstanding_principal
+
+                actual_balance = first_rr.next_outstanding_principal
+
+                # For events at the same timestamp, balance should match
+                # For events between PR dates, balance should match last PR
+                assert actual_balance == expected_balance, (
+                    f"RR event should have balance matching last PR event at or before it: "
+                    f"expected {expected_balance}, got {actual_balance}"
+                )
+
+    def test_nam_with_rate_reset_preserves_capitalized_balance(self):
+        """
+        Test NAM (negative amortization) with rate resets.
+
+        When principal can increase due to capitalization, rate reset events
+        should reflect the actual balance at that point in time.
+        """
+        status_ts = 1704067200  # 2024-01-01 00:00:00 UTC
+        start_ts = status_ts + 24 * 60 * 60  # 2024-01-02
+        month_1 = start_ts + 31 * 24 * 60 * 60
+        month_6 = start_ts + 181 * 24 * 60 * 60
+
+        contract = ContractAttributes(
+            contract_id=3,
+            contract_type="NAM",
+            status_date=status_ts,
+            initial_exchange_date=start_ts,
+            maturity_date=start_ts + 365 * 24 * 60 * 60,
+            notional_principal=100_000,
+            premium_discount_at_ied=0,
+            nominal_interest_rate=0.12,  # High rate to trigger capitalization
+            next_principal_redemption_amount=500,
+            # Low payment -> capitalization
+            principal_redemption_anchor=month_1,
+            principal_redemption_cycle=Cycle(count=1, unit="M"),  # Monthly
+            rate_reset_anchor=month_6,
+            rate_reset_cycle=Cycle(count=6, unit="M"),  # Semiannual
+            rate_reset_next=0.13,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
+        )
+
+        result = normalize_contract_attributes(
+            contract,
+            denomination_asset_id=100,
+            denomination_asset_decimals=6,
+            notional_unit_value=1,
+            secondary_market_opening_date=status_ts,
+            secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
+        )
+        schedule = result.schedule
+
+        # Find RR events
+        rr_events = [e for e in schedule if e.event_type in ("RR", "RRF")]
+
+        if len(rr_events) > 0:
+            first_rr = rr_events[0]
+
+            # Find the most recent PR event to compare
+            pr_events_before_reset = [
+                e
+                for e in schedule
+                if e.event_type == "PR" and e.scheduled_time < first_rr.scheduled_time
+            ]
+
+            if pr_events_before_reset:
+                pr_events_before_reset.sort(key=lambda e: e.scheduled_time)
+                expected_balance = pr_events_before_reset[-1].next_outstanding_principal
+                actual_balance = first_rr.next_outstanding_principal
+
+                # Balance should have increased due to capitalization
+                assert (
+                    actual_balance >= 100_000_000_000
+                ), "NAM balance should have grown due to capitalization"
+
+                assert actual_balance == expected_balance, (
+                    f"RR event should capture the capitalized balance: "
+                    f"expected {expected_balance}, got {actual_balance}"
+                )
+
+    def test_lax_with_rate_reset_tracks_balance_through_inc_and_dec(self):
+        """
+        Test LAX with mixed INC/DEC directions and rate resets.
+
+        Rate resets should track balance through both increases and decreases.
+        """
+        status_ts = 1704067200  # 2024-01-01 00:00:00 UTC
+        start_ts = status_ts + 24 * 60 * 60  # 2024-01-02
+        month_2 = start_ts + 31 * 24 * 60 * 60
+        month_4 = start_ts + 90 * 24 * 60 * 60
+
+        contract = ContractAttributes(
+            contract_id=4,
+            contract_type="LAX",
+            status_date=status_ts,
+            initial_exchange_date=start_ts,
+            maturity_date=start_ts + 180 * 24 * 60 * 60,  # 6 months
+            notional_principal=100_000,
+            premium_discount_at_ied=0,
+            nominal_interest_rate=0.05,
+            # LAX uses arrays
+            array_pr_anchor=[month_2, month_4],
+            array_pr_cycle=[Cycle(count=1, unit="M"), Cycle(count=1, unit="M")],
+            array_pr_next=[5_000, 3_000],  # Different amounts per segment
+            array_increase_decrease=["DEC", "INC"],
+            # First segment decreases, second increases
+            rate_reset_anchor=start_ts + 75 * 24 * 60 * 60,  # Month 2.5
+            rate_reset_cycle=Cycle(count=1, unit="M"),
+            rate_reset_next=0.055,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
+        )
+
+        result = normalize_contract_attributes(
+            contract,
+            denomination_asset_id=100,
+            denomination_asset_decimals=6,
+            notional_unit_value=1,
+            secondary_market_opening_date=status_ts,
+            secondary_market_closure_date=start_ts + 200 * 24 * 60 * 60,
+        )
+        schedule = result.schedule
+
+        # Find rate reset events
+        reset_events = [e for e in schedule if e.event_type in ("RR", "RRF")]
+
+        # Each reset should have a balance matching the timeline
+        for reset_event in reset_events:
+            reset_ts = reset_event.scheduled_time
+
+            # Find all PR/PI events before this reset
+            principal_events = [
+                e
+                for e in schedule
+                if e.event_type in ("PR", "PI") and e.scheduled_time < reset_ts
+            ]
+
+            if principal_events:
+                # Sort and get the last one
+                principal_events.sort(key=lambda e: e.scheduled_time)
+                expected_balance = principal_events[-1].next_outstanding_principal
+            else:
+                # No principal events yet, should be initial balance
+                expected_balance = 100_000_000_000
+
+            actual_balance = reset_event.next_outstanding_principal
+
+            assert actual_balance == expected_balance, (
+                f"RR event at {reset_ts} should have balance {expected_balance}, "
+                f"but got {actual_balance}"
+            )
+
+
 def test_nam_capitalization_uint64_overflow_detection():
     """Test that NAM capitalization detects and rejects uint64 overflow."""
     # Create a NAM contract with large notional and high interest rate
