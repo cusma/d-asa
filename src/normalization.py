@@ -927,6 +927,13 @@ def _build_amortizing_schedule(
         if allow_negative and not lax:
             # NAM: negative principal_payment increases outstanding (capitalization)
             next_outstanding = outstanding - principal_payment
+            # Validate that capitalization doesn't cause uint64 overflow
+            if next_outstanding < 0 or next_outstanding > cst.MAX_UINT64:
+                raise ActusNormalizationError(
+                    f"NAM capitalization at period {index} would result in outstanding principal "
+                    f"{next_outstanding} which exceeds uint64 bounds (0 to {cst.MAX_UINT64}). "
+                    f"Outstanding: {outstanding}, principal_payment: {principal_payment}"
+                )
         else:
             # LAM/LAX: always decrease or maintain outstanding
             next_outstanding = max(outstanding - principal_payment, 0)
