@@ -1233,3 +1233,49 @@ def test_nam_capitalizes_unpaid_interest():
         assert (
             second_pr.next_outstanding_principal > first_pr.next_outstanding_principal
         ), "Outstanding should continue to increase in subsequent periods"
+
+
+def test_nam_capitalization_uint64_overflow_detection():
+    """Test that NAM capitalization detects and rejects uint64 overflow."""
+    # Create a NAM contract with large notional and high interest rate
+    # that will cause overflow during capitalization
+    # Use a notional that when scaled won't overflow initially,
+    # but will overflow when interest capitalizes
+
+    # Calculate a large notional that is divisible by notional_unit_value
+    # MAX_UINT64 / 100 ≈ 184467440737095516, round down to multiple of 1000
+    large_notional = (int(cst.MAX_UINT64 / 100) // 1000) * 1000
+
+    contract = ContractAttributes(
+        contract_id=1,
+        contract_type="NAM",
+        status_date=1000000,
+        initial_exchange_date=1100000,
+        maturity_date=1100000 + 365 * 24 * 60 * 60,  # 1 year
+        notional_principal=large_notional,
+        premium_discount_at_ied=0,
+        nominal_interest_rate=0.50,  # 50% annual rate - will cause massive capitalization
+        # Very small payment that won't cover interest
+        next_principal_redemption_amount=100,
+        # Monthly payments
+        principal_redemption_cycle=Cycle(count=1, unit="M"),
+        principal_redemption_anchor=1100000 + 30 * 24 * 60 * 60,
+        day_count_convention=DayCountConvention.A360,
+        business_day_convention=BusinessDayConvention.NOS,
+        end_of_month_convention=EndOfMonthConvention.SD,
+        calendar=Calendar.NC,
+    )
+
+    # Should raise ActusNormalizationError due to uint64 overflow
+    with pytest.raises(
+        ActusNormalizationError,
+        match=r"NAM capitalization.*exceeds uint64 bounds",
+    ):
+        normalize_contract_attributes(
+            contract,
+            denomination_asset_id=100,
+            denomination_asset_decimals=2,
+            notional_unit_value=1000,
+            secondary_market_opening_date=1000000,
+            secondary_market_closure_date=2000000,
+        )
