@@ -218,7 +218,7 @@ def _add_cycle_chained(
 
 def add_cycle(
     timestamp: UTCTimeStamp,
-    cycle: Cycle,
+    cycle: str | Cycle,
     *,
     end_of_month_convention: EndOfMonthConvention,
     anchor_timestamp: UTCTimeStamp | None = None,
@@ -235,7 +235,7 @@ def add_cycle(
 
     Args:
         timestamp: UTC UNIX timestamp to advance (used in chained mode)
-        cycle: ACTUS cycle (e.g., "3M", "1Q", "90D")
+        cycle: ACTUS cycle (e.g., "3M", "1Q", "90D") or Cycle object
         end_of_month_convention: How to handle month-end dates for month-based cycles
         anchor_timestamp: Optional fixed starting point for anchor-based calculation
         occurrence_index: Optional occurrence number (0 = anchor, 1 = first, etc.)
@@ -248,6 +248,9 @@ def add_cycle(
         error accumulation. Chained mode is simpler but can accumulate rounding errors
         over many iterations.
     """
+
+    # Parse cycle if string
+    cycle = Cycle.parse_cycle(cycle)
 
     # Anchor-based mode: calculate from fixed anchor
     if anchor_timestamp is not None and occurrence_index is not None:
@@ -271,7 +274,7 @@ def add_cycle(
 
 def generate_schedule(
     start: UTCTimeStamp,
-    cycle: Cycle,
+    cycle: str | Cycle,
     end: UTCTimeStamp,
     *,
     end_of_month_convention: EndOfMonthConvention,
@@ -286,7 +289,7 @@ def generate_schedule(
 
     Args:
         start: UTC UNIX timestamp anchor (first date in schedule)
-        cycle: ACTUS cycle (e.g., "3M", "1Q", "90D")
+        cycle: ACTUS cycle (e.g., "3M", "1Q", "90D") or Cycle object
         end: UTC UNIX timestamp upper bound (inclusive)
         end_of_month_convention: How to handle month-end dates for month-based cycles
 
@@ -306,6 +309,9 @@ def generate_schedule(
 
     if start <= 0 or end <= 0 or start > end:
         return ()
+
+    # Parse cycle if string
+    cycle = Cycle.parse_cycle(cycle)
 
     schedule: list[int] = []
     occurrence_index = 0
@@ -342,7 +348,7 @@ def generate_schedule(
 
 def generate_array_schedule(
     anchors: Sequence[UTCTimeStamp],
-    cycles: Sequence[Cycle],
+    cycles: Sequence[str | Cycle],
     end: UTCTimeStamp,
     *,
     end_of_month_convention: EndOfMonthConvention,
@@ -362,7 +368,7 @@ def generate_array_schedule(
 
     Args:
         anchors: Sequence of UTC UNIX timestamps marking schedule segment starts
-        cycles: Sequence of ACTUS cycle, parallel to anchors
+        cycles: Sequence of ACTUS cycle strings or Cycle objects, parallel to anchors
         end: UTC UNIX timestamp upper bound (inclusive, always included in result)
         end_of_month_convention: How to handle month-end dates for month-based cycles
 
@@ -429,7 +435,7 @@ def generate_array_schedule(
 
 def resolve_cycle_schedule(
     start: UTCTimeStamp,
-    cycle: Cycle,
+    cycle: str | Cycle,
     end: UTCTimeStamp,
     *,
     end_of_month_convention: EndOfMonthConvention,
@@ -445,7 +451,7 @@ def resolve_cycle_schedule(
 
     Args:
         start: UTC UNIX timestamp anchor (first date in schedule)
-        cycle: ACTUS cycle
+        cycle: ACTUS cycle string or Cycle object
         end: UTC UNIX timestamp upper bound (inclusive)
         end_of_month_convention: How to handle month-end dates for month-based cycles
         business_day_convention: How to adjust dates that fall on non-business days
@@ -482,7 +488,7 @@ def resolve_cycle_schedule(
 
 def resolve_array_schedule(
     anchors: Sequence[UTCTimeStamp],
-    cycles: Sequence[Cycle],
+    cycles: Sequence[str | Cycle],
     end: UTCTimeStamp,
     *,
     end_of_month_convention: EndOfMonthConvention,
@@ -499,7 +505,7 @@ def resolve_array_schedule(
 
     Args:
         anchors: Sequence of UTC UNIX timestamps marking schedule segment starts
-        cycles: Sequence of ACTUS cycle, parallel to anchors
+        cycles: Sequence of ACTUS cycle strings or Cycle objects, parallel to anchors
         end: UTC UNIX timestamp upper bound (inclusive)
         end_of_month_convention: How to handle month-end dates for month-based cycles
         business_day_convention: How to adjust dates that fall on non-business days
