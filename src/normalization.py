@@ -912,7 +912,6 @@ def _build_amortizing_schedule(
             maturity_date=terms.maturity_date,
         )
         principal_payment, payment_total = _principal_payment_for_period(
-            contract,
             outstanding=outstanding,
             payment_total=payment_total,
             interest_due=interest_due,
@@ -923,11 +922,21 @@ def _build_amortizing_schedule(
             pr_values_scaled=pr_values_scaled,
         )
         lax_direction = _lax_direction(contract, index) if lax else "DEC"
-        next_outstanding = max(outstanding - principal_payment, 0)
+        # For NAM, negative principal_payment means capitalization (increase outstanding)
+        # For other types, subtract principal_payment from outstanding
+        if allow_negative and not lax:
+            # NAM: negative principal_payment increases outstanding (capitalization)
+            next_outstanding = outstanding - principal_payment
+        else:
+            # LAM/LAX: always decrease or maintain outstanding
+            next_outstanding = max(outstanding - principal_payment, 0)
+
         if lax_direction == "INC":
             next_outstanding = outstanding + payment_total
 
-        if principal_payment > 0:
+        # For NAM with negative principal_payment (capitalization), still generate PR event
+        # For LAM/LAX, only generate events if principal_payment > 0
+        if principal_payment > 0 or (allow_negative and not lax):
             # For LAX INC periods, generate PI (Principal Increase) events
             if lax and lax_direction == "INC":
                 seeds.append(
@@ -941,6 +950,8 @@ def _build_amortizing_schedule(
                 )
             else:
                 # Normal redemption or DEC periods generate PR events
+                # For NAM with negative principal_payment, this is a cash event (payment made)
+                # but outstanding increases due to capitalization
                 seeds.append(
                     _seed_from_timestamp(
                         ts,
@@ -1036,7 +1047,6 @@ def _build_amortizing_schedule(
 
 
 def _principal_payment_for_period(
-    contract: ContractAttributes,
     *,
     outstanding: int,
     payment_total: int,
@@ -1054,7 +1064,6 @@ def _principal_payment_for_period(
     payment structure, and period-specific parameters.
 
     Args:
-        contract: ACTUS contract attributes.
         outstanding: Current outstanding principal.
         payment_total: Total payment amount for the period.
         interest_due: Interest amount due for the period.
@@ -1062,7 +1071,6 @@ def _principal_payment_for_period(
         annuity: Whether this is an annuity contract.
         lax: Whether this is a LAX contract with array-based amounts.
         period_index: Index of the current period.
-        asa_decimals: Decimal places for the denomination ASA.
         pr_values_scaled: Precomputed scaled principal values for LAX contracts.
 
     Returns:
@@ -1077,8 +1085,12 @@ def _principal_payment_for_period(
         return min(max(payment_total - interest_due, 0), outstanding), payment_total
 
     if allow_negative:
+        # For NAM, allow negative principal payments (representing capitalization)
+        # When payment_total < interest_due, the difference is capitalized
         candidate = payment_total - interest_due
-        return min(max(candidate, 0), outstanding), payment_total
+        # Clamp negative values to prevent exceeding outstanding balance
+        # and positive values to not exceed outstanding
+        return max(min(candidate, outstanding), -outstanding), payment_total
 
     return min(max(payment_total, 0), outstanding), payment_total
 
@@ -1498,8 +1510,8 @@ def _resolve_annuity_payment(
         )
 
     formula_redemption_dates = sorted(set(pr_schedule))
-    if terms.maturity_date not in formula_redemption_dates:
-        formula_redemption_dates.append(terms.maturity_date)
+    if end_date not in formula_redemption_dates:
+        formula_redemption_dates.append(end_date)
 
     pr_anchor = contract.principal_redemption_anchor
     if pr_anchor is None:
