@@ -684,7 +684,9 @@ def _build_annuity_schedule(
     Raises:
         ActusNormalizationError: If required fields are missing.
     """
-    if terms.maturity_date is None:
+    # Use maturity_date or amortization_date (whichever is set)
+    end_date = terms.maturity_date or contract.amortization_date
+    if end_date is None:
         raise ActusNormalizationError(
             "ANN normalization requires maturity_date or amortization_date"
         )
@@ -696,8 +698,8 @@ def _build_annuity_schedule(
         )
 
     formula_redemption_times = sorted(set(pr_schedule))
-    if terms.maturity_date not in formula_redemption_times:
-        formula_redemption_times.append(terms.maturity_date)
+    if end_date not in formula_redemption_times:
+        formula_redemption_times.append(end_date)
 
     pr_anchor = contract.principal_redemption_anchor
     if pr_anchor is None:
@@ -719,7 +721,7 @@ def _build_annuity_schedule(
     payment_total = _resolve_annuity_payment(contract, terms, asa_decimals)
 
     seeds: list[_EventSeed] = []
-    rr_schedule = _rate_reset_occurrences(contract, terms.maturity_date)
+    rr_schedule = _rate_reset_occurrences(contract, end_date)
     if dynamic_redemption:
         if pr_anchor > terms.initial_exchange_date and formula_redemption_times:
             prf_time = pr_anchor - cst.DAY_2_SEC
@@ -762,7 +764,7 @@ def _build_annuity_schedule(
             start_ts=previous_due,
             end_ts=due_time,
             day_count_convention=terms.day_count_convention,
-            maturity_date=terms.maturity_date,
+            maturity_date=end_date,
         )
         principal_payment = min(max(payment_total - interest_due, 0), outstanding)
         next_outstanding = max(outstanding - principal_payment, 0)
@@ -809,7 +811,7 @@ def _build_annuity_schedule(
     for ts, event_type in rr_schedule:
         if any(ts == pr_ts for pr_ts in pr_schedule):
             continue
-        if ts >= terms.maturity_date:
+        if ts >= end_date:
             continue
         seeds.append(
             _seed_from_timestamp(
@@ -823,15 +825,15 @@ def _build_annuity_schedule(
             )
         )
 
-    seeds.extend(_ipcb_schedule(contract, outstanding, terms.maturity_date))
+    seeds.extend(_ipcb_schedule(contract, outstanding, end_date))
     md_redemption_start = 0
     md_redemption_end = 0
-    if not any(ts == terms.maturity_date for ts in pr_schedule):
+    if not any(ts == end_date for ts in pr_schedule):
         md_redemption_start = previous_redemption
-        md_redemption_end = terms.maturity_date
+        md_redemption_end = end_date
     seeds.append(
         _seed_from_timestamp(
-            terms.maturity_date,
+            end_date,
             event_type="MD",
             redemption_accrual_start=md_redemption_start,
             redemption_accrual_end=md_redemption_end,
