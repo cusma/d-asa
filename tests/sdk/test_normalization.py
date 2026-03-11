@@ -1579,6 +1579,97 @@ def test_nam_capitalization_uint64_overflow_detection():
         )
 
 
+def test_lax_inc_uint64_overflow_detection():
+    """Test that LAX INC detects and rejects uint64 overflow when array_pr_next values are too large."""
+    # Create a LAX contract with a large notional and an even larger array_pr_next value
+    # that would cause overflow when added to outstanding principal
+
+    # Start with a large but valid notional
+    large_notional = int(cst.MAX_UINT64 * 0.6)  # 60% of MAX_UINT64
+
+    # Create an array_pr_next value that when added to large_notional will exceed MAX_UINT64
+    overflow_payment = int(cst.MAX_UINT64 * 0.5)  # This + large_notional > MAX_UINT64
+
+    contract = ContractAttributes(
+        contract_id=1,
+        contract_type="LAX",
+        status_date=1000000,
+        initial_exchange_date=1100000,
+        maturity_date=1100000 + 365 * 24 * 60 * 60,  # 1 year
+        notional_principal=large_notional,
+        premium_discount_at_ied=0,
+        nominal_interest_rate=0.05,  # 5% annual rate
+        # Array-based schedule
+        array_pr_next=[overflow_payment],  # This will cause overflow in INC
+        array_increase_decrease=["INC"],  # Principal increase
+        array_pr_anchor=[1100000 + 30 * 24 * 60 * 60],
+        array_pr_cycle=[Cycle(count=1, unit="M")],
+        day_count_convention=DayCountConvention.A360,
+        business_day_convention=BusinessDayConvention.NOS,
+        end_of_month_convention=EndOfMonthConvention.SD,
+        calendar=Calendar.NC,
+    )
+
+    # Should raise ActusNormalizationError due to uint64 overflow
+    with pytest.raises(
+        ActusNormalizationError,
+        match=r"LAX INC.*exceeds uint64 bounds",
+    ):
+        normalize_contract_attributes(
+            contract,
+            denomination_asset_id=100,
+            denomination_asset_decimals=0,  # No scaling to simplify
+            notional_unit_value=1,
+            secondary_market_opening_date=1000000,
+            secondary_market_closure_date=2000000,
+        )
+
+
+def test_lax_array_pr_next_scaled_value_overflow_detection():
+    """Test that LAX detects overflow when array_pr_next scaled values exceed uint64 bounds."""
+    # Create a LAX contract where the scaled array_pr_next value itself exceeds MAX_UINT64
+    # This tests the validation that happens before any addition
+
+    # Use a value that when scaled with decimals will exceed MAX_UINT64
+    # MAX_UINT64 = 18446744073709551615
+    # With 6 decimals, any value > 18446744073709.551615 will overflow
+    excessive_value = int(cst.MAX_UINT64 / 1e6) + 1000000  # This * 10^6 > MAX_UINT64
+
+    contract = ContractAttributes(
+        contract_id=1,
+        contract_type="LAX",
+        status_date=1000000,
+        initial_exchange_date=1100000,
+        maturity_date=1100000 + 365 * 24 * 60 * 60,
+        notional_principal=1000000,  # Small notional
+        premium_discount_at_ied=0,
+        nominal_interest_rate=0.05,
+        array_pr_next=[excessive_value],  # Scaled value will overflow
+        array_increase_decrease=["INC"],
+        array_pr_anchor=[1100000 + 30 * 24 * 60 * 60],
+        array_pr_cycle=[Cycle(count=1, unit="M")],
+        day_count_convention=DayCountConvention.A360,
+        business_day_convention=BusinessDayConvention.NOS,
+        end_of_month_convention=EndOfMonthConvention.SD,
+        calendar=Calendar.NC,
+    )
+
+    # Should raise ActusNormalizationError due to scaled value overflow
+    # The error can come from either to_asa_units or from our LAX-specific validation
+    with pytest.raises(
+        ActusNormalizationError,
+        match=r"(Value.*exceeds uint64 bounds|LAX array_pr_next\[\d+\] scaled value.*exceeds uint64 bounds)",
+    ):
+        normalize_contract_attributes(
+            contract,
+            denomination_asset_id=100,
+            denomination_asset_decimals=6,  # 6 decimals will cause overflow
+            notional_unit_value=1,
+            secondary_market_opening_date=1000000,
+            secondary_market_closure_date=2000000,
+        )
+
+
 def test_ann_subtype_calculates_annuity_payment():
     """
     Test that ANN subtypes (e.g., "ANN:ZCB") correctly calculate annuity payments.
