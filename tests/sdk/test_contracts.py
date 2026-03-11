@@ -1,12 +1,13 @@
 """Tests for the contracts module."""
 
-import pytest
 from decimal import Decimal
+
+import pytest
 
 from src.contracts import (
     ContractAttributes,
-    make_pam_zero_coupon_bond,
     make_pam_fixed_coupon_bond_profile,
+    make_pam_zero_coupon_bond,
 )
 from src.day_count import (
     BusinessDayConvention,
@@ -94,7 +95,9 @@ class TestContractAttributes:
 
     def test_unsupported_contract_type_raises_error(self):
         """Test that unsupported contract types raise an error."""
-        with pytest.raises(UnsupportedActusFeatureError, match="Unsupported ACTUS contract type"):
+        with pytest.raises(
+            UnsupportedActusFeatureError, match="Unsupported ACTUS contract type"
+        ):
             ContractAttributes(
                 contract_id=1,
                 contract_type="INVALID",
@@ -107,7 +110,9 @@ class TestContractAttributes:
 
     def test_unsupported_business_day_convention_raises_error(self):
         """Test that unsupported business day conventions raise an error."""
-        with pytest.raises(UnsupportedActusFeatureError, match="Unsupported business day convention"):
+        with pytest.raises(
+            UnsupportedActusFeatureError, match="Unsupported business day convention"
+        ):
             ContractAttributes(
                 contract_id=1,
                 contract_type="PAM",
@@ -458,5 +463,3 @@ class TestContractImmutability:
             contract.contract_id = 2
         with pytest.raises(AttributeError):
             contract.notional_principal = 2000000
-
-
