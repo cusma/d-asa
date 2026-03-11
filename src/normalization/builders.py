@@ -397,11 +397,31 @@ def build_amortizing_schedule(
                     f"Outstanding: {outstanding}, principal_payment: {principal_payment}"
                 )
         else:
-            # LAM/LAX: always decrease or maintain outstanding
-            next_outstanding = max(outstanding - principal_payment, 0)
+            # LAM/LAX: normally decrease or maintain outstanding. However, for LAX with
+            # allow_negative=True, a negative principal_payment implies capitalization
+            # (outstanding - principal_payment becomes an addition), which may overflow.
+            if lax and allow_negative and principal_payment < 0:
+                candidate_outstanding = outstanding - principal_payment
+                if candidate_outstanding > cst.MAX_UINT64:
+                    raise ActusNormalizationError(
+                        f"LAX capitalization at period {index} would result in outstanding principal "
+                        f"{candidate_outstanding} which exceeds uint64 bounds (0 to {cst.MAX_UINT64}). "
+                        f"Outstanding: {outstanding}, principal_payment: {principal_payment}"
+                    )
+                next_outstanding = max(candidate_outstanding, 0)
+            else:
+                next_outstanding = max(outstanding - principal_payment, 0)
 
         if lax_direction == "INC":
-            next_outstanding = outstanding + payment_total
+            # LAX INC periods: explicitly increase outstanding by payment_total.
+            candidate_outstanding = outstanding + payment_total
+            if candidate_outstanding > cst.MAX_UINT64:
+                raise ActusNormalizationError(
+                    f"LAX INC at period {index} would result in outstanding principal "
+                    f"{candidate_outstanding} which exceeds uint64 bounds (0 to {cst.MAX_UINT64}). "
+                    f"Outstanding: {outstanding}, payment_total: {payment_total}"
+                )
+            next_outstanding = candidate_outstanding
 
         # Record balance change
         balance_timeline.append((ts, next_outstanding))
