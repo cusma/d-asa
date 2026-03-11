@@ -2,9 +2,10 @@ from calendar import monthrange
 from datetime import datetime
 from enum import IntEnum
 
+from smart_contracts import constants as cst
 from smart_contracts import enums
-from smart_contracts.constants import DAY_2_SEC
 
+from .errors import ActusNormalizationError
 from .unix_time import UTCTimeStamp, timestamp_to_datetime
 
 
@@ -214,7 +215,7 @@ def adjust_to_business_day(
         BusinessDayConvention.CALCULATE_SHIFT_MODIFIED_FOLLOWING,
     ):
         while not is_business_day(current, calendar):
-            current += DAY_2_SEC
+            current += cst.DAY_2_SEC
         # Modified following: if shifted to next month, shift back to preceding
         if (
             business_day_convention
@@ -226,7 +227,7 @@ def adjust_to_business_day(
         ):
             current = original
             while not is_business_day(current, calendar):
-                current -= DAY_2_SEC
+                current -= cst.DAY_2_SEC
 
     # Preceding conventions (shift backward)
     elif business_day_convention in (
@@ -236,7 +237,7 @@ def adjust_to_business_day(
         BusinessDayConvention.CALCULATE_SHIFT_MODIFIED_PRECEDING,
     ):
         while not is_business_day(current, calendar):
-            current -= DAY_2_SEC
+            current -= cst.DAY_2_SEC
         # Modified preceding: if shifted to previous month, shift forward to following
         if (
             business_day_convention
@@ -248,7 +249,7 @@ def adjust_to_business_day(
         ):
             current = original
             while not is_business_day(current, calendar):
-                current += DAY_2_SEC
+                current += cst.DAY_2_SEC
 
     return current
 
@@ -273,3 +274,138 @@ def is_shift_calculate(business_day_convention: BusinessDayConvention) -> bool:
         BusinessDayConvention.SHIFT_CALCULATE_PRECEDING,
         BusinessDayConvention.SHIFT_CALCULATE_MODIFIED_PRECEDING,
     )
+
+
+def year_fraction_fixed(
+    start_ts: UTCTimeStamp,
+    end_ts: UTCTimeStamp,
+    *,
+    day_count_convention: int,
+    maturity_date: UTCTimeStamp | None,
+) -> int:
+    """Return a fixed-point year fraction for a supported day-count convention."""
+    if end_ts <= start_ts:
+        return 0
+
+    if day_count_convention == DayCountConvention.A360:
+        return _days_between(start_ts, end_ts) * cst.FIXED_POINT_SCALE // 360
+    if day_count_convention == DayCountConvention.A365:
+        return _days_between(start_ts, end_ts) * cst.FIXED_POINT_SCALE // 365
+    if day_count_convention == DayCountConvention.AA:
+        return _year_fraction_actual_actual(start_ts, end_ts)
+    if day_count_convention == DayCountConvention.E30_360:
+        return _days_30e_360(start_ts, end_ts) * cst.FIXED_POINT_SCALE // 360
+    if day_count_convention == DayCountConvention.E30_360_ISDA:
+        if maturity_date is None:
+            raise ActusNormalizationError("30E/360 ISDA requires maturity_date")
+        return (
+            _days_30e_360_isda(start_ts, end_ts, maturity_date)
+            * cst.FIXED_POINT_SCALE
+            // 360
+        )
+    raise ActusNormalizationError("Unsupported day-count convention")
+
+
+def days_in_month(year: int, month: int) -> int:
+    """Return the number of days in a Gregorian month."""
+    return monthrange(year, month)[1]
+
+
+def _year_fraction_actual_actual(start_ts: UTCTimeStamp, end_ts: UTCTimeStamp) -> int:
+    """Return the Actual/Actual year fraction in fixed-point form."""
+    start_year, start_month, start_day = _date_parts(start_ts)
+    end_year, end_month, end_day = _date_parts(end_ts)
+    if start_year == end_year:
+        return (
+            _days_between(start_ts, end_ts)
+            * cst.FIXED_POINT_SCALE
+            // _days_in_year(start_year)
+        )
+
+    start_day_of_year = _day_of_year(start_year, start_month, start_day)
+    end_day_of_year = _day_of_year(end_year, end_month, end_day)
+    start_fraction = (
+        (_days_in_year(start_year) - (start_day_of_year - 1))
+        * cst.FIXED_POINT_SCALE
+        // _days_in_year(start_year)
+    )
+    full_years = max(end_year - start_year - 1, 0) * cst.FIXED_POINT_SCALE
+    end_fraction = (
+        (end_day_of_year - 1) * cst.FIXED_POINT_SCALE // _days_in_year(end_year)
+    )
+    return start_fraction + full_years + end_fraction
+
+
+def _days_between(start_ts: UTCTimeStamp, end_ts: UTCTimeStamp) -> int:
+    """Return whole UTC days between two timestamps."""
+    if end_ts <= start_ts:
+        return 0
+    return (end_ts - start_ts) // cst.DAY_2_SEC
+
+
+def _days_30e_360(start_ts: UTCTimeStamp, end_ts: UTCTimeStamp) -> int:
+    """Return the 30E/360 day-count numerator between two timestamps."""
+    y1, m1, d1 = _date_parts(start_ts)
+    y2, m2, d2 = _date_parts(end_ts)
+    if d1 == 31:
+        d1 = 30
+    if d2 == 31:
+        d2 = 30
+    return (y2 - y1) * 360 + (m2 - m1) * 30 + (d2 - d1)
+
+
+def _days_30e_360_isda(
+    start_ts: UTCTimeStamp, end_ts: UTCTimeStamp, maturity_ts: UTCTimeStamp
+) -> int:
+    """Return the 30E/360 ISDA day-count numerator between two timestamps."""
+    y1, m1, d1 = _date_parts(start_ts)
+    y2, m2, d2 = _date_parts(end_ts)
+    maturity_parts = _date_parts(maturity_ts)
+    if _is_last_day_of_feb(y1, m1, d1) or d1 == 31:
+        d1 = 30
+    if (_is_last_day_of_feb(y2, m2, d2) and (y2, m2, d2) != maturity_parts) or d2 == 31:
+        d2 = 30
+    return (y2 - y1) * 360 + (m2 - m1) * 30 + (d2 - d1)
+
+
+def _days_30_360(start_ts: UTCTimeStamp, end_ts: UTCTimeStamp) -> int:
+    """Return the 30/360 bond-basis day-count numerator between two timestamps."""
+    y1, m1, d1 = _date_parts(start_ts)
+    y2, m2, d2 = _date_parts(end_ts)
+    if d1 == 31:
+        d1 = 30
+    if d1 >= 30 and d2 == 31:
+        d2 = 30
+    return (y2 - y1) * 360 + (m2 - m1) * 30 + (d2 - d1)
+
+
+def _date_parts(timestamp: UTCTimeStamp) -> tuple[int, int, int]:
+    """Return the UTC year, month, and day for a timestamp."""
+    current = timestamp_to_datetime(timestamp)
+    return current.year, current.month, current.day
+
+
+def _day_of_year(year: int, month: int, day: int) -> int:
+    """Return the ordinal day number within a year."""
+    month_offsets = (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334)
+    value = month_offsets[month - 1] + day
+    if month > 2 and _is_leap_year(year):
+        value += 1
+    return value
+
+
+def _days_in_year(year: int) -> int:
+    """Return the number of days in a Gregorian year."""
+    return 366 if _is_leap_year(year) else 365
+
+
+def _is_leap_year(year: int) -> bool:
+    """Return whether a Gregorian year is a leap year."""
+    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+
+
+def _is_last_day_of_feb(year: int, month: int, day: int) -> bool:
+    """Return whether a date is the last day of February."""
+    if month != 2:
+        return False
+    return day == (29 if _is_leap_year(year) else 28)

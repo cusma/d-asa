@@ -12,6 +12,16 @@ REJECTED_EVENT_TYPES: frozenset[str] = frozenset(
     {"PP", "PY", "SC", "CE", "PRD", "TD", "FP"}
 )
 
+# Business Day Conventions that are not supported
+REJECTED_BDC = frozenset(
+    {
+        enums.BDC_CSF,
+        enums.BDC_CSMF,
+        enums.BDC_CSP,
+        enums.BDC_CSMP,
+    }
+)
+
 ALLOWED_EVENT_TYPES: dict[str, frozenset[str]] = {
     "PAM": frozenset({"IED", "IP", "MD", "RR", "RRF"}),
     "ANN": frozenset({"IED", "IP", "PR", "MD", "RR", "RRF", "IPCB", "PRF"}),
