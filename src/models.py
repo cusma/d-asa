@@ -38,7 +38,7 @@ class NormalizedActusTerms:
 
     # Time
     initial_exchange_date: UTCTimeStamp
-    maturity_date: UTCTimeStamp
+    maturity_date: UTCTimeStamp | None
     secondary_market_opening_date: UTCTimeStamp
     secondary_market_closure_date: UTCTimeStamp
 
