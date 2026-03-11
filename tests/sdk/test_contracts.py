@@ -32,6 +32,10 @@ class TestContractAttributes:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=0,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.contract_id == 1
         assert contract.contract_type == "PAM"
@@ -51,6 +55,10 @@ class TestContractAttributes:
             nominal_interest_rate=0.05,
             interest_payment_cycle=Cycle(count=3, unit="M"),
             interest_payment_anchor=1100000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.nominal_interest_rate == 0.05
         assert contract.premium_discount_at_ied == 10000
@@ -75,6 +83,9 @@ class TestContractAttributes:
                 notional_principal=1000000,
                 premium_discount_at_ied=0,
                 day_count_convention=dcc,
+                business_day_convention=BusinessDayConvention.NOS,
+                end_of_month_convention=EndOfMonthConvention.SD,
+                calendar=Calendar.NC,
             )
             assert contract.day_count_convention == dcc
 
@@ -89,7 +100,10 @@ class TestContractAttributes:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=0,
+            day_count_convention=DayCountConvention.A360,
             business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.business_day_convention == BusinessDayConvention.NOS
 
@@ -106,6 +120,10 @@ class TestContractAttributes:
                 maturity_date=2000000,
                 notional_principal=1000000,
                 premium_discount_at_ied=0,
+                day_count_convention=DayCountConvention.A360,
+                business_day_convention=BusinessDayConvention.NOS,
+                end_of_month_convention=EndOfMonthConvention.SD,
+                calendar=Calendar.NC,
             )
 
     def test_unsupported_business_day_convention_raises_error(self):
@@ -121,7 +139,10 @@ class TestContractAttributes:
                 maturity_date=2000000,
                 notional_principal=1000000,
                 premium_discount_at_ied=0,
+                day_count_convention=DayCountConvention.A360,
                 business_day_convention=BusinessDayConvention.CSF,  # Rejected BDC
+                end_of_month_convention=EndOfMonthConvention.SD,
+                calendar=Calendar.NC,
             )
 
     def test_supported_contract_types(self):
@@ -135,6 +156,10 @@ class TestContractAttributes:
                 maturity_date=2000000,
                 notional_principal=1000000,
                 premium_discount_at_ied=0,
+                day_count_convention=DayCountConvention.A360,
+                business_day_convention=BusinessDayConvention.NOS,
+                end_of_month_convention=EndOfMonthConvention.SD,
+                calendar=Calendar.NC,
             )
             assert contract.contract_type == contract_type
 
@@ -148,6 +173,10 @@ class TestContractAttributes:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=50000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.contract_type == "PAM:ZCB"
 
@@ -168,6 +197,10 @@ class TestContractAttributes:
             rate_reset_next=0.05,
             rate_reset_cycle=Cycle(count=6, unit="M"),
             rate_reset_anchor=1200000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.rate_reset_spread == 0.02
         assert contract.rate_reset_multiplier == 1.5
@@ -188,6 +221,10 @@ class TestContractAttributes:
             next_principal_redemption_amount=100000,
             principal_redemption_cycle=Cycle(count=1, unit="Q"),
             principal_redemption_anchor=1200000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.next_principal_redemption_amount == 100000
         assert contract.principal_redemption_cycle.count == 1
@@ -204,6 +241,10 @@ class TestContractAttributes:
             notional_principal=Decimal("1000000.00"),
             premium_discount_at_ied=Decimal("5000.50"),
             nominal_interest_rate=Decimal("0.0375"),
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.notional_principal == Decimal("1000000.00")
         assert contract.premium_discount_at_ied == Decimal("5000.50")
@@ -223,6 +264,10 @@ class TestContractAttributes:
             array_pr_cycle=[Cycle(1, "M"), Cycle(1, "M"), Cycle(1, "M")],
             array_pr_next=[10000, 20000, 30000],
             array_increase_decrease=["DEC", "DEC", "DEC"],
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert len(contract.array_pr_anchor) == 3
         assert len(contract.array_pr_cycle) == 3
@@ -242,6 +287,10 @@ class TestMakePamZeroCouponBond:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=50000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.contract_id == 100
         assert contract.contract_type == "PAM:ZCB"
@@ -278,6 +327,10 @@ class TestMakePamZeroCouponBond:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=0,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.premium_discount_at_ied == 0
 
@@ -290,6 +343,10 @@ class TestMakePamZeroCouponBond:
             maturity_date=2000000,
             notional_principal=1000000.0,
             premium_discount_at_ied=75000.5,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.notional_principal == 1000000.0
         assert contract.premium_discount_at_ied == 75000.5
@@ -309,6 +366,10 @@ class TestMakePamFixedCouponBondProfile:
             nominal_interest_rate=0.05,
             interest_payment_cycle=Cycle(count=6, unit="M"),
             interest_payment_anchor=1100000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.contract_id == 200
         assert contract.contract_type == "PAM:FCB"
@@ -329,6 +390,10 @@ class TestMakePamFixedCouponBondProfile:
             nominal_interest_rate=0.04,
             interest_payment_cycle=Cycle(count=1, unit="Q"),
             interest_payment_anchor=1100000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.interest_payment_cycle.count == 1
         assert contract.interest_payment_cycle.unit == "Q"
@@ -366,6 +431,10 @@ class TestMakePamFixedCouponBondProfile:
             nominal_interest_rate=Decimal("0.0425"),
             interest_payment_cycle=Cycle(count=3, unit="M"),
             interest_payment_anchor=1100000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.nominal_interest_rate == Decimal("0.0425")
 
@@ -380,6 +449,10 @@ class TestMakePamFixedCouponBondProfile:
             nominal_interest_rate=0.06,
             interest_payment_cycle=Cycle(count=1, unit="M"),
             interest_payment_anchor=1100000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.interest_payment_cycle.count == 1
         assert contract.interest_payment_cycle.unit == "M"
@@ -399,6 +472,10 @@ class TestContractAttributesDefaults:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=0,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.nominal_interest_rate == 0
         assert contract.rate_reset_spread == 0
@@ -416,6 +493,10 @@ class TestContractAttributesDefaults:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=0,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.day_count_convention == DayCountConvention.A360
         assert contract.business_day_convention == BusinessDayConvention.NOS
@@ -432,6 +513,10 @@ class TestContractAttributesDefaults:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=0,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         assert contract.principal_redemption_cycle is None
         assert contract.principal_redemption_anchor is None
@@ -457,6 +542,10 @@ class TestContractImmutability:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=0,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
         with pytest.raises(AttributeError):
             contract.contract_id = 2

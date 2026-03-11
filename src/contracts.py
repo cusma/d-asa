@@ -36,7 +36,8 @@ class ContractAttributes:
         maturity_date: Final maturity date when contract terminates.
 
         notional_principal: Principal amount of the contract.
-        premium_discount_at_ied: Premium/discount adjustment at IED.
+        premium_discount_at_ied: Premium/discount adjustment at IED
+            (positive for discount, negative for premium).
         next_principal_redemption_amount: Fixed payment amount per period.
         principal_redemption_cycle: Frequency of principal payments.
         principal_redemption_anchor: Anchor date for principal schedule.
@@ -91,6 +92,12 @@ class ContractAttributes:
     initial_exchange_date: UTCTimeStamp
     maturity_date: UTCTimeStamp | None
 
+    # Day Count Convention
+    day_count_convention: DayCountConvention
+    business_day_convention: BusinessDayConvention
+    end_of_month_convention: EndOfMonthConvention
+    calendar: Calendar
+
     # Principal
     notional_principal: int | float | Decimal
     premium_discount_at_ied: int | float | Decimal
@@ -112,12 +119,6 @@ class ContractAttributes:
     rate_reset_floor: int | float | Decimal = 0
     rate_reset_cap: int | float | Decimal = 0
     rate_reset_next: int | float | Decimal | None = None
-
-    # Day Count Convention
-    day_count_convention: DayCountConvention = DayCountConvention.A360
-    business_day_convention: BusinessDayConvention = BusinessDayConvention.NOS
-    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD
-    calendar: Calendar = Calendar.NC
 
     # Arrays
     array_pr_anchor: list[UTCTimeStamp] | None = None
@@ -170,10 +171,10 @@ def make_pam_zero_coupon_bond(
     maturity_date: UTCTimeStamp,
     notional_principal: int | float | Decimal,
     premium_discount_at_ied: int | float | Decimal,
-    day_count_convention: DayCountConvention | None = DayCountConvention.A360,
-    business_day_convention: BusinessDayConvention | None = BusinessDayConvention.NOS,
-    end_of_month_convention: EndOfMonthConvention | None = EndOfMonthConvention.SD,
-    calendar: Calendar | None = Calendar.NC,
+    day_count_convention: DayCountConvention = DayCountConvention.A360,
+    business_day_convention: BusinessDayConvention = BusinessDayConvention.NOS,
+    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
+    calendar: Calendar = Calendar.NC,
 ) -> ContractAttributes:
     """
     Build a PAM Zero Coupon Bond (ZCB) contract.
@@ -188,7 +189,7 @@ def make_pam_zero_coupon_bond(
         maturity_date: Date when principal is repaid.
         notional_principal: Face value of the bond.
         premium_discount_at_ied: Premium or discount adjustment at issuance
-            (positive for premium, negative for discount).
+            (positive for discount, negative for premium).
         day_count_convention: Year fraction calculation method (default: A360).
         business_day_convention: Non-business day handling (default: NOS).
         end_of_month_convention: End-of-month adjustment rules (default: SD).
@@ -236,10 +237,10 @@ def make_pam_fixed_coupon_bond_profile(
     maturity_date: UTCTimeStamp,
     notional_principal: int | float | Decimal,
     nominal_interest_rate: int | float | Decimal,
-    day_count_convention: DayCountConvention | None = DayCountConvention.A360,
-    business_day_convention: BusinessDayConvention | None = BusinessDayConvention.NOS,
-    end_of_month_convention: EndOfMonthConvention | None = EndOfMonthConvention.SD,
-    calendar: Calendar | None = Calendar.NC,
+    day_count_convention: DayCountConvention = DayCountConvention.A360,
+    business_day_convention: BusinessDayConvention = BusinessDayConvention.NOS,
+    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
+    calendar: Calendar = Calendar.NC,
     interest_payment_cycle: Cycle,
     interest_payment_anchor: UTCTimeStamp,
 ) -> ContractAttributes:
