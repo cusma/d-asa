@@ -44,7 +44,7 @@ class Cycle:
     stub: str = ""
 
     @classmethod
-    def parse_cycle(cls, raw_cycle: object) -> Cycle:
+    def parse_cycle(cls, raw_cycle: str | Cycle) -> Cycle:
         """
         Parse an ACTUS cycle string into a Cycle object.
 
@@ -110,7 +110,7 @@ def _add_month_cycle_from_anchor(
     *,
     cycle: Cycle,
     occurrence_index: int,
-    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
+    end_of_month_convention: EndOfMonthConvention,
 ) -> UTCTimeStamp:
     """
     Advance a month-based cycle from a fixed anchor UTC UNIX timestamp.
@@ -175,7 +175,7 @@ def _add_cycle_chained(
     timestamp: UTCTimeStamp,
     cycle: Cycle,
     *,
-    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
+    end_of_month_convention: EndOfMonthConvention,
 ) -> UTCTimeStamp:
     """
     Advance one chained cycle from the current UTC UNIX timestamp.
@@ -218,9 +218,9 @@ def _add_cycle_chained(
 
 def add_cycle(
     timestamp: UTCTimeStamp,
-    raw_cycle: object,
+    cycle: Cycle,
     *,
-    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
+    end_of_month_convention: EndOfMonthConvention,
     anchor_timestamp: UTCTimeStamp | None = None,
     occurrence_index: int | None = None,
 ) -> UTCTimeStamp:
@@ -235,7 +235,7 @@ def add_cycle(
 
     Args:
         timestamp: UTC UNIX timestamp to advance (used in chained mode)
-        raw_cycle: ACTUS cycle string (e.g., "3M", "1Q", "90D") or Cycle object
+        cycle: ACTUS cycle (e.g., "3M", "1Q", "90D")
         end_of_month_convention: How to handle month-end dates for month-based cycles
         anchor_timestamp: Optional fixed starting point for anchor-based calculation
         occurrence_index: Optional occurrence number (0 = anchor, 1 = first, etc.)
@@ -248,8 +248,6 @@ def add_cycle(
         error accumulation. Chained mode is simpler but can accumulate rounding errors
         over many iterations.
     """
-
-    cycle = Cycle.parse_cycle(raw_cycle)
 
     # Anchor-based mode: calculate from fixed anchor
     if anchor_timestamp is not None and occurrence_index is not None:
@@ -273,10 +271,10 @@ def add_cycle(
 
 def generate_schedule(
     start: UTCTimeStamp,
-    raw_cycle: object,
+    cycle: Cycle,
     end: UTCTimeStamp,
     *,
-    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
+    end_of_month_convention: EndOfMonthConvention,
 ) -> tuple[UTCTimeStamp, ...]:
     """
     Generate raw cycle dates from a start anchor up to an inclusive end date.
@@ -288,7 +286,7 @@ def generate_schedule(
 
     Args:
         start: UTC UNIX timestamp anchor (first date in schedule)
-        raw_cycle: ACTUS cycle string (e.g., "3M", "1Q", "90D")
+        cycle: ACTUS cycle (e.g., "3M", "1Q", "90D")
         end: UTC UNIX timestamp upper bound (inclusive)
         end_of_month_convention: How to handle month-end dates for month-based cycles
 
@@ -309,7 +307,6 @@ def generate_schedule(
     if start <= 0 or end <= 0 or start > end:
         return ()
 
-    cycle = Cycle.parse_cycle(raw_cycle)
     schedule: list[int] = []
     occurrence_index = 0
 
@@ -345,10 +342,10 @@ def generate_schedule(
 
 def generate_array_schedule(
     anchors: Sequence[UTCTimeStamp],
-    cycles: Sequence[object],
+    cycles: Sequence[Cycle],
     end: UTCTimeStamp,
     *,
-    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
+    end_of_month_convention: EndOfMonthConvention,
 ) -> tuple[UTCTimeStamp, ...]:
     """
     Generate a flattened schedule from parallel anchor and cycle arrays.
@@ -365,7 +362,7 @@ def generate_array_schedule(
 
     Args:
         anchors: Sequence of UTC UNIX timestamps marking schedule segment starts
-        cycles: Sequence of ACTUS cycle strings, parallel to anchors
+        cycles: Sequence of ACTUS cycle, parallel to anchors
         end: UTC UNIX timestamp upper bound (inclusive, always included in result)
         end_of_month_convention: How to handle month-end dates for month-based cycles
 
@@ -432,12 +429,12 @@ def generate_array_schedule(
 
 def resolve_cycle_schedule(
     start: UTCTimeStamp,
-    raw_cycle: object,
+    cycle: Cycle,
     end: UTCTimeStamp,
     *,
-    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
-    business_day_convention: BusinessDayConvention = BusinessDayConvention.NOS,
-    calendar_name: Calendar = Calendar.NC,
+    end_of_month_convention: EndOfMonthConvention,
+    business_day_convention: BusinessDayConvention,
+    calendar: Calendar,
 ) -> tuple[UTCTimeStamp, ...]:
     """
     Generate and business-day-adjust a cycle-based ACTUS schedule.
@@ -448,11 +445,11 @@ def resolve_cycle_schedule(
 
     Args:
         start: UTC UNIX timestamp anchor (first date in schedule)
-        raw_cycle: ACTUS cycle string (e.g., "3M", "1Q", "90D")
+        cycle: ACTUS cycle
         end: UTC UNIX timestamp upper bound (inclusive)
         end_of_month_convention: How to handle month-end dates for month-based cycles
         business_day_convention: How to adjust dates that fall on non-business days
-        calendar_name: Which calendar defines business days vs. holidays
+        calendar: Which calendar defines business days vs. holidays
 
     Returns:
         Tuple of UTC UNIX timestamps with business day adjustments applied
@@ -471,12 +468,12 @@ def resolve_cycle_schedule(
         raise UnsupportedActusFeatureError(
             "Supported Business Day Convention: NO_SHIFT"
         )
-    if calendar_name != Calendar.NC:
+    if calendar != Calendar.NC:
         raise UnsupportedActusFeatureError("Supported Calendar: NO_CALENDAR")
 
     base_dates = generate_schedule(
         start,
-        raw_cycle,
+        cycle,
         end,
         end_of_month_convention=end_of_month_convention,
     )
@@ -485,12 +482,12 @@ def resolve_cycle_schedule(
 
 def resolve_array_schedule(
     anchors: Sequence[UTCTimeStamp],
-    cycles: Sequence[object],
+    cycles: Sequence[Cycle],
     end: UTCTimeStamp,
     *,
-    end_of_month_convention: EndOfMonthConvention = EndOfMonthConvention.SD,
-    business_day_convention: BusinessDayConvention = BusinessDayConvention.NOS,
-    calendar_name: Calendar = Calendar.NC,
+    end_of_month_convention: EndOfMonthConvention,
+    business_day_convention: BusinessDayConvention,
+    calendar: Calendar,
 ) -> tuple[UTCTimeStamp, ...]:
     """
     Generate and business-day-adjust an array-based ACTUS schedule.
@@ -502,11 +499,11 @@ def resolve_array_schedule(
 
     Args:
         anchors: Sequence of UTC UNIX timestamps marking schedule segment starts
-        cycles: Sequence of ACTUS cycle strings, parallel to anchors
+        cycles: Sequence of ACTUS cycle, parallel to anchors
         end: UTC UNIX timestamp upper bound (inclusive)
         end_of_month_convention: How to handle month-end dates for month-based cycles
         business_day_convention: How to adjust dates that fall on non-business days
-        calendar_name: Which calendar defines business days vs. holidays
+        calendar: Which calendar defines business days vs. holidays
 
     Returns:
         Tuple of UTC UNIX timestamps with business day adjustments applied
@@ -526,7 +523,7 @@ def resolve_array_schedule(
         raise UnsupportedActusFeatureError(
             "Supported Business Day Convention: NO_SHIFT"
         )
-    if calendar_name != Calendar.NC:
+    if calendar != Calendar.NC:
         raise UnsupportedActusFeatureError("Supported Calendar: NO_CALENDAR")
 
     base_dates = generate_array_schedule(
