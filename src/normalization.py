@@ -120,14 +120,24 @@ def _compute_initial_exchange_amount(
     Args:
         notional: The notional principal amount.
         premium_discount_at_ied: Premium/discount adjustment at IED.
+            Positive value = discount (reduces notional)
+            Negative value = premium (increases notional)
         asa_decimals: Number of decimal places for the ASA.
 
     Returns:
         Net initial exchange amount in ASA base units.
     """
     notional = _to_asa_units(notional, asa_decimals)
-    pdied = _to_asa_units(premium_discount_at_ied, asa_decimals)
-    return notional - pdied
+
+    # Handle premium (negative) and discount (positive) separately
+    # to avoid _to_asa_units rejecting negative values
+    if premium_discount_at_ied >= 0:
+        pdied = _to_asa_units(premium_discount_at_ied, asa_decimals)
+        return notional - pdied
+    else:
+        # For negative premium_discount (premium), convert absolute value and add
+        pdied = _to_asa_units(-premium_discount_at_ied, asa_decimals)
+        return notional + pdied
 
 
 def _deduplicate_timestamps(ts: Sequence[UTCTimeStamp]) -> tuple[UTCTimeStamp, ...]:
@@ -347,7 +357,10 @@ def _normalize_schedule(
     else:
         seeds = list(
             _build_schedule_seeds(
-                contract, terms, contract_type=base_contract_type, asa_decimals=asa_decimals
+                contract,
+                terms,
+                contract_type=base_contract_type,
+                asa_decimals=asa_decimals,
             )
         )
 
