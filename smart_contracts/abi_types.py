@@ -5,79 +5,11 @@ from algopy import (
     Array,
     BoxMap,
     Bytes,
-    FixedBytes,
     String,
     Struct,
     UInt64,
     arc4,
 )
-
-CouponRates: TypeAlias = Array[arc4.UInt16]
-TimeEvents: TypeAlias = Array[UInt64]
-TimePeriod: TypeAlias = tuple[UInt64, UInt64]
-TimePeriods: TypeAlias = Array[TimePeriod]
-ProspectusHash: TypeAlias = FixedBytes[Literal[32]]
-
-
-class AssetInfo(Struct, kw_only=True):
-    """D-ASA Info"""
-
-    denomination_asset_id: UInt64
-    settlement_asset_id: UInt64
-    outstanding_principal: UInt64
-    unit_value: UInt64
-    day_count_convention: arc4.UInt8
-    principal_discount: arc4.UInt16
-    interest_rate: arc4.UInt16
-    total_supply: UInt64
-    circulating_supply: UInt64
-    primary_distribution_opening_date: UInt64
-    primary_distribution_closure_date: UInt64
-    issuance_date: UInt64
-    maturity_date: UInt64
-    suspended: bool
-    performance: arc4.UInt8
-
-
-# FIXME: Switch to Struct when bytes operations are supported
-class AssetMetadata(arc4.Struct, kw_only=True):
-    """D-ASA Metadata"""
-
-    contract_type: arc4.UInt8
-    calendar: arc4.UInt8
-    business_day_convention: arc4.UInt8
-    end_of_month_convention: arc4.UInt8
-    prepayment_effect: arc4.UInt8
-    penalty_type: arc4.UInt8
-    prospectus_hash: ProspectusHash
-    prospectus_url: String
-
-
-class AccountInfo(Struct, kw_only=True):
-    """D-ASA Account Info"""
-
-    payment_address: Account
-    units: UInt64
-    unit_value: UInt64
-    paid_coupons: UInt64
-    suspended: bool
-
-
-class DayCountFactor(Struct, kw_only=True):
-    """D-ASA Day Count Factor"""
-
-    numerator: UInt64
-    denominator: UInt64
-
-
-class CouponsInfo(Struct, kw_only=True):
-    """D-ASA Coupons Info"""
-
-    total_coupons: UInt64
-    due_coupons: UInt64
-    next_coupon_due_date: UInt64
-    day_count_factor: DayCountFactor
-    all_due_coupons_paid: bool
 
 
 class PaymentAmounts(Struct, kw_only=True):
@@ -95,27 +27,154 @@ class PaymentResult(Struct, kw_only=True):
     context: Bytes
 
 
-class SecondaryMarketSchedule(Struct, kw_only=True):
-    """D-ASA Secondary Market Schedule"""
-
-    secondary_market_opening_date: UInt64
-    secondary_market_closure_date: UInt64
-
-
-class CurrentUnitsValue(Struct, kw_only=True):
-    """D-ASA Account's Current Units Value"""
-
-    units_value: UInt64
-    accrued_interest: UInt64
-    day_count_factor: DayCountFactor
-
-
-# FIXME: Switch to Struct when bytes operations are supported
-class RoleConfig(arc4.Struct, kw_only=True):
+class RoleValidity(arc4.Struct, kw_only=True):
     """D-ASA Role Configuration"""
 
     role_validity_start: UInt64
     role_validity_end: UInt64
 
 
-RbacRole: TypeAlias = BoxMap[Account, RoleConfig]
+RbacRole: TypeAlias = BoxMap[Account, RoleValidity]
+ContractTypeId: TypeAlias = arc4.UInt8
+EventTypeId: TypeAlias = arc4.UInt8
+DayCountConvention: TypeAlias = arc4.UInt8
+TimeStamp: TypeAlias = UInt64
+
+
+class NormalizedActusTerms(Struct, kw_only=True):
+    """Normalized ACTUS terms required by the AVM kernel."""
+
+    contract_role: ContractTypeId
+    denomination_asset_id: UInt64
+    settlement_asset_id: UInt64
+    total_units: UInt64
+    notional_principal: UInt64
+    initial_exchange_amount: UInt64
+    initial_exchange_date: TimeStamp
+    maturity_date: TimeStamp
+    secondary_market_opening_date: TimeStamp
+    secondary_market_closure_date: TimeStamp
+    day_count_convention: DayCountConvention
+    rate_reset_spread: UInt64
+    rate_reset_multiplier: UInt64
+    rate_reset_floor: UInt64
+    rate_reset_cap: UInt64
+    rate_reset_next: UInt64
+    has_rate_reset_floor: bool
+    has_rate_reset_cap: bool
+    dynamic_principal_redemption: bool
+    fixed_point_scale: UInt64
+
+
+class ExecutionScheduleEntry(Struct, kw_only=True):
+    """A single normalized ACTUS event."""
+
+    event_id: UInt64
+    event_type: EventTypeId
+    scheduled_time: TimeStamp
+    accrual_factor: UInt64
+    redemption_accrual_factor: UInt64
+    next_nominal_interest_rate: UInt64
+    next_principal_redemption: UInt64
+    next_outstanding_principal: UInt64
+    flags: UInt64
+
+
+ExecutionSchedulePage: TypeAlias = Array[ExecutionScheduleEntry]
+
+
+class InitialKernelState(Struct, kw_only=True):
+    """Initial kernel state at deployment status date."""
+
+    status_date: TimeStamp
+    event_cursor: UInt64
+    outstanding_principal: UInt64
+    interest_calculation_base: UInt64
+    nominal_interest_rate: UInt64
+    accrued_interest: UInt64
+    next_principal_redemption: UInt64
+    cumulative_interest_index: UInt64
+    cumulative_principal_index: UInt64
+
+
+class ObservedEventRequest(Struct, kw_only=True):
+    """Authorized payload for appending or applying observed ACTUS events."""
+
+    event_id: UInt64
+    event_type: EventTypeId
+    scheduled_time: TimeStamp
+    accrual_factor: UInt64
+    redemption_accrual_factor: UInt64
+    observed_rate: UInt64
+    next_nominal_interest_rate: UInt64
+    next_principal_redemption: UInt64
+    next_outstanding_principal: UInt64
+    flags: UInt64
+
+
+class KernelState(Struct, kw_only=True):
+    """Typed Global State."""
+
+    contract_type: ContractTypeId
+    status: UInt64
+    total_units: UInt64
+    circulating_units: UInt64
+    reserved_units_total: UInt64
+    initial_exchange_amount: UInt64
+    event_cursor: UInt64
+    schedule_entry_count: UInt64
+    outstanding_principal: UInt64
+    interest_calculation_base: UInt64
+    nominal_interest_rate: UInt64
+    accrued_interest: UInt64
+    cumulative_interest_index: UInt64
+    cumulative_principal_index: UInt64
+    reserved_interest: UInt64
+    reserved_principal: UInt64
+
+
+class AccountPosition(Struct, kw_only=True):
+    """Per-holder ledger position tracked by the ACTUS accounting module."""
+
+    payment_address: Account
+    units: UInt64
+    reserved_units: UInt64
+    suspended: bool
+    settled_cursor: UInt64
+    interest_checkpoint: UInt64
+    principal_checkpoint: UInt64
+    claimable_interest: UInt64
+    claimable_principal: UInt64
+
+
+class CashClaimResult(Struct, kw_only=True):
+    """Result returned after a holder cashflow claim attempt."""
+
+    interest_amount: UInt64
+    principal_amount: UInt64
+    total_amount: UInt64
+    timestamp: UInt64
+    context: Bytes
+
+
+class CashFundingResult(Struct, kw_only=True):
+    """Result returned after funding one or more due ACTUS cash events."""
+
+    funded_interest: UInt64
+    funded_principal: UInt64
+    total_funded: UInt64
+    processed_events: UInt64
+    timestamp: UInt64
+
+
+class ContractCreateMetadata(Struct, kw_only=True):
+    """Metadata supplied when instantiating the generic ACTUS contract."""
+
+    contract_type: ContractTypeId
+    prospectus_hash: Bytes
+    prospectus_url: String
+
+
+SchedulePageArrayLength: TypeAlias = arc4.StaticArray[
+    ExecutionScheduleEntry, Literal[16]
+]

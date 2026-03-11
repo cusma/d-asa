@@ -1,7 +1,5 @@
-from .pam import PAMCoreMixin
-from .pbn import PBNCoreMixin
+from .kernel import KernelStateModule
 
 __all__ = [
-    "PAMCoreMixin",
-    "PBNCoreMixin",
+    "KernelStateModule",
 ]
