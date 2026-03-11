@@ -94,7 +94,7 @@ class ContractAttributes:
     # Principal
     notional_principal: int | float | Decimal
     premium_discount_at_ied: int | float | Decimal
-    next_principal_redemption_amount: int | float | Decimal | None = None
+    next_principal_redemption_amount: int | float | Decimal = 0
     principal_redemption_cycle: Cycle | None = None
     principal_redemption_anchor: UTCTimeStamp | None = None
     amortization_date: UTCTimeStamp | None = None
@@ -158,7 +158,7 @@ class ContractAttributes:
 
         if self.business_day_convention in REJECTED_BDC:
             raise UnsupportedActusFeatureError(
-                f"Unsupported business day convention {self.business_day_convention.name}. "
+                f"Unsupported business day convention {self.business_day_convention.name}"
             )
 
 
