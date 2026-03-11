@@ -36,24 +36,31 @@ from .unix_time import UTCTimeStamp
 
 def _to_asa_units(amount: int | float | Decimal, asa_decimals: int) -> int:
     """
-    Normalize an amount into ASA's units (uint64).
+    Convert a decimal amount to ASA base units (uint64).
+
+    Scales the amount by 10^asa_decimals to represent fractional values as integers.
 
     Example:
-        1) amount=100.42, asa_decimals=3, the result in ASA's units is 100420
-        2) amount=100, asa_decimals=2, the result in ASA's units is 10000
+        >>> _to_asa_units(100.42, 3)  # 100.42 with 3 decimals
+        100420
+        >>> _to_asa_units(100, 2)  # 100 with 2 decimals
+        10000
 
     Args:
-        amount: The numeric value to normalize.
-        asa_decimals: The number of decimal places for the ASA.
+        amount: The numeric value to convert.
+        asa_decimals: Number of decimal places for the ASA.
+
+    Returns:
+        The amount in ASA base units as an integer.
 
     Raises:
-        TypeError: if the value is not an int, float, or Decimal.
-        ActusNormalizationError: if the result exceeds uint64 max.
+        TypeError: If value is not int, float, or Decimal.
+        ActusNormalizationError: If result exceeds uint64 bounds.
     """
 
     if isinstance(amount, (int, float, Decimal)):
         scale = 10**asa_decimals
-        result = int(Decimal(str(asa_decimals)) * scale)
+        result = int(Decimal(str(amount)) * scale)
     else:
         raise TypeError(f"Unsupported value type: {type(amount)}")
 
@@ -67,21 +74,23 @@ def _to_asa_units(amount: int | float | Decimal, asa_decimals: int) -> int:
 
 def _rate_to_fp(value: int | float | Decimal) -> int:
     """
-    Normalize numeric decimal rates into AVM-compatible uint64 integer fixed-point
-    scaled units.
+    Convert decimal rates to fixed-point integer representation.
 
-    Always scales by FIXED_POINT_SCALE to convert decimal-like values to fixed point
-    precision integers.
+    Scales decimal rates by FIXED_POINT_SCALE for AVM-compatible uint64 storage.
 
     Example:
-        A rate of 0.05 (5%) with FIXED_POINT_SCALE of 1_000_000_000 becomes 50_000_000.
+        >>> _rate_to_fp(0.05)  # 5% rate with FIXED_POINT_SCALE=1_000_000_000
+        50000000
 
     Args:
-        value: The rate value to normalize.
+        value: The rate value (e.g., 0.05 for 5%).
+
+    Returns:
+        Fixed-point scaled rate as uint64 integer.
 
     Raises:
-        TypeError: if the value is not an int, float, or Decimal.
-        ActusNormalizationError: if the result exceeds uint64 max.
+        TypeError: If value is not int, float, or Decimal.
+        ActusNormalizationError: If result exceeds uint64 bounds.
     """
 
     if isinstance(value, (int, float, Decimal)):
@@ -102,6 +111,20 @@ def _compute_initial_exchange_amount(
     premium_discount_at_ied: int | float | Decimal,
     asa_decimals: int,
 ) -> int:
+    """
+    Calculate the initial exchange amount adjusted for premium/discount.
+
+    Returns the net notional after subtracting any premium/discount at IED
+    (Initial Exchange Date).
+
+    Args:
+        notional: The notional principal amount.
+        premium_discount_at_ied: Premium/discount adjustment at IED.
+        asa_decimals: Number of decimal places for the ASA.
+
+    Returns:
+        Net initial exchange amount in ASA base units.
+    """
     notional = _to_asa_units(notional, asa_decimals)
     pdied = _to_asa_units(premium_discount_at_ied, asa_decimals)
     return notional - pdied
@@ -114,7 +137,24 @@ def _deduplicate_timestamps(ts: Sequence[UTCTimeStamp]) -> tuple[UTCTimeStamp, .
 
 @dataclass(frozen=True, slots=True)
 class _EventSeed:
-    """Intermediate normalized event before final schedule encoding."""
+    """
+    Intermediate normalized event before final schedule encoding.
+
+    Represents a scheduled event during the normalization process, containing
+    all necessary information to generate the final ExecutionScheduleEntry.
+
+    Attributes:
+        event_type: ACTUS event type (e.g., "IED", "IP", "PR", "MD").
+        scheduled_time: Unix timestamp when event occurs.
+        accrual_factor: Optional year fraction for interest accrual.
+        redemption_accrual_factor: Optional year fraction for redemption accrual.
+        redemption_accrual_start: Start timestamp for redemption accrual period.
+        redemption_accrual_end: End timestamp for redemption accrual period.
+        next_nominal_interest_rate: Interest rate after this event.
+        next_principal_redemption: Principal redemption amount.
+        next_outstanding_principal: Outstanding principal after this event.
+        flags: Event flags (cash/non-cash, etc.).
+    """
 
     event_type: str
     scheduled_time: UTCTimeStamp
@@ -141,17 +181,43 @@ def normalize_contract_attributes(
         Sequence[ObservedEventRequest | ExecutionScheduleEntry] | None
     ) = None,
 ) -> NormalizationResult:
-    """Normalize raw ACTUS attributes into terms, schedule, and initial state.
+    """
+    Normalize ACTUS contract attributes into AVM-compatible terms, schedule, and state.
+
+    Transforms human-readable ACTUS contract parameters into fixed-point integers,
+    generates the execution schedule, and initializes the contract kernel state.
 
     Args:
-        contract: ACTUS contract attributes.
-        denomination_asset_id: The denomination ASA ID.
-        denomination_asset_decimals: The decimal places od the denomination ASA.
-        notional_unit_value: The notional unit value to be converted in denomination ASA.
-        secondary_market_opening_date: Optional secondary market opening date.
-        secondary_market_closure_date: Optional secondary market closure date.
-        fixed_point_scale: The fixed point scaling.
-        preprocessed_events: Optional preprocessed events.
+        contract: ACTUS contract attributes with dates, amounts, and cycles.
+        denomination_asset_id: ASA ID for the denomination asset.
+        denomination_asset_decimals: Decimal places for the denomination ASA.
+        notional_unit_value: Notional value per unit in denomination ASA.
+        secondary_market_opening_date: Unix timestamp for secondary market opening.
+        secondary_market_closure_date: Unix timestamp for secondary market closure.
+        fixed_point_scale: Scaling factor for fixed-point arithmetic (default: 1e9).
+        preprocessed_events: Optional pre-generated event schedule.
+
+    Returns:
+        NormalizationResult containing normalized terms, execution schedule, and initial state.
+
+    Raises:
+        ActusNormalizationError: If status_date >= initial_exchange_date or invalid config.
+
+    Example:
+        >>> contract = ContractAttributes(
+        ...     contract_type="PAM",
+        ...     status_date=1609459200,  # 2021-01-01
+        ...     initial_exchange_date=1612137600,  # 2021-02-01
+        ...     maturity_date=1643673600,  # 2022-02-01
+        ...     notional_principal=100000,
+        ...     nominal_interest_rate=0.05,
+        ... )
+        >>> result = normalize_contract_attributes(
+        ...     contract,
+        ...     denomination_asset_id=1,
+        ...     denomination_asset_decimals=6,
+        ...     notional_unit_value=100,
+        ... )
     """
 
     if contract.status_date >= contract.initial_exchange_date:
@@ -247,7 +313,27 @@ def _normalize_schedule(
     status_date: int,
     asa_decimals: int,
 ) -> tuple[ExecutionScheduleEntry, ...]:
-    """Turn intermediate event seeds into AVM schedule entries."""
+    """
+    Build the final execution schedule from event seeds or preprocessed events.
+
+    Converts intermediate event seeds into fully populated ExecutionScheduleEntry
+    objects with computed accrual factors and proper event ordering.
+
+    Args:
+        contract: Original ACTUS contract attributes.
+        terms: Normalized contract terms.
+        preprocessed_events: Optional pre-generated event schedule.
+        contract_type: Base contract type (e.g., "PAM", "LAM").
+        status_date: Contract status date (must precede all events).
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Sorted tuple of ExecutionScheduleEntry objects.
+
+    Raises:
+        UnsupportedActusFeatureError: If event type not allowed for contract type.
+        ActusNormalizationError: If events not in chronological order.
+    """
     # Extract base contract type
     base_contract_type = (
         contract_type.split(":")[0] if ":" in contract_type else contract_type
@@ -327,7 +413,21 @@ def _build_schedule_seeds(
     contract_type: str,
     asa_decimals: int,
 ) -> tuple[_EventSeed, ...]:
-    """Dispatch contract-type-specific schedule construction."""
+    """
+    Dispatch contract-type-specific schedule construction.
+
+    Routes to the appropriate schedule builder based on contract type
+    (PAM, LAM, NAM, ANN, LAX, or CLM).
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        contract_type: Base contract type (without subtype).
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Tuple of event seeds for the contract's execution schedule.
+    """
     # PAM and CLM don't require asa_decimals
     if contract_type in ("PAM", "CLM"):
         dispatch = {
@@ -351,7 +451,20 @@ def _initial_exchange_seed(
     terms: NormalizedActusTerms,
     asa_decimals: int,
 ) -> _EventSeed:
-    """Build the mandatory initial exchange event seed."""
+    """
+    Build the mandatory initial exchange event seed.
+
+    Creates the IED (Initial Exchange Date) event that establishes the initial
+    contract state including principal and interest rate.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Event seed for the IED event.
+    """
 
     return _EventSeed(
         event_type="IED",
@@ -368,7 +481,19 @@ def _initial_exchange_seed(
 def _build_pam_schedule(
     contract: ContractAttributes, terms: NormalizedActusTerms
 ) -> tuple[_EventSeed, ...]:
-    """Build the normalized PAM event seed schedule."""
+    """
+    Build the normalized PAM (Principal at Maturity) event seed schedule.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+
+    Returns:
+        Tuple of event seeds for the PAM schedule.
+
+    Raises:
+        ActusNormalizationError: If maturity_date is not specified.
+    """
 
     if terms.maturity_date is None:
         raise ActusNormalizationError("PAM normalization requires maturity_date")
@@ -399,7 +524,17 @@ def _build_pam_schedule(
 def _build_lam_schedule(
     contract: ContractAttributes, terms: NormalizedActusTerms, asa_decimals: int
 ) -> tuple[_EventSeed, ...]:
-    """Build the normalized LAM event seed schedule."""
+    """
+    Build the normalized LAM (Linear Amortizer) event seed schedule.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Tuple of event seeds for the LAM schedule.
+    """
     return _build_amortizing_schedule(
         contract, terms, asa_decimals, allow_negative=False, lax=False
     )
@@ -408,7 +543,17 @@ def _build_lam_schedule(
 def _build_nam_schedule(
     contract: ContractAttributes, terms: NormalizedActusTerms, asa_decimals: int
 ) -> tuple[_EventSeed, ...]:
-    """Build the normalized NAM event seed schedule."""
+    """
+    Build the normalized NAM (Negative Amortizer) event seed schedule.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Tuple of event seeds for the NAM schedule.
+    """
     return _build_amortizing_schedule(
         contract, terms, asa_decimals, allow_negative=True, lax=False
     )
@@ -417,14 +562,34 @@ def _build_nam_schedule(
 def _build_ann_schedule(
     contract: ContractAttributes, terms: NormalizedActusTerms, asa_decimals: int
 ) -> tuple[_EventSeed, ...]:
-    """Build the normalized ANN event seed schedule."""
+    """
+    Build the normalized ANN (Annuity) event seed schedule.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Tuple of event seeds for the ANN schedule.
+    """
     return _build_annuity_schedule(contract, terms, asa_decimals)
 
 
 def _build_lax_schedule(
     contract: ContractAttributes, terms: NormalizedActusTerms, asa_decimals: int
 ) -> tuple[_EventSeed, ...]:
-    """Build the normalized LAX event seed schedule."""
+    """
+    Build the normalized LAX (Linear Amortizer with eXtensions) event seed schedule.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Tuple of event seeds for the LAX schedule.
+    """
     return _build_amortizing_schedule(
         contract, terms, asa_decimals, allow_negative=True, lax=True
     )
@@ -433,7 +598,16 @@ def _build_lax_schedule(
 def _build_clm_schedule(
     contract: ContractAttributes, terms: NormalizedActusTerms
 ) -> tuple[_EventSeed, ...]:
-    """Build the normalized CLM event seed schedule."""
+    """
+    Build the normalized CLM (Call Money) event seed schedule.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+
+    Returns:
+        Tuple of event seeds for the CLM schedule.
+    """
     seeds: list[_EventSeed] = []
     outstanding = terms.notional_principal
     if terms.maturity_date is not None:
@@ -463,7 +637,20 @@ def _build_annuity_schedule(
     terms: NormalizedActusTerms,
     asa_decimals: int,
 ) -> tuple[_EventSeed, ...]:
-    """Build the ANN schedule including PRF recalculation events when needed."""
+    """
+    Build the ANN schedule including PRF recalculation events when needed.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Tuple of event seeds for the annuity schedule.
+
+    Raises:
+        ActusNormalizationError: If required fields are missing.
+    """
     if terms.maturity_date is None:
         raise ActusNormalizationError(
             "ANN normalization requires maturity_date or amortization_date"
@@ -631,7 +818,22 @@ def _build_amortizing_schedule(
     allow_negative: bool,
     lax: bool,
 ) -> tuple[_EventSeed, ...]:
-    """Build a generic amortizing schedule for LAM, NAM, and LAX."""
+    """
+    Build a generic amortizing schedule for LAM, NAM, and LAX.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        asa_decimals: Decimal places for the denomination ASA.
+        allow_negative: Whether negative amortization is allowed (NAM).
+        lax: Whether this is a LAX contract with array-based schedules.
+
+    Returns:
+        Tuple of event seeds for the amortizing schedule.
+
+    Raises:
+        ActusNormalizationError: If required fields are missing.
+    """
     contract_type = contract.contract_type
     if terms.maturity_date is None:
         raise ActusNormalizationError(
@@ -740,7 +942,26 @@ def _principal_payment_for_period(
     period_index: int,
     asa_decimals: int,
 ) -> int:
-    """Resolve the principal cashflow for one amortizing period."""
+    """
+    Resolve the principal cashflow for one amortizing period.
+
+    Calculates the principal payment amount based on contract type,
+    payment structure, and period-specific parameters.
+
+    Args:
+        contract: ACTUS contract attributes.
+        outstanding: Current outstanding principal.
+        payment_total: Total payment amount for the period.
+        interest_due: Interest amount due for the period.
+        allow_negative: Whether negative amortization is allowed.
+        annuity: Whether this is an annuity contract.
+        lax: Whether this is a LAX contract with array-based amounts.
+        period_index: Index of the current period.
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Principal payment amount in ASA base units.
+    """
     if lax and contract.array_pr_next is not None:
         pr_values = tuple(
             _to_asa_units(value, asa_decimals) for value in contract.array_pr_next
@@ -764,7 +985,23 @@ def _principal_schedule(
     *,
     lax: bool,
 ) -> tuple[int, ...]:
-    """Resolve the principal redemption occurrence schedule."""
+    """
+    Resolve the principal redemption occurrence schedule.
+
+    Generates timestamps for principal redemption events based on either
+    array-based schedules (LAX) or cycle-based schedules (standard contracts).
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        lax: Whether to use LAX array-based schedule logic.
+
+    Returns:
+        Tuple of Unix timestamps for principal redemption events.
+
+    Raises:
+        ActusNormalizationError: If LAX arrays have misaligned lengths.
+    """
 
     if lax and contract.array_pr_anchor is not None:
         anchors = tuple(ts for ts in contract.array_pr_anchor)
@@ -817,7 +1054,42 @@ def _interest_schedule(
     contract: ContractAttributes,
     terms: NormalizedActusTerms,
 ) -> tuple[UTCTimeStamp, ...]:
-    """Resolve the interest payment occurrence schedule."""
+    """
+    Resolve the interest payment occurrence schedule.
+
+    Generates timestamps for interest payment (IP) events based on the
+    interest payment cycle. Ensures maturity date is included and all
+    events fall within the contract's active period (after IED, up to MD).
+
+    The function handles cycle suffixes:
+    - If cycle ends with "+", the last event is adjusted to maturity_date
+    - Otherwise, maturity_date is appended to the schedule
+
+    Args:
+        contract: ACTUS contract attributes with interest payment parameters.
+        terms: Normalized contract terms with IED and maturity date.
+
+    Returns:
+        Tuple of Unix timestamps for interest payment events, deduplicated
+        and filtered to (IED, maturity_date]. Returns empty tuple if
+        interest_payment_anchor, interest_payment_cycle, or maturity_date
+        are not specified.
+
+    Example:
+        >>> # Monthly interest payments from Feb to Dec 2021
+        >>> contract = ContractAttributes(
+        ...     interest_payment_anchor=1612137600,  # 2021-02-01
+        ...     interest_payment_cycle=Cycle(count=1, unit="M"),
+        ...     ...
+        ... )
+        >>> terms = NormalizedActusTerms(
+        ...     initial_exchange_date=1609459200,  # 2021-01-01
+        ...     maturity_date=1640995200,  # 2022-01-01
+        ...     ...
+        ... )
+        >>> schedule = _interest_schedule(contract, terms)
+        # Returns timestamps: [Feb 1, Mar 1, ..., Dec 1, Jan 1 2022]
+    """
 
     anchor = contract.interest_payment_anchor
     cycle = contract.interest_payment_cycle
@@ -843,7 +1115,7 @@ def _interest_schedule(
         md_present = terms.maturity_date in timestamps
         if not md_present:
             maturity_date = terms.maturity_date
-            if str(cycle).upper().endswith("+"):
+            if cycle.stub == "+":
                 timestamps[-1] = maturity_date
             else:
                 timestamps.append(maturity_date)
@@ -855,7 +1127,20 @@ def _rate_reset_schedule(
     outstanding: int,
     maturity_date: int | None,
 ) -> tuple[_EventSeed, ...]:
-    """Build non-cash RR/RRF seeds from the normalized reset schedule."""
+    """
+    Build non-cash RR/RRF event seeds from the rate reset schedule.
+
+    Creates RR (Rate Reset) and RRF (Rate Reset with Fixed spread) event seeds
+    that update the interest rate without cash flows.
+
+    Args:
+        contract: ACTUS contract attributes.
+        outstanding: Current outstanding principal.
+        maturity_date: Contract maturity date.
+
+    Returns:
+        Tuple of rate reset event seeds.
+    """
     if maturity_date is None:
         return ()
     next_rate = (
@@ -881,7 +1166,19 @@ def _rate_reset_occurrences(
     contract: ContractAttributes,
     maturity_date: int | None,
 ) -> tuple[tuple[int, str], ...]:
-    """Resolve rate reset occurrences and label them as RR or RRF."""
+    """
+    Resolve rate reset occurrences and label them as RR or RRF.
+
+    Generates tuples of (timestamp, event_type) for rate reset events,
+    distinguishing between simple resets (RR) and fixed resets (RRF).
+
+    Args:
+        contract: ACTUS contract attributes.
+        maturity_date: Contract maturity date.
+
+    Returns:
+        Tuple of (timestamp, event_type) pairs for rate reset events.
+    """
     anchor = contract.rate_reset_anchor
     cycle = contract.rate_reset_cycle
     if anchor is None or cycle is None or maturity_date is None:
@@ -914,7 +1211,20 @@ def _ipcb_schedule(
     outstanding: int,
     maturity_date: int | None,
 ) -> tuple[_EventSeed, ...]:
-    """Build IPCB seeds for interest calculation base adjustments."""
+    """
+    Build IPCB event seeds for interest calculation base adjustments.
+
+    IPCB (Interest Payment Calculation Base) events adjust the base amount
+    used for interest calculations without generating cash flows.
+
+    Args:
+        contract: ACTUS contract attributes.
+        outstanding: Current outstanding principal.
+        maturity_date: Contract maturity date.
+
+    Returns:
+        Tuple of IPCB event seeds.
+    """
     anchor = contract.interest_calculation_base_anchor
     cycle = contract.interest_calculation_base_cycle
     if anchor is None or cycle is None or maturity_date is None:
@@ -941,7 +1251,19 @@ def _ipcb_schedule(
 def _seed_from_preprocessed(
     event_id: int, item: ObservedEventRequest | ExecutionScheduleEntry
 ) -> _EventSeed:
-    """Convert a preprocessed event payload into an intermediate event seed."""
+    """
+    Convert a preprocessed event payload into an intermediate event seed.
+
+    Handles both ObservedEventRequest and ExecutionScheduleEntry types,
+    converting them to the internal _EventSeed representation.
+
+    Args:
+        event_id: Unique identifier for the event.
+        item: Preprocessed event or schedule entry.
+
+    Returns:
+        Event seed representation of the preprocessed event.
+    """
     if isinstance(item, ExecutionScheduleEntry):
         return _EventSeed(
             event_type=item.event_type,
@@ -958,7 +1280,18 @@ def _seed_from_preprocessed(
 
 
 def _seed_sort_key(seed: _EventSeed) -> tuple[int, int, str]:
-    """Return the deterministic ACTUS event ordering key for a seed."""
+    """
+    Return the deterministic ACTUS event ordering key for a seed.
+
+    Events are ordered by: (1) scheduled time, (2) priority, (3) event type.
+    Ensures deterministic ordering when multiple events occur at the same time.
+
+    Args:
+        seed: Event seed to generate sort key for.
+
+    Returns:
+        Tuple of (scheduled_time, priority, event_type) for sorting.
+    """
     priority = EVENT_SCHEDULE_PRIORITY.get(seed.event_type, 99)
     return seed.scheduled_time, priority, seed.event_type
 
@@ -968,7 +1301,20 @@ def _initial_next_principal_redemption(
     terms: NormalizedActusTerms,
     asa_decimals: int,
 ) -> int:
-    """Resolve the initial next principal redemption term for the first IED state."""
+    """
+    Resolve the initial next principal redemption for the first IED state.
+
+    For ANN contracts, calculates the annuity payment amount.
+    For other contracts, uses the configured next_principal_redemption_amount.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Initial principal redemption amount in ASA base units.
+    """
     if contract.contract_type != "ANN":
         if contract.next_principal_redemption_amount is None:
             return 0
@@ -981,7 +1327,23 @@ def _resolve_annuity_payment(
     terms: NormalizedActusTerms,
     asa_decimals: int,
 ) -> int:
-    """Resolve the initial annuity payment amount from terms or formula."""
+    """
+    Resolve the initial annuity payment amount from terms or formula.
+
+    For ANN contracts, either uses the configured payment amount or calculates
+    it using the annuity formula based on present value of cash flows.
+
+    Args:
+        contract: ACTUS contract attributes.
+        terms: Normalized contract terms.
+        asa_decimals: Decimal places for the denomination ASA.
+
+    Returns:
+        Annuity payment amount in ASA base units.
+
+    Raises:
+        ActusNormalizationError: If required fields are missing.
+    """
 
     payment_total = _to_asa_units(
         contract.next_principal_redemption_amount, asa_decimals
@@ -1030,7 +1392,19 @@ def _resolve_annuity_payment(
 
 
 def _lax_direction(contract: ContractAttributes, period_index: int) -> str:
-    """Return whether a LAX period decreases or increases principal."""
+    """
+    Return whether a LAX period decreases or increases principal.
+
+    Uses array_increase_decrease to determine if a period generates
+    a principal increase (INC) or decrease (DEC) event.
+
+    Args:
+        contract: ACTUS contract attributes.
+        period_index: Zero-based index of the period.
+
+    Returns:
+        "INC" for increase or "DEC" for decrease (default).
+    """
     directions = tuple(
         str(value).upper() for value in contract.array_increase_decrease or ()
     )
@@ -1048,7 +1422,33 @@ def _interest_minor_units(
     day_count_convention: int,
     maturity_date: int | None,
 ) -> int:
-    """Compute interest in minor units for a principal and accrual interval."""
+    """
+    Compute interest in minor units for a principal and accrual interval.
+
+    Calculates interest as: principal * rate * year_fraction, where rate
+    and year_fraction are in fixed-point representation.
+
+    Example:
+        >>> _interest_minor_units(
+        ...     principal=100000,
+        ...     rate_fp=50000000,  # 5% in fixed-point
+        ...     start_ts=1609459200,
+        ...     end_ts=1612137600,
+        ...     day_count_convention=2,  # 30/360
+        ...     maturity_date=None
+        ... )
+
+    Args:
+        principal: Principal amount in ASA base units.
+        rate_fp: Interest rate in fixed-point representation.
+        start_ts: Accrual start timestamp.
+        end_ts: Accrual end timestamp.
+        day_count_convention: Day count convention code.
+        maturity_date: Optional maturity date for year fraction calculation.
+
+    Returns:
+        Interest amount in ASA base units.
+    """
     if rate_fp <= 0 or end_ts <= start_ts:
         return 0
     year_fraction = year_fraction_fixed(
@@ -1067,7 +1467,26 @@ def _interest_minor_units(
 
 
 def _subtract_one_cycle(timestamp: UTCTimeStamp, cycle: Cycle) -> int:
-    """Move one ACTUS cycle backward from a timestamp."""
+    """
+    Move one ACTUS cycle backward from a timestamp.
+
+    Supports daily (D), weekly (W), monthly (M), quarterly (Q),
+    semi-annual (H), and yearly (Y) cycles.
+
+    Example:
+        >>> cycle = Cycle(count=1, unit="M")
+        >>> _subtract_one_cycle(1612137600, cycle)  # 2021-02-01 -> 2021-01-01
+
+    Args:
+        timestamp: Starting Unix timestamp.
+        cycle: ACTUS cycle specification.
+
+    Returns:
+        Unix timestamp one cycle earlier.
+
+    Raises:
+        ActusNormalizationError: If cycle unit is unsupported.
+    """
 
     if cycle.unit == "D":
         return timestamp - cycle.count * cst.DAY_2_SEC
@@ -1094,7 +1513,20 @@ def _annuity_start_timestamp(
     principal_redemption_anchor: UTCTimeStamp,
     principal_redemption_cycle: Cycle,
 ) -> int:
-    """Return the start timestamp used by the ANN payment formula."""
+    """
+    Return the start timestamp used by the ANN payment formula.
+
+    The annuity calculation starts from the later of: IED or one cycle
+    before the first principal redemption.
+
+    Args:
+        initial_exchange_date: Contract IED timestamp.
+        principal_redemption_anchor: Anchor date for principal redemptions.
+        principal_redemption_cycle: Principal redemption cycle.
+
+    Returns:
+        Start timestamp for annuity calculation.
+    """
     return max(
         initial_exchange_date,
         _subtract_one_cycle(principal_redemption_anchor, principal_redemption_cycle),
@@ -1111,7 +1543,24 @@ def _calculate_annuity_payment(
     day_count_convention: int,
     maturity_date: int | None,
 ) -> int:
-    """Calculate an annuity payment from a redemption schedule and rate path."""
+    """
+    Calculate an annuity payment from a redemption schedule and rate path.
+
+    Uses the present value formula to compute the constant payment amount
+    that amortizes the principal plus accrued interest over the schedule.
+
+    Args:
+        start_ts: Calculation start timestamp.
+        redemption_schedule: Sequence of payment timestamps.
+        notional: Principal amount in ASA base units.
+        accrued_interest: Accrued interest at start.
+        rate_fp: Interest rate in fixed-point representation.
+        day_count_convention: Day count convention code.
+        maturity_date: Optional maturity date for calculations.
+
+    Returns:
+        Annuity payment amount in ASA base units.
+    """
     remaining = tuple(due_ts for due_ts in redemption_schedule if due_ts > start_ts)
     if not remaining:
         return 0
@@ -1156,7 +1605,25 @@ def _seed_from_timestamp(
     next_outstanding_principal: int = 0,
     flags: int = 0,
 ) -> _EventSeed:
-    """Create an intermediate event seed from a resolved schedule timestamp."""
+    """
+    Create an intermediate event seed from a resolved schedule timestamp.
+
+    Factory function for creating _EventSeed instances with default values
+    for optional fields.
+
+    Args:
+        timestamp: Unix timestamp when event occurs.
+        event_type: ACTUS event type (e.g., "IED", "IP", "PR").
+        redemption_accrual_start: Start of redemption accrual period.
+        redemption_accrual_end: End of redemption accrual period.
+        next_nominal_interest_rate: Interest rate after this event.
+        next_principal_redemption: Principal redemption amount.
+        next_outstanding_principal: Outstanding principal after event.
+        flags: Event flags (cash/non-cash, etc.).
+
+    Returns:
+        Event seed with specified parameters.
+    """
     return _EventSeed(
         event_type=event_type,
         scheduled_time=timestamp,
