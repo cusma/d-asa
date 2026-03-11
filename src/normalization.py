@@ -888,6 +888,14 @@ def _build_amortizing_schedule(
         contract.next_principal_redemption_amount or 0,
         asa_decimals,
     )
+
+    # Precompute LAX principal amounts once
+    pr_values_scaled: tuple[int, ...] | None = None
+    if lax and contract.array_pr_next is not None:
+        pr_values_scaled = tuple(
+            _to_asa_units(value, asa_decimals) for value in contract.array_pr_next
+        )
+
     previous_due = terms.initial_exchange_date
     for index, ts in enumerate(pr_schedule):
         due_time = ts
@@ -909,6 +917,7 @@ def _build_amortizing_schedule(
             lax=lax,
             period_index=index,
             asa_decimals=asa_decimals,
+            pr_values_scaled=pr_values_scaled,
         )
         lax_direction = _lax_direction(contract, index) if lax else "DEC"
         next_outstanding = max(outstanding - principal_payment, 0)
@@ -1001,6 +1010,7 @@ def _principal_payment_for_period(
     lax: bool,
     period_index: int,
     asa_decimals: int,
+    pr_values_scaled: tuple[int, ...] | None = None,
 ) -> tuple[int, int]:
     """
     Resolve the principal cashflow for one amortizing period.
@@ -1018,18 +1028,15 @@ def _principal_payment_for_period(
         lax: Whether this is a LAX contract with array-based amounts.
         period_index: Index of the current period.
         asa_decimals: Decimal places for the denomination ASA.
+        pr_values_scaled: Precomputed scaled principal values for LAX contracts.
 
     Returns:
         Tuple of (principal_payment, payment_total) where payment_total may be
         updated from array_pr_next for LAX contracts.
     """
     # For LAX contracts, override payment_total with period-specific value
-    if lax and contract.array_pr_next is not None:
-        pr_values = tuple(
-            _to_asa_units(value, asa_decimals) for value in contract.array_pr_next
-        )
-        if period_index < len(pr_values):
-            payment_total = pr_values[period_index]
+    if lax and pr_values_scaled is not None and period_index < len(pr_values_scaled):
+        payment_total = pr_values_scaled[period_index]
 
     if annuity:
         return min(max(payment_total - interest_due, 0), outstanding), payment_total
