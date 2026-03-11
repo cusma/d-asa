@@ -301,7 +301,7 @@ def generate_schedule(
         >>> # For timestamps representing 2024-01-15, 2024-04-15
         >>> generate_schedule(
         ...     start=1705276800,  # 2024-01-15 00:00:00 UTC
-        ...     raw_cycle="1M",
+        ...     cycle="1M",
         ...     end=1713139200     # 2024-04-15 00:00:00 UTC
         ... )
         (1705276800, 1707955200, 1710547200, 1713139200)
