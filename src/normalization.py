@@ -1092,6 +1092,10 @@ def _principal_schedule(
     cycle = contract.principal_redemption_cycle
     if anchor is None or cycle is None or terms.maturity_date is None:
         return ()
+
+    # Parse cycle to access stub attribute
+    parsed_cycle = Cycle.parse_cycle(cycle)
+
     timestamps = resolve_cycle_schedule(
         anchor,
         cycle,
@@ -1100,7 +1104,7 @@ def _principal_schedule(
         business_day_convention=contract.business_day_convention,
         calendar=contract.calendar,
     )
-    if cycle.stub == "+" and timestamps:
+    if parsed_cycle.stub == "+" and timestamps:
         if timestamps[-1] != terms.maturity_date:
             timestamps = timestamps[:-1]
     return tuple(
@@ -1156,6 +1160,9 @@ def _interest_schedule(
     if anchor is None or cycle is None or terms.maturity_date is None:
         return ()
 
+    # Parse cycle to access stub attribute
+    parsed_cycle = Cycle.parse_cycle(cycle)
+
     timestamps = list(
         resolve_cycle_schedule(
             anchor,
@@ -1175,7 +1182,7 @@ def _interest_schedule(
         md_present = terms.maturity_date in timestamps
         if not md_present:
             maturity_date = terms.maturity_date
-            if cycle.stub == "+":
+            if parsed_cycle.stub == "+":
                 timestamps[-1] = maturity_date
             else:
                 timestamps.append(maturity_date)
