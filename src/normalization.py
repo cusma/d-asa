@@ -691,7 +691,7 @@ def _build_annuity_schedule(
             "ANN normalization requires maturity_date or amortization_date"
         )
 
-    pr_schedule = _principal_schedule(contract, terms, lax=False)
+    pr_schedule = _principal_schedule(contract, terms, lax=False, end_date=end_date)
     if not pr_schedule:
         raise ActusNormalizationError(
             "ANN normalization requires a principal redemption schedule"
@@ -799,7 +799,7 @@ def _build_annuity_schedule(
                     next_nominal_interest_rate=(
                         terms.rate_reset_next if event_type == "RRF" else 0
                     ),
-                    next_outstanding_principal=outstanding,
+                    next_outstanding_principal=next_outstanding,
                     flags=enums.FLAG_NON_CASH_EVENT,
                 )
             )
@@ -896,6 +896,10 @@ def _build_amortizing_schedule(
             _to_asa_units(value, asa_decimals) for value in contract.array_pr_next
         )
 
+    # Build rate reset schedule as dict for efficient lookup
+    rr_schedule = _rate_reset_occurrences(contract, terms.maturity_date)
+    rr_events = dict(rr_schedule)
+
     previous_due = terms.initial_exchange_date
     for index, ts in enumerate(pr_schedule):
         due_time = ts
@@ -916,7 +920,6 @@ def _build_amortizing_schedule(
             annuity=False,
             lax=lax,
             period_index=index,
-            asa_decimals=asa_decimals,
             pr_values_scaled=pr_values_scaled,
         )
         lax_direction = _lax_direction(contract, index) if lax else "DEC"
@@ -981,10 +984,43 @@ def _build_amortizing_schedule(
                 )
             )
 
+        # Check if this timestamp has a rate reset event
+        event_key = ts
+        if event_key in rr_events:
+            event_type = rr_events[event_key]
+            seeds.append(
+                _seed_from_timestamp(
+                    ts,
+                    event_type=event_type,
+                    next_nominal_interest_rate=(
+                        terms.rate_reset_next if event_type == "RRF" else 0
+                    ),
+                    next_outstanding_principal=next_outstanding,
+                    flags=enums.FLAG_NON_CASH_EVENT,
+                )
+            )
+
         outstanding = next_outstanding
         previous_due = due_time
 
-    seeds.extend(_rate_reset_schedule(contract, outstanding, terms.maturity_date))
+    # Add remaining rate reset events that don't coincide with PR dates
+    for ts, event_type in rr_schedule:
+        if any(ts == pr_ts for pr_ts in pr_schedule):
+            continue
+        if ts >= terms.maturity_date:
+            continue
+        seeds.append(
+            _seed_from_timestamp(
+                ts,
+                event_type=event_type,
+                next_nominal_interest_rate=(
+                    terms.rate_reset_next if event_type == "RRF" else 0
+                ),
+                next_outstanding_principal=outstanding,
+                flags=enums.FLAG_NON_CASH_EVENT,
+            )
+        )
+
     seeds.extend(_ipcb_schedule(contract, outstanding, terms.maturity_date))
     if outstanding:
         seeds.append(
@@ -1009,7 +1045,6 @@ def _principal_payment_for_period(
     annuity: bool,
     lax: bool,
     period_index: int,
-    asa_decimals: int,
     pr_values_scaled: tuple[int, ...] | None = None,
 ) -> tuple[int, int]:
     """
@@ -1053,6 +1088,7 @@ def _principal_schedule(
     terms: NormalizedActusTerms,
     *,
     lax: bool,
+    end_date: int | None = None,
 ) -> tuple[int, ...]:
     """
     Resolve the principal redemption occurrence schedule.
@@ -1064,6 +1100,7 @@ def _principal_schedule(
         contract: ACTUS contract attributes.
         terms: Normalized contract terms.
         lax: Whether to use LAX array-based schedule logic.
+        end_date: Explicit end date for the schedule. If not provided, falls back to terms.maturity_date.
 
     Returns:
         Tuple of Unix timestamps for principal redemption events.
@@ -1076,15 +1113,35 @@ def _principal_schedule(
         anchors = tuple(ts for ts in contract.array_pr_anchor)
         cycles = tuple(contract.array_pr_cycle or ())
         increases = tuple(value for value in contract.array_increase_decrease or ())
-        if increases and len(increases) != len(contract.array_pr_anchor):
+        pr_next = tuple(contract.array_pr_next or ())
+
+        anchor_len = len(anchors)
+
+        # Validate all LAX arrays have aligned lengths
+        if cycles and len(cycles) != anchor_len:
             raise ActusNormalizationError(
-                "LAX array_pr_* schedules must have aligned lengths"
+                f"LAX array_pr_cycle length ({len(cycles)}) must match "
+                f"array_pr_anchor length ({anchor_len})"
             )
+        if increases and len(increases) != anchor_len:
+            raise ActusNormalizationError(
+                f"LAX array_increase_decrease length ({len(increases)}) must match "
+                f"array_pr_anchor length ({anchor_len})"
+            )
+        if pr_next and len(pr_next) != anchor_len:
+            raise ActusNormalizationError(
+                f"LAX array_pr_next length ({len(pr_next)}) must match "
+                f"array_pr_anchor length ({anchor_len})"
+            )
+
+        # Use provided end_date or fall back to terms.maturity_date
+        effective_end = end_date if end_date is not None else terms.maturity_date
+
         if cycles:
             timestamps = resolve_array_schedule(
                 anchors,
                 cycles,
-                terms.maturity_date,
+                effective_end,
                 end_of_month_convention=contract.end_of_month_convention,
                 business_day_convention=contract.business_day_convention,
                 calendar=contract.calendar,
@@ -1094,12 +1151,16 @@ def _principal_schedule(
         return tuple(
             ts
             for ts in _deduplicate_timestamps(timestamps)
-            if terms.initial_exchange_date < ts <= terms.maturity_date
+            if terms.initial_exchange_date < ts <= effective_end
         )
 
     anchor = contract.principal_redemption_anchor
     cycle = contract.principal_redemption_cycle
-    if anchor is None or cycle is None or terms.maturity_date is None:
+
+    # Use provided end_date or fall back to terms.maturity_date
+    effective_end = end_date if end_date is not None else terms.maturity_date
+
+    if anchor is None or cycle is None or effective_end is None:
         return ()
 
     # Parse cycle to access stub attribute
@@ -1108,18 +1169,16 @@ def _principal_schedule(
     timestamps = resolve_cycle_schedule(
         anchor,
         cycle,
-        terms.maturity_date,
+        effective_end,
         end_of_month_convention=contract.end_of_month_convention,
         business_day_convention=contract.business_day_convention,
         calendar=contract.calendar,
     )
     if parsed_cycle.stub == "+" and timestamps:
-        if timestamps[-1] != terms.maturity_date:
+        if timestamps[-1] != effective_end:
             timestamps = timestamps[:-1]
     return tuple(
-        ts
-        for ts in timestamps
-        if terms.initial_exchange_date <= ts < terms.maturity_date
+        ts for ts in timestamps if terms.initial_exchange_date <= ts < effective_end
     )
 
 
@@ -1432,7 +1491,7 @@ def _resolve_annuity_payment(
             "ANN normalization requires maturity_date or amortization_date"
         )
 
-    pr_schedule = _principal_schedule(contract, terms, lax=False)
+    pr_schedule = _principal_schedule(contract, terms, lax=False, end_date=end_date)
     if not pr_schedule:
         raise ActusNormalizationError(
             "ANN normalization requires a principal redemption schedule"
