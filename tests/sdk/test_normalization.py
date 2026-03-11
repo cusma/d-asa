@@ -1175,3 +1175,61 @@ class TestRateResetAmortizing:
             assert (
                 len(unique_principals) >= 1
             ), "RR events should track actual outstanding balance"
+
+
+def test_nam_capitalizes_unpaid_interest():
+    """Test that NAM capitalizes unpaid interest when payment < interest due."""
+    # Create a NAM contract with small payments that won't cover interest
+    contract = ContractAttributes(
+        contract_id=1,
+        contract_type="NAM",
+        status_date=1000000,
+        initial_exchange_date=1100000,
+        maturity_date=1100000 + 365 * 24 * 60 * 60,  # 1 year
+        notional_principal=1000000,  # 1,000,000 minor units
+        premium_discount_at_ied=0,
+        nominal_interest_rate=0.12,  # 12% annual rate
+        # Small payment that won't cover interest
+        next_principal_redemption_amount=500,  # 500 minor units
+        # Monthly payments
+        principal_redemption_cycle=Cycle(count=1, unit="M"),
+        principal_redemption_anchor=1100000 + 30 * 24 * 60 * 60,
+        day_count_convention=DayCountConvention.A360,
+        business_day_convention=BusinessDayConvention.NOS,
+        end_of_month_convention=EndOfMonthConvention.SD,
+        calendar=Calendar.NC,
+    )
+
+    result = normalize_contract_attributes(
+        contract,
+        denomination_asset_id=100,
+        denomination_asset_decimals=2,
+        notional_unit_value=1000,
+        secondary_market_opening_date=1000000,
+        secondary_market_closure_date=2000000,
+    )
+
+    events = result.schedule
+    pr_events = [e for e in events if e.event_type == "PR"]
+
+    # First PR event should show increased outstanding principal (capitalization)
+    # Interest for ~30 days at 12% on 1,000,000 (in cents) = ~10,000 cents
+    # Payment is only 500 cents, so ~9,500 cents should be capitalized
+    # Outstanding should increase from 1,000,000 to approximately 1,009,500
+
+    assert len(pr_events) > 0, "Should have PR events"
+
+    first_pr = pr_events[0]
+    initial_outstanding = 1000000  # Initial outstanding in minor units
+
+    # Outstanding should increase (negative amortization)
+    assert (
+        first_pr.next_outstanding_principal > initial_outstanding
+    ), f"Outstanding should increase from {initial_outstanding} to {first_pr.next_outstanding_principal}"
+
+    # Verify multiple periods show continued capitalization
+    if len(pr_events) > 1:
+        second_pr = pr_events[1]
+        assert (
+            second_pr.next_outstanding_principal > first_pr.next_outstanding_principal
+        ), "Outstanding should continue to increase in subsequent periods"
