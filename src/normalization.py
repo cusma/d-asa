@@ -665,6 +665,40 @@ def _build_clm_schedule(
     return tuple(seeds)
 
 
+def _interpolate_balance_at_timestamp(
+    timestamp: int,
+    balance_timeline: list[tuple[int, int]],
+    initial_balance: int,
+) -> int:
+    """
+    Interpolate the outstanding principal balance at a specific timestamp.
+
+    Args:
+        timestamp: The timestamp to query.
+        balance_timeline: List of (timestamp, balance_after) tuples in chronological order.
+        initial_balance: The starting balance before any events.
+
+    Returns:
+        The outstanding balance at the given timestamp.
+    """
+    if not balance_timeline:
+        return initial_balance
+
+    # If timestamp is before first event, return initial balance
+    if timestamp < balance_timeline[0][0]:
+        return initial_balance
+
+    # Find the last event on or before the timestamp
+    balance = initial_balance
+    for ts, balance_after in balance_timeline:
+        if ts <= timestamp:
+            balance = balance_after
+        else:
+            break
+
+    return balance
+
+
 def _build_annuity_schedule(
     contract: ContractAttributes,
     terms: NormalizedActusTerms,
@@ -756,6 +790,9 @@ def _build_annuity_schedule(
     outstanding = terms.notional_principal
     previous_due = terms.initial_exchange_date
     previous_redemption = annuity_start
+    # Track balance timeline for interpolation
+    balance_timeline: list[tuple[int, int]] = []
+
     for ts in pr_schedule:
         due_time = ts
         interest_due = _interest_minor_units(
@@ -768,6 +805,9 @@ def _build_annuity_schedule(
         )
         principal_payment = min(max(payment_total - interest_due, 0), outstanding)
         next_outstanding = max(outstanding - principal_payment, 0)
+
+        # Record balance change
+        balance_timeline.append((ts, next_outstanding))
 
         seeds.append(
             _seed_from_timestamp(
@@ -808,11 +848,16 @@ def _build_annuity_schedule(
         previous_due = due_time
         previous_redemption = due_time
 
+    # Add non-coincident reset events with interpolated balance
     for ts, event_type in rr_schedule:
         if any(ts == pr_ts for pr_ts in pr_schedule):
             continue
         if ts >= end_date:
             continue
+        # Interpolate balance at this timestamp
+        balance_at_reset = _interpolate_balance_at_timestamp(
+            ts, balance_timeline, terms.notional_principal
+        )
         seeds.append(
             _seed_from_timestamp(
                 ts,
@@ -820,7 +865,7 @@ def _build_annuity_schedule(
                 next_nominal_interest_rate=(
                     terms.rate_reset_next if event_type == "RRF" else 0
                 ),
-                next_outstanding_principal=outstanding,
+                next_outstanding_principal=balance_at_reset,
                 flags=enums.FLAG_NON_CASH_EVENT,
             )
         )
@@ -901,6 +946,9 @@ def _build_amortizing_schedule(
     rr_events = dict(rr_schedule)
 
     previous_due = terms.initial_exchange_date
+    # Track balance timeline for interpolation
+    balance_timeline: list[tuple[int, int]] = []
+
     for index, ts in enumerate(pr_schedule):
         due_time = ts
         interest_due = _interest_minor_units(
@@ -940,6 +988,9 @@ def _build_amortizing_schedule(
 
         if lax_direction == "INC":
             next_outstanding = outstanding + payment_total
+
+        # Record balance change
+        balance_timeline.append((ts, next_outstanding))
 
         # For NAM with negative principal_payment (capitalization), still generate PR event
         # For LAM/LAX, only generate events if principal_payment > 0
@@ -1027,6 +1078,10 @@ def _build_amortizing_schedule(
             continue
         if ts >= terms.maturity_date:
             continue
+        # Interpolate balance at this timestamp
+        balance_at_reset = _interpolate_balance_at_timestamp(
+            ts, balance_timeline, terms.notional_principal
+        )
         seeds.append(
             _seed_from_timestamp(
                 ts,
@@ -1034,7 +1089,7 @@ def _build_amortizing_schedule(
                 next_nominal_interest_rate=(
                     terms.rate_reset_next if event_type == "RRF" else 0
                 ),
-                next_outstanding_principal=outstanding,
+                next_outstanding_principal=balance_at_reset,
                 flags=enums.FLAG_NON_CASH_EVENT,
             )
         )
@@ -1541,7 +1596,7 @@ def _resolve_annuity_payment(
         accrued_interest=0,
         rate_fp=_rate_to_fp(contract.nominal_interest_rate),
         day_count_convention=terms.day_count_convention,
-        maturity_date=terms.maturity_date,
+        maturity_date=end_date,
     )
 
 
