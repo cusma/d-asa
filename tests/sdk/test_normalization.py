@@ -19,115 +19,115 @@ from src.day_count import (
 )
 from src.errors import ActusNormalizationError
 from src.models import ExecutionScheduleEntry, NormalizedActusTerms
-from src.normalization import (
-    _compute_initial_exchange_amount,
-    _deduplicate_timestamps,
-    _rate_to_fp,
-    _to_asa_units,
-    normalize_contract_attributes,
+from src.normalization import normalize_contract_attributes
+from src.normalization.conversions import (
+    compute_initial_exchange_amount,
+    rate_to_fp,
+    to_asa_units,
 )
+from src.normalization.event_seeds import deduplicate_timestamps
 from src.schedule import Cycle
 
 
 class TestToAsaUnits:
-    """Test the _to_asa_units helper function."""
+    """Test the to_asa_units helper function."""
 
     def test_integer_conversion(self):
         """Test converting integer amounts to ASA units."""
-        assert _to_asa_units(100, 2) == 10000
-        assert _to_asa_units(1000, 0) == 1000
-        assert _to_asa_units(50, 3) == 50000
+        assert to_asa_units(100, 2) == 10000
+        assert to_asa_units(1000, 0) == 1000
+        assert to_asa_units(50, 3) == 50000
 
     def test_float_conversion(self):
         """Test converting float amounts to ASA units."""
-        result = _to_asa_units(100.5, 2)
+        result = to_asa_units(100.5, 2)
         assert result == 10050
         assert isinstance(result, int)
 
     def test_decimal_conversion(self):
         """Test converting Decimal amounts to ASA units."""
-        result = _to_asa_units(Decimal("100.42"), 3)
+        result = to_asa_units(Decimal("100.42"), 3)
         assert result == 100420
         assert isinstance(result, int)
 
     def test_zero_decimals(self):
         """Test conversion with zero decimal places."""
-        assert _to_asa_units(100, 0) == 100
+        assert to_asa_units(100, 0) == 100
 
     def test_high_decimal_places(self):
         """Test conversion with high decimal places."""
-        result = _to_asa_units(1, 10)
+        result = to_asa_units(1, 10)
         assert result == 10_000_000_000
         assert isinstance(result, int)
 
     def test_unsupported_type_raises_error(self):
         """Test that unsupported types raise TypeError."""
         with pytest.raises(TypeError, match="Unsupported value type"):
-            _to_asa_units("100", 2)
+            to_asa_units("100", 2)
         with pytest.raises(TypeError, match="Unsupported value type"):
-            _to_asa_units(None, 2)
+            to_asa_units(None, 2)
 
     def test_exceeds_uint64_raises_error(self):
         """Test that values exceeding uint64 max raise error."""
         # A large amount that when multiplied by scale exceeds uint64 max
         with pytest.raises(ActusNormalizationError, match="exceeds uint64 bounds"):
-            _to_asa_units(cst.MAX_UINT64 * 2, 2)
+            to_asa_units(cst.MAX_UINT64 * 2, 2)
 
 
 class TestRateToFp:
-    """Test the _rate_to_fp helper function."""
+    """Test the rate_to_fp helper function."""
 
     def test_integer_rate_conversion(self):
         """Test converting integer rates to fixed point."""
-        result = _rate_to_fp(1)
+        result = rate_to_fp(1)
         assert result == cst.FIXED_POINT_SCALE
         assert isinstance(result, int)
 
     def test_float_rate_conversion(self):
         """Test converting float rates to fixed point."""
-        result = _rate_to_fp(0.05)
+        result = rate_to_fp(0.05)
         expected = int(Decimal("0.05") * cst.FIXED_POINT_SCALE)
         assert result == expected
 
     def test_decimal_rate_conversion(self):
         """Test converting Decimal rates to fixed point."""
-        result = _rate_to_fp(Decimal("0.0375"))
+        result = rate_to_fp(Decimal("0.0375"))
         expected = int(Decimal("0.0375") * cst.FIXED_POINT_SCALE)
         assert result == expected
 
     def test_zero_rate(self):
         """Test converting zero rate."""
-        assert _rate_to_fp(0) == 0
+        assert rate_to_fp(0) == 0
 
     def test_high_precision_rate(self):
         """Test converting high precision rate."""
         rate = Decimal("0.123456789")
-        result = _rate_to_fp(rate)
+        result = rate_to_fp(rate)
         assert isinstance(result, int)
         assert result > 0
 
     def test_negative_rate_raises_error(self):
         """Test that negative rates raise error."""
         with pytest.raises(ActusNormalizationError, match="exceeds uint64 bounds"):
-            _rate_to_fp(-0.01)
+            rate_to_fp(-0.01)
 
     def test_exceeds_uint64_raises_error(self):
         """Test that very large rates raise error."""
         with pytest.raises(ActusNormalizationError, match="exceeds uint64 bounds"):
-            _rate_to_fp(cst.MAX_UINT64)
+            rate_to_fp(cst.MAX_UINT64)
 
     def test_unsupported_type_raises_error(self):
         """Test that unsupported types raise TypeError."""
         with pytest.raises(TypeError, match="Unsupported value type"):
-            _rate_to_fp("0.05")
+            rate_to_fp("0.05")
 
 
 class TestComputeInitialExchangeAmount:
-    """Test the _compute_initial_exchange_amount helper function."""
+    """Test the compute_initial_exchange_amount helper function."""
 
     def test_at_par_issuance(self):
         """Test initial exchange with no premium/discount."""
-        result = _compute_initial_exchange_amount(
+        result = compute_initial_exchange_amount(
             notional=1000000,
             premium_discount_at_ied=0,
             asa_decimals=2,
@@ -138,7 +138,7 @@ class TestComputeInitialExchangeAmount:
 
     def test_with_discount(self):
         """Test initial exchange with discount."""
-        result = _compute_initial_exchange_amount(
+        result = compute_initial_exchange_amount(
             notional=1000000,
             premium_discount_at_ied=50000,
             asa_decimals=2,
@@ -150,7 +150,7 @@ class TestComputeInitialExchangeAmount:
 
     def test_with_premium(self):
         """Test initial exchange with premium (negative discount)."""
-        result = _compute_initial_exchange_amount(
+        result = compute_initial_exchange_amount(
             notional=1000000,
             premium_discount_at_ied=-50000,
             asa_decimals=2,
@@ -166,7 +166,7 @@ class TestComputeInitialExchangeAmount:
         # discount=2000000 with 2 decimals = 200000000
         # result = 100000000 - 200000000 = -100000000 (negative)
         with pytest.raises(ActusNormalizationError, match="exceeds notional"):
-            _compute_initial_exchange_amount(
+            compute_initial_exchange_amount(
                 notional=1000000,
                 premium_discount_at_ied=2000000,
                 asa_decimals=2,
@@ -179,7 +179,7 @@ class TestComputeInitialExchangeAmount:
         notional_large = int(cst.MAX_UINT64 * 0.6)
         premium_large = int(cst.MAX_UINT64 * 0.5)
         with pytest.raises(ActusNormalizationError, match="exceeds uint64 maximum"):
-            _compute_initial_exchange_amount(
+            compute_initial_exchange_amount(
                 notional=notional_large,
                 premium_discount_at_ied=-premium_large,
                 asa_decimals=0,
@@ -187,35 +187,35 @@ class TestComputeInitialExchangeAmount:
 
 
 class TestDeduplicateTimestamps:
-    """Test the _deduplicate_timestamps helper function."""
+    """Test the deduplicate_timestamps helper function."""
 
     def test_empty_sequence(self):
         """Test deduplication of empty sequence."""
-        result = _deduplicate_timestamps([])
+        result = deduplicate_timestamps([])
         assert result == ()
 
     def test_no_duplicates(self):
         """Test sequence with no duplicates."""
         timestamps = [1000000, 1100000, 1200000]
-        result = _deduplicate_timestamps(timestamps)
+        result = deduplicate_timestamps(timestamps)
         assert result == (1000000, 1100000, 1200000)
 
     def test_with_duplicates(self):
         """Test deduplication removes duplicates."""
         timestamps = [1000000, 1100000, 1100000, 1200000, 1000000]
-        result = _deduplicate_timestamps(timestamps)
+        result = deduplicate_timestamps(timestamps)
         assert result == (1000000, 1100000, 1200000)
 
     def test_preserves_sorted_order(self):
         """Test that result is sorted."""
         timestamps = [1200000, 1000000, 1100000]
-        result = _deduplicate_timestamps(timestamps)
+        result = deduplicate_timestamps(timestamps)
         assert result == (1000000, 1100000, 1200000)
 
     def test_all_same_timestamps(self):
         """Test with all identical timestamps."""
         timestamps = [1000000, 1000000, 1000000]
-        result = _deduplicate_timestamps(timestamps)
+        result = deduplicate_timestamps(timestamps)
         assert result == (1000000,)
 
 
@@ -874,7 +874,7 @@ class TestLaxArrayPrNext:
         expected_event_types = ["PI", "PI", "PR", "PR", "PI", "PR"]
 
         for i in range(6):
-            expected_amount = _to_asa_units(contract.array_pr_next[i], 6)
+            expected_amount = to_asa_units(contract.array_pr_next[i], 6)
             assert pr_pi_events[i].event_type == expected_event_types[i], (
                 f"Period {i}: Expected event_type={expected_event_types[i]}, "
                 f"got {pr_pi_events[i].event_type}"
@@ -993,7 +993,7 @@ class TestLaxArrayPrNext:
         pr_events = [ev for ev in result.schedule if ev.event_type == "PR"]
 
         # All events should use the base amount
-        base_amount = _to_asa_units(Decimal("5000.0"), 6)
+        base_amount = to_asa_units(Decimal("5000.0"), 6)
         for i, ev in enumerate(pr_events):
             assert ev.next_principal_redemption == base_amount, (
                 f"Period {i}: Expected next_principal_redemption={base_amount}, "
