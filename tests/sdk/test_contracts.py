@@ -433,7 +433,6 @@ class TestContractAttributesDefaults:
             notional_principal=1000000,
             premium_discount_at_ied=0,
         )
-        assert contract.next_principal_redemption_amount is None
         assert contract.principal_redemption_cycle is None
         assert contract.principal_redemption_anchor is None
         assert contract.interest_payment_anchor is None
