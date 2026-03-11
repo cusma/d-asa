@@ -22,7 +22,6 @@ class NormalizedActusTerms:
     - UTC UNIX timestamp
 
     AVM Numeric values (UInt64):
-    - Rates: in BPS (base-points), 1 BPS = 0.01%
     - Amounts: in ASA minimal units
     - Fixed Point are scaled
 
