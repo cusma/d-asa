@@ -1173,8 +1173,8 @@ class TestRateResetAmortizing:
             # Given the LAX schedule with INC and DEC, we expect variation
             # or at least not all terminal balance
             assert (
-                len(unique_principals) >= 1
-            ), "RR events should track actual outstanding balance"
+                len(unique_principals) >= 2
+            ), "RR events should reflect changing outstanding balances across RR events"
 
 
 def test_nam_capitalizes_unpaid_interest():
