@@ -897,7 +897,7 @@ def _build_amortizing_schedule(
             day_count_convention=terms.day_count_convention,
             maturity_date=terms.maturity_date,
         )
-        principal_payment = _principal_payment_for_period(
+        principal_payment, payment_total = _principal_payment_for_period(
             contract,
             outstanding=outstanding,
             payment_total=payment_total,
@@ -914,25 +914,50 @@ def _build_amortizing_schedule(
             next_outstanding = outstanding + payment_total
 
         if principal_payment > 0:
-            seeds.append(
-                _seed_from_timestamp(
-                    ts,
-                    event_type="PR",
-                    next_principal_redemption=payment_total,
-                    next_outstanding_principal=next_outstanding,
-                    flags=enums.FLAG_CASH_EVENT,
+            # For LAX INC periods, generate PI (Principal Increase) events
+            if lax and lax_direction == "INC":
+                seeds.append(
+                    _seed_from_timestamp(
+                        ts,
+                        event_type="PI",
+                        next_principal_redemption=payment_total,
+                        next_outstanding_principal=next_outstanding,
+                        flags=enums.FLAG_NON_CASH_EVENT,
+                    )
                 )
-            )
+            else:
+                # Normal redemption or DEC periods generate PR events
+                seeds.append(
+                    _seed_from_timestamp(
+                        ts,
+                        event_type="PR",
+                        next_principal_redemption=payment_total,
+                        next_outstanding_principal=next_outstanding,
+                        flags=enums.FLAG_CASH_EVENT,
+                    )
+                )
         elif lax:
-            seeds.append(
-                _seed_from_timestamp(
-                    ts,
-                    event_type="PI",
-                    next_principal_redemption=payment_total,
-                    next_outstanding_principal=next_outstanding,
-                    flags=enums.FLAG_NON_CASH_EVENT,
+            # For LAX with zero principal_payment, still respect direction
+            if lax_direction == "INC":
+                seeds.append(
+                    _seed_from_timestamp(
+                        ts,
+                        event_type="PI",
+                        next_principal_redemption=payment_total,
+                        next_outstanding_principal=next_outstanding,
+                        flags=enums.FLAG_NON_CASH_EVENT,
+                    )
                 )
-            )
+            else:  # DEC
+                seeds.append(
+                    _seed_from_timestamp(
+                        ts,
+                        event_type="PR",
+                        next_principal_redemption=payment_total,
+                        next_outstanding_principal=next_outstanding,
+                        flags=enums.FLAG_NON_CASH_EVENT,
+                    )
+                )
 
         if interest_due > 0 or due_time == terms.maturity_date:
             seeds.append(
@@ -974,7 +999,7 @@ def _principal_payment_for_period(
     lax: bool,
     period_index: int,
     asa_decimals: int,
-) -> int:
+) -> tuple[int, int]:
     """
     Resolve the principal cashflow for one amortizing period.
 
@@ -993,8 +1018,10 @@ def _principal_payment_for_period(
         asa_decimals: Decimal places for the denomination ASA.
 
     Returns:
-        Principal payment amount in ASA base units.
+        Tuple of (principal_payment, payment_total) where payment_total may be
+        updated from array_pr_next for LAX contracts.
     """
+    # For LAX contracts, override payment_total with period-specific value
     if lax and contract.array_pr_next is not None:
         pr_values = tuple(
             _to_asa_units(value, asa_decimals) for value in contract.array_pr_next
@@ -1003,13 +1030,13 @@ def _principal_payment_for_period(
             payment_total = pr_values[period_index]
 
     if annuity:
-        return min(max(payment_total - interest_due, 0), outstanding)
+        return min(max(payment_total - interest_due, 0), outstanding), payment_total
 
     if allow_negative:
         candidate = payment_total - interest_due
-        return min(max(candidate, 0), outstanding)
+        return min(max(candidate, 0), outstanding), payment_total
 
-    return min(max(payment_total, 0), outstanding)
+    return min(max(payment_total, 0), outstanding), payment_total
 
 
 def _principal_schedule(
