@@ -874,7 +874,7 @@ class TestLaxArrayPrNext:
         expected_event_types = ["PI", "PI", "PR", "PR", "PI", "PR"]
 
         for i in range(6):
-            expected_amount = float(contract.array_pr_next[i]) * (10**6)
+            expected_amount = _to_asa_units(contract.array_pr_next[i], 6)
             assert pr_pi_events[i].event_type == expected_event_types[i], (
                 f"Period {i}: Expected event_type={expected_event_types[i]}, "
                 f"got {pr_pi_events[i].event_type}"
