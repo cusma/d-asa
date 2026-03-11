@@ -59,7 +59,7 @@ def build_ied_seed(
 def build_rate_reset_seeds(
     contract: ContractAttributes,
     outstanding: int,
-    maturity_date: int | None,
+    terms: NormalizedActusTerms,
     next_rate_fp: int,
 ) -> tuple[EventSeed, ...]:
     """
@@ -71,14 +71,12 @@ def build_rate_reset_seeds(
     Args:
         contract: ACTUS contract attributes.
         outstanding: Current outstanding principal.
-        maturity_date: Contract maturity date.
+        terms: Normalized contract terms.
         next_rate_fp: Next rate in fixed-point representation.
 
     Returns:
         Tuple of rate reset event seeds.
     """
-    if maturity_date is None:
-        return ()
     return tuple(
         create_seed(
             ts,
@@ -87,25 +85,28 @@ def build_rate_reset_seeds(
             next_outstanding_principal=outstanding,
             flags=enums.FLAG_NON_CASH_EVENT,
         )
-        for ts, event_type in resolve_rate_reset_occurrences(contract, maturity_date)
+        for ts, event_type in resolve_rate_reset_occurrences(contract, terms)
     )
 
 
 def build_ipcb_seeds(
     contract: ContractAttributes,
-    outstanding: int,
-    maturity_date: int | None,
+    terms: NormalizedActusTerms,
+    balance_timeline: list[tuple[int, int]],
+    initial_principal: int,
 ) -> tuple[EventSeed, ...]:
     """
     Build IPCB event seeds for interest calculation base adjustments.
 
     IPCB (Interest Payment Calculation Base) events adjust the base amount
-    used for interest calculations without generating cash flows.
+    used for interest calculations without generating cash flows. Each IPCB
+    event uses the interpolated balance at its scheduled timestamp.
 
     Args:
         contract: ACTUS contract attributes.
-        outstanding: Current outstanding principal.
-        maturity_date: Contract maturity date.
+        terms: Normalized contract terms.
+        balance_timeline: List of (timestamp, balance) tuples tracking principal changes.
+        initial_principal: Initial principal amount before any events.
 
     Returns:
         Tuple of IPCB event seeds.
@@ -114,10 +115,12 @@ def build_ipcb_seeds(
         create_seed(
             ts,
             event_type="IPCB",
-            next_outstanding_principal=outstanding,
+            next_outstanding_principal=interpolate_balance_at_timestamp(
+                ts, balance_timeline, initial_principal
+            ),
             flags=enums.FLAG_NON_CASH_EVENT,
         )
-        for ts in resolve_ipcb_schedule(contract, maturity_date)
+        for ts in resolve_ipcb_schedule(contract, terms)
     )
 
 
@@ -158,9 +161,7 @@ def build_pam_schedule(
         if contract.rate_reset_next is not None
         else contract.nominal_interest_rate
     )
-    seeds.extend(
-        build_rate_reset_seeds(contract, outstanding, terms.maturity_date, next_rate)
-    )
+    seeds.extend(build_rate_reset_seeds(contract, outstanding, terms, next_rate))
 
     seeds.append(
         create_seed(
@@ -213,9 +214,7 @@ def build_clm_schedule(
         if contract.rate_reset_next is not None
         else contract.nominal_interest_rate
     )
-    seeds.extend(
-        build_rate_reset_seeds(contract, outstanding, terms.maturity_date, next_rate)
-    )
+    seeds.extend(build_rate_reset_seeds(contract, outstanding, terms, next_rate))
     return tuple(seeds)
 
 
@@ -348,9 +347,16 @@ def build_amortizing_schedule(
         pr_values_scaled = tuple(
             to_asa_units(value, asa_decimals) for value in contract.array_pr_next
         )
+        # Validate that all scaled values are within uint64 bounds
+        for idx, scaled_value in enumerate(pr_values_scaled):
+            if scaled_value < 0 or scaled_value > cst.MAX_UINT64:
+                raise ActusNormalizationError(
+                    f"LAX array_pr_next[{idx}] scaled value {scaled_value} exceeds uint64 bounds "
+                    f"(0 to {cst.MAX_UINT64})"
+                )
 
     # Build rate reset schedule as dict for efficient lookup
-    rr_schedule = resolve_rate_reset_occurrences(contract, terms.maturity_date)
+    rr_schedule = resolve_rate_reset_occurrences(contract, terms)
     rr_events = dict(rr_schedule)
     next_rate = rate_to_fp(
         contract.rate_reset_next
@@ -414,6 +420,12 @@ def build_amortizing_schedule(
 
         if lax_direction == "INC":
             # LAX INC periods: explicitly increase outstanding by payment_total.
+            # Validate payment_total is within bounds before addition
+            if payment_total < 0 or payment_total > cst.MAX_UINT64:
+                raise ActusNormalizationError(
+                    f"LAX INC at period {index} has invalid payment_total {payment_total} "
+                    f"which exceeds uint64 bounds (0 to {cst.MAX_UINT64})"
+                )
             candidate_outstanding = outstanding + payment_total
             if candidate_outstanding > cst.MAX_UINT64:
                 raise ActusNormalizationError(
@@ -527,7 +539,9 @@ def build_amortizing_schedule(
             )
         )
 
-    seeds.extend(build_ipcb_seeds(contract, outstanding, terms.maturity_date))
+    seeds.extend(
+        build_ipcb_seeds(contract, terms, balance_timeline, terms.notional_principal)
+    )
     if outstanding:
         seeds.append(
             create_seed(

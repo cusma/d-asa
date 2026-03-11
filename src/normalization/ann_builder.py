@@ -17,13 +17,14 @@ from .schedules import resolve_principal_schedule, resolve_rate_reset_occurrence
 
 def build_ipcb_seeds(
     contract: ContractAttributes,
-    outstanding: int,
-    maturity_date: int | None,
+    terms: NormalizedActusTerms,
+    balance_timeline: list[tuple[int, int]],
+    initial_principal: int,
 ) -> tuple[EventSeed, ...]:
     """Helper to import from builders to avoid circular dependency."""
     from .builders import build_ipcb_seeds as _build_ipcb_seeds
 
-    return _build_ipcb_seeds(contract, outstanding, maturity_date)
+    return _build_ipcb_seeds(contract, terms, balance_timeline, initial_principal)
 
 
 def build_ann_schedule(
@@ -81,7 +82,7 @@ def build_ann_schedule(
     payment_total = resolve_annuity_payment(contract, terms, asa_decimals)
 
     seeds: list[EventSeed] = []
-    rr_schedule = resolve_rate_reset_occurrences(contract, end_date)
+    rr_schedule = resolve_rate_reset_occurrences(contract, terms)
     next_rate = rate_to_fp(
         contract.rate_reset_next
         if contract.rate_reset_next is not None
@@ -200,7 +201,9 @@ def build_ann_schedule(
             )
         )
 
-    seeds.extend(build_ipcb_seeds(contract, outstanding, end_date))
+    seeds.extend(
+        build_ipcb_seeds(contract, terms, balance_timeline, terms.notional_principal)
+    )
     md_redemption_start = 0
     md_redemption_end = 0
     if not any(ts == end_date for ts in pr_schedule):

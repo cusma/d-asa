@@ -184,7 +184,7 @@ def resolve_interest_schedule(
 
 def resolve_rate_reset_occurrences(
     contract: ContractAttributes,
-    maturity_date: int | None,
+    terms: NormalizedActusTerms,
 ) -> tuple[tuple[int, str], ...]:
     """
     Resolve rate reset occurrences and label them as RR or RRF.
@@ -192,16 +192,19 @@ def resolve_rate_reset_occurrences(
     Generates tuples of (timestamp, event_type) for rate reset events,
     distinguishing between simple resets (RR) and fixed resets (RRF).
 
+    Events are filtered to occur after initial_exchange_date and before
+    maturity_date to ensure proper lifecycle ordering.
+
     Args:
         contract: ACTUS contract attributes.
-        maturity_date: Contract maturity date.
+        terms: Normalized contract terms with IED and maturity date.
 
     Returns:
         Tuple of (timestamp, event_type) pairs for rate reset events.
     """
     anchor = contract.rate_reset_anchor
     cycle = contract.rate_reset_cycle
-    if anchor is None or cycle is None or maturity_date is None:
+    if anchor is None or cycle is None or terms.maturity_date is None:
         return ()
 
     timestamps = tuple(
@@ -209,12 +212,12 @@ def resolve_rate_reset_occurrences(
         for ts in resolve_cycle_schedule(
             anchor,
             cycle,
-            maturity_date,
+            terms.maturity_date,
             end_of_month_convention=contract.end_of_month_convention,
             business_day_convention=contract.business_day_convention,
             calendar=contract.calendar,
         )
-        if ts < maturity_date
+        if terms.initial_exchange_date < ts < terms.maturity_date
     )
     if not timestamps:
         return ()
@@ -228,31 +231,34 @@ def resolve_rate_reset_occurrences(
 
 def resolve_ipcb_schedule(
     contract: ContractAttributes,
-    maturity_date: int | None,
+    terms: NormalizedActusTerms,
 ) -> tuple[int, ...]:
     """
     Resolve IPCB (Interest Payment Calculation Base) occurrence schedule.
 
+    Events are filtered to occur after initial_exchange_date and up to
+    maturity_date to ensure proper lifecycle ordering.
+
     Args:
         contract: ACTUS contract attributes.
-        maturity_date: Contract maturity date.
+        terms: Normalized contract terms with IED and maturity date.
 
     Returns:
         Tuple of timestamps for IPCB events.
     """
     anchor = contract.interest_calculation_base_anchor
     cycle = contract.interest_calculation_base_cycle
-    if anchor is None or cycle is None or maturity_date is None:
+    if anchor is None or cycle is None or terms.maturity_date is None:
         return ()
     return tuple(
         ts
         for ts in resolve_cycle_schedule(
             anchor,
             cycle,
-            maturity_date,
+            terms.maturity_date,
             end_of_month_convention=contract.end_of_month_convention,
             business_day_convention=contract.business_day_convention,
             calendar=contract.calendar,
         )
-        if ts <= maturity_date
+        if terms.initial_exchange_date < ts <= terms.maturity_date
     )
