@@ -159,6 +159,13 @@ def normalize_contract_attributes(
             "D-ASA requires status_date to be strictly before initial_exchange_date"
         )
 
+    # Extract base contract type (e.g., "PAM" from "PAM:ZCB")
+    base_contract_type = (
+        contract.contract_type.split(":")[0]
+        if ":" in contract.contract_type
+        else contract.contract_type
+    )
+
     pdied_asa = _compute_initial_exchange_amount(
         contract.notional_principal,
         contract.premium_discount_at_ied,
@@ -169,7 +176,7 @@ def normalize_contract_attributes(
     terms = NormalizedActusTerms(
         # Contract
         contract_id=contract.contract_id,
-        contract_type=CONTRACT_TYPE_IDS[contract.contract_type],
+        contract_type=CONTRACT_TYPE_IDS[base_contract_type],
         # Denomination
         denomination_asset_id=denomination_asset_id,
         # Time
@@ -241,6 +248,11 @@ def _normalize_schedule(
     asa_decimals: int,
 ) -> tuple[ExecutionScheduleEntry, ...]:
     """Turn intermediate event seeds into AVM schedule entries."""
+    # Extract base contract type
+    base_contract_type = (
+        contract_type.split(":")[0] if ":" in contract_type else contract_type
+    )
+
     if preprocessed_events is not None:
         seeds = [
             _seed_from_preprocessed(index, item)
@@ -249,7 +261,7 @@ def _normalize_schedule(
     else:
         seeds = list(
             _build_schedule_seeds(
-                contract, terms, contract_type=contract_type, asa_decimals=asa_decimals
+                contract, terms, contract_type=base_contract_type, asa_decimals=asa_decimals
             )
         )
 
@@ -257,13 +269,13 @@ def _normalize_schedule(
         seeds.append(_initial_exchange_seed(contract, terms, asa_decimals=asa_decimals))
 
     ordered = sorted(seeds, key=_seed_sort_key)
-    allowed = ALLOWED_EVENT_TYPES[contract_type]
+    allowed = ALLOWED_EVENT_TYPES[base_contract_type]
     entries: list[ExecutionScheduleEntry] = []
     previous_ts = status_date
     for event_id, seed in enumerate(ordered):
         if seed.event_type not in allowed:
             raise UnsupportedActusFeatureError(
-                f"Unsupported event {seed.event_type} for {contract_type}"
+                f"Unsupported event {seed.event_type} for {base_contract_type}"
             )
         if seed.event_type != "IED" and seed.scheduled_time < previous_ts:
             raise ActusNormalizationError(
@@ -316,15 +328,22 @@ def _build_schedule_seeds(
     asa_decimals: int,
 ) -> tuple[_EventSeed, ...]:
     """Dispatch contract-type-specific schedule construction."""
+    # PAM and CLM don't require asa_decimals
+    if contract_type in ("PAM", "CLM"):
+        dispatch = {
+            "PAM": _build_pam_schedule,
+            "CLM": _build_clm_schedule,
+        }
+        return dispatch[contract_type](contract, terms)
+
+    # Other contract types require asa_decimals
     dispatch = {
-        "PAM": _build_pam_schedule,
         "LAM": _build_lam_schedule,
         "NAM": _build_nam_schedule,
         "ANN": _build_ann_schedule,
         "LAX": _build_lax_schedule,
-        "CLM": _build_clm_schedule,
     }
-    return dispatch[contract_type](contract, terms, asa_decimals=asa_decimals)
+    return dispatch[contract_type](contract, terms, asa_decimals)
 
 
 def _initial_exchange_seed(
@@ -951,6 +970,8 @@ def _initial_next_principal_redemption(
 ) -> int:
     """Resolve the initial next principal redemption term for the first IED state."""
     if contract.contract_type != "ANN":
+        if contract.next_principal_redemption_amount is None:
+            return 0
         return _to_asa_units(contract.next_principal_redemption_amount, asa_decimals)
     return _resolve_annuity_payment(contract, terms, asa_decimals)
 
