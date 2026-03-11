@@ -186,7 +186,6 @@ def normalize_contract_attributes(
     notional_unit_value: int | float | Decimal,
     secondary_market_opening_date: UTCTimeStamp,
     secondary_market_closure_date: UTCTimeStamp,
-    fixed_point_scale: int = cst.FIXED_POINT_SCALE,
     preprocessed_events: (
         Sequence[ObservedEventRequest | ExecutionScheduleEntry] | None
     ) = None,
@@ -204,7 +203,6 @@ def normalize_contract_attributes(
         notional_unit_value: Notional value per unit in denomination ASA.
         secondary_market_opening_date: Unix timestamp for secondary market opening.
         secondary_market_closure_date: Unix timestamp for secondary market closure.
-        fixed_point_scale: Scaling factor for fixed-point arithmetic (default: 1e9).
         preprocessed_events: Optional pre-generated event schedule.
 
     Returns:
@@ -268,7 +266,9 @@ def normalize_contract_attributes(
             notional_unit_value, denomination_asset_decimals
         ),
         initial_exchange_amount=pdied_asa,
-        next_principal_redemption_amount=contract.next_principal_redemption_amount,
+        next_principal_redemption_amount=_to_asa_units(
+            contract.next_principal_redemption_amount, denomination_asset_decimals
+        ),
         # Interest
         rate_reset_spread=_rate_to_fp(contract.rate_reset_spread),
         rate_reset_multiplier=_rate_to_fp(contract.rate_reset_multiplier),
@@ -282,7 +282,7 @@ def normalize_contract_attributes(
         # Day Count Convention
         day_count_convention=contract.day_count_convention,
         # Scaling
-        fixed_point_scale=fixed_point_scale,
+        fixed_point_scale=cst.FIXED_POINT_SCALE,
     )
 
     # Normalize ACTUS contract schedule to AVM
@@ -1156,12 +1156,10 @@ def _rate_reset_schedule(
     """
     if maturity_date is None:
         return ()
-    next_rate = (
-        _rate_to_fp(
-            contract.rate_reset_next
-            if contract.rate_reset_next is not None
-            else contract.nominal_interest_rate
-        ),
+    next_rate = _rate_to_fp(
+        contract.rate_reset_next
+        if contract.rate_reset_next is not None
+        else contract.nominal_interest_rate
     )
     return tuple(
         _seed_from_timestamp(
@@ -1364,7 +1362,9 @@ def _resolve_annuity_payment(
     if not terms.dynamic_principal_redemption and payment_total > 0:
         return payment_total
 
-    if contract.maturity_date is None or contract.amortization_date is None:
+    # Use maturity_date or amortization_date (whichever is set)
+    end_date = contract.maturity_date or contract.amortization_date
+    if end_date is None:
         raise ActusNormalizationError(
             "ANN normalization requires maturity_date or amortization_date"
         )

@@ -252,29 +252,6 @@ class TestNormalizeContractAttributes:
                 secondary_market_closure_date=1950000,
             )
 
-    def test_normalize_with_custom_fixed_point_scale(self):
-        """Test normalization with custom fixed point scale."""
-        contract = make_pam_zero_coupon_bond(
-            contract_id=1,
-            status_date=1000000,
-            initial_exchange_date=1100000,
-            maturity_date=2000000,
-            notional_principal=1000000,
-            premium_discount_at_ied=0,
-        )
-
-        custom_scale = 1_000_000
-        result = normalize_contract_attributes(
-            contract,
-            denomination_asset_id=100,
-            denomination_asset_decimals=2,
-            notional_unit_value=1000,
-            secondary_market_opening_date=1150000,
-            secondary_market_closure_date=1950000,
-            fixed_point_scale=custom_scale,
-        )
-        assert result.terms.fixed_point_scale == custom_scale
-
     def test_normalize_pam_fixed_coupon_bond(self):
         """Test normalizing a PAM fixed coupon bond."""
         contract = make_pam_fixed_coupon_bond_profile(
