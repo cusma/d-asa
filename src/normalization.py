@@ -34,6 +34,29 @@ from .schedule import (
 from .unix_time import UTCTimeStamp
 
 
+def _extract_base_contract_type(contract_type: str) -> str:
+    """
+    Extract the base contract type from a potentially subtyped contract type string.
+
+    The type:subtype notation allows contracts to specify variants (e.g., "ANN:ZCB").
+    This function extracts the base type for validation and logic that should apply
+    to all subtypes of a given base type.
+
+    Args:
+        contract_type: Contract type string, possibly with subtype (e.g., "ANN:ZCB")
+
+    Returns:
+        Base contract type without subtype (e.g., "ANN" from "ANN:ZCB")
+
+    Example:
+        >>> _extract_base_contract_type("ANN:ZCB")
+        'ANN'
+        >>> _extract_base_contract_type("PAM")
+        'PAM'
+    """
+    return contract_type.split(":")[0] if ":" in contract_type else contract_type
+
+
 def _to_asa_units(amount: int | float | Decimal, asa_decimals: int) -> int:
     """
     Convert a decimal amount to ASA base units (uint64).
@@ -254,11 +277,7 @@ def normalize_contract_attributes(
         )
 
     # Extract base contract type (e.g., "PAM" from "PAM:ZCB")
-    base_contract_type = (
-        contract.contract_type.split(":")[0]
-        if ":" in contract.contract_type
-        else contract.contract_type
-    )
+    base_contract_type = _extract_base_contract_type(contract.contract_type)
 
     pdied_asa = _compute_initial_exchange_amount(
         contract.notional_principal,
@@ -365,9 +384,7 @@ def _normalize_schedule(
         ActusNormalizationError: If events not in chronological order.
     """
     # Extract base contract type
-    base_contract_type = (
-        contract_type.split(":")[0] if ":" in contract_type else contract_type
-    )
+    base_contract_type = _extract_base_contract_type(contract_type)
 
     if preprocessed_events is not None:
         seeds = [
@@ -1511,7 +1528,7 @@ def _initial_next_principal_redemption(
     """
     Resolve the initial next principal redemption for the first IED state.
 
-    For ANN contracts, calculates the annuity payment amount.
+    For ANN contracts (including subtypes like "ANN:ZCB"), calculates the annuity payment amount.
     For other contracts, uses the configured next_principal_redemption_amount.
 
     Args:
@@ -1522,7 +1539,8 @@ def _initial_next_principal_redemption(
     Returns:
         Initial principal redemption amount in ASA base units.
     """
-    if contract.contract_type != "ANN":
+    base_type = _extract_base_contract_type(contract.contract_type)
+    if base_type != "ANN":
         if contract.next_principal_redemption_amount is None:
             return 0
         return _to_asa_units(contract.next_principal_redemption_amount, asa_decimals)

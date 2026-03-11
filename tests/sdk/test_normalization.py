@@ -1577,3 +1577,97 @@ def test_nam_capitalization_uint64_overflow_detection():
             secondary_market_opening_date=1000000,
             secondary_market_closure_date=2000000,
         )
+
+
+def test_ann_subtype_calculates_annuity_payment():
+    """
+    Test that ANN subtypes (e.g., "ANN:ZCB") correctly calculate annuity payments.
+
+    Regression test for issue where "ANN:ZCB" was not recognized as an ANN contract
+    and would skip _resolve_annuity_payment, resulting in next_principal_redemption=0.
+    """
+    status_ts = 1704067200  # 2024-01-01 00:00:00 UTC
+    start_ts = status_ts + 24 * 60 * 60  # 2024-01-02
+    quarter_1 = start_ts + 90 * 24 * 60 * 60
+
+    # Test with subtype notation "ANN:ZCB"
+    contract_subtype = ContractAttributes(
+        contract_id=1,
+        contract_type="ANN:ZCB",
+        status_date=status_ts,
+        initial_exchange_date=start_ts,
+        maturity_date=start_ts + 365 * 24 * 60 * 60,
+        notional_principal=100_000,
+        premium_discount_at_ied=0,
+        nominal_interest_rate=0.06,
+        next_principal_redemption_amount=7_000,
+        principal_redemption_anchor=quarter_1,
+        principal_redemption_cycle=Cycle(count=3, unit="M"),
+        day_count_convention=DayCountConvention.A360,
+        business_day_convention=BusinessDayConvention.NOS,
+        end_of_month_convention=EndOfMonthConvention.SD,
+        calendar=Calendar.NC,
+    )
+
+    # Test with base type "ANN"
+    contract_base = ContractAttributes(
+        contract_id=2,
+        contract_type="ANN",
+        status_date=status_ts,
+        initial_exchange_date=start_ts,
+        maturity_date=start_ts + 365 * 24 * 60 * 60,
+        notional_principal=100_000,
+        premium_discount_at_ied=0,
+        nominal_interest_rate=0.06,
+        next_principal_redemption_amount=7_000,
+        principal_redemption_anchor=quarter_1,
+        principal_redemption_cycle=Cycle(count=3, unit="M"),
+        day_count_convention=DayCountConvention.A360,
+        business_day_convention=BusinessDayConvention.NOS,
+        end_of_month_convention=EndOfMonthConvention.SD,
+        calendar=Calendar.NC,
+    )
+
+    result_subtype = normalize_contract_attributes(
+        contract_subtype,
+        denomination_asset_id=100,
+        denomination_asset_decimals=6,
+        notional_unit_value=1,
+        secondary_market_opening_date=status_ts,
+        secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
+    )
+
+    result_base = normalize_contract_attributes(
+        contract_base,
+        denomination_asset_id=100,
+        denomination_asset_decimals=6,
+        notional_unit_value=1,
+        secondary_market_opening_date=status_ts,
+        secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
+    )
+
+    # Both should have the same IED event with correct annuity payment
+    # The IED (Initial Exchange Date) event contains the calculated annuity payment
+    ied_subtype = next(e for e in result_subtype.schedule if e.event_type == "IED")
+    ied_base = next(e for e in result_base.schedule if e.event_type == "IED")
+
+    # Specifically, next_principal_redemption should be non-zero for both
+    assert (
+        ied_subtype.next_principal_redemption > 0
+    ), "ANN:ZCB subtype should calculate annuity payment in IED event"
+    assert (
+        ied_base.next_principal_redemption > 0
+    ), "ANN base type should calculate annuity payment in IED event"
+
+    # The calculated annuity payment should be identical for both
+    assert (
+        ied_subtype.next_principal_redemption == ied_base.next_principal_redemption
+    ), f"ANN:ZCB and ANN should produce identical annuity payments: subtype={ied_subtype.next_principal_redemption}, base={ied_base.next_principal_redemption}"
+
+    # Verify other IED properties match too
+    assert (
+        ied_subtype.next_outstanding_principal == ied_base.next_outstanding_principal
+    ), "Outstanding principal should match"
+    assert (
+        ied_subtype.next_nominal_interest_rate == ied_base.next_nominal_interest_rate
+    ), "Nominal interest rate should match"
