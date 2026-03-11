@@ -1,26 +1,26 @@
 """Tests for the normalization module."""
 
-import pytest
 from decimal import Decimal
+
+import pytest
 
 from smart_contracts import constants as cst
 from smart_contracts import enums
-
-from src.normalization import (
-    normalize_contract_attributes,
-    _to_asa_units,
-    _rate_to_fp,
-    _compute_initial_exchange_amount,
-    _deduplicate_timestamps,
-)
 from src.contracts import (
     ContractAttributes,
-    make_pam_zero_coupon_bond,
     make_pam_fixed_coupon_bond_profile,
+    make_pam_zero_coupon_bond,
 )
 from src.errors import ActusNormalizationError
+from src.models import ExecutionScheduleEntry, NormalizedActusTerms
+from src.normalization import (
+    _compute_initial_exchange_amount,
+    _deduplicate_timestamps,
+    _rate_to_fp,
+    _to_asa_units,
+    normalize_contract_attributes,
+)
 from src.schedule import Cycle
-from src.models import NormalizedActusTerms, ExecutionScheduleEntry
 
 
 class TestToAsaUnits:
@@ -240,7 +240,9 @@ class TestNormalizeContractAttributes:
             premium_discount_at_ied=0,
         )
 
-        with pytest.raises(ActusNormalizationError, match="status_date to be strictly before"):
+        with pytest.raises(
+            ActusNormalizationError, match="status_date to be strictly before"
+        ):
             normalize_contract_attributes(
                 contract,
                 denomination_asset_id=100,
@@ -300,7 +302,9 @@ class TestNormalizeContractAttributes:
         assert len(result.schedule) > 0
 
         # Check that rate is normalized to fixed point
-        assert result.terms.rate_reset_next == int(Decimal("0.05") * cst.FIXED_POINT_SCALE)
+        assert result.terms.rate_reset_next == int(
+            Decimal("0.05") * cst.FIXED_POINT_SCALE
+        )
 
         # Should have IED and MD events at minimum
         event_types = {e.event_type for e in result.schedule}
@@ -427,7 +431,9 @@ class TestNormalizedActusTerms:
 
     def test_terms_with_zero_notional_unit_value_raises_error(self):
         """Test that zero notional_unit_value raises error."""
-        with pytest.raises(ActusNormalizationError, match="notional_unit_value must be positive"):
+        with pytest.raises(
+            ActusNormalizationError, match="notional_unit_value must be positive"
+        ):
             NormalizedActusTerms(
                 contract_id=1,
                 contract_type=enums.CT_PAM,
@@ -451,7 +457,9 @@ class TestNormalizedActusTerms:
 
     def test_terms_indivisible_notional_raises_error(self):
         """Test that notional not divisible by unit value raises error."""
-        with pytest.raises(ActusNormalizationError, match="divisible by notional_unit_value"):
+        with pytest.raises(
+            ActusNormalizationError, match="divisible by notional_unit_value"
+        ):
             NormalizedActusTerms(
                 contract_id=1,
                 contract_type=enums.CT_PAM,
@@ -774,10 +782,3 @@ class TestNormalizationResult:
 
         with pytest.raises(ValueError, match="page_size must be positive"):
             result.schedule_pages(page_size=-1)
-
-
-
-
-
-
-
