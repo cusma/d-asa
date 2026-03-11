@@ -462,7 +462,7 @@ def resolve_cycle_schedule(
 
     Raises:
         UnsupportedActusFeatureError: If business_day_convention is not NO_SHIFT
-        UnsupportedActusFeatureError: If calendar_name is not NO_CALENDAR
+        UnsupportedActusFeatureError: If calendar is not NO_CALENDAR
 
     Note:
         V1 implementation only supports:
@@ -516,7 +516,7 @@ def resolve_array_schedule(
 
     Raises:
         UnsupportedActusFeatureError: If business_day_convention is not NO_SHIFT
-        UnsupportedActusFeatureError: If calendar_name is not NO_CALENDAR
+        UnsupportedActusFeatureError: If calendar is not NO_CALENDAR
         ValueError: If anchors and cycles have different lengths
 
     Note:
