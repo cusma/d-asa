@@ -507,8 +507,9 @@ def build_amortizing_schedule(
         previous_due = due_time
 
     # Add remaining rate reset events that don't coincide with PR dates
+    pr_timestamps = set(pr_schedule)
     for ts, event_type in rr_schedule:
-        if any(ts == pr_ts for pr_ts in pr_schedule):
+        if ts in pr_timestamps:
             continue
         if ts >= terms.maturity_date:
             continue
