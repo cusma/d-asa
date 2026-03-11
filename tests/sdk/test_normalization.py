@@ -11,6 +11,12 @@ from src.contracts import (
     make_pam_fixed_coupon_bond_profile,
     make_pam_zero_coupon_bond,
 )
+from src.day_count import (
+    BusinessDayConvention,
+    Calendar,
+    DayCountConvention,
+    EndOfMonthConvention,
+)
 from src.errors import ActusNormalizationError
 from src.models import ExecutionScheduleEntry, NormalizedActusTerms
 from src.normalization import (
@@ -154,6 +160,31 @@ class TestComputeInitialExchangeAmount:
         # result = 100000000 - (-5000000) = 105000000
         assert result == 105000000
 
+    def test_discount_exceeds_notional_raises_error(self):
+        """Test that discount > notional results in negative value and raises error."""
+        # notional=1000000 with 2 decimals = 100000000
+        # discount=2000000 with 2 decimals = 200000000
+        # result = 100000000 - 200000000 = -100000000 (negative)
+        with pytest.raises(ActusNormalizationError, match="exceeds notional"):
+            _compute_initial_exchange_amount(
+                notional=1000000,
+                premium_discount_at_ied=2000000,
+                asa_decimals=2,
+            )
+
+    def test_premium_causes_uint64_overflow_raises_error(self):
+        """Test that large premium causing uint64 overflow raises error."""
+        # Use a notional that's 60% of MAX_UINT64 and a premium that's 50% of MAX_UINT64
+        # Together they will exceed MAX_UINT64
+        notional_large = int(cst.MAX_UINT64 * 0.6)
+        premium_large = int(cst.MAX_UINT64 * 0.5)
+        with pytest.raises(ActusNormalizationError, match="exceeds uint64 maximum"):
+            _compute_initial_exchange_amount(
+                notional=notional_large,
+                premium_discount_at_ied=-premium_large,
+                asa_decimals=0,
+            )
+
 
 class TestDeduplicateTimestamps:
     """Test the _deduplicate_timestamps helper function."""
@@ -238,6 +269,10 @@ class TestNormalizeContractAttributes:
             maturity_date=2000000,
             notional_principal=1000000,
             premium_discount_at_ied=0,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
 
         with pytest.raises(
@@ -304,6 +339,10 @@ class TestNormalizeContractAttributes:
             principal_redemption_anchor=1200000,
             interest_payment_cycle=Cycle(count=3, unit="M"),
             interest_payment_anchor=1200000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
 
         result = normalize_contract_attributes(
@@ -337,6 +376,10 @@ class TestNormalizeContractAttributes:
             rate_reset_next=0.04,
             rate_reset_cycle=Cycle(count=1, unit="Y"),
             rate_reset_anchor=1200000,
+            day_count_convention=DayCountConvention.A360,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
         )
 
         result = normalize_contract_attributes(
@@ -759,3 +802,200 @@ class TestNormalizationResult:
 
         with pytest.raises(ValueError, match="page_size must be positive"):
             result.schedule_pages(page_size=-1)
+
+
+class TestLaxArrayPrNext:
+    """Test LAX contracts with array-based principal redemption amounts."""
+
+    def test_lax_array_pr_next_values_propagate_to_events(self):
+        """
+        Test that array_pr_next values are correctly used in event seeds.
+
+        This tests the fix for a bug where payment_total was initialized once
+        from next_principal_redemption_amount but per-period values from
+        array_pr_next were only applied locally in _principal_payment_for_period
+        and never propagated back to event seeds.
+        """
+        # Define redemption dates (monthly for 6 months)
+        base_time = 1000000
+        ied = base_time + (10 * 24 * 3600)
+        month_secs = 30 * 24 * 3600
+
+        # LAX contract with array_pr_next containing different values per period
+        contract = ContractAttributes(
+            contract_id=1,
+            contract_type="LAX",
+            status_date=base_time,
+            initial_exchange_date=ied,
+            maturity_date=ied + (8 * month_secs),
+            notional_principal=Decimal("100000.0"),
+            premium_discount_at_ied=Decimal("0"),
+            nominal_interest_rate=Decimal("0.05"),
+            day_count_convention=DayCountConvention.ACTUAL_365,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
+            # Use array-based schedule
+            array_pr_anchor=[ied + (i * month_secs) for i in range(1, 7)],
+            array_pr_cycle=[Cycle(1, "M") for _ in range(6)],
+            # Array with different per-period amounts
+            array_pr_next=[
+                Decimal("2000.0"),
+                Decimal("3000.0"),
+                Decimal("4000.0"),
+                Decimal("5000.0"),
+                Decimal("6000.0"),
+                Decimal("7000.0"),
+            ],
+            array_increase_decrease=["INC", "INC", "DEC", "DEC", "INC", "DEC"],
+            next_principal_redemption_amount=Decimal("1000.0"),  # Should be overridden
+        )
+
+        # Normalize the contract
+        result = normalize_contract_attributes(
+            contract,
+            denomination_asset_id=1,
+            denomination_asset_decimals=6,
+            notional_unit_value=Decimal("1.0"),
+            secondary_market_opening_date=base_time,
+            secondary_market_closure_date=ied + (10 * month_secs),
+        )
+
+        # Extract PR and PI events (INC periods generate PI, DEC periods generate PR)
+        pr_pi_events = [ev for ev in result.schedule if ev.event_type in ("PR", "PI")]
+
+        # Verify that each event has the correct next_principal_redemption
+        # from array_pr_next, not the base next_principal_redemption_amount
+        # Note: There may be more events due to additional cycles, but we verify
+        # at least the first 6 match array_pr_next
+        assert len(pr_pi_events) >= 6
+
+        # Expected event types based on array_increase_decrease
+        expected_event_types = ["PI", "PI", "PR", "PR", "PI", "PR"]
+
+        for i in range(6):
+            expected_amount = float(contract.array_pr_next[i]) * (10**6)
+            assert pr_pi_events[i].event_type == expected_event_types[i], (
+                f"Period {i}: Expected event_type={expected_event_types[i]}, "
+                f"got {pr_pi_events[i].event_type}"
+            )
+            assert pr_pi_events[i].next_principal_redemption == expected_amount, (
+                f"Period {i}: Expected next_principal_redemption={expected_amount}, "
+                f"got {pr_pi_events[i].next_principal_redemption}"
+            )
+
+    def test_lax_inc_direction_uses_correct_payment_total(self):
+        """
+        Test that INC direction uses the correct per-period payment_total.
+
+        For INC (increase) periods, next_outstanding should increase by the
+        per-period amount from array_pr_next, not the base amount.
+        """
+        base_time = 1000000
+        ied = base_time + (10 * 24 * 3600)
+        month_secs = 30 * 24 * 3600
+
+        contract = ContractAttributes(
+            contract_id=1,
+            contract_type="LAX",
+            status_date=base_time,
+            initial_exchange_date=ied,
+            maturity_date=ied + (5 * month_secs),
+            notional_principal=Decimal("100000.0"),
+            premium_discount_at_ied=Decimal("0"),
+            nominal_interest_rate=Decimal("0.00"),  # No interest for simplicity
+            day_count_convention=DayCountConvention.ACTUAL_365,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
+            array_pr_anchor=[ied + (i * month_secs) for i in range(1, 4)],
+            array_pr_cycle=[Cycle(1, "M") for _ in range(3)],
+            array_pr_next=[
+                Decimal("10000.0"),  # INC - should increase by 10000
+                Decimal("20000.0"),  # INC - should increase by 20000
+                Decimal("30000.0"),  # DEC - should decrease by 30000
+            ],
+            array_increase_decrease=["INC", "INC", "DEC"],
+            next_principal_redemption_amount=Decimal("1000.0"),
+        )
+
+        result = normalize_contract_attributes(
+            contract,
+            denomination_asset_id=1,
+            denomination_asset_decimals=6,
+            notional_unit_value=Decimal("1.0"),
+            secondary_market_opening_date=base_time,
+            secondary_market_closure_date=ied + (6 * month_secs),
+        )
+
+        # Extract PR and PI events (PI for INC periods where principal_payment == 0)
+        pr_pi_events = [
+            ev
+            for ev in result.schedule
+            if ev.event_type in ("PR", "PI") and ev.scheduled_time >= ied + month_secs
+        ]
+
+        # Verify outstanding progression
+        # Initial: 100000
+        # After period 0 (INC 10000): 100000 + 10000 = 110000
+        # After period 1 (INC 20000): 110000 + 20000 = 130000
+        # After period 2 (DEC 30000): 130000 - 30000 = 100000
+
+        expected_outstanding = [
+            100000 * 10**6 + 10000 * 10**6,  # Period 0: INC by 10000
+            110000 * 10**6 + 20000 * 10**6,  # Period 1: INC by 20000
+            130000 * 10**6 - 30000 * 10**6,  # Period 2: DEC by 30000
+        ]
+
+        for i, ev in enumerate(pr_pi_events[:3]):
+            assert ev.next_outstanding_principal == expected_outstanding[i], (
+                f"Period {i}: Expected outstanding={expected_outstanding[i]}, "
+                f"got {ev.next_outstanding_principal}"
+            )
+
+    def test_lax_without_array_pr_next_uses_base_amount(self):
+        """
+        Test that when array_pr_next is not provided, the base amount is used.
+        """
+        base_time = 1000000
+        ied = base_time + (10 * 24 * 3600)
+        month_secs = 30 * 24 * 3600
+
+        contract = ContractAttributes(
+            contract_id=1,
+            contract_type="LAX",
+            status_date=base_time,
+            initial_exchange_date=ied,
+            maturity_date=ied + (4 * month_secs),
+            notional_principal=Decimal("100000.0"),
+            premium_discount_at_ied=Decimal("0"),
+            nominal_interest_rate=Decimal("0.05"),
+            day_count_convention=DayCountConvention.ACTUAL_365,
+            business_day_convention=BusinessDayConvention.NOS,
+            end_of_month_convention=EndOfMonthConvention.SD,
+            calendar=Calendar.NC,
+            array_pr_anchor=[ied + (i * month_secs) for i in range(1, 3)],
+            array_pr_cycle=[Cycle(1, "M") for _ in range(2)],
+            # No array_pr_next provided
+            array_increase_decrease=["DEC", "DEC"],
+            next_principal_redemption_amount=Decimal("5000.0"),
+        )
+
+        result = normalize_contract_attributes(
+            contract,
+            denomination_asset_id=1,
+            denomination_asset_decimals=6,
+            notional_unit_value=Decimal("1.0"),
+            secondary_market_opening_date=base_time,
+            secondary_market_closure_date=ied + (5 * month_secs),
+        )
+
+        pr_events = [ev for ev in result.schedule if ev.event_type == "PR"]
+
+        # All events should use the base amount
+        base_amount = 5000.0 * (10**6)
+        for i, ev in enumerate(pr_events):
+            assert ev.next_principal_redemption == base_amount, (
+                f"Period {i}: Expected next_principal_redemption={base_amount}, "
+                f"got {ev.next_principal_redemption}"
+            )
