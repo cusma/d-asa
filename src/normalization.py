@@ -126,6 +126,9 @@ def _compute_initial_exchange_amount(
 
     Returns:
         Net initial exchange amount in ASA base units.
+
+    Raises:
+        ActusNormalizationError: If result is negative or exceeds uint64 bounds.
     """
     notional = _to_asa_units(notional, asa_decimals)
 
@@ -133,11 +136,28 @@ def _compute_initial_exchange_amount(
     # to avoid _to_asa_units rejecting negative values
     if premium_discount_at_ied >= 0:
         pdied = _to_asa_units(premium_discount_at_ied, asa_decimals)
-        return notional - pdied
+        # Validate that discount doesn't exceed notional (would result in negative amount)
+        if pdied > notional:
+            raise ActusNormalizationError(
+                f"Premium/discount at IED ({premium_discount_at_ied}) exceeds notional "
+                f"({notional / (10 ** asa_decimals)}), which would result in a negative "
+                f"initial exchange amount. This is invalid for uint64 encoding."
+            )
+        result = notional - pdied
     else:
         # For negative premium_discount (premium), convert absolute value and add
         pdied = _to_asa_units(-premium_discount_at_ied, asa_decimals)
-        return notional + pdied
+        result = notional + pdied
+
+    # Validate uint64 bounds for AVM encoding
+    if result > cst.MAX_UINT64:
+        raise ActusNormalizationError(
+            f"Initial exchange amount {result} exceeds uint64 maximum ({cst.MAX_UINT64}). "
+            f"Notional={notional / (10 ** asa_decimals)}, "
+            f"premium_discount_at_ied={premium_discount_at_ied}"
+        )
+
+    return result
 
 
 def _deduplicate_timestamps(ts: Sequence[UTCTimeStamp]) -> tuple[UTCTimeStamp, ...]:
