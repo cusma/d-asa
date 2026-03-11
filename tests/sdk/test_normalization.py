@@ -993,7 +993,7 @@ class TestLaxArrayPrNext:
         pr_events = [ev for ev in result.schedule if ev.event_type == "PR"]
 
         # All events should use the base amount
-        base_amount = 5000.0 * (10**6)
+        base_amount = _to_asa_units(Decimal("5000.0"), 6)
         for i, ev in enumerate(pr_events):
             assert ev.next_principal_redemption == base_amount, (
                 f"Period {i}: Expected next_principal_redemption={base_amount}, "
