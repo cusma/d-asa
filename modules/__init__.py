@@ -1,11 +1,9 @@
 from .accounting import AccountingModule
-from .actus.kernel import ActusKernelStateModule
-from .actus.schedule import ActusScheduleModule
+from .actus.kernel import ActusKernelModule
 from .rbac import RbacModule
 
 __all__ = [
     "AccountingModule",
-    "ActusKernelStateModule",
-    "ActusScheduleModule",
+    "ActusKernelModule",
     "RbacModule",
 ]
