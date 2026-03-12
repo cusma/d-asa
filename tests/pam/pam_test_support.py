@@ -200,7 +200,6 @@ def setup_pam_lifecycle(
         algorand,
         utils.DAsaPrimaryDealer,
         client,
-        rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
     account_manager = role_helpers.create_role_account(
         algorand,
