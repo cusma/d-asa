@@ -5,6 +5,7 @@ from .models import (
     InitialKernelState,
     NormalizationResult,
     NormalizedActusTerms,
+    ObservedCashEventRequest,
     ObservedEventRequest,
 )
 from .normalization import normalize_contract_attributes
@@ -18,6 +19,7 @@ __all__ = [
     "InitialKernelState",
     "NormalizationResult",
     "NormalizedActusTerms",
+    "ObservedCashEventRequest",
     "ObservedEventRequest",
     "UnsupportedActusFeatureError",
     "normalize_contract_attributes",

@@ -677,6 +677,15 @@ class ActusKernelModule(RbacModule):
 
         if self._is_dynamic_annuity():
             if event_type == UInt64(enums.EVT_PRF):
+                ensure_budget(
+                    required_budget=(
+                        UInt64(cst.OP_UP_NON_CASH_BASE_BUDGET)
+                        + (
+                            self.schedule_entry_count - self.event_cursor
+                        )
+                        * UInt64(cst.OP_UP_NON_CASH_PER_ENTRY_BUDGET)
+                    ),
+                )
                 self.next_principal_redemption = self._recalculate_annuity_payment(
                     entry
                 )
@@ -962,6 +971,45 @@ class ActusKernelModule(RbacModule):
         self.schedule_page[page_index] = page.copy()
         self.schedule_entry_count += UInt64(1)
 
+    def _append_observed_cash_event(self, payload: typ.ObservedCashEventRequest) -> None:
+        """
+        Append an authorized observed cash event to the schedule tail.
+
+        This v1 path is intentionally narrow: only CLM observed `PR` events may
+        be appended, and they must preserve the append-only schedule ordering.
+        """
+        assert self._supports_observed_events(), err.OBSERVED_EVENT_REQUIRED
+        assert payload.event_id == self.schedule_entry_count, err.INVALID_EVENT_ID
+        assert payload.event_type == arc4.UInt8(enums.EVT_PR), err.INVALID_EVENT_TYPE
+        assert payload.flags & UInt64(enums.FLAG_CASH_EVENT), err.INVALID_ACTUS_CONFIG
+
+        if self.schedule_entry_count > UInt64(0):
+            previous_entry = self._get_schedule_entry(self.schedule_entry_count - UInt64(1))
+            assert (
+                previous_entry.scheduled_time <= payload.scheduled_time
+            ), err.INVALID_SORTING
+
+        page_index = self._schedule_page_index(self.schedule_entry_count)
+        page = typ.ExecutionSchedulePage()
+        if page_index in self.schedule_page:
+            page = self.schedule_page[page_index].copy()
+        assert page.length < UInt64(cst.SCHEDULE_PAGE_SIZE), err.INVALID_SCHEDULE_PAGE
+        page.append(
+            typ.ExecutionScheduleEntry(
+                event_id=payload.event_id,
+                event_type=payload.event_type,
+                scheduled_time=payload.scheduled_time,
+                accrual_factor=payload.accrual_factor,
+                redemption_accrual_factor=payload.redemption_accrual_factor,
+                next_nominal_interest_rate=payload.next_nominal_interest_rate,
+                next_principal_redemption=payload.next_principal_redemption,
+                next_outstanding_principal=payload.next_outstanding_principal,
+                flags=payload.flags,
+            )
+        )
+        self.schedule_page[page_index] = page.copy()
+        self.schedule_entry_count += UInt64(1)
+
     ############################################################################
     # Public ABI
     ############################################################################
@@ -1111,6 +1159,22 @@ class ActusKernelModule(RbacModule):
         else:
             self._assert_caller_is_arranger()
         self._apply_non_cash_schedule_entry(entry, payload)
+        return Global.latest_timestamp
+
+    @arc4.abimethod
+    def append_observed_cash_event(
+        self,
+        *,
+        payload: typ.ObservedCashEventRequest,
+    ) -> UInt64:
+        """Append an arranger-authorized observed cash event to the schedule tail."""
+        self._assert_configured()
+        self._assert_caller_is_arranger()
+        self._assert_is_not_asset_defaulted()
+        self._assert_is_not_asset_suspended()
+        self._assert_initial_exchange_executed()
+
+        self._append_observed_cash_event(payload)
         return Global.latest_timestamp
 
     @arc4.abimethod(readonly=True)
