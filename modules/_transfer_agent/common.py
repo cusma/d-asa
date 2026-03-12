@@ -1,6 +1,6 @@
 from algopy import Account, UInt64, op
 
-from modules.core_financial.common import (
+from modules._core_financial.common import (
     CoreFinancialCommonMixin,
 )
 from smart_contracts import errors as err

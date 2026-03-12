@@ -36,7 +36,7 @@ from algopy import (
     op,
 )
 
-from modules import RbacModule
+from .rbac import RbacModule
 from smart_contracts import abi_types as typ
 from smart_contracts import constants as cst
 from smart_contracts import enums
@@ -708,7 +708,7 @@ class ActusKernelModule(RbacModule):
                     self._payoff_sign(entry.event_type.as_uint64(), payoff)
                 ),
                 settled_amount=settled_amount,
-                currency_id=self.settlement_asset_id.id,
+                currency_id=self.settlement_asset_id,
                 sequence=entry.event_id + UInt64(1),
             )
         )
@@ -1021,7 +1021,7 @@ class ActusKernelModule(RbacModule):
             INVALID_IED: IED must be set in the future
             INVALID_SORTING: Time events are not sorted correctly
         """
-        self.assert_caller_is_arranger()
+        self._assert_caller_is_arranger()
 
         # Configure Contract
         self.contract_type = terms.contract_type.as_uint64()
@@ -1048,7 +1048,7 @@ class ActusKernelModule(RbacModule):
         page is stored. At that point `schedule_entry_count` is finalized and
         the contract moves to `STATUS_PENDING_IED`.
         """
-        self.assert_caller_is_arranger()
+        self._assert_caller_is_arranger()
 
         self._store_contract_schedule_page(
             contract_type=self.contract_type,
@@ -1066,9 +1066,9 @@ class ActusKernelModule(RbacModule):
         `STATUS_PENDING_IED` to `STATUS_ACTIVE`.
         """
         self._assert_configured()
-        self.assert_caller_is_arranger()
-        self.assert_is_not_asset_defaulted()
-        self.assert_is_not_asset_suspended()
+        self._assert_caller_is_arranger()
+        self._assert_is_not_asset_defaulted()
+        self._assert_is_not_asset_suspended()
 
         assert self.event_cursor < self.schedule_entry_count, err.INVALID_EVENT_CURSOR
         entry = self._get_schedule_entry(self.event_cursor)
@@ -1104,12 +1104,12 @@ class ActusKernelModule(RbacModule):
         nominal rate; other non-cash events stay arranger-controlled.
         """
         self._assert_configured()
-        self.assert_is_not_asset_defaulted()
-        self.assert_is_not_asset_suspended()
+        self._assert_is_not_asset_defaulted()
+        self._assert_is_not_asset_suspended()
 
         if payload.flags & UInt64(enums.FLAG_OBSERVED_EVENT):
             assert self._supports_observed_events(), err.OBSERVED_EVENT_REQUIRED
-            self.assert_caller_is_arranger()
+            self._assert_caller_is_arranger()
             self._append_observed_event(payload)
 
         assert event_id == self.event_cursor, err.INVALID_EVENT_CURSOR
@@ -1119,9 +1119,9 @@ class ActusKernelModule(RbacModule):
         ), err.INVALID_EVENT_TYPE
         assert entry.event_type != arc4.UInt8(enums.EVT_IED), err.INVALID_EVENT_TYPE
         if self._event_is_rate_reset(entry.event_type.as_uint64()):
-            self.assert_caller_is_observer()
+            self._assert_caller_is_observer()
         else:
-            self.assert_caller_is_arranger()
+            self._assert_caller_is_arranger()
         self._apply_non_cash_schedule_entry(entry, payload)
         return Global.latest_timestamp
 

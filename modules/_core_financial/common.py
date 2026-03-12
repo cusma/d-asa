@@ -224,7 +224,7 @@ class CoreFinancialCommonMixin(AccountingModule):
         time_events: typ.TimeEvents,
         time_periods: typ.TimePeriods,
     ) -> None:
-        self.assert_caller_is_arranger()
+        self._assert_caller_is_arranger()
         assert self.status == enums.STATUS_INACTIVE, err.ALREADY_CONFIGURED
 
         # Set Denomination Asset
@@ -284,7 +284,7 @@ class CoreFinancialCommonMixin(AccountingModule):
         # The reference implementation grants the update permissions to the Arranger.
         # Other implementations may disable D-ASA application updatability or change its authorizations.
         # ⚠️ WARNING: Application updates must be executed VERY carefully, as they might introduce breaking changes.
-        self.assert_caller_is_arranger()
+        self._assert_caller_is_arranger()
         self.metadata = metadata.bytes
 
     @arc4.abimethod
@@ -308,7 +308,7 @@ class CoreFinancialCommonMixin(AccountingModule):
             INVALID_SECONDARY_OPENING_DATE: Invalid secondary market opening date
             INVALID_SECONDARY_CLOSURE_DATE: Invalid secondary market closure date
         """
-        self.assert_caller_is_arranger()
+        self._assert_caller_is_arranger()
         assert not self.status_is_ended(), err.UNAUTHORIZED
         self.assert_is_not_asset_defaulted()
 

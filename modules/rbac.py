@@ -61,7 +61,7 @@ class RbacModule(ARC4Contract):
             <= role_map[role_address].role_validity_end
         )
 
-    def assert_caller_is_arranger(self) -> None:
+    def _assert_caller_is_arranger(self) -> None:
         assert self._is_arranger(Txn.sender), err.UNAUTHORIZED
 
     def _assert_caller_is_account_manager(self) -> None:
@@ -76,13 +76,13 @@ class RbacModule(ARC4Contract):
     def _assert_caller_is_authority(self) -> None:
         assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
 
-    def assert_caller_is_observer(self) -> None:
+    def _assert_caller_is_observer(self) -> None:
         assert self._role_is_active(self.observer, Txn.sender), err.UNAUTHORIZED
 
-    def assert_is_not_asset_defaulted(self) -> None:
+    def _assert_is_not_asset_defaulted(self) -> None:
         assert not self.asset_defaulted, err.DEFAULTED
 
-    def assert_is_not_asset_suspended(self) -> None:
+    def _assert_is_not_asset_suspended(self) -> None:
         assert not self.asset_suspended, err.SUSPENDED
 
     def _assert_valid_role(self, role_id: UInt64) -> None:
@@ -156,7 +156,7 @@ class RbacModule(ARC4Contract):
         Returns:
             Timestamp of the role assignment
         """
-        self.assert_caller_is_arranger()
+        self._assert_caller_is_arranger()
         self.arranger.value = new_arranger
         return Global.latest_timestamp
 
@@ -171,7 +171,7 @@ class RbacModule(ARC4Contract):
         Returns:
             Timestamp of the role assignment
         """
-        self.assert_caller_is_arranger()
+        self._assert_caller_is_arranger()
         self.op_daemon.value = address
         return Global.latest_timestamp
 
@@ -197,8 +197,8 @@ class RbacModule(ARC4Contract):
             INVALID_ROLE_ADDRESS: Invalid account role address
         """
 
-        self.assert_caller_is_arranger()
-        self.assert_is_not_asset_defaulted()
+        self._assert_caller_is_arranger()
+        self._assert_is_not_asset_defaulted()
         self._assert_valid_role(role_id.as_uint64())
         self._set_role(role_id.as_uint64(), role_address, validity)
         return Global.latest_timestamp
@@ -222,8 +222,8 @@ class RbacModule(ARC4Contract):
             INVALID_ROLE_ADDRESS: Invalid account role address
         """
 
-        self.assert_caller_is_arranger()
-        self.assert_is_not_asset_defaulted()
+        self._assert_caller_is_arranger()
+        self._assert_is_not_asset_defaulted()
         self._assert_valid_role(role_id.as_uint64())
         self._delete_role(role_id.as_uint64(), role_address)
         return Global.latest_timestamp

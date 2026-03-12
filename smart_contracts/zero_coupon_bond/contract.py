@@ -1,9 +1,9 @@
 from algopy import StateTotals, Txn
 
-from modules.actus import PAMCoreMixin
-from modules.core_financial import NoCouponCashflowMixin
-from modules.payment_agent import PrincipalPaymentAgentMixin
-from modules.transfer_agent import NoCouponTransferAgentMixin
+from modules._actus import PAMCoreMixin
+from modules._core_financial import NoCouponCashflowMixin
+from modules._payment_agent import PrincipalPaymentAgentMixin
+from modules._transfer_agent import NoCouponTransferAgentMixin
 from smart_contracts import errors as err
 
 from . import config as cfg
