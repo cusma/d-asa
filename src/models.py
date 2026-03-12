@@ -150,6 +150,34 @@ class ObservedEventRequest:
 
 
 @dataclass(frozen=True, slots=True)
+class ObservedCashEventRequest:
+    """SDK-side representation of an observed ACTUS cash-event payload."""
+
+    event_type: str
+    scheduled_time: UTCTimeStamp
+    accrual_factor: int
+    redemption_accrual_factor: int
+    next_nominal_interest_rate: int
+    next_principal_redemption: int
+    next_outstanding_principal: int
+    flags: int = 0
+
+    def to_schedule_entry(self, event_id: int) -> ExecutionScheduleEntry:
+        """Convert an observed cash payload into the Execution Schedule Entry shape."""
+        return ExecutionScheduleEntry(
+            event_id=event_id,
+            event_type=self.event_type,
+            scheduled_time=self.scheduled_time,
+            accrual_factor=self.accrual_factor,
+            redemption_accrual_factor=self.redemption_accrual_factor,
+            next_nominal_interest_rate=self.next_nominal_interest_rate,
+            next_principal_redemption=self.next_principal_redemption,
+            next_outstanding_principal=self.next_outstanding_principal,
+            flags=self.flags,
+        )
+
+
+@dataclass(frozen=True, slots=True)
 class AccountPosition:
     """SDK-side D-ASA Contract holder position."""
 
