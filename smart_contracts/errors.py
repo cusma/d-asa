@@ -17,19 +17,31 @@ NOT_ENOUGH_FUNDS = "Not enough funds for the payment"
 NO_UNITS = "No D-ASA units"
 
 # Asset Config
+NOT_CONFIGURED = "D-ASA not configured"
+TERMS_NOT_CONFIGURED = "D-ASA terms not configured"
 ALREADY_CONFIGURED = "D-ASA already configured"
+INVALID_ACTUS_CONFIG = "Invalid ACTUS configuration"
 INVALID_DENOMINATION = "Denomination asset is not properly set"
-INVALID_MINIMUM_DENOMINATION = "Minimum denomination is not a divisor of principal"
 INVALID_DAY_COUNT_CONVENTION = "Invalid day-count convention ID"
-INVALID_INTEREST_RATE = "Interest rate is not properly defined"
-INVALID_TIME = "Time events must be set in the future"
 INVALID_SETTLEMENT_ASSET = (
     "Different settlement asset not supported, must be equal to denomination asset"
 )
 
+# Initial Exchange Date
+NOT_EVT_IED = "Not IED event"
+PENDING_IED = "IED not yet executed"
+INVALID_IED = "IED must be set in the future"
+
 # Schedule
 INVALID_EVENT_ID = "Invalid event id"
+INVALID_EVENT_TYPE = "Invalid event type"
+INVALID_EVENT_CURSOR = "Invalid event cursor"
 INVALID_SCHEDULE_PAGE = "Invalid schedule page"
+PENDING_ACTUS_EVENT = "ACTUS event not yet executed"
+OBSERVED_EVENT_REQUIRED = "Observed event required to execute this action"
+
+# Cashflows
+NO_DUE_CASHFLOW = "No due cashflow to pay"
 
 # Set Secondary Time Events
 INVALID_SECONDARY_OPENING_DATE = "Invalid secondary market opening date"
@@ -42,6 +54,7 @@ INVALID_ROLE_ADDRESS = "Invalid account role address"
 # Primary Distribution
 ZERO_UNITS = "Can not distribute zero units"
 OVER_DISTRIBUTION = "Insufficient remaining D-ASA units"
+PRIMARY_DISTRIBUTION_INCOMPLETE = "Primary distribution is not complete"
 PRIMARY_DISTRIBUTION_CLOSED = "Primary distribution is closed"
 
 # Asset Transfer

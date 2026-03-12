@@ -64,16 +64,16 @@ class RbacModule(ARC4Contract):
     def assert_caller_is_arranger(self) -> None:
         assert self._is_arranger(Txn.sender), err.UNAUTHORIZED
 
-    def assert_caller_is_account_manager(self) -> None:
+    def _assert_caller_is_account_manager(self) -> None:
         assert self._role_is_active(self.account_manager, Txn.sender), err.UNAUTHORIZED
 
-    def assert_caller_is_primary_dealer(self) -> None:
+    def _assert_caller_is_primary_dealer(self) -> None:
         assert self._role_is_active(self.primary_dealer, Txn.sender), err.UNAUTHORIZED
 
-    def assert_caller_is_trustee(self) -> None:
+    def _assert_caller_is_trustee(self) -> None:
         assert self._role_is_active(self.trustee, Txn.sender), err.UNAUTHORIZED
 
-    def assert_caller_is_authority(self) -> None:
+    def _assert_caller_is_authority(self) -> None:
         assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
 
     def assert_caller_is_observer(self) -> None:
@@ -243,7 +243,7 @@ class RbacModule(ARC4Contract):
             UNAUTHORIZED: Not authorized
         """
 
-        self.assert_caller_is_authority()
+        self._assert_caller_is_authority()
         self.asset_suspended = suspended
         return Global.latest_timestamp
 
@@ -295,8 +295,8 @@ class RbacModule(ARC4Contract):
         role = role_id.as_uint64()
         self._assert_valid_role(role)
         match role:
-            case UInt64(cst.ROLE_ARRANGER):
-                return typ.RoleConfig(
+            case UInt64(enums.ROLE_ARRANGER):
+                return typ.RoleValidity(
                     role_validity_start=UInt64(0), role_validity_end=UInt64(0)
                 )
             case UInt64(enums.ROLE_ACCOUNT_MANAGER):
