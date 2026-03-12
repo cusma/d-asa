@@ -105,6 +105,20 @@ class ObservedEventRequest(Struct, kw_only=True):
     flags: UInt64
 
 
+class ObservedCashEventRequest(Struct, kw_only=True):
+    """Authorized payload for appending observed ACTUS cash events."""
+
+    event_id: UInt64
+    event_type: EventTypeId
+    scheduled_time: TimeStamp
+    accrual_factor: UInt64
+    redemption_accrual_factor: UInt64
+    next_nominal_interest_rate: UInt64
+    next_principal_redemption: UInt64
+    next_outstanding_principal: UInt64
+    flags: UInt64
+
+
 class KernelState(Struct, kw_only=True):
     """Typed Global State."""
 
