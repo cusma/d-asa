@@ -9,6 +9,7 @@ from algokit_utils import (
 )
 from algokit_utils.config import config
 
+from smart_contracts.artifacts.d_asa.dasa_client import DasaClient, DasaFactory
 from tests import utils
 
 INITIAL_ALGO_FUNDS: Final[AlgoAmount] = AlgoAmount.from_algo(10_000)
@@ -83,3 +84,21 @@ def currency(algorand: AlgorandClient, bank: SigningAccount) -> utils.Currency:
         unit_name=DENOMINATION_ASA_UNIT,
         asa_to_unit=1 / 10**DENOMINATION_ASA_DECIMALS,
     )
+
+
+@pytest.fixture(scope="function")
+def d_asa_client(
+    algorand: AlgorandClient,
+    arranger: SigningAccount,
+) -> DasaClient:
+    factory = algorand.client.get_typed_app_factory(
+        DasaFactory,
+        default_sender=arranger.address,
+        default_signer=arranger.signer,
+    )
+    client, _ = factory.send.create.bare()
+    algorand.account.ensure_funded_from_environment(
+        account_to_fund=client.app_address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
+    )
+    return client

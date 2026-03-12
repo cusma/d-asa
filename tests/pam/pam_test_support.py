@@ -24,7 +24,6 @@ from smart_contracts.artifacts.d_asa.dasa_client import (
     NormalizedActusTerms,
     PrimaryDistributionArgs,
     Prospectus,
-    RbacAssignRoleArgs,
 )
 from src import NormalizationResult
 from src.registry import EVENT_TYPE_IDS
@@ -42,12 +41,6 @@ class PamLifecycleContext:
     client: DasaClient
     investor: SigningAccount
     receiver: SigningAccount
-
-
-def asset_balance(algorand: AlgorandClient, *, address: str, asset_id: int) -> int:
-    return algorand.client.algod.account_asset_info(address, asset_id)["asset-holding"][
-        "amount"
-    ]
 
 
 def client_terms(result: NormalizationResult) -> NormalizedActusTerms:
@@ -205,7 +198,6 @@ def setup_pam_lifecycle(
         algorand,
         utils.DAsaAccountManager,
         client,
-        rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
 
     investor = algorand.account.random()
@@ -250,7 +242,7 @@ def setup_pam_lifecycle(
     )
 
     assert (
-        asset_balance(algorand, address=investor.address, asset_id=currency.id)
+        algorand.asset.get_account_information(investor.address, currency.id).balance
         == investor_payment_amount
     )
 
@@ -276,9 +268,12 @@ def setup_pam_lifecycle(
         ),
     ).send()
 
-    assert asset_balance(algorand, address=investor.address, asset_id=currency.id) == 0
     assert (
-        asset_balance(algorand, address=client.app_address, asset_id=currency.id)
+        algorand.asset.get_account_information(investor.address, currency.id).balance
+        == 0
+    )
+    assert (
+        algorand.asset.get_account_information(client.app_address, currency.id).balance
         == bank_funding_amount + investor_payment_amount
     )
 
