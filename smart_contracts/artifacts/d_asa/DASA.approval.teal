@@ -211,31 +211,31 @@ main:
     bytec 5 // "fixed_point_scale"
     intc_0 // 0
     app_global_put
-    // smart_contracts/d-asa/contract.py:23
+    // smart_contracts/d_asa/contract.py:23
     // assert Txn.global_num_byte_slice == cfg.GLOBAL_BYTES, err.WRONG_GLOBAL_BYTES
     txn GlobalNumByteSlice
     pushint 4
     ==
     assert // Wrong Global Bytes allocation
-    // smart_contracts/d-asa/contract.py:24
+    // smart_contracts/d_asa/contract.py:24
     // assert Txn.global_num_uint == cfg.GLOBAL_UINTS, err.WRONG_GLOBAL_UINTS
     txn GlobalNumUint
     pushint 37
     ==
     assert // Wrong Global UInts allocation
-    // smart_contracts/d-asa/contract.py:25
+    // smart_contracts/d_asa/contract.py:25
     // assert Txn.local_num_byte_slice == cfg.LOCAL_BYTES, err.WRONG_LOCAL_BYTES
     txn LocalNumByteSlice
     !
     assert // Wrong Local Bytes allocation
-    // smart_contracts/d-asa/contract.py:26
+    // smart_contracts/d_asa/contract.py:26
     // assert Txn.local_num_uint == cfg.LOCAL_UINTS, err.WRONG_LOCAL_UINTS
     txn LocalNumUint
     !
     assert // Wrong Local UInts allocation
 
 main_after_if_else@2:
-    // smart_contracts/d-asa/contract.py:8-18
+    // smart_contracts/d_asa/contract.py:8-18
     // class DASA(
     //     PaymentAgent,
     //     TransferAgent,
@@ -252,7 +252,7 @@ main_after_if_else@2:
     match main_contract_update_route@4
 
 main_switch_case_next@5:
-    // smart_contracts/d-asa/contract.py:8-18
+    // smart_contracts/d_asa/contract.py:8-18
     // class DASA(
     //     PaymentAgent,
     //     TransferAgent,
@@ -275,7 +275,7 @@ main_switch_case_next@5:
     err
 
 main_create_NoOp@31:
-    // smart_contracts/d-asa/contract.py:8-18
+    // smart_contracts/d_asa/contract.py:8-18
     // class DASA(
     //     PaymentAgent,
     //     TransferAgent,
@@ -1431,25 +1431,25 @@ set_transfer_schedule:
     ==
     assert // invalid number of bytes for arc4.uint64
     btoi
-    // modules/transfer_agent.py:24
+    // modules/transfer_agent.py:26
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/transfer_agent.py:25
+    // modules/transfer_agent.py:27
     // assert open_date < closure_date, err.INVALID_SORTING
     dup2
     <
     assert // Time events must be sorted in strictly ascending order
-    // modules/transfer_agent.py:27
+    // modules/transfer_agent.py:29
     // self.transfer_opening_date = open_date
     bytec 27 // "transfer_opening_date"
     uncover 2
     app_global_put
-    // modules/transfer_agent.py:28
+    // modules/transfer_agent.py:30
     // self.transfer_closure_date = closure_date
     bytec 28 // "transfer_closure_date"
     swap
     app_global_put
-    // modules/transfer_agent.py:29
+    // modules/transfer_agent.py:31
     // return Global.latest_timestamp
     global LatestTimestamp
     // modules/transfer_agent.py:22
@@ -1465,7 +1465,7 @@ set_transfer_schedule:
 
 // modules.transfer_agent.TransferAgent.primary_distribution[routing]() -> void:
 primary_distribution:
-    // modules/transfer_agent.py:31
+    // modules/transfer_agent.py:33
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -1495,10 +1495,10 @@ primary_distribution:
     txn Sender
     callsub _role_is_active
     assert // Not authorized
-    // modules/transfer_agent.py:41
+    // modules/transfer_agent.py:43
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/transfer_agent.py:42
+    // modules/transfer_agent.py:44
     // self._assert_is_not_asset_suspended()
     callsub _assert_is_not_asset_suspended
     // modules/kernel.py:135
@@ -1509,7 +1509,7 @@ primary_distribution:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/transfer_agent.py:43
+    // modules/transfer_agent.py:45
     // assert self._status_is_pending_ied(), err.PRIMARY_DISTRIBUTION_CLOSED
     assert // Primary distribution is closed
     // modules/accounting.py:24
@@ -1522,15 +1522,15 @@ primary_distribution:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/transfer_agent.py:45
+    // modules/transfer_agent.py:47
     // self._assert_is_not_account_suspended(holding_address)
     swap
     callsub _assert_is_not_account_suspended
-    // modules/transfer_agent.py:46
+    // modules/transfer_agent.py:48
     // assert units > UInt64(0), err.ZERO_UNITS
     dup
     assert // Can not distribute zero units
-    // modules/transfer_agent.py:48
+    // modules/transfer_agent.py:50
     // self.reserved_units_total + units <= self.total_units
     intc_0 // 0
     bytec 10 // "reserved_units_total"
@@ -1542,19 +1542,19 @@ primary_distribution:
     app_global_get_ex
     assert // check self.total_units exists
     <=
-    // modules/transfer_agent.py:47-49
+    // modules/transfer_agent.py:49-51
     // assert (
     //     self.reserved_units_total + units <= self.total_units
     // ), err.OVER_DISTRIBUTION
     assert // Insufficient remaining D-ASA units
-    // modules/transfer_agent.py:50
+    // modules/transfer_agent.py:52
     // if self.initial_exchange_date:
     intc_0 // 0
     bytec 26 // "initial_exchange_date"
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     bz primary_distribution_after_if_else@3
-    // modules/transfer_agent.py:52
+    // modules/transfer_agent.py:54
     // Global.latest_timestamp <= self.initial_exchange_date
     global LatestTimestamp
     intc_0 // 0
@@ -1562,7 +1562,7 @@ primary_distribution:
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     <=
-    // modules/transfer_agent.py:51-53
+    // modules/transfer_agent.py:53-55
     // assert (
     //     Global.latest_timestamp <= self.initial_exchange_date
     // ), err.PRIMARY_DISTRIBUTION_CLOSED
@@ -1584,7 +1584,7 @@ primary_distribution_after_if_else@3:
     pushint 40
     swap
     box_replace
-    // modules/transfer_agent.py:56
+    // modules/transfer_agent.py:58
     // self.reserved_units_total += units
     intc_0 // 0
     bytec 10 // "reserved_units_total"
@@ -1594,7 +1594,7 @@ primary_distribution_after_if_else@3:
     bytec 10 // "reserved_units_total"
     dig 1
     app_global_put
-    // modules/transfer_agent.py:57
+    // modules/transfer_agent.py:59
     // return self.total_units - self.reserved_units_total
     intc_0 // 0
     bytec 13 // "total_units"
@@ -1602,7 +1602,7 @@ primary_distribution_after_if_else@3:
     assert // check self.total_units exists
     swap
     -
-    // modules/transfer_agent.py:31
+    // modules/transfer_agent.py:33
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -1617,7 +1617,7 @@ primary_distribution_after_if_else@3:
 transfer:
     intc_0 // 0
     dup
-    // modules/transfer_agent.py:59
+    // modules/transfer_agent.py:61
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -1645,10 +1645,10 @@ transfer:
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/transfer_agent.py:73
+    // modules/transfer_agent.py:75
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/transfer_agent.py:74
+    // modules/transfer_agent.py:76
     // self._assert_is_not_asset_suspended()
     callsub _assert_is_not_asset_suspended
     // modules/kernel.py:135
@@ -1707,7 +1707,7 @@ transfer_after_if_else@3:
     assert // Transfer is closed
 
 transfer_after_if_else@5:
-    // modules/transfer_agent.py:78
+    // modules/transfer_agent.py:80
     // assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
     txn Sender
     dig 4
@@ -1736,25 +1736,25 @@ transfer_after_if_else@5:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/transfer_agent.py:81
+    // modules/transfer_agent.py:83
     // self._assert_is_not_account_suspended(sender_holding_address)
     dig 2
     callsub _assert_is_not_account_suspended
-    // modules/transfer_agent.py:82
+    // modules/transfer_agent.py:84
     // self._assert_is_not_account_suspended(receiver_holding_address)
     dup
     callsub _assert_is_not_account_suspended
-    // modules/transfer_agent.py:83
+    // modules/transfer_agent.py:85
     // assert sender_holding_address != receiver_holding_address, err.SELF_TRANSFER
     uncover 2
     !=
     assert // Sender and receiver must be different
-    // modules/transfer_agent.py:84
+    // modules/transfer_agent.py:86
     // assert units > UInt64(0), err.NULL_TRANSFER
     dig 1
     dup
     assert // Transfer units must be greater than zero
-    // modules/transfer_agent.py:85
+    // modules/transfer_agent.py:87
     // assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
     swap
     box_get
@@ -1795,22 +1795,22 @@ transfer_after_if_else@5:
     assert // ACTUS event not yet executed
 
 transfer_after_inlined_modules.kernel.ActusKernelModule._assert_no_due_event_pending@10:
-    // modules/transfer_agent.py:88
+    // modules/transfer_agent.py:90
     // self._ensure_units_activated(sender_holding_address)
     dig 3
     dup
     callsub _ensure_units_activated
-    // modules/transfer_agent.py:89
+    // modules/transfer_agent.py:91
     // self._ensure_units_activated(receiver_holding_address)
     dig 3
     dup
     cover 2
     callsub _ensure_units_activated
-    // modules/transfer_agent.py:90
+    // modules/transfer_agent.py:92
     // self._settle_position(sender_holding_address)
     callsub _settle_position
     popn 2
-    // modules/transfer_agent.py:91
+    // modules/transfer_agent.py:93
     // self._settle_position(receiver_holding_address)
     callsub _settle_position
     popn 2
@@ -1851,7 +1851,7 @@ transfer_after_inlined_modules.kernel.ActusKernelModule._assert_no_due_event_pen
     intc_3 // 32
     swap
     box_replace
-    // modules/transfer_agent.py:59
+    // modules/transfer_agent.py:61
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     dig 2
