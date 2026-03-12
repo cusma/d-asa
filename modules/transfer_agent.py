@@ -20,7 +20,7 @@ class TransferAgent(AccountingModule):
             ), err.CLOSED_TRANSFER
 
     @arc4.abimethod
-    def set_transfer_schedule(
+    def transfer_set_schedule(
         self, *, open_date: UInt64, closure_date: UInt64
     ) -> UInt64:
         self._assert_caller_is_arranger()

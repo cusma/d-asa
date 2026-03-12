@@ -163,7 +163,7 @@ class AccountingModule(ActusKernelModule):
         self._credit_units(receiver_holding_address, units)
 
     @arc4.abimethod
-    def account_gov_suspension(
+    def account_suspension(
         self, *, holding_address: Account, suspended: bool
     ) -> UInt64:
         """

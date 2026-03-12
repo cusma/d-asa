@@ -12,9 +12,9 @@ from smart_contracts.artifacts.mock_module_rbac.mock_rbac_module_client import (
     MockRbacModuleClient,
     MockRbacModuleSend,
     RbacAssignRoleArgs,
+    RbacContractSuspensionArgs,
     RbacGetAddressRolesArgs,
     RbacGetRoleValidityArgs,
-    RbacGovAssetSuspensionArgs,
     RbacRevokeRoleArgs,
     RbacRotateArrangerArgs,
     RbacSetOpDaemonArgs,
@@ -55,7 +55,7 @@ def test_mock_rbac_send_surface_matches_current_abi() -> None:
         "rbac_get_address_roles",
         "rbac_get_arranger",
         "rbac_get_role_validity",
-        "rbac_gov_asset_suspension",
+        "rbac_contract_suspension",
         "rbac_revoke_role",
         "rbac_rotate_arranger",
         "rbac_set_op_daemon",
@@ -264,22 +264,22 @@ def test_rbac_gov_asset_suspension_is_authority_only(
 ) -> None:
     assert not rbac_client.state.global_state.asset_suspended
 
-    result = rbac_client.send.rbac_gov_asset_suspension(
-        RbacGovAssetSuspensionArgs(suspended=True),
+    result = rbac_client.send.rbac_contract_suspension(
+        RbacContractSuspensionArgs(suspended=True),
         params=CommonAppCallParams(sender=authority.address),
     )
     assert result.abi_return > 0
     assert rbac_client.state.global_state.asset_suspended
 
-    rbac_client.send.rbac_gov_asset_suspension(
-        RbacGovAssetSuspensionArgs(suspended=False),
+    rbac_client.send.rbac_contract_suspension(
+        RbacContractSuspensionArgs(suspended=False),
         params=CommonAppCallParams(sender=authority.address),
     )
     assert not rbac_client.state.global_state.asset_suspended
 
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
-        rbac_client.send.rbac_gov_asset_suspension(
-            RbacGovAssetSuspensionArgs(suspended=True),
+        rbac_client.send.rbac_contract_suspension(
+            RbacContractSuspensionArgs(suspended=True),
             params=CommonAppCallParams(sender=no_role_account.address),
         )
 
