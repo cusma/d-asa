@@ -1047,7 +1047,7 @@ class ActusKernelModule(RbacModule):
         return Global.latest_timestamp
 
     @arc4.abimethod
-    def execute_ied(self) -> UInt64:
+    def contract_execute_ied(self) -> UInt64:
         """Execute the first due `IED` entry and activate the contract.
 
         `IED` is the one non-cash event that moves the app from
@@ -1114,7 +1114,7 @@ class ActusKernelModule(RbacModule):
         return Global.latest_timestamp
 
     @arc4.abimethod(readonly=True)
-    def get_contract_state(self) -> typ.KernelState:
+    def contract_get_state(self) -> typ.KernelState:
         """Return a readonly snapshot of the generic ACTUS kernel state."""
         self._assert_configured()
         return typ.KernelState(
@@ -1136,7 +1136,7 @@ class ActusKernelModule(RbacModule):
         )
 
     @arc4.abimethod(readonly=True)
-    def get_next_due_event(self) -> typ.ExecutionScheduleEntry:
+    def contract_get_next_due_event(self) -> typ.ExecutionScheduleEntry:
         """Return the next boxed schedule entry, or a zeroed sentinel if ended."""
         self._assert_configured()
         if self.event_cursor >= self.schedule_entry_count:

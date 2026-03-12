@@ -99,7 +99,7 @@ def test_zero_coupon_pam_discounted_full_lifecycle(
     assert account_position.units == 0
     assert account_position.reserved_units == normalized.terms.total_units
 
-    contract_state = client.send.get_contract_state().abi_return
+    contract_state = client.send.contract_get_state().abi_return
     assert contract_state.contract_type == CONTRACT_TYPE_IDS["PAM"]
     assert contract_state.status == enums.STATUS_PENDING_IED
     assert contract_state.total_units == normalized.terms.total_units
@@ -116,7 +116,7 @@ def test_zero_coupon_pam_discounted_full_lifecycle(
 
     ied_entry = normalized.schedule[0]
     utils.time_warp(ied_entry.scheduled_time + cst.DAY_2_SEC)
-    ied_result = client.send.execute_ied()
+    ied_result = client.send.contract_execute_ied()
     ied_event = utils.decode_actus_execution_event(
         utils.get_event_from_call_result(ied_result)
     )
@@ -128,7 +128,7 @@ def test_zero_coupon_pam_discounted_full_lifecycle(
     assert ied_event["payoff_sign"] == enums.PAYOFF_SIGN_POSITIVE
     assert ied_event["settled_amount"] == 0
 
-    contract_state = client.send.get_contract_state().abi_return
+    contract_state = client.send.contract_get_state().abi_return
     assert contract_state.status == enums.STATUS_ACTIVE
     assert contract_state.event_cursor == 1
     assert contract_state.initial_exchange_amount == scaled_issue_price
@@ -184,7 +184,7 @@ def test_zero_coupon_pam_discounted_full_lifecycle(
     assert claim.principal_amount == scaled_principal
     assert balance_after - balance_before == scaled_principal
 
-    contract_state = client.send.get_contract_state().abi_return
+    contract_state = client.send.contract_get_state().abi_return
     final_position = client.send.account_get_position(
         AccountGetPositionArgs(holding_address=investor.address)
     ).abi_return

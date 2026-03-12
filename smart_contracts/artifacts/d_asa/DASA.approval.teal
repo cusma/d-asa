@@ -269,9 +269,9 @@ main_switch_case_next@5:
     assert
     txn ApplicationID
     bz main_create_NoOp@31
-    pushbytess 0xb44618c8 0xe7832529 0x7ea20e0b 0x6c85e3ee 0xbdd1a944 0xdc063b35 0x14fc10ef 0x74a7297f 0x09d4fe14 0x9a9bfa85 0x85eed33d 0x9185104a 0xd9f225ac 0x6e0e5c95 0xff3fd4b3 0x82f71b2d 0xef04f5d3 0xdf343550 0x3dbe80bd 0xdf54e82c 0x010c8299 0x7406acd2 0x1a72a2ee // method "fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64)", method "claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[])", method "set_transfer_schedule(uint64,uint64)uint64", method "primary_distribution(address,uint64)uint64", method "transfer(address,address,uint64)uint64", method "account_gov_suspension(address,bool)uint64", method "account_open(address,address)uint64", method "account_update_payment_address(address,address)uint64", method "account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64)", method "contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64", method "contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64", method "execute_ied()uint64", method "apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64", method "get_contract_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)", method "get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)", method "rbac_rotate_arranger(address)uint64", method "rbac_set_op_daemon(address)uint64", method "rbac_assign_role(uint8,address,(uint64,uint64))uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_gov_asset_suspension(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_validity(uint8,address)(uint64,uint64)"
+    pushbytess 0xb44618c8 0xe7832529 0x94388723 0x6c85e3ee 0xbdd1a944 0x7c0f1812 0x14fc10ef 0x74a7297f 0x09d4fe14 0x9a9bfa85 0x85eed33d 0xab2c0fc4 0xd9f225ac 0x8ea6e74c 0x02af557a 0x82f71b2d 0xef04f5d3 0xdf343550 0x3dbe80bd 0x1e3e48e7 0x010c8299 0x7406acd2 0x1a72a2ee // method "fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64)", method "claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[])", method "transfer_set_schedule(uint64,uint64)uint64", method "primary_distribution(address,uint64)uint64", method "transfer(address,address,uint64)uint64", method "account_suspension(address,bool)uint64", method "account_open(address,address)uint64", method "account_update_payment_address(address,address)uint64", method "account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64)", method "contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64", method "contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64", method "contract_execute_ied()uint64", method "apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64", method "contract_get_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)", method "contract_get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)", method "rbac_rotate_arranger(address)uint64", method "rbac_set_op_daemon(address)uint64", method "rbac_assign_role(uint8,address,(uint64,uint64))uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_contract_suspension(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_validity(uint8,address)(uint64,uint64)"
     txna ApplicationArgs 0
-    match fund_due_cashflows claim_due_cashflows set_transfer_schedule primary_distribution transfer account_gov_suspension account_open account_update_payment_address account_get_position contract_config contract_schedule execute_ied apply_non_cash_event get_contract_state get_next_due_event rbac_rotate_arranger rbac_set_op_daemon rbac_assign_role rbac_revoke_role rbac_gov_asset_suspension rbac_get_arranger rbac_get_address_roles rbac_get_role_validity
+    match fund_due_cashflows claim_due_cashflows transfer_set_schedule primary_distribution transfer account_suspension account_open account_update_payment_address account_get_position contract_config contract_schedule contract_execute_ied apply_non_cash_event contract_get_state contract_get_next_due_event rbac_rotate_arranger rbac_set_op_daemon rbac_assign_role rbac_revoke_role rbac_contract_suspension rbac_get_arranger rbac_get_address_roles rbac_get_role_validity
     err
 
 main_create_NoOp@31:
@@ -1413,8 +1413,8 @@ claim_due_cashflows_bool_false@15:
     b claim_due_cashflows_bool_merge@16
 
 
-// modules.transfer_agent.TransferAgent.set_transfer_schedule[routing]() -> void:
-set_transfer_schedule:
+// modules.transfer_agent.TransferAgent.transfer_set_schedule[routing]() -> void:
+transfer_set_schedule:
     // modules/transfer_agent.py:22
     // @arc4.abimethod
     txna ApplicationArgs 1
@@ -1861,8 +1861,8 @@ transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_eve
     return
 
 
-// modules.accounting.AccountingModule.account_gov_suspension[routing]() -> void:
-account_gov_suspension:
+// modules.accounting.AccountingModule.account_suspension[routing]() -> void:
+account_suspension:
     // modules/accounting.py:165
     // @arc4.abimethod
     txna ApplicationArgs 1
@@ -3083,8 +3083,8 @@ contract_schedule_after_if_else@17:
     return
 
 
-// modules.actus_kernel.ActusKernelModule.execute_ied[routing]() -> void:
-execute_ied:
+// modules.actus_kernel.ActusKernelModule.contract_execute_ied[routing]() -> void:
+contract_execute_ied:
     // modules/actus_kernel.py:143
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
@@ -3665,8 +3665,8 @@ apply_non_cash_event_bool_false@16:
     b apply_non_cash_event_bool_merge@17
 
 
-// modules.actus_kernel.ActusKernelModule.get_contract_state[routing]() -> void:
-get_contract_state:
+// modules.actus_kernel.ActusKernelModule.contract_get_state[routing]() -> void:
+contract_get_state:
     // modules/actus_kernel.py:143
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
@@ -3838,8 +3838,8 @@ get_contract_state:
     return
 
 
-// modules.actus_kernel.ActusKernelModule.get_next_due_event[routing]() -> void:
-get_next_due_event:
+// modules.actus_kernel.ActusKernelModule.contract_get_next_due_event[routing]() -> void:
+contract_get_next_due_event:
     // modules/actus_kernel.py:143
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
@@ -3858,7 +3858,7 @@ get_next_due_event:
     app_global_get_ex
     assert // check self.schedule_entry_count exists
     >=
-    bz get_next_due_event_after_if_else@3
+    bz contract_get_next_due_event_after_if_else@3
     // modules/actus_kernel.py:1144
     // event_id=self.event_cursor,
     intc_0 // 0
@@ -3926,7 +3926,7 @@ get_next_due_event:
     swap
     concat
 
-get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.get_next_due_event@4:
+contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.contract_get_next_due_event@4:
     // modules/actus_kernel.py:1138
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
@@ -3936,7 +3936,7 @@ get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.get_next
     intc_1 // 1
     return
 
-get_next_due_event_after_if_else@3:
+contract_get_next_due_event_after_if_else@3:
     // modules/actus_kernel.py:1154
     // return self._get_schedule_entry(self.event_cursor)
     intc_0 // 0
@@ -3946,7 +3946,7 @@ get_next_due_event_after_if_else@3:
     callsub _get_schedule_entry
     // modules/actus_kernel.py:1138
     // @arc4.abimethod(readonly=True)
-    b get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.get_next_due_event@4
+    b contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.contract_get_next_due_event@4
 
 
 // modules.rbac.RbacModule.contract_update[routing]() -> void:
@@ -4373,8 +4373,8 @@ rbac_revoke_role_after_if_else@9:
     b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
 
 
-// modules.rbac.RbacModule.rbac_gov_asset_suspension[routing]() -> void:
-rbac_gov_asset_suspension:
+// modules.rbac.RbacModule.rbac_contract_suspension[routing]() -> void:
+rbac_contract_suspension:
     // modules/rbac.py:241
     // @arc4.abimethod  # TODO: Update specs and add test
     txna ApplicationArgs 1
