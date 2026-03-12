@@ -14,21 +14,6 @@ from algopy import (
 )
 
 
-class PaymentAmounts(Struct, kw_only=True):
-    """D-ASA Payment Amounts"""
-
-    interest: UInt64
-    principal: UInt64
-
-
-class PaymentResult(Struct, kw_only=True):
-    """D-ASA Payment Result"""
-
-    amount: UInt64
-    timestamp: UInt64
-    context: Bytes
-
-
 class RoleValidity(Struct, kw_only=True):
     """D-ASA Role Configuration"""
 
