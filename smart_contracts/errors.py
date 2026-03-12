@@ -27,7 +27,7 @@ INVALID_SETTLEMENT_ASSET = (
     "Different settlement asset not supported, must be equal to denomination asset"
 )
 
-# Initial Exchage Date
+# Initial Exchange Date
 NOT_EVT_IED = "Not IED event"
 PENDING_IED = "IED not yet executed"
 INVALID_IED = "IED must be set in the future"
