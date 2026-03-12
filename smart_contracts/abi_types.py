@@ -134,7 +134,25 @@ class KernelState(Struct, kw_only=True):
 
 
 class AccountPosition(Struct, kw_only=True):
-    """Per-holder ledger position tracked by the ACTUS accounting module."""
+    """
+    Tracks the account's units and lazy-settlement state. `interest_checkpoint`
+    and `principal_checkpoint` are cumulative per-unit fixed-point indices already
+    applied to this account. Any later index growth is converted into absolute
+    amounts in `claimable_interest` and `claimable_principal` when the position is
+    settled. `settled_cursor` records the global event cursor seen at the last
+    settlement.
+
+    Attributes:
+        payment_address: Destination for cashflow withdrawals.
+        units: Active units that accrue funded cashflows.
+        reserved_units: Pre-IED units not yet active.
+        suspended: Whether the account is suspended.
+        settled_cursor: Global event cursor at the last account settlement.
+        interest_checkpoint: Applied cumulative per-unit interest index.
+        principal_checkpoint: Applied cumulative per-unit principal index.
+        claimable_interest: Absolute interest amount currently claimable.
+        claimable_principal: Absolute principal amount currently claimable.
+    """
 
     payment_address: Account
     units: UInt64
