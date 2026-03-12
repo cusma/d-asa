@@ -1,23 +1,20 @@
 from __future__ import annotations
 
-import pytest
 from algokit_utils import (
     AlgoAmount,
     AlgorandClient,
     CommonAppCallParams,
-    LogicError,
     SendParams,
     SigningAccount,
 )
 
 from smart_contracts import constants as cst
 from smart_contracts import enums
-from smart_contracts import errors as err
 from smart_contracts.artifacts.d_asa.dasa_client import (
     AccountGetPositionArgs,
     ClaimDueCashflowsArgs,
+    DasaClient,
     FundDueCashflowsArgs,
-    TransferArgs,
 )
 from src import NormalizationResult, normalize_contract_attributes
 from src.contracts import make_pam_fixed_coupon_bond_profile
@@ -28,6 +25,7 @@ from tests.pam.pam_test_support import (
     ISSUANCE_DELAY_CYCLE,
     MINIMUM_DENOMINATION,
     PRINCIPAL,
+    assert_pending_ied_guards,
     cycle_duration_seconds,
     scale_currency_amount,
     setup_pam_lifecycle,
@@ -74,7 +72,9 @@ def test_fixed_coupon_pam_full_lifecycle(
     algorand: AlgorandClient,
     bank: SigningAccount,
     currency: utils.Currency,
-    arranger: SigningAccount,
+    d_asa_client: DasaClient,
+    pam_primary_dealer: utils.DAsaPrimaryDealer,
+    pam_account_manager: utils.DAsaAccountManager,
 ) -> None:
     current_ts = utils.get_latest_timestamp(algorand.client.algod)
     issuance_delay = cycle_duration_seconds(ISSUANCE_DELAY_CYCLE)
@@ -112,9 +112,11 @@ def test_fixed_coupon_pam_full_lifecycle(
     assert [entry.event_type for entry in normalized.schedule] == expected_event_types
     total_interest_amount = _derive_total_interest_amount(normalized)
 
-    lifecycle = setup_pam_lifecycle(
+    participants = setup_pam_lifecycle(
+        client=d_asa_client,
+        primary_dealer=pam_primary_dealer,
+        account_manager=pam_account_manager,
         algorand=algorand,
-        arranger=arranger,
         bank=bank,
         currency=currency,
         normalized=normalized,
@@ -122,9 +124,9 @@ def test_fixed_coupon_pam_full_lifecycle(
         investor_payment_amount=normalized.terms.initial_exchange_amount,
         prospectus_url="ACTUS fixed coupon PAM lifecycle",
     )
-    client = lifecycle.client
-    investor = lifecycle.investor
-    receiver = lifecycle.receiver
+    client = d_asa_client
+    investor = participants.investor
+    receiver = participants.receiver
 
     account_position = client.send.account_get_position(
         AccountGetPositionArgs(holding_address=investor.address)
@@ -141,33 +143,11 @@ def test_fixed_coupon_pam_full_lifecycle(
     assert contract_state.event_cursor == 0
     assert contract_state.schedule_entry_count == len(normalized.schedule)
 
-    with pytest.raises(LogicError, match=err.PENDING_IED):
-        client.send.fund_due_cashflows(FundDueCashflowsArgs(max_event_count=1))
-
-    with pytest.raises(LogicError, match=err.PENDING_IED):
-        client.send.claim_due_cashflows(
-            ClaimDueCashflowsArgs(
-                holding_address=investor.address,
-                payment_info=b"",
-            ),
-            params=CommonAppCallParams(
-                sender=investor.address,
-                signer=investor.signer,
-            ),
-        )
-
-    with pytest.raises(LogicError, match=err.PENDING_IED):
-        client.send.transfer(
-            TransferArgs(
-                sender_holding_address=investor.address,
-                receiver_holding_address=receiver.address,
-                units=1,
-            ),
-            params=CommonAppCallParams(
-                sender=investor.address,
-                signer=investor.signer,
-            ),
-        )
+    assert_pending_ied_guards(
+        client=client,
+        investor=investor,
+        receiver=receiver,
+    )
 
     ied_entry = normalized.schedule[0]
     utils.time_warp(ied_entry.scheduled_time + cst.DAY_2_SEC)

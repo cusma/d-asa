@@ -9,7 +9,11 @@ from algokit_utils import (
 )
 from algokit_utils.config import config
 
-from smart_contracts.artifacts.d_asa.dasa_client import DasaClient, DasaFactory
+from smart_contracts.artifacts.d_asa.dasa_client import (
+    ContractCreateArgs,
+    DasaClient,
+    DasaFactory,
+)
 from tests import utils
 
 INITIAL_ALGO_FUNDS: Final[AlgoAmount] = AlgoAmount.from_algo(10_000)
@@ -96,7 +100,9 @@ def d_asa_client(
         default_sender=arranger.address,
         default_signer=arranger.signer,
     )
-    client, _ = factory.send.create.bare()
+    client, _ = factory.send.create.contract_create(
+        ContractCreateArgs(arranger=arranger.address)
+    )
     algorand.account.ensure_funded_from_environment(
         account_to_fund=client.app_address,
         min_spending_balance=INITIAL_ALGO_FUNDS,
