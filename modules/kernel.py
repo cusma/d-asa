@@ -36,7 +36,7 @@ from algopy import (
     op,
 )
 
-from modules import RbacModule
+from .rbac import RbacModule
 from smart_contracts import abi_types as typ
 from smart_contracts import constants as cst
 from smart_contracts import enums
