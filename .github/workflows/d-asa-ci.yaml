@@ -39,20 +39,44 @@ jobs:
       - name: Run deployer against LocalNet
         run: algokit project deploy localnet
 
-  test:
-    name: Test ${{ matrix.module }}
+  test-mock-module-rbac:
+    name: Test mock_module_rbac
+    if: '! github.event.pull_request.draft'
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Set up AlgoKit
+        uses: ./.github/actions/algokit-setup
+
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            mock_module_rbac:
+              - 'smart_contracts/artifacts/mock_module_rbac/**'
+              - 'tests/conftest.py'
+              - 'tests/mock_module_rbac/**'
+
+      - name: Run tests
+        if: steps.filter.outputs.mock_module_rbac == 'true'
+        shell: bash
+        run: |
+          set -o pipefail
+          algokit project run test tests/mock_module_rbac
+
+  test-pam:
+    name: Test PAM ${{ matrix.subfolder }}
     if: '! github.event.pull_request.draft'
     runs-on: "ubuntu-latest"
     strategy:
+      fail-fast: false
       matrix:
-        module:
-          # Mocked modules
-          - mock_module_rbac
-          - mock_module_accounting
-          # Contracts
-          - zero_coupon_bond
-          - fixed_coupon_bond
-          - perpetual_bond
+        subfolder:
+          - fcb
+          - zcb
     steps:
       - name: Checkout source code
         uses: actions/checkout@v6
@@ -65,58 +89,22 @@ jobs:
         id: filter
         with:
           filters: |
-            module:
-              - 'smart_contracts/artifacts/${{ matrix.module }}/**'
-              - 'tests/conftest.py'
-              - 'tests/${{ matrix.module }}/**'
-
-      - name: Run tests
-        if: steps.filter.outputs.module == 'true'
-        shell: bash
-        run: |
-          set -o pipefail
-          algokit project run test tests/${{ matrix.module }}
-
-  test-shared:
-    name: Test shared contracts
-    if: '! github.event.pull_request.draft'
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v6
-
-      - name: Set up AlgoKit
-        uses: ./.github/actions/algokit-setup
-
-      - name: Detect changes
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            shared:
-              - 'modules/**'
-              - 'smart_contracts/artifacts/zero_coupon_bond/**'
-              - 'smart_contracts/artifacts/fixed_coupon_bond/**'
-              - 'smart_contracts/artifacts/perpetual_bond/**'
+            pam:
+              - 'smart_contracts/artifacts/d_asa/**'
               - 'tests/conftest.py'
               - 'tests/conftest_helpers.py'
-              - 'tests/shared/**'
+              - 'tests/pam/pam_test_support.py'
+              - 'tests/pam/${{ matrix.subfolder }}/**'
 
-      - name: Run shared tests
-        if: steps.filter.outputs.shared == 'true'
+      - name: Run tests
+        if: steps.filter.outputs.pam == 'true'
         shell: bash
         run: |
           set -o pipefail
-          algokit project run test tests/shared
+          algokit project run test tests/pam/${{ matrix.subfolder }}
 
-      - name: Run helper tests
-        shell: bash
-        run: |
-          set -o pipefail
-          algokit project run test tests/test_utils.py tests/test_mixin_composition_guards.py
-
-  test-events:
-    name: Test ACTUS events
+  test-sdk:
+    name: Test SDK and helpers
     if: '! github.event.pull_request.draft'
     runs-on: "ubuntu-latest"
     steps:
@@ -126,8 +114,20 @@ jobs:
       - name: Set up AlgoKit
         uses: ./.github/actions/algokit-setup
 
-      - name: Run Fixed Coupon Bond ACTUS events test
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            sdk:
+              - 'src/**'
+              - 'smart_contracts/**'
+              - 'tests/sdk/**'
+              - 'tests/test_utils.py'
+
+      - name: Run tests
+        if: steps.filter.outputs.sdk == 'true'
         shell: bash
         run: |
           set -o pipefail
-          poetry run pytest -s -v tests/fixed_coupon_bond/test_actus_events.py
+          algokit project run test tests/sdk tests/test_utils.py
