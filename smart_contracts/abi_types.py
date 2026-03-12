@@ -47,8 +47,6 @@ class NormalizedActusTerms(Struct, kw_only=True):
     initial_exchange_amount: UInt64
     initial_exchange_date: TimeStamp
     maturity_date: TimeStamp
-    secondary_market_opening_date: TimeStamp
-    secondary_market_closure_date: TimeStamp
     day_count_convention: DayCountConvention
     rate_reset_spread: UInt64
     rate_reset_multiplier: UInt64
