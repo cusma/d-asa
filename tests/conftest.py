@@ -9,31 +9,15 @@ from algokit_utils import (
 )
 from algokit_utils.config import config
 
-from smart_contracts import constants as sc_cst
-from smart_contracts import enums
 from tests import utils
 
 INITIAL_ALGO_FUNDS: Final[AlgoAmount] = AlgoAmount.from_algo(10_000)
 
 DENOMINATION_ASA_NAME: Final[str] = "Euro"
-DENOMINATION_ASA_UNIT: Final[str] = "EUR"
+DENOMINATION_ASA_UNIT: Final[str] = "€"
 DENOMINATION_ASA_DECIMALS: Final[int] = 2
 DENOMINATION_ASA_SCALE: Final[int] = 10**DENOMINATION_ASA_DECIMALS
 DENOMINATION_ASA_TOTAL: Final[int] = 10_000_000 * DENOMINATION_ASA_SCALE  # 10M Euro
-
-PRINCIPAL: Final[int] = 1_000_000 * DENOMINATION_ASA_SCALE  # 1M Euro
-MINIMUM_DENOMINATION: Final[int] = 1_000 * DENOMINATION_ASA_SCALE  # 1k Euro
-DAY_COUNT_CONVENTION: Final[list[int]] = [255, enums.DCC_AA]
-
-PRIMARY_DISTRIBUTION_DELAY: Final[int] = 1 * sc_cst.DAY_2_SEC
-PRIMARY_DISTRIBUTION_DURATION: Final[int] = 15 * sc_cst.DAY_2_SEC
-ISSUANCE_DELAY: Final[int] = 1 * sc_cst.DAY_2_SEC
-MATURITY_DELAY: Final[int] = 1 * sc_cst.DAY_2_SEC
-
-APR: Final[int] = 300  # BPS equal to 3%
-
-TOTAL_UNITS: Final[int] = PRINCIPAL // MINIMUM_DENOMINATION
-INITIAL_D_ASA_UNITS: Final[int] = 100
 
 
 @pytest.fixture(scope="session")
@@ -99,8 +83,3 @@ def currency(algorand: AlgorandClient, bank: SigningAccount) -> utils.Currency:
         unit_name=DENOMINATION_ASA_UNIT,
         asa_to_unit=1 / 10**DENOMINATION_ASA_DECIMALS,
     )
-
-
-@pytest.fixture(scope="function", params=DAY_COUNT_CONVENTION)
-def day_count_convention(request) -> int:
-    return request.param

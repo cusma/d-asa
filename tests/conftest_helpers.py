@@ -1,3 +1,4 @@
+import importlib
 from collections.abc import Callable
 from typing import Any, TypeVar
 
@@ -81,7 +82,6 @@ def create_role_account(
     algorand: AlgorandClient,
     role_account_class: type[RoleAccountType],
     client: Any,
-    role_config: bytes | None = None,
     rbac_assign_role_args_class: Any = None,
 ) -> RoleAccountType:
     """
@@ -91,8 +91,7 @@ def create_role_account(
         algorand: AlgorandClient instance
         role_account_class: The role account class (DAsaAccountManager, DAsaAuthority, etc.)
         client: The client to assign the role on
-        role_config: Optional role configuration bytes (defaults to basic config if None)
-        rbac_assign_role_args_class: The RbacAssignRoleArgs class for the specific client
+        rbac_assign_role_args_class: Optional generated ABI args class override
 
     Returns:
         Configured role account
@@ -105,16 +104,25 @@ def create_role_account(
         min_spending_balance=INITIAL_ALGO_FUNDS,
     )
 
-    if role_config is None:
-        role_config = utils.set_role_config()
-
-    client.send.rbac_assign_role(
-        rbac_assign_role_args_class(
-            role_id=role_account.role_id(),
-            role_address=role_account.address,
-            config=role_config,
-        )
+    role_module = importlib.import_module(
+        rbac_assign_role_args_class.__module__
+        if rbac_assign_role_args_class is not None
+        else client.__class__.__module__
     )
+    assign_role_args_class = (
+        rbac_assign_role_args_class or role_module.RbacAssignRoleArgs
+    )
+    role_validity_class = role_module.RoleValidity
+    assign_role_args = assign_role_args_class(
+        role_id=role_account.role_id(),
+        role_address=role_account.address,
+        validity=role_validity_class(
+            role_validity_start=0,
+            role_validity_end=2**64 - 1,
+        ),
+    )
+
+    client.send.rbac_assign_role(assign_role_args)
     return role_account
 
 
