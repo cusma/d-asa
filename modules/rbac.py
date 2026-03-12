@@ -105,23 +105,23 @@ class RbacModule(ARC4Contract):
 
         if role_id == UInt64(enums.ROLE_ACCOUNT_MANAGER):
             assert role_address not in self.account_manager, err.INVALID_ROLE_ADDRESS
-            self.account_manager[role_address] = validity
+            self.account_manager[role_address] = validity.copy()
             return
         if role_id == UInt64(enums.ROLE_PRIMARY_DEALER):
             assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-            self.primary_dealer[role_address] = validity
+            self.primary_dealer[role_address] = validity.copy()
             return
         if role_id == UInt64(enums.ROLE_TRUSTEE):
             assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
-            self.trustee[role_address] = validity
+            self.trustee[role_address] = validity.copy()
             return
         if role_id == UInt64(enums.ROLE_AUTHORITY):
             assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
-            self.authority[role_address] = validity
+            self.authority[role_address] = validity.copy()
             return
         if role_id == UInt64(enums.ROLE_OBSERVER):
             assert role_address not in self.observer, err.INVALID_ROLE_ADDRESS
-            self.observer[role_address] = validity
+            self.observer[role_address] = validity.copy()
 
     def _delete_role(self, role_id: UInt64, role_address: Account) -> None:
         assert role_id != UInt64(enums.ROLE_ARRANGER), err.INVALID_ROLE
@@ -144,6 +144,16 @@ class RbacModule(ARC4Contract):
         if role_id == UInt64(enums.ROLE_OBSERVER):
             assert role_address in self.observer, err.INVALID_ROLE_ADDRESS
             del self.observer[role_address]
+
+    @arc4.abimethod(allow_actions=["UpdateApplication"])
+    def contract_update(self) -> None:
+        """
+        Update D-ASA application.
+        """
+        # The reference implementation grants the update permissions to the Arranger.
+        # ⚠️ WARNING: Application updates must be executed VERY carefully, as they
+        # might introduce breaking changes.
+        self._assert_caller_is_arranger()
 
     @arc4.abimethod
     def rbac_rotate_arranger(self, *, new_arranger: Account) -> UInt64:
