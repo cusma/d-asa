@@ -32,6 +32,11 @@ from .conversions import compute_initial_exchange_amount, rate_to_fp, to_asa_uni
 from .event_seeds import EventSeed, get_seed_sort_key, seed_from_preprocessed
 
 
+def _coerce_schedule_int(value: int | float | Decimal) -> int:
+    """Coerce pre-normalized schedule payload values to concrete ints."""
+    return int(value)
+
+
 def extract_base_contract_type(contract_type: str) -> str:
     """
     Extract the base contract type from a potentially subtyped contract type string.
@@ -306,9 +311,13 @@ def build_schedule(
                 event_id=event_id,
                 event_type=seed.event_type,
                 scheduled_time=seed.scheduled_time,
-                accrual_factor=accrual_factor,
-                redemption_accrual_factor=redemption_accrual_factor,
-                next_nominal_interest_rate=seed.next_nominal_interest_rate,
+                accrual_factor=_coerce_schedule_int(accrual_factor),
+                redemption_accrual_factor=_coerce_schedule_int(
+                    redemption_accrual_factor
+                ),
+                next_nominal_interest_rate=_coerce_schedule_int(
+                    seed.next_nominal_interest_rate
+                ),
                 next_principal_redemption=seed.next_principal_redemption,
                 next_outstanding_principal=seed.next_outstanding_principal,
                 flags=seed.flags,
@@ -340,19 +349,16 @@ def build_schedule_seeds(
     Returns:
         Tuple of event seeds for the contract's execution schedule.
     """
-    # PAM and CLM don't require asa_decimals
-    if contract_type in ("PAM", "CLM"):
-        dispatch = {
-            "PAM": build_pam_schedule,
-            "CLM": build_clm_schedule,
-        }
-        return dispatch[contract_type](contract, terms)
-
-    # Other contract types require asa_decimals
-    dispatch = {
-        "LAM": build_lam_schedule,
-        "NAM": build_nam_schedule,
-        "ANN": build_ann_schedule,
-        "LAX": build_lax_schedule,
-    }
-    return dispatch[contract_type](contract, terms, asa_decimals)
+    if contract_type == "PAM":
+        return build_pam_schedule(contract, terms)
+    if contract_type == "CLM":
+        return build_clm_schedule(contract, terms)
+    if contract_type == "LAM":
+        return build_lam_schedule(contract, terms, asa_decimals)
+    if contract_type == "NAM":
+        return build_nam_schedule(contract, terms, asa_decimals)
+    if contract_type == "ANN":
+        return build_ann_schedule(contract, terms, asa_decimals)
+    if contract_type == "LAX":
+        return build_lax_schedule(contract, terms, asa_decimals)
+    raise ActusNormalizationError(f"Unsupported ACTUS contract type: {contract_type}")

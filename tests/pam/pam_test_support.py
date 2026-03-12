@@ -2,33 +2,36 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import pytest
 from algokit_utils import (
     AlgoAmount,
     AlgorandClient,
     AssetOptInParams,
     AssetTransferParams,
     CommonAppCallParams,
+    LogicError,
     SendParams,
     SigningAccount,
 )
 
 from smart_contracts import constants as cst
+from smart_contracts import errors as err
 from smart_contracts.artifacts.d_asa.dasa_client import (
     AccountOpenArgs,
+    ClaimDueCashflowsArgs,
     ContractConfigArgs,
-    ContractCreateArgs,
     ContractScheduleArgs,
     DasaClient,
-    DasaFactory,
+    FundDueCashflowsArgs,
     InitialKernelState,
     NormalizedActusTerms,
     PrimaryDistributionArgs,
     Prospectus,
+    TransferArgs,
 )
 from src import NormalizationResult
 from src.registry import EVENT_TYPE_IDS
 from src.schedule import Cycle
-from tests import conftest_helpers as role_helpers
 from tests import utils
 
 PRINCIPAL = 10_000
@@ -37,8 +40,7 @@ ISSUANCE_DELAY_CYCLE = Cycle.parse_cycle("30D")
 
 
 @dataclass(frozen=True)
-class PamLifecycleContext:
-    client: DasaClient
+class PamLifecycleParticipants:
     investor: SigningAccount
     receiver: SigningAccount
 
@@ -132,28 +134,17 @@ def _open_contract_account(
 
 def setup_pam_lifecycle(
     *,
+    client: DasaClient,
+    primary_dealer: utils.DAsaPrimaryDealer,
+    account_manager: utils.DAsaAccountManager,
     algorand: AlgorandClient,
-    arranger: SigningAccount,
     bank: SigningAccount,
     currency: utils.Currency,
     normalized: NormalizationResult,
     bank_funding_amount: int,
     investor_payment_amount: int,
     prospectus_url: str,
-) -> PamLifecycleContext:
-    factory = algorand.client.get_typed_app_factory(
-        DasaFactory,
-        default_sender=arranger.address,
-        default_signer=arranger.signer,
-    )
-    client, _ = factory.send.create.contract_create(
-        ContractCreateArgs(arranger=arranger.address)
-    )
-    algorand.account.ensure_funded_from_environment(
-        account_to_fund=client.app_address,
-        min_spending_balance=AlgoAmount.from_algo(10_000),
-    )
-
+) -> PamLifecycleParticipants:
     pages = normalized.schedule_pages(cst.SCHEDULE_PAGE_SIZE)
     client.send.contract_config(
         ContractConfigArgs(
@@ -188,17 +179,6 @@ def setup_pam_lifecycle(
                 signer=bank.signer,
             )
         )
-
-    primary_dealer = role_helpers.create_role_account(
-        algorand,
-        utils.DAsaPrimaryDealer,
-        client,
-    )
-    account_manager = role_helpers.create_role_account(
-        algorand,
-        utils.DAsaAccountManager,
-        client,
-    )
 
     investor = algorand.account.random()
     algorand.account.ensure_funded_from_environment(
@@ -277,8 +257,42 @@ def setup_pam_lifecycle(
         == bank_funding_amount + investor_payment_amount
     )
 
-    return PamLifecycleContext(
-        client=client,
+    return PamLifecycleParticipants(
         investor=investor,
         receiver=receiver,
     )
+
+
+def assert_pending_ied_guards(
+    *,
+    client: DasaClient,
+    investor: SigningAccount,
+    receiver: SigningAccount,
+) -> None:
+    with pytest.raises(LogicError, match=err.PENDING_IED):
+        client.send.fund_due_cashflows(FundDueCashflowsArgs(max_event_count=1))
+
+    with pytest.raises(LogicError, match=err.PENDING_IED):
+        client.send.claim_due_cashflows(
+            ClaimDueCashflowsArgs(
+                holding_address=investor.address,
+                payment_info=b"",
+            ),
+            params=CommonAppCallParams(
+                sender=investor.address,
+                signer=investor.signer,
+            ),
+        )
+
+    with pytest.raises(LogicError, match=err.PENDING_IED):
+        client.send.transfer(
+            TransferArgs(
+                sender_holding_address=investor.address,
+                receiver_holding_address=receiver.address,
+                units=1,
+            ),
+            params=CommonAppCallParams(
+                sender=investor.address,
+                signer=investor.signer,
+            ),
+        )

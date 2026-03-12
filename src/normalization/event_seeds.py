@@ -136,4 +136,11 @@ def get_seed_sort_key(seed: EventSeed) -> tuple[int, int, str]:
 
 def deduplicate_timestamps(ts: Sequence[UTCTimeStamp]) -> tuple[UTCTimeStamp, ...]:
     """Remove duplicate timestamps while preserving sorted schedule order."""
-    return tuple(dict.fromkeys(sorted(ts)))
+    seen: set[UTCTimeStamp] = set()
+    ordered_unique: list[UTCTimeStamp] = []
+    for timestamp in sorted(ts):
+        if timestamp in seen:
+            continue
+        seen.add(timestamp)
+        ordered_unique.append(timestamp)
+    return tuple(ordered_unique)

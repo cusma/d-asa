@@ -62,6 +62,8 @@ def resolve_principal_schedule(
 
         # Use provided end_date or fall back to terms.maturity_date
         effective_end = end_date if end_date is not None else terms.maturity_date
+        if effective_end is None:
+            return ()
 
         if cycles:
             timestamps = resolve_array_schedule(

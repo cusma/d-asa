@@ -3,7 +3,7 @@ from __future__ import annotations
 from calendar import monthrange
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, cast
 
 from smart_contracts.constants import DAY_2_SEC
 
@@ -15,6 +15,8 @@ from .day_count import (
 )
 from .errors import UnsupportedActusFeatureError
 from .unix_time import UTCTimeStamp, datetime_to_timestamp, timestamp_to_datetime
+
+CycleUnit = Literal["D", "W", "M", "Q", "H", "Y"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -40,7 +42,7 @@ class Cycle:
     """
 
     count: int
-    unit: Literal["D", "W", "M", "Q", "H", "Y"]
+    unit: CycleUnit
     stub: str = ""
 
     @classmethod
@@ -102,7 +104,7 @@ class Cycle:
         if count <= 0:
             raise ValueError(f"Cycle count must be positive, got: {count}")
 
-        return Cycle(count=count, unit=unit, stub=stub)
+        return Cycle(count=count, unit=cast(CycleUnit, unit), stub=stub)
 
 
 def _add_month_cycle_from_anchor(
