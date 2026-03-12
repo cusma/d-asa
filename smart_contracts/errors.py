@@ -12,9 +12,7 @@ UNAUTHORIZED = "Not authorized"
 DEFAULTED = "Defaulted"
 SUSPENDED = "Suspended operations"
 INVALID_HOLDING_ADDRESS = "Invalid account holding address"
-INVALID_TIME_EVENTS_LENGTH = "Time events length is invalid"
 INVALID_SORTING = "Time events must be sorted in strictly ascending order"
-PENDING_COUPON_PAYMENT = "Pending due coupon payment"
 NOT_ENOUGH_FUNDS = "Not enough funds for the payment"
 NO_UNITS = "No D-ASA units"
 
@@ -25,16 +23,9 @@ INVALID_MINIMUM_DENOMINATION = "Minimum denomination is not a divisor of princip
 INVALID_DAY_COUNT_CONVENTION = "Invalid day-count convention ID"
 INVALID_INTEREST_RATE = "Interest rate is not properly defined"
 INVALID_TIME = "Time events must be set in the future"
-INVALID_TIME_PERIOD = "Time periods in Actual/Actual day count convention must be multiples of a day (in seconds)"
 INVALID_SETTLEMENT_ASSET = (
     "Different settlement asset not supported, must be equal to denomination asset"
 )
-INVALID_TIME_PERIODS = "Time periods are not properly defined"
-INVALID_TIME_PERIOD_DURATION = (
-    "Time period durations must be strictly greater than zero"
-)
-INVALID_TIME_PERIOD_REPETITIONS = "Time period repetitions are not properly defined"
-INVALID_COUPON_RATES = "Coupon rates are not properly defined"
 
 # Set Secondary Time Events
 INVALID_SECONDARY_OPENING_DATE = "Invalid secondary market opening date"
@@ -54,7 +45,6 @@ SECONDARY_MARKET_CLOSED = "Secondary market is closed"
 SELF_TRANSFER = "Sender and receiver must be different"
 NULL_TRANSFER = "Transfer units must be greater than zero"
 OVER_TRANSFER = "Insufficient sender units to transfer"
-NON_FUNGIBLE_UNITS = "Sender and receiver units are not fungible"
 
 # Pay Coupon
 NO_DUE_COUPON = "No due coupon to pay"
