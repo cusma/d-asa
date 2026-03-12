@@ -10,7 +10,6 @@ from algokit_utils import (
     SendAppTransactionResult,
     SigningAccount,
 )
-from algosdk.abi import TupleType, UintType
 from algosdk.constants import min_txn_fee
 from algosdk.v2client.algod import AlgodClient
 
@@ -112,22 +111,10 @@ class DAsaAccount(SigningAccount):
         ).abi_return.units
 
     @property
-    def unit_value(self) -> int:
-        return 0
-
-    @property
-    def paid_coupons(self) -> int:
-        return 0
-
-    @property
     def suspended(self) -> bool:
         return self.d_asa_client.send.account_get_position(
             AccountGetPositionArgs(holding_address=self.holding_address)
         ).abi_return.suspended
-
-    @property
-    def principal(self) -> int:
-        return self.units * self.unit_value
 
 
 def get_last_round(algod_client: AlgodClient) -> int:
@@ -193,12 +180,6 @@ def max_fee_per_coupon(coupon_idx: int) -> AlgoAmount:
     """
     return AlgoAmount.from_micro_algo(
         math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee
-    )
-
-
-def set_role_config(validity_start: int = 0, validity_end: int = 2**64 - 1) -> bytes:
-    return TupleType([UintType(64), UintType(64)]).encode(
-        [validity_start, validity_end]
     )
 
 
