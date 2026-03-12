@@ -2,7 +2,7 @@
   "version": 3,
   "sources": [
     "../../../modules/accounting.py",
-    "../../../modules/kernel.py",
+    "../../../modules/actus_kernel.py",
     "../../../modules/payment_agent.py",
     "../../../modules/rbac.py",
     "../../../modules/transfer_agent.py",
@@ -2192,7 +2192,7 @@
       ]
     },
     "1285": {
-      "callsub": "modules.kernel.ActusKernelModule._get_schedule_entry",
+      "callsub": "modules.actus_kernel.ActusKernelModule._get_schedule_entry",
       "op": "callsub _get_schedule_entry",
       "defined_out": [
         "entry#0",
@@ -3551,7 +3551,7 @@
       ]
     },
     "1370": {
-      "block": "fund_due_cashflows_after_inlined_modules.kernel.ActusKernelModule._entry_interest_amount@14",
+      "block": "fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_interest_amount@14",
       "stack_in": [
         "entry#0",
         "event_type#0",
@@ -3924,7 +3924,7 @@
       ]
     },
     "1394": {
-      "block": "fund_due_cashflows_after_inlined_modules.kernel.ActusKernelModule._entry_principal_amount@26",
+      "block": "fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@26",
       "stack_in": [
         "entry#0",
         "event_type#0",
@@ -4046,7 +4046,7 @@
       ]
     },
     "1401": {
-      "callsub": "modules.kernel.ActusKernelModule._is_dynamic_annuity",
+      "callsub": "modules.actus_kernel.ActusKernelModule._is_dynamic_annuity",
       "op": "callsub _is_dynamic_annuity",
       "defined_out": [
         "entry#0",
@@ -4192,7 +4192,7 @@
       ]
     },
     "1413": {
-      "callsub": "modules.kernel.ActusKernelModule._amount_to_index_delta",
+      "callsub": "modules.actus_kernel.ActusKernelModule._amount_to_index_delta",
       "op": "callsub _amount_to_index_delta",
       "defined_out": [
         "interest_amount_due#0",
@@ -4247,7 +4247,7 @@
       ]
     },
     "1418": {
-      "callsub": "modules.kernel.ActusKernelModule._amount_to_index_delta",
+      "callsub": "modules.actus_kernel.ActusKernelModule._amount_to_index_delta",
       "op": "callsub _amount_to_index_delta",
       "defined_out": [
         "interest_amount_due#0",
@@ -4308,7 +4308,7 @@
       ]
     },
     "1423": {
-      "callsub": "modules.kernel.ActusKernelModule._index_delta_to_amount",
+      "callsub": "modules.actus_kernel.ActusKernelModule._index_delta_to_amount",
       "op": "callsub _index_delta_to_amount",
       "defined_out": [
         "interest_amount#1",
@@ -4454,7 +4454,7 @@
       ]
     },
     "1432": {
-      "callsub": "modules.kernel.ActusKernelModule._index_delta_to_amount",
+      "callsub": "modules.actus_kernel.ActusKernelModule._index_delta_to_amount",
       "op": "callsub _index_delta_to_amount",
       "defined_out": [
         "interest_amount#1",
@@ -6795,7 +6795,7 @@
       ]
     },
     "1539": {
-      "callsub": "modules.kernel.ActusKernelModule._entry_interest_segment",
+      "callsub": "modules.actus_kernel.ActusKernelModule._entry_interest_segment",
       "op": "callsub _entry_interest_segment",
       "defined_out": [
         "_entry_interest_segment%0#0",
@@ -6980,7 +6980,7 @@
         "funded_interest#0",
         "funded_principal#0"
       ],
-      "callsub": "modules.kernel.ActusKernelModule._is_dynamic_annuity",
+      "callsub": "modules.actus_kernel.ActusKernelModule._is_dynamic_annuity",
       "op": "callsub _is_dynamic_annuity",
       "defined_out": [
         "tmp%23#0"
@@ -8245,7 +8245,7 @@
       ]
     },
     "1625": {
-      "callsub": "modules.kernel.ActusKernelModule._emit_execution_event",
+      "callsub": "modules.actus_kernel.ActusKernelModule._emit_execution_event",
       "op": "callsub _emit_execution_event",
       "stack_out": [
         "entry#0",
@@ -9925,7 +9925,7 @@
         "funded_interest#0",
         "funded_principal#0"
       ],
-      "callsub": "modules.kernel.ActusKernelModule._is_dynamic_annuity",
+      "callsub": "modules.actus_kernel.ActusKernelModule._is_dynamic_annuity",
       "op": "callsub _is_dynamic_annuity",
       "defined_out": [
         "tmp%3#2"
@@ -10205,7 +10205,7 @@
       ]
     },
     "1755": {
-      "op": "b fund_due_cashflows_after_inlined_modules.kernel.ActusKernelModule._entry_principal_amount@26"
+      "op": "b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@26"
     },
     "1758": {
       "block": "fund_due_cashflows_after_if_else@20",
@@ -10356,7 +10356,7 @@
       ]
     },
     "1765": {
-      "callsub": "modules.kernel.ActusKernelModule._entry_interest_segment",
+      "callsub": "modules.actus_kernel.ActusKernelModule._entry_interest_segment",
       "op": "callsub _entry_interest_segment",
       "defined_out": [
         "_entry_interest_segment%0#0",
@@ -10697,7 +10697,7 @@
       ]
     },
     "1786": {
-      "op": "b fund_due_cashflows_after_inlined_modules.kernel.ActusKernelModule._entry_principal_amount@26"
+      "op": "b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@26"
     },
     "1789": {
       "block": "fund_due_cashflows_after_if_else@22",
@@ -11206,7 +11206,7 @@
       ]
     },
     "1814": {
-      "op": "b fund_due_cashflows_after_inlined_modules.kernel.ActusKernelModule._entry_principal_amount@26"
+      "op": "b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@26"
     },
     "1817": {
       "block": "fund_due_cashflows_after_if_else@24",
@@ -11277,7 +11277,7 @@
       ]
     },
     "1821": {
-      "op": "b fund_due_cashflows_after_inlined_modules.kernel.ActusKernelModule._entry_principal_amount@26"
+      "op": "b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@26"
     },
     "1824": {
       "block": "fund_due_cashflows_after_if_else@25",
@@ -11651,7 +11651,7 @@
       ]
     },
     "1840": {
-      "op": "b fund_due_cashflows_after_inlined_modules.kernel.ActusKernelModule._entry_principal_amount@26"
+      "op": "b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@26"
     },
     "1843": {
       "block": "fund_due_cashflows_after_if_else@13",
@@ -11802,7 +11802,7 @@
       ]
     },
     "1850": {
-      "callsub": "modules.kernel.ActusKernelModule._entry_interest_segment",
+      "callsub": "modules.actus_kernel.ActusKernelModule._entry_interest_segment",
       "op": "callsub _entry_interest_segment",
       "defined_out": [
         "_entry_interest_segment%0#0",
@@ -11911,7 +11911,7 @@
       ]
     },
     "1858": {
-      "op": "b fund_due_cashflows_after_inlined_modules.kernel.ActusKernelModule._entry_interest_amount@14"
+      "op": "b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_interest_amount@14"
     },
     "1861": {
       "block": "fund_due_cashflows_after_while@9",
@@ -19894,7 +19894,7 @@
       ]
     },
     "2585": {
-      "op": "bnz transfer_after_inlined_modules.kernel.ActusKernelModule._assert_no_due_event_pending@10",
+      "op": "bnz transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_event_pending@10",
       "stack_out": [
         "box_prefixed_key%0#3",
         "box_prefixed_key%0#4",
@@ -19965,7 +19965,7 @@
       ]
     },
     "2592": {
-      "callsub": "modules.kernel.ActusKernelModule._get_schedule_entry",
+      "callsub": "modules.actus_kernel.ActusKernelModule._get_schedule_entry",
       "op": "callsub _get_schedule_entry",
       "defined_out": [
         "box_prefixed_key%0#3",
@@ -20074,7 +20074,7 @@
       ]
     },
     "2602": {
-      "block": "transfer_after_inlined_modules.kernel.ActusKernelModule._assert_no_due_event_pending@10",
+      "block": "transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_event_pending@10",
       "stack_in": [
         "box_prefixed_key%0#3",
         "box_prefixed_key%0#4",
@@ -22540,7 +22540,7 @@
       "stack_out": []
     },
     "2895": {
-      "subroutine": "modules.kernel.ActusKernelModule.contract_create[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.contract_create[routing]",
       "params": {},
       "block": "contract_create",
       "stack_in": [],
@@ -22690,7 +22690,7 @@
       "stack_out": []
     },
     "2916": {
-      "subroutine": "modules.kernel.ActusKernelModule.contract_config[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.contract_config[routing]",
       "params": {},
       "block": "contract_config",
       "stack_in": [],
@@ -28818,7 +28818,7 @@
       "op": "b contract_config_bool_merge@9"
     },
     "3415": {
-      "subroutine": "modules.kernel.ActusKernelModule.contract_schedule[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.contract_schedule[routing]",
       "params": {},
       "block": "contract_schedule",
       "stack_in": [],
@@ -31330,7 +31330,7 @@
       ]
     },
     "3593": {
-      "callsub": "modules.kernel.ActusKernelModule._assert_event_allowed_for_contract_type",
+      "callsub": "modules.actus_kernel.ActusKernelModule._assert_event_allowed_for_contract_type",
       "op": "callsub _assert_event_allowed_for_contract_type",
       "stack_out": [
         "aggregate%array_trimmed%0#0",
@@ -33424,7 +33424,7 @@
       ]
     },
     "3729": {
-      "subroutine": "modules.kernel.ActusKernelModule.execute_ied[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.execute_ied[routing]",
       "params": {},
       "block": "execute_ied",
       "stack_in": [],
@@ -33586,7 +33586,7 @@
       ]
     },
     "3756": {
-      "callsub": "modules.kernel.ActusKernelModule._get_schedule_entry",
+      "callsub": "modules.actus_kernel.ActusKernelModule._get_schedule_entry",
       "op": "callsub _get_schedule_entry",
       "defined_out": [
         "entry#0"
@@ -34222,7 +34222,7 @@
       ]
     },
     "3837": {
-      "callsub": "modules.kernel.ActusKernelModule._apply_non_cash_schedule_entry",
+      "callsub": "modules.actus_kernel.ActusKernelModule._apply_non_cash_schedule_entry",
       "op": "callsub _apply_non_cash_schedule_entry",
       "defined_out": [
         "_apply_non_cash_schedule_entry%1#0",
@@ -34300,7 +34300,7 @@
       "stack_out": []
     },
     "3851": {
-      "subroutine": "modules.kernel.ActusKernelModule.apply_non_cash_event[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.apply_non_cash_event[routing]",
       "params": {},
       "block": "apply_non_cash_event",
       "stack_in": [],
@@ -35453,7 +35453,7 @@
       ]
     },
     "3942": {
-      "callsub": "modules.kernel.ActusKernelModule._assert_event_allowed_for_contract_type",
+      "callsub": "modules.actus_kernel.ActusKernelModule._assert_event_allowed_for_contract_type",
       "op": "callsub _assert_event_allowed_for_contract_type",
       "stack_out": [
         "aggregate%extract%2#0",
@@ -37680,7 +37680,7 @@
       ]
     },
     "4090": {
-      "callsub": "modules.kernel.ActusKernelModule._get_schedule_entry",
+      "callsub": "modules.actus_kernel.ActusKernelModule._get_schedule_entry",
       "op": "callsub _get_schedule_entry",
       "defined_out": [
         "entry#0",
@@ -38814,7 +38814,7 @@
       ]
     },
     "4193": {
-      "callsub": "modules.kernel.ActusKernelModule._apply_non_cash_schedule_entry",
+      "callsub": "modules.actus_kernel.ActusKernelModule._apply_non_cash_schedule_entry",
       "op": "callsub _apply_non_cash_schedule_entry"
     },
     "4196": {
@@ -39077,7 +39077,7 @@
       "op": "b apply_non_cash_event_bool_merge@17"
     },
     "4221": {
-      "subroutine": "modules.kernel.ActusKernelModule.get_contract_state[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.get_contract_state[routing]",
       "params": {},
       "block": "get_contract_state",
       "stack_in": [],
@@ -41258,7 +41258,7 @@
       "stack_out": []
     },
     "4368": {
-      "subroutine": "modules.kernel.ActusKernelModule.get_next_due_event[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.get_next_due_event[routing]",
       "params": {},
       "block": "get_next_due_event",
       "stack_in": [],
@@ -41610,7 +41610,7 @@
       ]
     },
     "4417": {
-      "block": "get_next_due_event_after_inlined_modules.kernel.ActusKernelModule.get_next_due_event@4",
+      "block": "get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.get_next_due_event@4",
       "stack_in": [
         "tmp%0#0"
       ],
@@ -41701,7 +41701,7 @@
       ]
     },
     "4427": {
-      "callsub": "modules.kernel.ActusKernelModule._get_schedule_entry",
+      "callsub": "modules.actus_kernel.ActusKernelModule._get_schedule_entry",
       "op": "callsub _get_schedule_entry",
       "defined_out": [
         "tmp%0#0"
@@ -41711,7 +41711,7 @@
       ]
     },
     "4430": {
-      "op": "b get_next_due_event_after_inlined_modules.kernel.ActusKernelModule.get_next_due_event@4"
+      "op": "b get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.get_next_due_event@4"
     },
     "4433": {
       "subroutine": "modules.rbac.RbacModule.contract_update[routing]",
@@ -46777,7 +46777,7 @@
       ]
     },
     "5150": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "box_prefixed_key%0#1",
@@ -46884,7 +46884,7 @@
       ]
     },
     "5164": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "box_prefixed_key%0#1",
@@ -48151,7 +48151,7 @@
       "op": "retsub"
     },
     "5305": {
-      "subroutine": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "params": {
         "multiplicand#0": "uint64",
         "multiplier#0": "uint64",
@@ -48262,7 +48262,7 @@
       "op": "retsub"
     },
     "5329": {
-      "subroutine": "modules.kernel.ActusKernelModule._amount_to_index_delta",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._amount_to_index_delta",
       "params": {
         "amount#0": "uint64"
       },
@@ -48425,7 +48425,7 @@
       ]
     },
     "5356": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "tmp%2#0"
@@ -48439,7 +48439,7 @@
       "op": "retsub"
     },
     "5360": {
-      "subroutine": "modules.kernel.ActusKernelModule._index_delta_to_amount",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._index_delta_to_amount",
       "params": {
         "index_delta#0": "uint64"
       },
@@ -48571,7 +48571,7 @@
       ]
     },
     "5383": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "tmp%1#0"
@@ -48585,7 +48585,7 @@
       "op": "retsub"
     },
     "5387": {
-      "subroutine": "modules.kernel.ActusKernelModule._get_schedule_entry",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._get_schedule_entry",
       "params": {
         "event_id#0": "uint64"
       },
@@ -48943,7 +48943,7 @@
       "op": "retsub"
     },
     "5440": {
-      "subroutine": "modules.kernel.ActusKernelModule._assert_event_allowed_for_contract_type",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._assert_event_allowed_for_contract_type",
       "params": {
         "contract_type#0": "uint64",
         "event_type#0": "uint64"
@@ -49118,7 +49118,7 @@
     },
     "5482": {
       "error": "Invalid ACTUS configuration",
-      "block": "_assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34",
+      "block": "_assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34",
       "stack_in": [
         "tmp%0#0"
       ],
@@ -49155,7 +49155,7 @@
       ]
     },
     "5490": {
-      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34"
+      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34"
     },
     "5493": {
       "block": "_assert_event_allowed_for_contract_type_after_if_else@9",
@@ -49299,7 +49299,7 @@
       ]
     },
     "5526": {
-      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34",
+      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34",
       "defined_out": [
         "tmp%0#0"
       ],
@@ -49319,7 +49319,7 @@
       ]
     },
     "5530": {
-      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34",
+      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34",
       "defined_out": [
         "tmp%0#0"
       ],
@@ -49467,7 +49467,7 @@
       ]
     },
     "5565": {
-      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34",
+      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34",
       "defined_out": [
         "tmp%0#0"
       ],
@@ -49487,7 +49487,7 @@
       ]
     },
     "5569": {
-      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34",
+      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34",
       "defined_out": [
         "tmp%0#0"
       ],
@@ -49661,7 +49661,7 @@
       ]
     },
     "5613": {
-      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34",
+      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34",
       "defined_out": [
         "tmp%0#0"
       ],
@@ -49681,7 +49681,7 @@
       ]
     },
     "5617": {
-      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34",
+      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34",
       "defined_out": [
         "tmp%0#0"
       ],
@@ -49754,7 +49754,7 @@
       ]
     },
     "5633": {
-      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34"
+      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34"
     },
     "5636": {
       "block": "_assert_event_allowed_for_contract_type_after_if_else@33",
@@ -49768,10 +49768,10 @@
       ]
     },
     "5637": {
-      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.kernel.ActusKernelModule._event_allowed_for_contract_type@34"
+      "op": "b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34"
     },
     "5640": {
-      "subroutine": "modules.kernel.ActusKernelModule._is_dynamic_annuity",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._is_dynamic_annuity",
       "params": {},
       "block": "_is_dynamic_annuity",
       "stack_in": [],
@@ -49904,7 +49904,7 @@
       "op": "retsub"
     },
     "5662": {
-      "subroutine": "modules.kernel.ActusKernelModule._entry_interest_segment",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._entry_interest_segment",
       "params": {
         "entry#0": "bytes"
       },
@@ -50227,7 +50227,7 @@
       ]
     },
     "5711": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "accrued#0"
@@ -50295,7 +50295,7 @@
       ]
     },
     "5722": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "tmp%4#0",
@@ -50327,7 +50327,7 @@
       "op": "retsub"
     },
     "5730": {
-      "subroutine": "modules.kernel.ActusKernelModule._discount_annuity_factor",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._discount_annuity_factor",
       "params": {
         "discount_factor#0": "uint64",
         "redemption_factor#0": "uint64"
@@ -50472,7 +50472,7 @@
       ]
     },
     "5755": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "maybe_value%0#0",
@@ -50576,7 +50576,7 @@
       ]
     },
     "5771": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "tmp%4#0"
@@ -50590,7 +50590,7 @@
       "op": "retsub"
     },
     "5775": {
-      "subroutine": "modules.kernel.ActusKernelModule._apply_non_cash_schedule_entry",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._apply_non_cash_schedule_entry",
       "params": {
         "entry#0": "bytes",
         "payload#0": "bytes"
@@ -52393,7 +52393,7 @@
       ]
     },
     "5893": {
-      "callsub": "modules.kernel.ActusKernelModule._emit_execution_event",
+      "callsub": "modules.actus_kernel.ActusKernelModule._emit_execution_event",
       "op": "callsub _emit_execution_event",
       "defined_out": [
         "entry#0",
@@ -52765,7 +52765,7 @@
       ]
     },
     "5922": {
-      "callsub": "modules.kernel.ActusKernelModule._entry_interest_segment",
+      "callsub": "modules.actus_kernel.ActusKernelModule._entry_interest_segment",
       "op": "callsub _entry_interest_segment",
       "defined_out": [
         "_entry_interest_segment%0#0",
@@ -53225,7 +53225,7 @@
       ]
     },
     "5955": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "event_type#0",
@@ -54504,7 +54504,7 @@
         "event_type#0",
         "tmp%4#0"
       ],
-      "callsub": "modules.kernel.ActusKernelModule._is_dynamic_annuity",
+      "callsub": "modules.actus_kernel.ActusKernelModule._is_dynamic_annuity",
       "op": "callsub _is_dynamic_annuity",
       "defined_out": [
         "tmp%18#0"
@@ -55023,7 +55023,7 @@
       ]
     },
     "6089": {
-      "callsub": "modules.kernel.ActusKernelModule._discount_annuity_factor",
+      "callsub": "modules.actus_kernel.ActusKernelModule._discount_annuity_factor",
       "op": "callsub _discount_annuity_factor",
       "stack_out": [
         "future_entry#0",
@@ -55479,7 +55479,7 @@
       ]
     },
     "6121": {
-      "callsub": "modules.kernel.ActusKernelModule._get_schedule_entry",
+      "callsub": "modules.actus_kernel.ActusKernelModule._get_schedule_entry",
       "op": "callsub _get_schedule_entry",
       "defined_out": [
         "future_entry#0",
@@ -56247,7 +56247,7 @@
       ]
     },
     "6183": {
-      "callsub": "modules.kernel.ActusKernelModule._discount_annuity_factor",
+      "callsub": "modules.actus_kernel.ActusKernelModule._discount_annuity_factor",
       "op": "callsub _discount_annuity_factor",
       "stack_out": [
         "future_entry#0",
@@ -56942,7 +56942,7 @@
       ]
     },
     "6231": {
-      "callsub": "modules.kernel.ActusKernelModule._scaled_mul_div",
+      "callsub": "modules.actus_kernel.ActusKernelModule._scaled_mul_div",
       "op": "callsub _scaled_mul_div",
       "defined_out": [
         "denominator#0",
@@ -57285,7 +57285,7 @@
       ]
     },
     "6251": {
-      "callsub": "modules.kernel.ActusKernelModule._emit_execution_event",
+      "callsub": "modules.actus_kernel.ActusKernelModule._emit_execution_event",
       "op": "callsub _emit_execution_event",
       "defined_out": [
         "entry#0"
@@ -58376,7 +58376,7 @@
       "op": "b _apply_non_cash_schedule_entry_after_if_else@18"
     },
     "6349": {
-      "subroutine": "modules.kernel.ActusKernelModule._emit_execution_event",
+      "subroutine": "modules.actus_kernel.ActusKernelModule._emit_execution_event",
       "params": {
         "entry#0": "bytes",
         "payoff#0": "uint64",
@@ -58561,7 +58561,7 @@
       ]
     },
     "6380": {
-      "block": "_emit_execution_event_after_inlined_modules.kernel.ActusKernelModule._payoff_sign@7",
+      "block": "_emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payoff_sign@7",
       "stack_in": [
         "tmp%0#0",
         "values%0#0",
@@ -59682,7 +59682,7 @@
       ]
     },
     "6464": {
-      "op": "b _emit_execution_event_after_inlined_modules.kernel.ActusKernelModule._payoff_sign@7"
+      "op": "b _emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payoff_sign@7"
     },
     "6467": {
       "block": "_emit_execution_event_after_if_else@6",
@@ -59709,7 +59709,7 @@
       ]
     },
     "6470": {
-      "op": "b _emit_execution_event_after_inlined_modules.kernel.ActusKernelModule._payoff_sign@7"
+      "op": "b _emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payoff_sign@7"
     },
     "6473": {
       "subroutine": "modules.rbac.RbacModule._role_is_active",
