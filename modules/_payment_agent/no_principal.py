@@ -1,4 +1,4 @@
-from modules.core_financial.common import (
+from modules._core_financial.common import (
     CoreFinancialCommonMixin,
 )
 

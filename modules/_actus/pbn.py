@@ -1,27 +1,33 @@
-# pyright: reportMissingModuleSource=false
-from algopy import Account, Asset, Global, UInt64, arc4
+from algopy import Asset, Global, UInt64, arc4
 
-from modules.core_financial.common import CoreFinancialCommonMixin
+from modules._core_financial.common import CoreFinancialCommonMixin
 from smart_contracts import abi_types as typ
+from smart_contracts import config as cfg
 from smart_contracts import errors as err
 
 
-class PAMCoreMixin(CoreFinancialCommonMixin):
-    """Principal at Maturity (PAM) core."""
+class PBNCoreMixin(CoreFinancialCommonMixin):
+    """Perpetual Bond (PBN) core."""
 
     def __init__(self) -> None:
         super().__init__()
 
-    def assert_pay_principal_authorization(self, holding_address: Account) -> None:
-        # The reference implementation does not restrict caller authorization
-        assert self.status_is_active(), err.UNAUTHORIZED
-        self.assert_is_not_asset_defaulted()
-        self.assert_is_not_asset_suspended()
-        self.assert_valid_holding_address(holding_address)
-        units = self.account[holding_address].units
-        assert units > 0, err.NO_UNITS
-        assert Global.latest_timestamp >= self.maturity_date, err.NOT_MATURE
-        # The reference implementation does not assert if there is enough liquidity to repay the principal to all
+    def assert_time_schedule_limits(self, time_events: typ.TimeEvents) -> None:
+        # PBN has no maturity date in the static schedule
+        assert (
+            time_events.length == self.total_coupons + 3
+        ), err.INVALID_TIME_EVENTS_LENGTH
+
+    def set_time_events(self, time_events: typ.TimeEvents) -> None:
+        self.time_events.value = time_events.copy()
+        self.primary_distribution_opening_date = time_events[
+            cfg.PRIMARY_DISTRIBUTION_OPENING_DATE_IDX
+        ]
+        self.primary_distribution_closure_date = time_events[
+            cfg.PRIMARY_DISTRIBUTION_CLOSURE_DATE_IDX
+        ]
+        self.issuance_date = time_events[cfg.ISSUANCE_DATE_IDX]
+        self.maturity_date = UInt64(0)
 
     @arc4.abimethod
     def asset_config(
@@ -79,3 +85,30 @@ class PAMCoreMixin(CoreFinancialCommonMixin):
             time_events=time_events,
             time_periods=time_periods,
         )
+
+    @arc4.abimethod
+    def update_interest_rate(self, *, interest_rate: arc4.UInt16) -> UInt64:
+        """
+        Update variable interest rates in bps
+
+        Args:
+            interest_rate: Interest rate in bps
+
+        Returns:
+            Timestamp of the update
+
+        Raises:
+            UNAUTHORIZED: Not authorized
+            DEFAULTED: Defaulted
+            SUSPENDED: Suspended operations
+            PENDING_COUPON_PAYMENT: Pending due coupon payment
+        """
+        self.assert_caller_is_interest_oracle()
+        self.assert_is_not_asset_defaulted()
+        self.assert_is_not_asset_suspended()
+        due_coupons = self.count_due_coupons()
+        assert self.all_due_coupons_paid(due_coupons), err.PENDING_COUPON_PAYMENT
+
+        # Update interest rate
+        self.interest_rate = interest_rate.as_uint64()
+        return Global.latest_timestamp
