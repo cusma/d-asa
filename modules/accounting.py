@@ -72,8 +72,12 @@ class AccountingModule(KernelStateModule):
 
         # Convert the per-unit fixed-point deltas into absolute claimable amounts
         # using the account's active units.
-        claimable_interest = position.units * interest_delta // self.fixed_point_scale
-        claimable_principal = position.units * principal_delta // self.fixed_point_scale
+        claimable_interest = self._scaled_mul_div(
+            interest_delta, position.units, self.fixed_point_scale
+        )
+        claimable_principal = self._scaled_mul_div(
+            principal_delta, position.units, self.fixed_point_scale
+        )
 
         # Accrue the claimable amounts to the account position and make them available
         # for withdrawal.
@@ -234,10 +238,7 @@ class AccountingModule(KernelStateModule):
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
         self.assert_valid_holding_address(holding_address)
-        assert (
-            Txn.sender == holding_address
-            or Txn.sender == self.account[holding_address].payment_address
-        ), err.UNAUTHORIZED
+        assert Txn.sender == holding_address, err.UNAUTHORIZED
         self.assert_is_not_asset_defaulted()
         self.assert_is_not_asset_suspended()
         self.account[holding_address].payment_address = payment_address
