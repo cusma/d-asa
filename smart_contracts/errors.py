@@ -1,6 +1,3 @@
-# Build
-INVALID_MIXIN_COMPOSITION = "Invalid mixin composition"
-
 # State Schema
 WRONG_GLOBAL_BYTES = "Wrong Global Bytes allocation"
 WRONG_GLOBAL_UINTS = "Wrong Global UInts allocation"
@@ -63,14 +60,5 @@ SELF_TRANSFER = "Sender and receiver must be different"
 NULL_TRANSFER = "Transfer units must be greater than zero"
 OVER_TRANSFER = "Insufficient sender units to transfer"
 
-# Pay Coupon
-NO_DUE_COUPON = "No due coupon to pay"
-
-# Pay Principal
-NOT_MATURE = "Not mature"
-
 # Get Account Units Current Value
 NO_PRIMARY_DISTRIBUTION = "Primary distribution not yet executed"
-
-# Get Accrued Interest Amount
-INVALID_UNITS = "Invalid amount of units for the account"
