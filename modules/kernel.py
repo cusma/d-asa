@@ -36,12 +36,13 @@ from algopy import (
     op,
 )
 
-from .rbac import RbacModule
 from smart_contracts import abi_types as typ
 from smart_contracts import constants as cst
 from smart_contracts import enums
 from smart_contracts import errors as err
 from smart_contracts.events import ExecutionEvent
+
+from .rbac import RbacModule
 
 
 class ActusKernelModule(RbacModule):
@@ -823,7 +824,7 @@ class ActusKernelModule(RbacModule):
         self.reserved_units_total = UInt64(0)
 
         # Day-Count Conventions
-        self.day_count_convention = terms.day_count_convention
+        self.day_count_convention = terms.day_count_convention.as_uint64()
 
         # Time
         self.initial_exchange_date = terms.initial_exchange_date
@@ -1029,7 +1030,7 @@ class ActusKernelModule(RbacModule):
         self._store_contract_config(self.contract_type, terms, initial_state)
 
         # Notarize prospectus (optional)
-        self.prospectus_hash = prospectus.hash
+        self.prospectus_hash = prospectus.hash.bytes
         self.prospectus_url = prospectus.url
         return Global.latest_timestamp
 
