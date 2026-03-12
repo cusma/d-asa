@@ -1,10 +1,7 @@
-# pyright: reportMissingModuleSource=false
-
 from algopy import (
     Account,
     ARC4Contract,
     BoxMap,
-    Bytes,
     Global,
     GlobalState,
     Txn,
@@ -31,17 +28,19 @@ class RbacModule(ARC4Contract):
         self.arranger = GlobalState(Account(), key=cst.PREFIX_ID_ARRANGER)
         self.op_daemon = GlobalState(Account(), key=cst.PREFIX_ID_OP_DAEMON)
         self.account_manager = BoxMap(
-            Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_ACCOUNT_MANAGER
+            Account, typ.RoleValidity, key_prefix=cst.PREFIX_ID_ACCOUNT_MANAGER
         )
         self.primary_dealer = BoxMap(
-            Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_PRIMARY_DEALER
+            Account, typ.RoleValidity, key_prefix=cst.PREFIX_ID_PRIMARY_DEALER
         )
-        self.trustee = BoxMap(Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_TRUSTEE)
+        self.trustee = BoxMap(
+            Account, typ.RoleValidity, key_prefix=cst.PREFIX_ID_TRUSTEE
+        )
         self.authority = BoxMap(
-            Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_AUTHORITY
+            Account, typ.RoleValidity, key_prefix=cst.PREFIX_ID_AUTHORITY
         )
-        self.interest_oracle = BoxMap(
-            Account, typ.RoleConfig, key_prefix=cst.PREFIX_ID_INTEREST_ORACLE
+        self.observer = BoxMap(
+            Account, typ.RoleValidity, key_prefix=cst.PREFIX_ID_OBSERVER
         )
 
         # D-ASA Governance
@@ -76,8 +75,8 @@ class RbacModule(ARC4Contract):
     def assert_caller_is_authority(self) -> None:
         assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
 
-    def assert_caller_is_interest_oracle(self) -> None:
-        assert self._role_is_active(self.interest_oracle, Txn.sender), err.UNAUTHORIZED
+    def assert_caller_is_observer(self) -> None:
+        assert self._role_is_active(self.observer, Txn.sender), err.UNAUTHORIZED
 
     def assert_is_not_asset_defaulted(self) -> None:
         assert not self.asset_defaulted, err.DEFAULTED
@@ -92,11 +91,11 @@ class RbacModule(ARC4Contract):
             UInt64(cst.ROLE_PRIMARY_DEALER),
             UInt64(cst.ROLE_TRUSTEE),
             UInt64(cst.ROLE_AUTHORITY),
-            UInt64(cst.ROLE_INTEREST_ORACLE),
+            UInt64(cst.ROLE_OBSERVER),
         ), err.INVALID_ROLE
 
-    def _upsert_role(
-        self, role_id: UInt64, role_address: Account, config: Bytes
+    def _set_role(
+        self, role_id: UInt64, role_address: Account, validity: typ.RoleValidity
     ) -> None:
         if role_id == UInt64(cst.ROLE_ARRANGER):
             self.arranger.value = role_address
@@ -104,23 +103,23 @@ class RbacModule(ARC4Contract):
 
         if role_id == UInt64(cst.ROLE_ACCOUNT_MANAGER):
             assert role_address not in self.account_manager, err.INVALID_ROLE_ADDRESS
-            self.account_manager[role_address] = typ.RoleConfig.from_bytes(config)
+            self.account_manager[role_address] = validity
             return
         if role_id == UInt64(cst.ROLE_PRIMARY_DEALER):
             assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-            self.primary_dealer[role_address] = typ.RoleConfig.from_bytes(config)
+            self.primary_dealer[role_address] = validity
             return
         if role_id == UInt64(cst.ROLE_TRUSTEE):
             assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
-            self.trustee[role_address] = typ.RoleConfig.from_bytes(config)
+            self.trustee[role_address] = validity
             return
         if role_id == UInt64(cst.ROLE_AUTHORITY):
             assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
-            self.authority[role_address] = typ.RoleConfig.from_bytes(config)
+            self.authority[role_address] = validity
             return
-        if role_id == UInt64(cst.ROLE_INTEREST_ORACLE):
-            assert role_address not in self.interest_oracle, err.INVALID_ROLE_ADDRESS
-            self.interest_oracle[role_address] = typ.RoleConfig.from_bytes(config)
+        if role_id == UInt64(cst.ROLE_OBSERVER):
+            assert role_address not in self.observer, err.INVALID_ROLE_ADDRESS
+            self.observer[role_address] = validity
 
     def _delete_role(self, role_id: UInt64, role_address: Account) -> None:
         assert role_id != UInt64(cst.ROLE_ARRANGER), err.INVALID_ROLE
@@ -140,9 +139,9 @@ class RbacModule(ARC4Contract):
             assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
             del self.authority[role_address]
             return
-        if role_id == UInt64(cst.ROLE_INTEREST_ORACLE):
-            assert role_address in self.interest_oracle, err.INVALID_ROLE_ADDRESS
-            del self.interest_oracle[role_address]
+        if role_id == UInt64(cst.ROLE_OBSERVER):
+            assert role_address in self.observer, err.INVALID_ROLE_ADDRESS
+            del self.observer[role_address]
 
     @arc4.abimethod
     def rbac_rotate_arranger(self, *, new_arranger: Account) -> UInt64:
@@ -176,7 +175,7 @@ class RbacModule(ARC4Contract):
 
     @arc4.abimethod
     def rbac_assign_role(
-        self, *, role_id: arc4.UInt8, role_address: Account, config: Bytes
+        self, *, role_id: arc4.UInt8, role_address: Account, config: typ.RoleValidity
     ) -> UInt64:
         """
         Assign a role to an address
@@ -184,7 +183,7 @@ class RbacModule(ARC4Contract):
         Args:
             role_id: Role Identifier
             role_address: Account Role Address
-            config: Role configuration (Optional)
+            validity: Role time validity
 
         Returns:
             Timestamp of the role assignment
