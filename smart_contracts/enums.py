@@ -110,7 +110,7 @@ ROLE_ACCOUNT_MANAGER: Final[int] = 40
 ROLE_PRIMARY_DEALER: Final[int] = 50
 ROLE_TRUSTEE: Final[int] = 60
 ROLE_AUTHORITY: Final[int] = 70
-ROLE_INTEREST_ORACLE: Final[int] = 80
+ROLE_OBSERVER: Final[int] = 80
 
 ################################################################################
 # Payoff Sign
