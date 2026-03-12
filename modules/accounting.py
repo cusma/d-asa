@@ -57,7 +57,7 @@ class AccountingModule(ActusKernelModule):
             Tuple of newly accrued `(claimable_interest, claimable_principal)` amounts.
         """
 
-        self.assert_valid_holding_address(holding_address)
+        self._assert_valid_holding_address(holding_address)
         position = self.account[holding_address].copy()
 
         # Compute the incremental per-unit fixed-point interest and principal accrued
@@ -96,8 +96,8 @@ class AccountingModule(ActusKernelModule):
 
     def _ensure_units_activated(self, holding_address: Account) -> None:
         """Move reserved pre-IED units into active units once IED has executed."""
-        self.assert_valid_holding_address(holding_address)
-        if self.status_is_pending_ied():
+        self._assert_valid_holding_address(holding_address)
+        if self._status_is_pending_ied():
             return
 
         position = self.account[holding_address].copy()
@@ -180,8 +180,8 @@ class AccountingModule(ActusKernelModule):
             UNAUTHORIZED: Not authorized
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
-        self.assert_caller_is_authority()
-        self.assert_valid_holding_address(holding_address)
+        self._assert_caller_is_authority()
+        self._assert_valid_holding_address(holding_address)
         self.account[holding_address].suspended = suspended
         return Global.latest_timestamp
 
@@ -206,10 +206,10 @@ class AccountingModule(ActusKernelModule):
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
 
-        self.assert_caller_is_account_manager()
-        assert not self.status_is_ended(), err.UNAUTHORIZED
-        self.assert_is_not_asset_defaulted()
-        self.assert_is_not_asset_suspended()
+        self._assert_caller_is_account_manager()
+        assert not self._status_is_ended(), err.UNAUTHORIZED
+        self._assert_is_not_asset_defaulted()
+        self._assert_is_not_asset_suspended()
         assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
         self.account[holding_address] = self._new_account_position(payment_address)
         return Global.latest_timestamp
@@ -234,10 +234,10 @@ class AccountingModule(ActusKernelModule):
             SUSPENDED: Suspended operations
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
-        self.assert_valid_holding_address(holding_address)
+        self._assert_valid_holding_address(holding_address)
         assert Txn.sender == holding_address, err.UNAUTHORIZED
-        self.assert_is_not_asset_defaulted()
-        self.assert_is_not_asset_suspended()
+        self._assert_is_not_asset_defaulted()
+        self._assert_is_not_asset_suspended()
         self.account[holding_address].payment_address = payment_address
         return Global.latest_timestamp
 
@@ -255,5 +255,5 @@ class AccountingModule(ActusKernelModule):
         Raises:
             INVALID_HOLDING_ADDRESS: Invalid account holding address
         """
-        self.assert_valid_holding_address(holding_address)
+        self._assert_valid_holding_address(holding_address)
         return self.account[holding_address]
