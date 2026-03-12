@@ -1,13 +1,13 @@
 from algopy import Asset, Global, UInt64, op
 
-from modules.rbac import RbacModule
+from modules import RbacModule
 from smart_contracts import constants as cst
 from smart_contracts import enums
 from smart_contracts import errors as err
 from smart_contracts.abi_types import TimeStamp
 
 
-class KernelStateModule(RbacModule):
+class ActusKernelStateModule(RbacModule):
     """Global State and shared kernel math helpers."""
 
     def __init__(self) -> None:
