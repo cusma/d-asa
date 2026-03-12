@@ -79,7 +79,7 @@ def resolve_principal_schedule(
         return tuple(
             ts
             for ts in deduplicate_timestamps(timestamps)
-            if terms.initial_exchange_date < ts <= effective_end
+            if terms.initial_exchange_date < ts < effective_end
         )
 
     anchor = contract.principal_redemption_anchor
