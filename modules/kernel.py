@@ -68,8 +68,8 @@ class ActusKernelModule(RbacModule):
         # Time
         self.initial_exchange_date = typ.TimeStamp()
         self.maturity_date = typ.TimeStamp()
-        self.secondary_market_opening_date = typ.TimeStamp()
-        self.secondary_market_closure_date = typ.TimeStamp()
+        self.transfer_opening_date = typ.TimeStamp()
+        self.transfer_closure_date = typ.TimeStamp()
 
         # Day Count Convention
         self.day_count_convention = UInt64()
@@ -197,7 +197,7 @@ class ActusKernelModule(RbacModule):
         self, page_index: UInt64, schedule_page: typ.ExecutionSchedulePage
     ) -> None:
         """Persist a normalized schedule page."""
-        self.schedule_page[page_index] = schedule_page
+        self.schedule_page[page_index] = schedule_page.copy()
 
     def _get_schedule_entry(self, event_id: UInt64) -> typ.ExecutionScheduleEntry:
         """Load a normalized schedule entry by global event id."""
@@ -450,6 +450,10 @@ class ActusKernelModule(RbacModule):
         """
         assert entry.event_type.as_uint64() == UInt64(enums.EVT_IED), err.NOT_EVT_IED
         return self.initial_exchange_amount
+
+    def _reserved_total(self) -> UInt64:
+        """Return the settlement funds already ring-fenced for holders."""
+        return self.reserved_interest + self.reserved_principal
 
     ############################################################################
     # Annuity (ANN) Specific Logic
@@ -718,21 +722,6 @@ class ActusKernelModule(RbacModule):
     # Others
     ############################################################################
 
-    def _assert_transfer_window(self) -> None:
-        """Require transfers to happen within the configured secondary market window."""
-        if self.secondary_market_opening_date:
-            assert (
-                self.secondary_market_opening_date <= Global.latest_timestamp
-            ), err.SECONDARY_MARKET_CLOSED
-        if self.secondary_market_closure_date:
-            assert (
-                Global.latest_timestamp < self.secondary_market_closure_date
-            ), err.SECONDARY_MARKET_CLOSED
-
-    def _reserved_total(self) -> UInt64:
-        """Return the settlement funds already ring-fenced for holders."""
-        return self.reserved_interest + self.reserved_principal
-
     def _available_settlement_funds(self) -> UInt64:
         """Return the app's free settlement balance after reserved cashflows."""
         balance = self.settlement_asset_id.balance(Global.current_application_address)
@@ -830,8 +819,6 @@ class ActusKernelModule(RbacModule):
         self.initial_exchange_date = terms.initial_exchange_date
         self.maturity_date = terms.maturity_date
         self.next_principal_redemption = initial_state.next_principal_redemption
-        self.secondary_market_opening_date = terms.secondary_market_opening_date
-        self.secondary_market_closure_date = terms.secondary_market_closure_date
 
         # Principal
         self.initial_exchange_amount = terms.initial_exchange_amount
