@@ -199,13 +199,13 @@
       "stack_out": []
     },
     "188": {
-      "op": "pushbytess 0x82f71b2d 0xef04f5d3 0xdf343550 0x3dbe80bd 0xdf54e82c 0x010c8299 0x7406acd2 0x1a72a2ee // method \"rbac_rotate_arranger(address)uint64\", method \"rbac_set_op_daemon(address)uint64\", method \"rbac_assign_role(uint8,address,(uint64,uint64))uint64\", method \"rbac_revoke_role(uint8,address)uint64\", method \"rbac_gov_asset_suspension(bool)uint64\", method \"rbac_get_arranger()address\", method \"rbac_get_address_roles(address)(bool,bool,bool,bool,bool)\", method \"rbac_get_role_validity(uint8,address)(uint64,uint64)\"",
+      "op": "pushbytess 0x82f71b2d 0xef04f5d3 0xdf343550 0x3dbe80bd 0x1e3e48e7 0x010c8299 0x7406acd2 0x1a72a2ee // method \"rbac_rotate_arranger(address)uint64\", method \"rbac_set_op_daemon(address)uint64\", method \"rbac_assign_role(uint8,address,(uint64,uint64))uint64\", method \"rbac_revoke_role(uint8,address)uint64\", method \"rbac_contract_suspension(bool)uint64\", method \"rbac_get_arranger()address\", method \"rbac_get_address_roles(address)(bool,bool,bool,bool,bool)\", method \"rbac_get_role_validity(uint8,address)(uint64,uint64)\"",
       "defined_out": [
         "Method(rbac_assign_role(uint8,address,(uint64,uint64))uint64)",
+        "Method(rbac_contract_suspension(bool)uint64)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_role_validity(uint8,address)(uint64,uint64))",
-        "Method(rbac_gov_asset_suspension(bool)uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(rbac_set_op_daemon(address)uint64)"
@@ -215,7 +215,7 @@
         "Method(rbac_set_op_daemon(address)uint64)",
         "Method(rbac_assign_role(uint8,address,(uint64,uint64))uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
-        "Method(rbac_gov_asset_suspension(bool)uint64)",
+        "Method(rbac_contract_suspension(bool)uint64)",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_role_validity(uint8,address)(uint64,uint64))"
@@ -225,10 +225,10 @@
       "op": "txna ApplicationArgs 0",
       "defined_out": [
         "Method(rbac_assign_role(uint8,address,(uint64,uint64))uint64)",
+        "Method(rbac_contract_suspension(bool)uint64)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_role_validity(uint8,address)(uint64,uint64))",
-        "Method(rbac_gov_asset_suspension(bool)uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(rbac_set_op_daemon(address)uint64)",
@@ -239,7 +239,7 @@
         "Method(rbac_set_op_daemon(address)uint64)",
         "Method(rbac_assign_role(uint8,address,(uint64,uint64))uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
-        "Method(rbac_gov_asset_suspension(bool)uint64)",
+        "Method(rbac_contract_suspension(bool)uint64)",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_role_validity(uint8,address)(uint64,uint64))",
@@ -247,7 +247,7 @@
       ]
     },
     "233": {
-      "op": "match rbac_rotate_arranger rbac_set_op_daemon rbac_assign_role rbac_revoke_role rbac_gov_asset_suspension rbac_get_arranger rbac_get_address_roles rbac_get_role_validity",
+      "op": "match rbac_rotate_arranger rbac_set_op_daemon rbac_assign_role rbac_revoke_role rbac_contract_suspension rbac_get_arranger rbac_get_address_roles rbac_get_role_validity",
       "stack_out": []
     },
     "251": {
@@ -3231,9 +3231,9 @@
       "op": "b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12"
     },
     "654": {
-      "subroutine": "modules.rbac.RbacModule.rbac_gov_asset_suspension[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_contract_suspension[routing]",
       "params": {},
-      "block": "rbac_gov_asset_suspension",
+      "block": "rbac_contract_suspension",
       "stack_in": [],
       "op": "txna ApplicationArgs 1",
       "defined_out": [

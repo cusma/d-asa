@@ -992,53 +992,53 @@
       "stack_out": []
     },
     "1025": {
-      "op": "pushbytess 0xb44618c8 0xe7832529 0x7ea20e0b 0x6c85e3ee 0xbdd1a944 0xdc063b35 0x14fc10ef 0x74a7297f 0x09d4fe14 0x9a9bfa85 0x85eed33d 0x9185104a 0xd9f225ac 0x6e0e5c95 0xff3fd4b3 0x82f71b2d 0xef04f5d3 0xdf343550 0x3dbe80bd 0xdf54e82c 0x010c8299 0x7406acd2 0x1a72a2ee // method \"fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64)\", method \"claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[])\", method \"set_transfer_schedule(uint64,uint64)uint64\", method \"primary_distribution(address,uint64)uint64\", method \"transfer(address,address,uint64)uint64\", method \"account_gov_suspension(address,bool)uint64\", method \"account_open(address,address)uint64\", method \"account_update_payment_address(address,address)uint64\", method \"account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64)\", method \"contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64\", method \"contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64\", method \"execute_ied()uint64\", method \"apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64\", method \"get_contract_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)\", method \"get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)\", method \"rbac_rotate_arranger(address)uint64\", method \"rbac_set_op_daemon(address)uint64\", method \"rbac_assign_role(uint8,address,(uint64,uint64))uint64\", method \"rbac_revoke_role(uint8,address)uint64\", method \"rbac_gov_asset_suspension(bool)uint64\", method \"rbac_get_arranger()address\", method \"rbac_get_address_roles(address)(bool,bool,bool,bool,bool)\", method \"rbac_get_role_validity(uint8,address)(uint64,uint64)\"",
+      "op": "pushbytess 0xb44618c8 0xe7832529 0x94388723 0x6c85e3ee 0xbdd1a944 0x7c0f1812 0x14fc10ef 0x74a7297f 0x09d4fe14 0x9a9bfa85 0x85eed33d 0xab2c0fc4 0xd9f225ac 0x8ea6e74c 0x02af557a 0x82f71b2d 0xef04f5d3 0xdf343550 0x3dbe80bd 0x1e3e48e7 0x010c8299 0x7406acd2 0x1a72a2ee // method \"fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64)\", method \"claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[])\", method \"transfer_set_schedule(uint64,uint64)uint64\", method \"primary_distribution(address,uint64)uint64\", method \"transfer(address,address,uint64)uint64\", method \"account_suspension(address,bool)uint64\", method \"account_open(address,address)uint64\", method \"account_update_payment_address(address,address)uint64\", method \"account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64)\", method \"contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64\", method \"contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64\", method \"contract_execute_ied()uint64\", method \"apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64\", method \"contract_get_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)\", method \"contract_get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)\", method \"rbac_rotate_arranger(address)uint64\", method \"rbac_set_op_daemon(address)uint64\", method \"rbac_assign_role(uint8,address,(uint64,uint64))uint64\", method \"rbac_revoke_role(uint8,address)uint64\", method \"rbac_contract_suspension(bool)uint64\", method \"rbac_get_arranger()address\", method \"rbac_get_address_roles(address)(bool,bool,bool,bool,bool)\", method \"rbac_get_role_validity(uint8,address)(uint64,uint64)\"",
       "defined_out": [
         "Method(account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64))",
-        "Method(account_gov_suspension(address,bool)uint64)",
         "Method(account_open(address,address)uint64)",
+        "Method(account_suspension(address,bool)uint64)",
         "Method(account_update_payment_address(address,address)uint64)",
         "Method(apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64)",
         "Method(claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[]))",
         "Method(contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64)",
+        "Method(contract_execute_ied()uint64)",
+        "Method(contract_get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
+        "Method(contract_get_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
         "Method(contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64)",
-        "Method(execute_ied()uint64)",
         "Method(fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64))",
-        "Method(get_contract_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
-        "Method(get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
         "Method(primary_distribution(address,uint64)uint64)",
         "Method(rbac_assign_role(uint8,address,(uint64,uint64))uint64)",
+        "Method(rbac_contract_suspension(bool)uint64)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_role_validity(uint8,address)(uint64,uint64))",
-        "Method(rbac_gov_asset_suspension(bool)uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(rbac_set_op_daemon(address)uint64)",
-        "Method(set_transfer_schedule(uint64,uint64)uint64)",
-        "Method(transfer(address,address,uint64)uint64)"
+        "Method(transfer(address,address,uint64)uint64)",
+        "Method(transfer_set_schedule(uint64,uint64)uint64)"
       ],
       "stack_out": [
         "Method(fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64))",
         "Method(claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[]))",
-        "Method(set_transfer_schedule(uint64,uint64)uint64)",
+        "Method(transfer_set_schedule(uint64,uint64)uint64)",
         "Method(primary_distribution(address,uint64)uint64)",
         "Method(transfer(address,address,uint64)uint64)",
-        "Method(account_gov_suspension(address,bool)uint64)",
+        "Method(account_suspension(address,bool)uint64)",
         "Method(account_open(address,address)uint64)",
         "Method(account_update_payment_address(address,address)uint64)",
         "Method(account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64))",
         "Method(contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64)",
         "Method(contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64)",
-        "Method(execute_ied()uint64)",
+        "Method(contract_execute_ied()uint64)",
         "Method(apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64)",
-        "Method(get_contract_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
-        "Method(get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
+        "Method(contract_get_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
+        "Method(contract_get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(rbac_set_op_daemon(address)uint64)",
         "Method(rbac_assign_role(uint8,address,(uint64,uint64))uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
-        "Method(rbac_gov_asset_suspension(bool)uint64)",
+        "Method(rbac_contract_suspension(bool)uint64)",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_role_validity(uint8,address)(uint64,uint64))"
@@ -1048,51 +1048,51 @@
       "op": "txna ApplicationArgs 0",
       "defined_out": [
         "Method(account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64))",
-        "Method(account_gov_suspension(address,bool)uint64)",
         "Method(account_open(address,address)uint64)",
+        "Method(account_suspension(address,bool)uint64)",
         "Method(account_update_payment_address(address,address)uint64)",
         "Method(apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64)",
         "Method(claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[]))",
         "Method(contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64)",
+        "Method(contract_execute_ied()uint64)",
+        "Method(contract_get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
+        "Method(contract_get_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
         "Method(contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64)",
-        "Method(execute_ied()uint64)",
         "Method(fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64))",
-        "Method(get_contract_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
-        "Method(get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
         "Method(primary_distribution(address,uint64)uint64)",
         "Method(rbac_assign_role(uint8,address,(uint64,uint64))uint64)",
+        "Method(rbac_contract_suspension(bool)uint64)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_role_validity(uint8,address)(uint64,uint64))",
-        "Method(rbac_gov_asset_suspension(bool)uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(rbac_set_op_daemon(address)uint64)",
-        "Method(set_transfer_schedule(uint64,uint64)uint64)",
         "Method(transfer(address,address,uint64)uint64)",
+        "Method(transfer_set_schedule(uint64,uint64)uint64)",
         "tmp%10#0"
       ],
       "stack_out": [
         "Method(fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64))",
         "Method(claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[]))",
-        "Method(set_transfer_schedule(uint64,uint64)uint64)",
+        "Method(transfer_set_schedule(uint64,uint64)uint64)",
         "Method(primary_distribution(address,uint64)uint64)",
         "Method(transfer(address,address,uint64)uint64)",
-        "Method(account_gov_suspension(address,bool)uint64)",
+        "Method(account_suspension(address,bool)uint64)",
         "Method(account_open(address,address)uint64)",
         "Method(account_update_payment_address(address,address)uint64)",
         "Method(account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64))",
         "Method(contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64)",
         "Method(contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64)",
-        "Method(execute_ied()uint64)",
+        "Method(contract_execute_ied()uint64)",
         "Method(apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64)",
-        "Method(get_contract_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
-        "Method(get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
+        "Method(contract_get_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
+        "Method(contract_get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))",
         "Method(rbac_rotate_arranger(address)uint64)",
         "Method(rbac_set_op_daemon(address)uint64)",
         "Method(rbac_assign_role(uint8,address,(uint64,uint64))uint64)",
         "Method(rbac_revoke_role(uint8,address)uint64)",
-        "Method(rbac_gov_asset_suspension(bool)uint64)",
+        "Method(rbac_contract_suspension(bool)uint64)",
         "Method(rbac_get_arranger()address)",
         "Method(rbac_get_address_roles(address)(bool,bool,bool,bool,bool))",
         "Method(rbac_get_role_validity(uint8,address)(uint64,uint64))",
@@ -1100,7 +1100,7 @@
       ]
     },
     "1145": {
-      "op": "match fund_due_cashflows claim_due_cashflows set_transfer_schedule primary_distribution transfer account_gov_suspension account_open account_update_payment_address account_get_position contract_config contract_schedule execute_ied apply_non_cash_event get_contract_state get_next_due_event rbac_rotate_arranger rbac_set_op_daemon rbac_assign_role rbac_revoke_role rbac_gov_asset_suspension rbac_get_arranger rbac_get_address_roles rbac_get_role_validity",
+      "op": "match fund_due_cashflows claim_due_cashflows transfer_set_schedule primary_distribution transfer account_suspension account_open account_update_payment_address account_get_position contract_config contract_schedule contract_execute_ied apply_non_cash_event contract_get_state contract_get_next_due_event rbac_rotate_arranger rbac_set_op_daemon rbac_assign_role rbac_revoke_role rbac_contract_suspension rbac_get_arranger rbac_get_address_roles rbac_get_role_validity",
       "stack_out": []
     },
     "1193": {
@@ -16679,9 +16679,9 @@
       "op": "b claim_due_cashflows_bool_merge@16"
     },
     "2252": {
-      "subroutine": "modules.transfer_agent.TransferAgent.set_transfer_schedule[routing]",
+      "subroutine": "modules.transfer_agent.TransferAgent.transfer_set_schedule[routing]",
       "params": {},
-      "block": "set_transfer_schedule",
+      "block": "transfer_set_schedule",
       "stack_in": [],
       "op": "txna ApplicationArgs 1",
       "defined_out": [
@@ -20896,9 +20896,9 @@
       ]
     },
     "2673": {
-      "subroutine": "modules.accounting.AccountingModule.account_gov_suspension[routing]",
+      "subroutine": "modules.accounting.AccountingModule.account_suspension[routing]",
       "params": {},
-      "block": "account_gov_suspension",
+      "block": "account_suspension",
       "stack_in": [],
       "op": "txna ApplicationArgs 1",
       "defined_out": [
@@ -33424,9 +33424,9 @@
       ]
     },
     "3729": {
-      "subroutine": "modules.actus_kernel.ActusKernelModule.execute_ied[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.contract_execute_ied[routing]",
       "params": {},
-      "block": "execute_ied",
+      "block": "contract_execute_ied",
       "stack_in": [],
       "op": "intc_0 // 0",
       "defined_out": [
@@ -39077,9 +39077,9 @@
       "op": "b apply_non_cash_event_bool_merge@17"
     },
     "4221": {
-      "subroutine": "modules.actus_kernel.ActusKernelModule.get_contract_state[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.contract_get_state[routing]",
       "params": {},
-      "block": "get_contract_state",
+      "block": "contract_get_state",
       "stack_in": [],
       "op": "intc_0 // 0",
       "defined_out": [
@@ -41258,9 +41258,9 @@
       "stack_out": []
     },
     "4368": {
-      "subroutine": "modules.actus_kernel.ActusKernelModule.get_next_due_event[routing]",
+      "subroutine": "modules.actus_kernel.ActusKernelModule.contract_get_next_due_event[routing]",
       "params": {},
-      "block": "get_next_due_event",
+      "block": "contract_get_next_due_event",
       "stack_in": [],
       "op": "intc_0 // 0",
       "defined_out": [
@@ -41386,7 +41386,7 @@
       ]
     },
     "4383": {
-      "op": "bz get_next_due_event_after_if_else@3",
+      "op": "bz contract_get_next_due_event_after_if_else@3",
       "stack_out": []
     },
     "4386": {
@@ -41610,7 +41610,7 @@
       ]
     },
     "4417": {
-      "block": "get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.get_next_due_event@4",
+      "block": "contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.contract_get_next_due_event@4",
       "stack_in": [
         "tmp%0#0"
       ],
@@ -41661,7 +41661,7 @@
       "stack_out": []
     },
     "4423": {
-      "block": "get_next_due_event_after_if_else@3",
+      "block": "contract_get_next_due_event_after_if_else@3",
       "stack_in": [],
       "op": "intc_0 // 0",
       "defined_out": [
@@ -41711,7 +41711,7 @@
       ]
     },
     "4430": {
-      "op": "b get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.get_next_due_event@4"
+      "op": "b contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.contract_get_next_due_event@4"
     },
     "4433": {
       "subroutine": "modules.rbac.RbacModule.contract_update[routing]",
@@ -44541,9 +44541,9 @@
       "op": "b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12"
     },
     "4817": {
-      "subroutine": "modules.rbac.RbacModule.rbac_gov_asset_suspension[routing]",
+      "subroutine": "modules.rbac.RbacModule.rbac_contract_suspension[routing]",
       "params": {},
-      "block": "rbac_gov_asset_suspension",
+      "block": "rbac_contract_suspension",
       "stack_in": [],
       "op": "txna ApplicationArgs 1",
       "defined_out": [
