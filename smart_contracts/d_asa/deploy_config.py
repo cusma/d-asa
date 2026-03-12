@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import logging
 import os
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
+from typing import cast
 
 import algokit_utils
 from algokit_utils import (
@@ -18,6 +19,21 @@ from algosdk.constants import ZERO_ADDRESS
 
 from smart_contracts import constants as cst
 from smart_contracts import enums
+from smart_contracts.artifacts.d_asa.dasa_client import (
+    ContractConfigArgs,
+    ContractCreateArgs,
+    ContractScheduleArgs,
+    DasaClient,
+    DasaFactory,
+    DasaMethodCallCreateParams,
+    Prospectus,
+)
+from smart_contracts.artifacts.d_asa.dasa_client import (
+    InitialKernelState as ClientInitialKernelState,
+)
+from smart_contracts.artifacts.d_asa.dasa_client import (
+    NormalizedActusTerms as ClientNormalizedActusTerms,
+)
 from src import (
     ExecutionScheduleEntry,
     NormalizationResult,
@@ -30,6 +46,10 @@ from src.contracts import (
 from src.schedule import Cycle
 
 logger = logging.getLogger(__name__)
+
+AlgodStatus = Mapping[str, int]
+AlgodBlock = Mapping[str, int]
+AlgodBlockInfo = Mapping[str, object]
 
 DEMO_APP_FUNDING_ALGO = 2
 DEMO_ASSET_DECIMALS = 2
@@ -115,8 +135,11 @@ def _cycle_duration_seconds(cycle: Cycle) -> int:
 
 def _get_latest_timestamp(algorand: algokit_utils.AlgorandClient) -> int:
     algod_client = algorand.client.algod
-    last_round = algod_client.status()["last-round"]
-    return int(algod_client.block_info(last_round)["block"]["ts"])
+    status = cast(AlgodStatus, algod_client.status())
+    last_round = status["last-round"]
+    block_info = cast(AlgodBlockInfo, algod_client.block_info(last_round))
+    block = cast(AlgodBlock, block_info["block"])
+    return block["ts"]
 
 
 def _resolve_denomination_asset(
@@ -134,12 +157,14 @@ def _resolve_denomination_asset(
         )
         return DenominationAsset(asset_id=asset.asset_id, decimals=asset.decimals)
 
-    decimals = int(os.getenv("DENOMINATION_ASSET_DECIMALS", str(DEMO_ASSET_DECIMALS)))
-    total = int(os.getenv("DENOMINATION_ASSET_TOTAL", str(DEMO_ASSET_TOTAL))) * (
-        10**decimals
+    decimals: int = int(
+        os.getenv("DENOMINATION_ASSET_DECIMALS", str(DEMO_ASSET_DECIMALS))
     )
-    asset_name = os.getenv("DENOMINATION_ASSET_NAME", DEMO_ASSET_NAME)
-    unit_name = os.getenv("DENOMINATION_ASSET_UNIT_NAME", DEMO_ASSET_UNIT_NAME)
+    asset_total: int = int(os.getenv("DENOMINATION_ASSET_TOTAL", str(DEMO_ASSET_TOTAL)))
+    scale: int = 10**decimals
+    total: int = asset_total * scale
+    asset_name: str = os.getenv("DENOMINATION_ASSET_NAME", DEMO_ASSET_NAME)
+    unit_name: str = os.getenv("DENOMINATION_ASSET_UNIT_NAME", DEMO_ASSET_UNIT_NAME)
 
     asset_id = algorand.send.asset_create(
         AssetCreateParams(
@@ -233,10 +258,8 @@ def build_zero_coupon_bond_demo(context: DemoDeploymentContext) -> DemoInstrumen
     )
 
 
-def _client_terms(result: NormalizationResult) -> object:
-    from smart_contracts.artifacts.d_asa.dasa_client import NormalizedActusTerms
-
-    return NormalizedActusTerms(
+def _client_terms(result: NormalizationResult) -> ClientNormalizedActusTerms:
+    return ClientNormalizedActusTerms(
         contract_type=result.terms.contract_type,
         denomination_asset_id=result.terms.denomination_asset_id,
         settlement_asset_id=result.terms.denomination_asset_id,
@@ -258,10 +281,8 @@ def _client_terms(result: NormalizationResult) -> object:
     )
 
 
-def _client_initial_state(result: NormalizationResult) -> object:
-    from smart_contracts.artifacts.d_asa.dasa_client import InitialKernelState
-
-    return InitialKernelState(
+def _client_initial_state(result: NormalizationResult) -> ClientInitialKernelState:
+    return ClientInitialKernelState(
         status_date=result.initial_state.status_date,
         event_cursor=result.initial_state.event_cursor,
         outstanding_principal=result.initial_state.outstanding_principal,
@@ -316,15 +337,9 @@ def _fund_app_account(
 
 def _configure_demo_app(
     *,
-    client: object,
+    client: DasaClient,
     spec: DemoInstrumentSpec,
 ) -> None:
-    from smart_contracts.artifacts.d_asa.dasa_client import (
-        ContractConfigArgs,
-        ContractScheduleArgs,
-        Prospectus,
-    )
-
     client.send.contract_config(
         ContractConfigArgs(
             terms=_client_terms(spec.normalized),
@@ -350,7 +365,7 @@ def _configure_demo_app(
 
 def _needs_configuration(
     *,
-    client: object,
+    client: DasaClient,
     operation: algokit_utils.OperationPerformed,
 ) -> bool:
     if operation in (
@@ -358,25 +373,19 @@ def _needs_configuration(
         algokit_utils.OperationPerformed.Replace,
     ):
         return True
-    assert hasattr(client, "state")
     return client.state.global_state.status == enums.STATUS_INACTIVE
 
 
 def _deploy_instrument(
     *,
     app_name: str,
-    factory: object,
+    factory: DasaFactory,
     arranger: SigningAccount,
     deployer: SigningAccount,
     algorand: algokit_utils.AlgorandClient,
     build_spec: Callable[[DemoDeploymentContext], DemoInstrumentSpec],
     demo_context: DemoDeploymentContext | None,
 ) -> DemoDeploymentContext | None:
-    from smart_contracts.artifacts.d_asa.dasa_client import (
-        ContractCreateArgs,
-        DasaMethodCallCreateParams,
-    )
-
     client, result = factory.deploy(
         app_name=app_name,
         create_params=DasaMethodCallCreateParams(
@@ -416,8 +425,6 @@ def _deploy_instrument(
 
 # define deployment behaviour based on supplied app spec
 def deploy() -> None:
-    from smart_contracts.artifacts.d_asa.dasa_client import DasaFactory
-
     algorand = algokit_utils.AlgorandClient.from_environment()
     deployer = algorand.account.from_environment("DEPLOYER")
     arranger = _get_arranger_account(algorand=algorand, deployer=deployer)

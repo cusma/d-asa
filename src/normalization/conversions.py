@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import cast
 
 from smart_contracts import constants as cst
 
@@ -33,8 +34,10 @@ def to_asa_units(amount: int | float | Decimal, asa_decimals: int) -> int:
         ActusNormalizationError: If result exceeds uint64 bounds.
     """
     if isinstance(amount, (int, float, Decimal)):
-        scale = 10**asa_decimals
-        result = int(Decimal(str(amount)) * scale)
+        scale = cast(int, 10**asa_decimals)
+        amount_decimal = Decimal(str(amount))
+        scale_decimal = Decimal(scale)
+        result = int(amount_decimal * scale_decimal)
     else:
         raise TypeError(f"Unsupported value type: {type(amount)}")
 
@@ -67,7 +70,9 @@ def rate_to_fp(value: int | float | Decimal) -> int:
         ActusNormalizationError: If result exceeds uint64 bounds.
     """
     if isinstance(value, (int, float, Decimal)):
-        result = int(Decimal(str(value)) * cst.FIXED_POINT_SCALE)
+        value_decimal = Decimal(str(value))
+        scale_decimal = Decimal(cst.FIXED_POINT_SCALE)
+        result = int(value_decimal * scale_decimal)
     else:
         raise TypeError(f"Unsupported value type: {type(value)}")
 
@@ -107,13 +112,15 @@ def compute_initial_exchange_amount(
 
     # Handle premium (negative) and discount (positive) separately
     # to avoid to_asa_units rejecting negative values
+    scale = cast(int, 10**asa_decimals)
+    notional_display = notional / scale
     if premium_discount_at_ied >= 0:
         pdied = to_asa_units(premium_discount_at_ied, asa_decimals)
         # Validate that discount doesn't exceed notional (would result in negative amount)
         if pdied > notional:
             raise ActusNormalizationError(
                 f"Premium/discount at IED ({premium_discount_at_ied}) exceeds notional "
-                f"({notional / (10 ** asa_decimals)}), which would result in a negative "
+                f"({notional_display}), which would result in a negative "
                 f"initial exchange amount. This is invalid for uint64 encoding."
             )
         result = notional - pdied
@@ -126,7 +133,7 @@ def compute_initial_exchange_amount(
     if result > cst.MAX_UINT64:
         raise ActusNormalizationError(
             f"Initial exchange amount {result} exceeds uint64 maximum ({cst.MAX_UINT64}). "
-            f"Notional={notional / (10 ** asa_decimals)}, "
+            f"Notional={notional_display}, "
             f"premium_discount_at_ied={premium_discount_at_ied}"
         )
 
