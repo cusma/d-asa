@@ -3,9 +3,10 @@ from typing import Literal, TypeAlias
 from algopy import (
     Account,
     Array,
+    Asset,
     BoxMap,
     Bytes,
-    FixedArray,
+    FixedBytes,
     String,
     Struct,
     UInt64,
@@ -40,14 +41,22 @@ ContractTypeId: TypeAlias = arc4.UInt8
 EventTypeId: TypeAlias = arc4.UInt8
 DayCountConvention: TypeAlias = arc4.UInt8
 TimeStamp: TypeAlias = UInt64
+Hash: TypeAlias = FixedBytes[Literal[32]]
+
+
+class Prospectus(Struct, kw_only=True):
+    """Contract Prospectus."""
+
+    hash: Hash
+    url: String
 
 
 class NormalizedActusTerms(Struct, kw_only=True):
     """Normalized ACTUS terms required by the AVM kernel."""
 
-    contract_role: ContractTypeId
-    denomination_asset_id: UInt64
-    settlement_asset_id: UInt64
+    contract_type: ContractTypeId
+    denomination_asset_id: Asset
+    settlement_asset_id: Asset
     total_units: UInt64
     notional_principal: UInt64
     initial_exchange_amount: UInt64
@@ -119,7 +128,6 @@ class KernelState(Struct, kw_only=True):
     contract_type: ContractTypeId
     status: UInt64
     total_units: UInt64
-    circulating_units: UInt64
     reserved_units_total: UInt64
     initial_exchange_amount: UInt64
     event_cursor: UInt64
@@ -184,14 +192,3 @@ class CashFundingResult(Struct, kw_only=True):
     total_funded: UInt64
     processed_events: UInt64
     timestamp: UInt64
-
-
-class ContractCreateMetadata(Struct, kw_only=True):
-    """Metadata supplied when instantiating the generic ACTUS contract."""
-
-    contract_type: ContractTypeId
-    prospectus_hash: Bytes
-    prospectus_url: String
-
-
-SchedulePage: TypeAlias = FixedArray[ExecutionScheduleEntry, Literal[16]]
