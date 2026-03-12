@@ -40,7 +40,7 @@ jobs:
         run: algokit project deploy localnet
 
   test-mock-module-rbac:
-    name: Test mock_module_rbac
+    name: Test RBAC Module
     if: '! github.event.pull_request.draft'
     runs-on: "ubuntu-latest"
     steps:
