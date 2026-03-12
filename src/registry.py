@@ -47,6 +47,7 @@ CONTRACT_TYPE_IDS: dict[str, int] = {
 
 EVENT_TYPE_IDS: dict[str, int] = {
     "IED": enums.EVT_IED,
+    "PI": enums.EVT_PI,
     "PR": enums.EVT_PR,
     "PRF": enums.EVT_PRF,
     "IP": enums.EVT_IP,

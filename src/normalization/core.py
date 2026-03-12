@@ -8,7 +8,7 @@ from decimal import Decimal
 from smart_contracts import constants as cst
 
 from ..contracts import ContractAttributes
-from ..day_count import year_fraction_fixed
+from ..day_count import BusinessDayConvention, Calendar, year_fraction_fixed
 from ..errors import ActusNormalizationError, UnsupportedActusFeatureError
 from ..models import (
     ExecutionScheduleEntry,
@@ -141,6 +141,16 @@ def normalize_contract_attributes(
     if contract.status_date >= contract.initial_exchange_date:
         raise ActusNormalizationError(
             "D-ASA requires status_date to be strictly before initial_exchange_date"
+        )
+
+    if contract.business_day_convention != BusinessDayConvention.NOS:
+        raise UnsupportedActusFeatureError(
+            "D-ASA compliance profile only supports business_day_convention=NOS"
+        )
+
+    if contract.calendar != Calendar.NC:
+        raise UnsupportedActusFeatureError(
+            "D-ASA compliance profile only supports calendar=NC"
         )
 
     # Extract base contract type (e.g., "PAM" from "PAM:ZCB")
