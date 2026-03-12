@@ -1,6 +1,7 @@
-from algopy import Account, Bytes, Global, Txn, UInt64, arc4, itxn
+from algopy import Account, Bytes, Global, Txn, UInt64, arc4, ensure_budget, itxn
 
 from smart_contracts import abi_types as typ
+from smart_contracts import constants as cst
 from smart_contracts import errors as err
 
 from .accounting import AccountingModule
@@ -51,6 +52,14 @@ class PaymentAgent(AccountingModule):
         self._assert_is_not_asset_defaulted()
         self._assert_is_not_asset_suspended()
         self._assert_initial_exchange_executed()
+        if self._is_dynamic_annuity():
+            ensure_budget(
+                required_budget=(
+                    UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
+                    + max_event_count
+                    * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
+                ),
+            )
 
         processed_events = UInt64(0)
         funded_interest = UInt64(0)
