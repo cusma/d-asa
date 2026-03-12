@@ -28,7 +28,6 @@ from tests.pam.pam_test_support import (
     ISSUANCE_DELAY_CYCLE,
     MINIMUM_DENOMINATION,
     PRINCIPAL,
-    asset_balance,
     cycle_duration_seconds,
     scale_currency_amount,
     setup_pam_lifecycle,
@@ -180,9 +179,9 @@ def test_zero_coupon_pam_discounted_full_lifecycle(
     assert event["settled_amount"] == scaled_principal
     assert event["sequence"] == 2
 
-    balance_before = asset_balance(
-        algorand, address=investor.address, asset_id=currency.id
-    )
+    balance_before = algorand.asset.get_account_information(
+        investor.address, currency.id
+    ).balance
     claim_result = client.send.claim_due_cashflows(
         ClaimDueCashflowsArgs(
             holding_address=investor.address,
@@ -196,9 +195,9 @@ def test_zero_coupon_pam_discounted_full_lifecycle(
         send_params=SendParams(cover_app_call_inner_transaction_fees=True),
     )
     claim = claim_result.abi_return
-    balance_after = asset_balance(
-        algorand, address=investor.address, asset_id=currency.id
-    )
+    balance_after = algorand.asset.get_account_information(
+        investor.address, currency.id
+    ).balance
 
     assert claim.total_amount == scaled_principal
     assert claim.interest_amount == 0
