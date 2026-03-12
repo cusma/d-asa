@@ -7,6 +7,10 @@ MAX_UINT64: Final[int] = 2**64 - 1
 MAX_ARGS_SIZE: Final[int] = 2048
 OP_UP_CONTRACT_CONFIG_BASE_BUDGET: Final[int] = 1_500
 OP_UP_CONTRACT_CONFIG_PER_ENTRY_BUDGET: Final[int] = 100
+OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET: Final[int] = 1_500
+OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET: Final[int] = 100
+OP_UP_NON_CASH_BASE_BUDGET: Final[int] = 1_500
+OP_UP_NON_CASH_PER_ENTRY_BUDGET: Final[int] = 100
 SCHEDULE_PAGE_SIZE: Final[int] = 16
 
 ################################################################################
