@@ -5,7 +5,7 @@ from smart_contracts import config as cfg
 from smart_contracts import errors as err
 
 
-class ActusApp(
+class DASA(
     PaymentAgent,
     TransferAgent,
     state_totals=StateTotals(
