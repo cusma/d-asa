@@ -680,9 +680,7 @@ class ActusKernelModule(RbacModule):
                 ensure_budget(
                     required_budget=(
                         UInt64(cst.OP_UP_NON_CASH_BASE_BUDGET)
-                        + (
-                            self.schedule_entry_count - self.event_cursor
-                        )
+                        + (self.schedule_entry_count - self.event_cursor)
                         * UInt64(cst.OP_UP_NON_CASH_PER_ENTRY_BUDGET)
                     ),
                 )
@@ -971,7 +969,9 @@ class ActusKernelModule(RbacModule):
         self.schedule_page[page_index] = page.copy()
         self.schedule_entry_count += UInt64(1)
 
-    def _append_observed_cash_event(self, payload: typ.ObservedCashEventRequest) -> None:
+    def _append_observed_cash_event(
+        self, payload: typ.ObservedCashEventRequest
+    ) -> None:
         """
         Append an authorized observed cash event to the schedule tail.
 
@@ -984,7 +984,9 @@ class ActusKernelModule(RbacModule):
         assert payload.flags & UInt64(enums.FLAG_CASH_EVENT), err.INVALID_ACTUS_CONFIG
 
         if self.schedule_entry_count > UInt64(0):
-            previous_entry = self._get_schedule_entry(self.schedule_entry_count - UInt64(1))
+            previous_entry = self._get_schedule_entry(
+                self.schedule_entry_count - UInt64(1)
+            )
             assert (
                 previous_entry.scheduled_time <= payload.scheduled_time
             ), err.INVALID_SORTING
