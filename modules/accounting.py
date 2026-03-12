@@ -4,13 +4,11 @@ from smart_contracts import abi_types as typ
 from smart_contracts import constants as cst
 from smart_contracts import errors as err
 
-from . import ActusKernelStateModule
+from . import ActusKernelModule
 
 
-class AccountingModule(ActusKernelStateModule):
+class AccountingModule(ActusKernelModule):
     """Contract Account ledger state and per-account settlement helpers."""
-
-    event_cursor: UInt64
 
     def __init__(self) -> None:
         super().__init__()
@@ -21,11 +19,11 @@ class AccountingModule(ActusKernelStateModule):
             key_prefix=cst.PREFIX_ID_ACCOUNT,
         )
 
-    def assert_valid_holding_address(self, holding_address: Account) -> None:
+    def _assert_valid_holding_address(self, holding_address: Account) -> None:
         """Require the holding address to have an opened a contract account."""
         assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
 
-    def assert_is_not_account_suspended(self, holding_address: Account) -> None:
+    def _assert_is_not_account_suspended(self, holding_address: Account) -> None:
         """Require the account not to be suspended."""
         assert not self.account[holding_address].suspended, err.SUSPENDED
 
