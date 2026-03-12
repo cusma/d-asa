@@ -27,6 +27,10 @@ INVALID_SETTLEMENT_ASSET = (
     "Different settlement asset not supported, must be equal to denomination asset"
 )
 
+# Schedule
+INVALID_EVENT_ID = "Invalid event id"
+INVALID_SCHEDULE_PAGE = "Invalid schedule page"
+
 # Set Secondary Time Events
 INVALID_SECONDARY_OPENING_DATE = "Invalid secondary market opening date"
 INVALID_SECONDARY_CLOSURE_DATE = "Invalid secondary market closure date"

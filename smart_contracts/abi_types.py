@@ -5,6 +5,7 @@ from algopy import (
     Array,
     BoxMap,
     Bytes,
+    FixedArray,
     String,
     Struct,
     UInt64,
@@ -27,7 +28,7 @@ class PaymentResult(Struct, kw_only=True):
     context: Bytes
 
 
-class RoleValidity(arc4.Struct, kw_only=True):
+class RoleValidity(Struct, kw_only=True):
     """D-ASA Role Configuration"""
 
     role_validity_start: UInt64
@@ -193,6 +194,4 @@ class ContractCreateMetadata(Struct, kw_only=True):
     prospectus_url: String
 
 
-SchedulePageArrayLength: TypeAlias = arc4.StaticArray[
-    ExecutionScheduleEntry, Literal[16]
-]
+SchedulePage: TypeAlias = FixedArray[ExecutionScheduleEntry, Literal[16]]
