@@ -14,21 +14,6 @@ from algopy import (
 )
 
 
-class PaymentAmounts(Struct, kw_only=True):
-    """D-ASA Payment Amounts"""
-
-    interest: UInt64
-    principal: UInt64
-
-
-class PaymentResult(Struct, kw_only=True):
-    """D-ASA Payment Result"""
-
-    amount: UInt64
-    timestamp: UInt64
-    context: Bytes
-
-
 class RoleValidity(Struct, kw_only=True):
     """D-ASA Role Configuration"""
 
@@ -62,8 +47,6 @@ class NormalizedActusTerms(Struct, kw_only=True):
     initial_exchange_amount: UInt64
     initial_exchange_date: TimeStamp
     maturity_date: TimeStamp
-    secondary_market_opening_date: TimeStamp
-    secondary_market_closure_date: TimeStamp
     day_count_convention: DayCountConvention
     rate_reset_spread: UInt64
     rate_reset_multiplier: UInt64

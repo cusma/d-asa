@@ -8,6 +8,28 @@ from .accounting import AccountingModule
 class TransferAgent(AccountingModule):
     """Provide primary distribution and secondary transfer mechanics."""
 
+    def _assert_transfer_is_open(self) -> None:
+        """Require transfers to happen within the configured secondary market window."""
+        if self.transfer_opening_date:
+            assert (
+                self.transfer_opening_date <= Global.latest_timestamp
+            ), err.CLOSED_TRANSFER
+        if self.transfer_closure_date:
+            assert (
+                Global.latest_timestamp < self.transfer_closure_date
+            ), err.CLOSED_TRANSFER
+
+    @arc4.abimethod
+    def set_transfer_schedule(
+        self, *, open_date: UInt64, closure_date: UInt64
+    ) -> UInt64:
+        self._assert_caller_is_arranger()
+        assert open_date < closure_date, err.INVALID_SORTING
+
+        self.transfer_opening_date = open_date
+        self.transfer_closure_date = closure_date
+        return Global.latest_timestamp
+
     @arc4.abimethod
     def primary_distribution(
         self,
@@ -53,7 +75,7 @@ class TransferAgent(AccountingModule):
         self._assert_is_not_asset_defaulted()
         self._assert_is_not_asset_suspended()
         self._assert_initial_exchange_executed()
-        self._assert_transfer_window()
+        self._assert_transfer_is_open()
 
         assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
         self._assert_valid_holding_address(sender_holding_address)

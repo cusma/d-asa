@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .accounting import AccountingModule
 from .kernel import ActusKernelModule
 from .payment_agent import PaymentAgent
