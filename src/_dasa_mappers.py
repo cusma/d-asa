@@ -30,6 +30,8 @@ from .models import (
 )
 from .registry import EVENT_TYPE_IDS
 
+EVENT_TYPE_NAMES = {value: name for name, value in EVENT_TYPE_IDS.items()}
+
 
 def to_client_terms(result: NormalizationResult) -> _ClientNormalizedActusTerms:
     return _ClientNormalizedActusTerms(
@@ -132,12 +134,11 @@ def to_sdk_schedule_entry(
         next_outstanding_principal,
         flags,
     ) = entry
-    event_type_names = {value: name for name, value in EVENT_TYPE_IDS.items()}
-    if event_type not in event_type_names:
+    if event_type not in EVENT_TYPE_NAMES:
         raise ValueError(f"unsupported event type id: {event_type}")
     return ExecutionScheduleEntry(
         event_id=event_id,
-        event_type=event_type_names[event_type],
+        event_type=EVENT_TYPE_NAMES[event_type],
         scheduled_time=scheduled_time,
         accrual_factor=accrual_factor,
         redemption_accrual_factor=redemption_accrual_factor,
