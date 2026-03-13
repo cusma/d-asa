@@ -220,13 +220,13 @@ main:
     // smart_contracts/d_asa/contract.py:23
     // assert Txn.global_num_byte_slice == cfg.GLOBAL_BYTES, err.WRONG_GLOBAL_BYTES
     txn GlobalNumByteSlice
-    pushint 4
+    pushint 10
     ==
     assert // Wrong Global Bytes allocation
     // smart_contracts/d_asa/contract.py:24
     // assert Txn.global_num_uint == cfg.GLOBAL_UINTS, err.WRONG_GLOBAL_UINTS
     txn GlobalNumUint
-    pushint 38
+    pushint 54
     ==
     assert // Wrong Global UInts allocation
     // smart_contracts/d_asa/contract.py:25
