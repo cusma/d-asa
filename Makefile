@@ -1,6 +1,6 @@
 SHELL := /bin/sh
 
-.PHONY: help install install-dev doctor build test test-cov lint format typecheck docs docs-serve pre-commit clean all localnet localnet-stop deploy-localnet showcase
+.PHONY: help install install-dev doctor build test test-cov lint format typecheck docs docs-serve pre-commit clean all localnet localnet-stop deploy-localnet showcase jupyter-docker
 
 help:
 	@echo "Available targets:"
@@ -16,12 +16,13 @@ help:
 	@echo "  docs            - Run docs pre-commit checks and mdBook validation"
 	@echo "  docs-serve      - Serve mdBook docs locally with live reload"
 	@echo "  pre-commit      - Install pre-commit hooks"
-	@echo "  clean           - Remove local caches and ignored build outputs"
+	@echo "  clean           - Remove local caches, notebook checkpoints, and ignored build outputs"
 	@echo "  all             - Run build, lint, and test"
 	@echo "  localnet        - Start AlgoKit LocalNet"
 	@echo "  localnet-stop   - Stop AlgoKit LocalNet"
 	@echo "  deploy-localnet - Deploy contracts to LocalNet"
 	@echo "  showcase        - Run the LocalNet showcase walkthrough"
+	@echo "  jupyter-docker  - Start Jupyter Lab in Docker with LocalNet (no local dependencies needed)"
 
 install:
 	algokit project bootstrap poetry
@@ -113,7 +114,7 @@ pre-commit:
 
 clean:
 	rm -rf .mypy_cache .pytest_cache .ruff_cache .coverage htmlcov book mermaid-init.js mermaid.min.js
-	find . -type d -name __pycache__ -prune -exec rm -rf {} +
+	find . -type d \( -name __pycache__ -o -name '.ipynb_checkpoints' \) -prune -exec rm -rf {} +
 	find . -type f -name '*.pyc' -delete
 
 all: build lint test
@@ -129,3 +130,7 @@ deploy-localnet:
 
 showcase:
 	poetry run pytest -s -v -m showcase tests/pam/test_pam_lifecycle_showcase.py
+
+jupyter-docker:
+	./d-asa jupyter
+

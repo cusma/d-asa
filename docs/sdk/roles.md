@@ -1,6 +1,6 @@
 # Role Wrappers
 
-`DAsa` binds signer accounts into role-oriented wrappers instead of requiring repeated manual sender and signer plumbing.
+`DAsa` binds signer accounts into role-oriented wrappers.
 
 ```python
 arranger = app.arranger(arranger_account)

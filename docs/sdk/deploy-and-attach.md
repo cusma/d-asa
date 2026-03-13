@@ -14,7 +14,8 @@ app = DAsa.deploy(
 
 ## Deploy and Configure
 
-`deploy_configured(...)` accepts either a precomputed `NormalizationResult` or raw `ContractAttributes` plus the normalization inputs.
+`deploy_configured(...)` accepts either a precomputed `NormalizationResult` or raw
+`ContractAttributes` plus the normalization inputs.
 
 ```python
 app = DAsa.deploy_configured(
@@ -25,7 +26,8 @@ app = DAsa.deploy_configured(
 )
 ```
 
-When configuration happens through the high-level API, `DAsa` also stores a `PricingContext` derived from `normalized.terms.notional_unit_value`.
+When configuration happens through the high-level API, `DAsa` also stores a `PricingContext`
+derived from `normalized.terms.notional_unit_value`.
 
 ## Attach to an Existing App
 

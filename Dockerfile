@@ -19,4 +19,6 @@ WORKDIR /workspace
 
 COPY pyproject.toml poetry.lock ./
 
-RUN poetry install --without dev --no-root --no-ansi
+RUN poetry install --without dev --with notebooks --no-root --no-ansi
+
+EXPOSE 8888
