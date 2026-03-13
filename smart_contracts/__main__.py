@@ -55,7 +55,14 @@ def import_deploy_if_exists(folder: Path) -> Callable[[], None] | None:
         module_name = f"{folder.parent.name}.{folder.name}.deploy_config"
         deploy_module = importlib.import_module(module_name)
         return deploy_module.deploy  # type: ignore[no-any-return, misc]
-    except ImportError:
+    except ImportError as e:
+        # Log the import error for debugging, but don't fail if deploy_config doesn't exist
+        if "No module named" in str(e) and "deploy_config" in str(e):
+            logger.debug(f"No deploy_config found for {folder.name}")
+        else:
+            logger.warning(
+                f"Failed to import deploy_config for {folder.name}: {e}", exc_info=True
+            )
         return None
 
 
