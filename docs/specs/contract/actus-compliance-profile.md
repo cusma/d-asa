@@ -7,8 +7,8 @@
 > The ACTUS taxonomy reduces the majority of all financial contracts to a defined
 > set of 32 generalized cash flow exchange patterns, called contract types.
 
-The D-ASA **MUST** be to classified with an ACTUS *contract type* \\( [CT] \\)
-(`uint8`) (see the [ACTUS taxonomy](https://github.com/actusfrf/actus-dictionary/blob/master/actus-dictionary-taxonomy.json)).
+The D-ASA **MUST** be classified with an ACTUS *contract type* \\( [CT] \\) (see
+the [ACTUS taxonomy](https://github.com/actusfrf/actus-dictionary/blob/master/actus-dictionary-taxonomy.json)).
 
 The *contract type* **MUST** have the following properties:
 
@@ -30,8 +30,8 @@ The current kernel supports the following ACTUS contract family identifiers:
 | ID  | Contract Type | Description                                                                                                                            | Rate                  | Use case                                                       |
 |:---:|:-------------:|:---------------------------------------------------------------------------------------------------------------------------------------|:----------------------|:---------------------------------------------------------------|
 | `0` |     `PAM`     | Principal payment fully at \\( [IED] \\) and repaid at \\( [MD] \\).                                                                   | Fix or variable rates | All kind of bonds, term deposits, bullet loans, mograges, etc. |
-| `1` |     `ANN`     | Principal payment fully at \\( [IED] \\) and repaid periodically in constants amounts till \\( [MD] \\).                               | Fix or variable rates | Classical level payment morgages, leasing contracts, etc.      |
-| `2` |     `NAM`     | As `ANN`, when resetting reate total amount (principal + interest) stay constant. \\( [MD] \\) shifts.                                 | Variable only         | Adjustable rate morgages                                       |
+| `1` |     `ANN`     | Principal payment fully at \\( [IED] \\) and repaid periodically in constants amounts till \\( [MD] \\).                               | Fix or variable rates | Classical level payment mortgages, leasing contracts, etc.     |
+| `2` |     `NAM`     | As `ANN`, when resetting reate total amount (principal + interest) stay constant. \\( [MD] \\) shifts.                                 | Variable only         | Adjustable rate mortgages                                      |
 | `3` |     `LAM`     | Principal payment fully at \\( [IED] \\) and repaid periodically in constants amounts till \\( [MD] \\), interest reduced accordingly. | Fix or variable       | Amortizing loans                                               |
 | `4` |     `LAX`     | Flexible version of `LAM`.                                                                                                             | Fix or variable       | Teaser rate loans                                              |
 | `5` |     `CLM`     | Loans rolled over as long as they are not called. Once called, it has to be paid back after noticed period.                            | Fix or variable       | Loans with call options                                        |

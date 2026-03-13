@@ -120,7 +120,7 @@ the **OPTIONAL** `set_early_repayment_option` method.
 > Debt instrument with a defined maturity date may terminate earlier if the full
 > principal redemption happens earlier than maturity.
 
-An early repayment option could have different *prepayment effects* \\(v[PPEF]v\\):
+An early repayment option could have different *prepayment effects* \\( [PPEF] \\):
 
 - It **MAY** repay the *principal* partially or totally before the *maturity date*;
 
@@ -184,7 +184,7 @@ The D-ASA **MAY** define a *grace period* \\( [GRP] \\).
 > period. If payment happens after the delinquency period, then the counterparty
 > is in technical default.
 
-The D-ASA **MAY** define a *delinquency period* \\( [DQP] \\)).
+The D-ASA **MAY** define a *delinquency period* \\( [DQP] \\).
 
 ### Default
 

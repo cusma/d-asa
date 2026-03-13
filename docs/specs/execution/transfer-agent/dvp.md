@@ -12,7 +12,7 @@ basis, meaning that either all transactions in the group are executed or none of
 them are.
 
 Therefore, D-ASA DvP ensures **no counterparty risk**, as the transfer of D-ASA
-nits and the corresponding payment occur simultaneously. If either the transfer
+units and the corresponding payment occur simultaneously. If either the transfer
 or the payment fails, the entire transaction group is rejected, preventing any party
 from being left in a vulnerable position.
 

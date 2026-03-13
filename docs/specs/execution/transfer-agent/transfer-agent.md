@@ -30,5 +30,5 @@ nominal value or per-unit coupon status.
 
 The current reference implementation requires the holder to call `transfer` directly.
 
-The method **MUST** reject calls from any other address. Transfers are therefor
+The method **MUST** reject calls from any other address. Transfers are therefore
 direct holder actions, not transfer-agent proxy calls.

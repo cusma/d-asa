@@ -2,7 +2,7 @@
 
 The RBAC interface manages privileged roles, suspension state, and application control.
 
-Only the Arranger may call RBAC methods.
+Only the Arranger may call RBAC methods, unless otherwise specified.
 
 ## `contract_update`
 

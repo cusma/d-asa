@@ -13,7 +13,7 @@ The Payment Address **MAY** be different from the Holding Address.
 
 The Account is uniquely identified by the account key of the form:
 
-`[A#||<role address>]`
+`[A#||<holding address>]`
 
 Where || denotes concatenation.
 

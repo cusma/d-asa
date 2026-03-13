@@ -16,15 +16,15 @@ Where || denotes concatenation.
 
 The current reference implementation uses the following role set:
 
-| Key   | Role            | Scope                                                                         |
-|:-----:|:----------------|:------------------------------------------------------------------------------|
-| `ARR` | Arranger        | Owns contract creation, configuration, schedule upload, and upgrade authority |
-| `OPD` | Op Daemon       | Optional automation address for payment execution workflows                   |
-| `MNG` | Account Manager | Opens holder accounts                                                         |
-| `PYD` | Primary Dealer  | Allocates units during primary distribution                                   |
-| `TRS` | Trustee         | Reserved for workout/default extensions; no dedicated ABI endpoint in v0.5    |
-| `AUT` | Authority       | Suspends the asset or individual accounts                                     |
-| `MOC` | Observer        | Applies rate-reset events that depend on observed data                        |
+|  Key  |  ID  | Role            | Scope                                                                         |
+|:-----:|:----:|:----------------|:------------------------------------------------------------------------------|
+| `ARR` | `20` | Arranger        | Owns contract creation, configuration, schedule upload, and upgrade authority |
+| `OPD` | `25` | Op Daemon       | Optional automation address for payment execution workflows                   |
+| `MNG` | `40` | Account Manager | Opens holder accounts                                                         |
+| `PYD` | `50` | Primary Dealer  | Allocates units during primary distribution                                   |
+| `TRS` | `60` | Trustee         | Reserved for workout/default extensions; no dedicated ABI endpoint in v0.5    |
+| `AUT` | `70` | Authority       | Suspends the asset or individual accounts                                     |
+| `MOC` | `80` | Observer        | Applies rate-reset events that depend on observed data                        |
 
 > [!TIP]
 > The Arranger with Algorand Address `XYZ` is identified as `R:ARR#XYZ`.
