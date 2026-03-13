@@ -19,19 +19,31 @@ Documentation: <https://cusma.github.io/d-asa/>
 
 ## Demo in One Command
 
-The fastest way to showcase D-ASA is with Docker only.
+The fastest way to showcase D-ASA is with host AlgoKit for Algorand LocalNet and
+Docker for the showcase runtime.
+
+- Install [AlgoKit](https://dev.algorand.co/algokit/algokit-intro/#cross-platform-installation)
+- Install [Docker](https://docs.docker.com/get-docker/)
 
 ```shell
+git clone git@github.com:cusma/d-asa.git
+cd d-asa
 ./d-asa run
 ```
 
 What `./d-asa run` does:
 
 - builds the local demo image
-- starts AlgoKit LocalNet if it is not already running
-- waits for algod to become reachable
+- starts host AlgoKit LocalNet if it is not already running
+- waits for the LocalNet services required by the showcase
 - runs the PAM fixed coupon and zero coupon showcase walkthroughs
-- tears LocalNet back down if this invocation started it
+- leaves LocalNet running so the Lora transaction links remain explorable
+
+When you are finished inspecting the links:
+
+```shell
+algokit localnet stop
+```
 
 Open the published docs with:
 
@@ -54,10 +66,14 @@ D_ASA_NO_OPEN=1 ./d-asa docs
 Notes:
 
 - targets macOS and Linux
-- Docker is the only required host dependency
-- the demo defaults to `host.docker.internal` for LocalNet access inside the container
+- requires both Docker and AlgoKit on the host
+- the demo joins the LocalNet Docker network when available, which keeps the showcase
+on direct container-to-container networking
 - advanced overrides are available through
   - `D_ASA_LOCALNET_HOST`,
+  - `D_ASA_ALGOD_HOST`,
+  - `D_ASA_KMD_HOST`,
+  - `D_ASA_INDEXER_HOST`,
   - `D_ASA_LOCALNET_TOKEN`,
   - `D_ASA_ALGOD_PORT`,
   - `D_ASA_KMD_PORT`,
