@@ -165,7 +165,7 @@ The main top-level layout is:
 docs/              -> mdBook source files
 modules/           -> D-ASA module implementations
 smart_contracts/   -> AVM smart contracts and generated contract artifacts
-src/               -> Python-side normalization, helpers, and shared runtime code
+src/               -> D-ASA SDK, Python-side normalization, helpers, and shared runtime code
 tests/             -> SDK, contract, LocalNet, and showcase tests
 ```
 

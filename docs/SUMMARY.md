@@ -41,6 +41,14 @@
 
 - [Events](./events/events.md)
 
+# SDK
+
+- [Overview](./sdk/overview.md)
+- [Deploy and Attach](./sdk/deploy-and-attach.md)
+- [Role Wrappers](./sdk/roles.md)
+- [Actualized Positions and Valuation](./sdk/valuation.md)
+- [OTC DvP Builder](./sdk/dvp.md)
+
 # Interfaces
 
 - [Interfaces](./interfaces/overview.md)

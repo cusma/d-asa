@@ -1,6 +1,7 @@
 # Debt Algorand Standard Application (D-ASA)
 
-D-ASA is an ACTUS execution engine for the Algorand Virtual Machine.
+D-ASA is a full tokenization framework for [ACTUS](https://www.actusfrf.org/)-compliant
+debt instruments, issued and executed on the Algorand Virtual Machine.
 
 ```mermaid
 flowchart LR
@@ -9,11 +10,18 @@ flowchart LR
   ABI --> EXEC["AVM Execution"]
 ```
 
-The canonical ABI artifact is:
+The canonical generated artifacts are:
 
-- `src/artifacts/DASA.arc56.json`
+- `src/artifacts/DASA.arc56.json`: D-ASA AppSpec, generates clients and can be used
+on [Lora App Lab](https://lora.algokit.io/localnet/app-lab/create);
+
+- `src/artifacts/dasa_client.py`: D-ASA client, expanded by the SDK;
+
+- `src/artifacts/dasa_avm_client.py`: D-ASA AVM client, for on-chain App-2-App calls.
 
 Documentation: <https://cusma.github.io/d-asa/>
+
+High-level client docs: `docs/sdk/overview.md`
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cusma/d-asa)
 
@@ -69,15 +77,6 @@ Notes:
 - requires both Docker and AlgoKit on the host
 - the demo joins the LocalNet Docker network when available, which keeps the showcase
 on direct container-to-container networking
-- advanced overrides are available through
-  - `D_ASA_LOCALNET_HOST`,
-  - `D_ASA_ALGOD_HOST`,
-  - `D_ASA_KMD_HOST`,
-  - `D_ASA_INDEXER_HOST`,
-  - `D_ASA_LOCALNET_TOKEN`,
-  - `D_ASA_ALGOD_PORT`,
-  - `D_ASA_KMD_PORT`,
-  - and `D_ASA_INDEXER_PORT`
 
 ## Development
 

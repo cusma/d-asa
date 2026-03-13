@@ -1,14 +1,22 @@
 [tool.poetry]
-package-mode = false
 name = "d-asa"
-version = "0.5.0"
+version = "0.20.0"
 description = "Debt Algorand Standard Application"
 license = "AGPL-3.0"
 authors = ["cusma <cosimo.bassi@gmail.com>"]
 maintainers = ["cusma <cosimo.bassi@gmail.com>"]
-readme = ["README.md", "docs/SUMMARY.md"]
+readme = "README.md"
 documentation = "https://cusma.github.io/d-asa/"
 repository = "https://github.com/cusma/d-asa"
+packages = [
+  { include = "src" },
+  { include = "smart_contracts" },
+  { include = "modules" },
+]
+include = [
+  "src/artifacts/*.json",
+  "smart_contracts/artifacts/**/*",
+]
 keywords = [
   "algorand",
   "blockchain",
@@ -21,11 +29,10 @@ keywords = [
 [tool.poetry.dependencies]
 python = "^3.13"
 algokit-utils = "^4.2.3"
-python-dotenv = "^1.2.2"
-algorand-python = "^3.4.0"
 
 [tool.poetry.group.dev.dependencies]
 algokit-client-generator = "^2.2.0"
+algorand-python = "^3.4.0"
 black = { extras = ["d"], version = "^26.3.1" }
 ruff = "^0.15.5"
 mypy = "^1.19.1"
@@ -37,6 +44,7 @@ pre-commit = "^4.5.1"
 puyapy = "^5.7.1"
 urllib3 = "^2.6.3"
 pip = "^26.0.1"
+python-dotenv = "^1.2.2"
 
 [build-system]
 requires = ["poetry-core"]
