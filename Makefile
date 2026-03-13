@@ -13,7 +13,7 @@ help:
 	@echo "  lint            - Run the standard lint and type checks"
 	@echo "  format          - Format Python code and auto-fix Ruff issues"
 	@echo "  typecheck       - Run mypy"
-	@echo "  docs            - Build and test mdBook documentation"
+	@echo "  docs            - Run docs pre-commit checks and mdBook validation"
 	@echo "  docs-serve      - Serve mdBook docs locally with live reload"
 	@echo "  pre-commit      - Install pre-commit hooks"
 	@echo "  clean           - Remove local caches and ignored build outputs"
@@ -98,17 +98,21 @@ typecheck:
 	poetry run mypy
 
 docs:
-	mdbook build
-	mdbook test
+	mdbook-mermaid install .
+	pre-commit run --all-files mdbook-build
+	pre-commit run --all-files mdbook-test
+	pre-commit run --all-files markdownlint
+	pre-commit run --all-files trailing-whitespace
 
 docs-serve:
+	mdbook-mermaid install .
 	mdbook serve --open
 
 pre-commit:
 	pre-commit install
 
 clean:
-	rm -rf .mypy_cache .pytest_cache .ruff_cache .coverage htmlcov book
+	rm -rf .mypy_cache .pytest_cache .ruff_cache .coverage htmlcov book mermaid-init.js mermaid.min.js
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +
 	find . -type f -name '*.pyc' -delete
 

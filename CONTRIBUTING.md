@@ -118,8 +118,12 @@ make docs
 
 `make docs` runs both:
 
-- `mdbook build`
-- `mdbook test`
+- the docs pre-commit hooks:
+  - `mdbook-build`
+  - `mdbook-test`
+  - `markdownlint`
+  - `trailing-whitespace`
+- the mdBook build artifacts remain available in `book/` until `make clean`
 
 ## Pull Requests
 
