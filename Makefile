@@ -114,7 +114,7 @@ pre-commit:
 
 clean:
 	rm -rf .mypy_cache .pytest_cache .ruff_cache .coverage htmlcov book mermaid-init.js mermaid.min.js
-	find . -type d \( -name __pycache__ -o -name '.ipynb_checkpoints' \) -exec rm -rf {} +
+	find . -type d \( -name __pycache__ -o -name '.ipynb_checkpoints' \) -prune -exec rm -rf {} +
 	find . -type f -name '*.pyc' -delete
 
 all: build lint test
