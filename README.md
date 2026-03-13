@@ -16,6 +16,8 @@ The canonical ABI artifact is:
 
 Documentation: <https://cusma.github.io/d-asa/>
 
+High-level client docs: `docs/sdk/overview.md`
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cusma/d-asa)
 
 ## Demo in One Command
