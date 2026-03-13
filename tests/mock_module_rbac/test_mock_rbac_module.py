@@ -262,20 +262,20 @@ def test_rbac_gov_asset_suspension_is_authority_only(
     no_role_account: SigningAccount,
     rbac_client: MockRbacModuleClient,
 ) -> None:
-    assert not rbac_client.state.global_state.asset_suspended
+    assert not rbac_client.state.global_state.contract_suspended
 
     result = rbac_client.send.rbac_contract_suspension(
         RbacContractSuspensionArgs(suspended=True),
         params=CommonAppCallParams(sender=authority.address),
     )
     assert result.abi_return > 0
-    assert rbac_client.state.global_state.asset_suspended
+    assert rbac_client.state.global_state.contract_suspended
 
     rbac_client.send.rbac_contract_suspension(
         RbacContractSuspensionArgs(suspended=False),
         params=CommonAppCallParams(sender=authority.address),
     )
-    assert not rbac_client.state.global_state.asset_suspended
+    assert not rbac_client.state.global_state.contract_suspended
 
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         rbac_client.send.rbac_contract_suspension(
