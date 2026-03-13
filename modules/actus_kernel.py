@@ -115,6 +115,9 @@ class ActusKernelModule(RbacModule):
         self.event_cursor = UInt64()
         self.schedule_entry_count = UInt64()
 
+        # Performance
+        self.defaulted = False
+
         # Scaling
         self.fixed_point_scale = UInt64()
 
@@ -1257,6 +1260,22 @@ class ActusKernelModule(RbacModule):
         self._assert_initial_exchange_executed()
 
         self._append_observed_cash_event(payload)
+        return Global.latest_timestamp
+
+    @arc4.abimethod
+    def contract_set_default_status(self, *, defaulted: bool) -> UInt64:
+        """
+        Set D-ASA default status
+
+        Args:
+            defaulted: Default status
+
+        Raises:
+            UNAUTHORIZED: Not authorized
+        """
+
+        self._assert_caller_is_trustee()
+        self.defaulted = defaulted
         return Global.latest_timestamp
 
     @arc4.abimethod(readonly=True)
