@@ -23,6 +23,8 @@ Documentation: <https://cusma.github.io/d-asa/>
 
 High-level client docs: `docs/sdk/overview.md`
 
+Interactive notebook examples: [`examples/README.md`](./examples/README.md)
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cusma/d-asa)
 
 ## Demo in One Command
@@ -128,6 +130,12 @@ Serve docs locally with live reload:
 
 ```shell
 make docs-serve
+```
+
+Open the live LocalNet notebooks:
+
+```shell
+poetry run jupyter lab examples/
 ```
 
 ## Contributing
