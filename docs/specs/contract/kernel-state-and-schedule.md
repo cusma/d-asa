@@ -114,7 +114,7 @@ stateDiagram-v2
   ACTIVE --> ACTIVE: Execute events
   ACTIVE --> ENDED: Terminal state
   ENDED --> [*]
-  
+
   state "INACTIVE (0)<br/>Terms and schedule<br/>not fully configured" as INACTIVE
   state "PENDING_IED (50)<br/>Schedule uploaded<br/>Issuance not activated" as PENDING_IED
   state "ACTIVE (100)<br/>IED executed<br/>Contract lifecycle live" as ACTIVE

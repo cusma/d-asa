@@ -39,12 +39,12 @@ flowchart TD
   ACCOUNTING["Layer 3: Accounting<br/>Positions, balances, checkpoints & claims"]
   PAYMENT["Layer 4a: Payment Agent<br/>Funding & withdrawal of cashflows"]
   TRANSFER["Layer 4b: Transfer Agent<br/>Primary distribution & secondary transfers"]
-  
+
   RBAC --> KERNEL
   KERNEL --> ACCOUNTING
   ACCOUNTING --> PAYMENT
   ACCOUNTING --> TRANSFER
-  
+
   style RBAC fill:#bbdefb,stroke:#1976d2,stroke-width:2px,color:#000
   style KERNEL fill:#fff9c4,stroke:#f57f17,stroke-width:2px,color:#000
   style ACCOUNTING fill:#c8e6c9,stroke:#388e3c,stroke-width:2px,color:#000
