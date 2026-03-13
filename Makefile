@@ -16,7 +16,7 @@ help:
 	@echo "  docs            - Run docs pre-commit checks and mdBook validation"
 	@echo "  docs-serve      - Serve mdBook docs locally with live reload"
 	@echo "  pre-commit      - Install pre-commit hooks"
-	@echo "  clean           - Remove local caches and ignored build outputs"
+	@echo "  clean           - Remove local caches, notebook checkpoints, and ignored build outputs"
 	@echo "  all             - Run build, lint, and test"
 	@echo "  localnet        - Start AlgoKit LocalNet"
 	@echo "  localnet-stop   - Stop AlgoKit LocalNet"
@@ -113,7 +113,7 @@ pre-commit:
 
 clean:
 	rm -rf .mypy_cache .pytest_cache .ruff_cache .coverage htmlcov book mermaid-init.js mermaid.min.js
-	find . -type d -name __pycache__ -prune -exec rm -rf {} +
+	find . -type d \( -name __pycache__ -o -name '.ipynb_checkpoints' \) -exec rm -rf {} +
 	find . -type f -name '*.pyc' -delete
 
 all: build lint test
