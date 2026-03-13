@@ -66,8 +66,8 @@ class PaymentAgent(AccountingModule):
         """
         self._assert_configured()
         self._assert_caller_is_arranger()
-        self._assert_is_not_asset_defaulted()
-        self._assert_is_not_asset_suspended()
+        self._assert_is_not_contract_defaulted()
+        self._assert_is_not_contract_suspended()
         self._assert_initial_exchange_executed()
         if self._is_dynamic_annuity():
             ensure_budget(
@@ -136,8 +136,8 @@ class PaymentAgent(AccountingModule):
         self._assert_configured()
         self._assert_valid_holding_address(holding_address)
         self._assert_payment_authorization(holding_address)
-        self._assert_is_not_asset_defaulted()
-        self._assert_is_not_asset_suspended()
+        self._assert_is_not_contract_defaulted()
+        self._assert_is_not_contract_suspended()
         self._assert_initial_exchange_executed()
 
         self._ensure_units_activated(holding_address)

@@ -81,10 +81,10 @@ class RbacModule(ARC4Contract):
     def _assert_caller_is_observer(self) -> None:
         assert self._role_is_active(self.observer, Txn.sender), err.UNAUTHORIZED
 
-    def _assert_is_not_asset_defaulted(self) -> None:
+    def _assert_is_not_contract_defaulted(self) -> None:
         assert not self.defaulted, err.DEFAULTED
 
-    def _assert_is_not_asset_suspended(self) -> None:
+    def _assert_is_not_contract_suspended(self) -> None:
         assert not self.contract_suspended, err.SUSPENDED
 
     def _assert_valid_role(self, role_id: UInt64) -> None:
@@ -222,7 +222,7 @@ class RbacModule(ARC4Contract):
         """
 
         self._assert_caller_is_arranger()
-        self._assert_is_not_asset_defaulted()
+        self._assert_is_not_contract_defaulted()
         self._assert_valid_role(role_id.as_uint64())
         self._set_role(role_id.as_uint64(), role_address, validity)
         return Global.latest_timestamp
@@ -247,7 +247,7 @@ class RbacModule(ARC4Contract):
         """
 
         self._assert_caller_is_arranger()
-        self._assert_is_not_asset_defaulted()
+        self._assert_is_not_contract_defaulted()
         self._assert_valid_role(role_id.as_uint64())
         self._delete_role(role_id.as_uint64(), role_address)
         return Global.latest_timestamp
