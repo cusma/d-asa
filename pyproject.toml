@@ -45,6 +45,11 @@ puyapy = "^5.7.1"
 urllib3 = "^2.6.3"
 pip = "^26.0.1"
 python-dotenv = "^1.2.2"
+
+[tool.poetry.group.notebooks]
+optional = true
+
+[tool.poetry.group.notebooks.dependencies]
 ipykernel = "^7.2.0"
 jupyterlab = "^4.4.7"
 
