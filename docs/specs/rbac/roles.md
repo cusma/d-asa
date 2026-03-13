@@ -23,7 +23,7 @@ The current reference implementation uses the following role set:
 | `MNG` | `40` | Account Manager | Opens holder accounts                                                         |
 | `PYD` | `50` | Primary Dealer  | Allocates units during primary distribution                                   |
 | `TRS` | `60` | Trustee         | Sets or clears the contract default-performance flag                          |
-| `AUT` | `70` | Authority       | Suspends the asset or individual accounts                                     |
+| `AUT` | `70` | Authority       | Suspends the contract or individual accounts                                  |
 | `MOC` | `80` | Observer        | Applies rate-reset events that depend on observed data                        |
 
 > [!TIP]
@@ -103,7 +103,7 @@ This performance flag is distinct from the kernel lifecycle `status`.
 
 The Authority owns an Algorand Address.
 
-The Authority **MUST** be able to suspend the whole asset and individual holder
+The Authority **MUST** be able to suspend the contract and individual holder
 accounts.
 
 ### Observer
