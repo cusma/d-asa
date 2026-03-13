@@ -1,10 +1,10 @@
-"""Tests for src.unix_time module."""
+"""Tests for d_asa.unix_time module."""
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
-from src.unix_time import datetime_to_timestamp, timestamp_to_datetime
+from d_asa.unix_time import datetime_to_timestamp, timestamp_to_datetime
 
 
 class TestTimestampToDatetime:
@@ -13,7 +13,7 @@ class TestTimestampToDatetime:
     def test_converts_epoch_zero(self) -> None:
         """Test conversion of epoch 0 (1970-01-01 00:00:00 UTC)."""
         result = timestamp_to_datetime(0)
-        expected = datetime(1970, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+        expected = datetime(1970, 1, 1, 0, 0, 0, tzinfo=UTC)
         assert result == expected
 
     def test_converts_positive_timestamp(self) -> None:
@@ -21,7 +21,7 @@ class TestTimestampToDatetime:
         # 2024-01-15 12:30:45 UTC
         timestamp = 1705321845
         result = timestamp_to_datetime(timestamp)
-        expected = datetime(2024, 1, 15, 12, 30, 45, tzinfo=timezone.utc)
+        expected = datetime(2024, 1, 15, 12, 30, 45, tzinfo=UTC)
         assert result == expected
 
     def test_converts_negative_timestamp(self) -> None:
@@ -29,29 +29,29 @@ class TestTimestampToDatetime:
         # 1969-12-31 23:59:59 UTC
         timestamp = -1
         result = timestamp_to_datetime(timestamp)
-        expected = datetime(1969, 12, 31, 23, 59, 59, tzinfo=timezone.utc)
+        expected = datetime(1969, 12, 31, 23, 59, 59, tzinfo=UTC)
         assert result == expected
 
     def test_result_is_utc_aware(self) -> None:
         """Test that result has UTC timezone info."""
         result = timestamp_to_datetime(1705321845)
-        assert result.tzinfo is timezone.utc
-        assert result.utcoffset() == timezone.utc.utcoffset(None)
+        assert result.tzinfo is UTC
+        assert result.utcoffset() == UTC.utcoffset(None)
 
     def test_converts_leap_year_date(self) -> None:
         """Test conversion on leap year Feb 29."""
         # 2024-02-29 00:00:00 UTC (leap year)
         timestamp = 1709164800
         result = timestamp_to_datetime(timestamp)
-        expected = datetime(2024, 2, 29, 0, 0, 0, tzinfo=timezone.utc)
+        expected = datetime(2024, 2, 29, 0, 0, 0, tzinfo=UTC)
         assert result == expected
 
     def test_converts_various_dates(self) -> None:
         """Test conversion of various important dates."""
         test_cases = [
-            (1672531200, datetime(2023, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            (1704067200, datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            (1735689600, datetime(2025, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            (1672531200, datetime(2023, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            (1704067200, datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            (1735689600, datetime(2025, 1, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         for timestamp, expected in test_cases:
             result = timestamp_to_datetime(timestamp)
@@ -63,13 +63,13 @@ class TestDatetimeToTimestamp:
 
     def test_converts_epoch_zero(self) -> None:
         """Test conversion of epoch datetime."""
-        dt = datetime(1970, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+        dt = datetime(1970, 1, 1, 0, 0, 0, tzinfo=UTC)
         result = datetime_to_timestamp(dt)
         assert result == 0
 
     def test_converts_aware_datetime(self) -> None:
         """Test conversion of timezone-aware datetime."""
-        dt = datetime(2024, 1, 15, 12, 30, 45, tzinfo=timezone.utc)
+        dt = datetime(2024, 1, 15, 12, 30, 45, tzinfo=UTC)
         result = datetime_to_timestamp(dt)
         assert result == 1705321845
 
@@ -81,16 +81,16 @@ class TestDatetimeToTimestamp:
 
     def test_converts_leap_year_date(self) -> None:
         """Test conversion on leap year Feb 29."""
-        dt = datetime(2024, 2, 29, 0, 0, 0, tzinfo=timezone.utc)
+        dt = datetime(2024, 2, 29, 0, 0, 0, tzinfo=UTC)
         result = datetime_to_timestamp(dt)
         assert result == 1709164800
 
     def test_converts_various_dates(self) -> None:
         """Test conversion of various important dates."""
         test_cases = [
-            (datetime(2023, 1, 1, 0, 0, 0, tzinfo=timezone.utc), 1672531200),
-            (datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc), 1704067200),
-            (datetime(2025, 1, 1, 0, 0, 0, tzinfo=timezone.utc), 1735689600),
+            (datetime(2023, 1, 1, 0, 0, 0, tzinfo=UTC), 1672531200),
+            (datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC), 1704067200),
+            (datetime(2025, 1, 1, 0, 0, 0, tzinfo=UTC), 1735689600),
         ]
         for dt, expected in test_cases:
             result = datetime_to_timestamp(dt)
@@ -109,7 +109,7 @@ class TestRoundTrip:
 
     def test_datetime_to_timestamp_to_datetime(self) -> None:
         """Test converting datetime -> timestamp -> datetime preserves value."""
-        original = datetime(2024, 1, 15, 12, 30, 45, tzinfo=timezone.utc)
+        original = datetime(2024, 1, 15, 12, 30, 45, tzinfo=UTC)
         timestamp = datetime_to_timestamp(original)
         result = timestamp_to_datetime(timestamp)
         assert result == original
@@ -127,6 +127,6 @@ class TestRoundTrip:
         naive_dt = datetime(2024, 1, 15, 12, 30, 45)
         timestamp = datetime_to_timestamp(naive_dt)
         result_dt = timestamp_to_datetime(timestamp)
-        assert result_dt.tzinfo is timezone.utc
+        assert result_dt.tzinfo is UTC
         # Values should be equal ignoring timezone
         assert result_dt.replace(tzinfo=None) == naive_dt

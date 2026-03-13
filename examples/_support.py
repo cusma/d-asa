@@ -13,8 +13,8 @@ from algokit_utils import (
     SigningAccount,
 )
 
-from src import NormalizationResult
-from src.localnet import (
+from d_asa import NormalizationResult
+from d_asa.localnet import (
     Currency,
     algorand_client_from_localnet,
     load_localnet_config,

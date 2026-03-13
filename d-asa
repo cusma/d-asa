@@ -146,7 +146,7 @@ cleanup() {
 }
 
 localnet_ready() {
-  run_in_image python -m src.localnet wait --timeout 2 --poll-interval 1 >/dev/null 2>&1
+  run_in_image python -m src.d_asa.localnet wait --timeout 2 --poll-interval 1 >/dev/null 2>&1
 }
 
 cmd_run() {
@@ -163,11 +163,11 @@ cmd_run() {
     algokit localnet start --force
     STARTED_LOCALNET=1
     printf '%s\n' "Waiting for algod..."
-    run_in_image python -m src.localnet wait --timeout 90 --poll-interval 2
+    run_in_image python -m src.d_asa.localnet wait --timeout 90 --poll-interval 2
   fi
 
   printf '%s\n' "Running D-ASA showcase..."
-  run_in_image python -m src.showcase
+  run_in_image python -m src.d_asa.showcase
 }
 
 cmd_jupyter() {
@@ -184,7 +184,7 @@ cmd_jupyter() {
     algokit localnet start --force
     STARTED_LOCALNET=1
     printf '%s\n' "Waiting for algod..."
-    run_in_image python -m src.localnet wait --timeout 90 --poll-interval 2
+    run_in_image python -m src.d_asa.localnet wait --timeout 90 --poll-interval 2
   fi
 
   printf '%s\n' "Starting Jupyter Lab on http://localhost:8888..."

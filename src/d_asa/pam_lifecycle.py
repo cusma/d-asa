@@ -14,10 +14,9 @@ from algokit_utils import (
     SigningAccount,
 )
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-from src import ExecutionScheduleEntry, NormalizationResult
-from src.artifacts.dasa_client import (
+from . import constants as cst
+from . import enums
+from .artifacts.dasa_client import (
     AccountOpenArgs,
     ContractConfigArgs,
     ContractScheduleArgs,
@@ -27,9 +26,10 @@ from src.artifacts.dasa_client import (
     PrimaryDistributionArgs,
     Prospectus,
 )
-from src.localnet import Currency, DAsaAccountManager, DAsaPrimaryDealer
-from src.registry import EVENT_TYPE_IDS
-from src.schedule import Cycle
+from .localnet import Currency, DAsaAccountManager, DAsaPrimaryDealer
+from .models import ExecutionScheduleEntry, NormalizationResult
+from .registry import EVENT_TYPE_IDS
+from .schedule import Cycle
 
 PRINCIPAL = 10_000
 MINIMUM_DENOMINATION = 100

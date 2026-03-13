@@ -41,7 +41,7 @@ carry.
 
 ```python
 from decimal import Decimal
-from src import TradeQuoteInput
+from d_asa import TradeQuoteInput
 
 quote = holder.quote_trade(
     25,

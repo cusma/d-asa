@@ -86,7 +86,7 @@ test:
 	algokit project run test
 
 test-cov:
-	poetry run pytest --cov=src --cov=smart_contracts --cov=modules --cov-report=term-missing -m "not showcase"
+	poetry run pytest --cov=d_asa --cov=smart_contracts --cov=modules --cov-report=term-missing -m "not showcase"
 
 lint:
 	algokit project run lint
@@ -133,4 +133,3 @@ showcase:
 
 jupyter-docker:
 	./d-asa jupyter
-

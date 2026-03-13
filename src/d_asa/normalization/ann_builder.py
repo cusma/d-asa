@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-
+from .. import constants as cst
+from .. import enums
 from ..contracts import ContractAttributes
 from ..errors import ActusNormalizationError
 from ..models import NormalizedActusTerms

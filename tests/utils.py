@@ -1,4 +1,4 @@
-from src.localnet import (
+from d_asa.localnet import (
     Currency,
     DAsaAccount,
     DAsaAccountManager,

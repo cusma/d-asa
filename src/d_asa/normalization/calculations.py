@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from smart_contracts import constants as cst
-
+from .. import constants as cst
 from ..day_count import year_fraction_fixed
 
 

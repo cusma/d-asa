@@ -23,7 +23,7 @@ load_dotenv()
 
 # Determine the root path based on this file's location.
 root_path = Path(__file__).parent
-src_artifact_path = root_path.parent / "src" / "artifacts"
+src_artifact_path = root_path.parent / "src" / "d_asa" / "artifacts"
 canonical_src_contract_name = "d_asa"
 canonical_src_app_spec_name = "DASA.arc56.json"
 canonical_src_client_name = "dasa_client.py"
@@ -156,7 +156,7 @@ def _reset_src_artifacts(contract_name: str) -> None:
 
 
 def _sync_src_artifacts(output_dir: Path, contract_name: str) -> Path | None:
-    """Moves the canonical D-ASA artifacts into src/artifacts."""
+    """Moves the canonical D-ASA artifacts into src/d_asa/artifacts."""
     if contract_name != canonical_src_contract_name:
         return None
 

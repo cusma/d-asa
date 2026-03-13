@@ -4,8 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from smart_contracts import constants as cst
-
+from .. import constants as cst
 from ..contracts import ContractAttributes
 from ..day_count import days_in_month, year_fraction_fixed
 from ..errors import ActusNormalizationError

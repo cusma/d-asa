@@ -1,3 +1,5 @@
+"""Copy of smart_contracts/enums.py"""
+
 from typing import Final
 
 ################################################################################
@@ -24,7 +26,7 @@ CT_CLM: Final[int] = 5
 EVT_AD: Final[int] = 0
 EVT_IED: Final[int] = 1
 EVT_PR: Final[int] = 3
-EVT_PI: Final[int] = 4  # FIXME: This is not defined in ACTUS
+EVT_PI: Final[int] = 4
 EVT_PRF: Final[int] = 5
 EVT_PY: Final[int] = 6
 EVT_PP: Final[int] = 7

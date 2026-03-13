@@ -5,8 +5,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import cast
 
-from smart_contracts import constants as cst
-
+from .. import constants as cst
 from ..errors import ActusNormalizationError
 
 

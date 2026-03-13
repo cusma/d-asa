@@ -4,29 +4,29 @@ from decimal import Decimal
 
 import pytest
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-from src.contracts import (
+from d_asa.contracts import (
     ContractAttributes,
     make_pam_fixed_coupon_bond_profile,
     make_pam_zero_coupon_bond,
 )
-from src.day_count import (
+from d_asa.day_count import (
     BusinessDayConvention,
     Calendar,
     DayCountConvention,
     EndOfMonthConvention,
 )
-from src.errors import ActusNormalizationError
-from src.models import ExecutionScheduleEntry, NormalizedActusTerms
-from src.normalization import normalize_contract_attributes
-from src.normalization.conversions import (
+from d_asa.errors import ActusNormalizationError
+from d_asa.models import ExecutionScheduleEntry, NormalizedActusTerms
+from d_asa.normalization import normalize_contract_attributes
+from d_asa.normalization.conversions import (
     compute_initial_exchange_amount,
     rate_to_fp,
     to_asa_units,
 )
-from src.normalization.event_seeds import deduplicate_timestamps
-from src.schedule import Cycle
+from d_asa.normalization.event_seeds import deduplicate_timestamps
+from d_asa.schedule import Cycle
+from smart_contracts import constants as cst
+from smart_contracts import enums
 
 
 class TestToAsaUnits:
@@ -666,7 +666,7 @@ class TestNormalizationResult:
             for i in range(10)
         )
 
-        from src.models import InitialKernelState, NormalizationResult
+        from d_asa.models import InitialKernelState, NormalizationResult
 
         initial_state = InitialKernelState(
             status_date=1000000,
@@ -730,7 +730,7 @@ class TestNormalizationResult:
             for i in range(6)
         )
 
-        from src.models import InitialKernelState, NormalizationResult
+        from d_asa.models import InitialKernelState, NormalizationResult
 
         initial_state = InitialKernelState(
             status_date=1000000,
@@ -777,7 +777,7 @@ class TestNormalizationResult:
             fixed_point_scale=cst.FIXED_POINT_SCALE,
         )
 
-        from src.models import InitialKernelState, NormalizationResult
+        from d_asa.models import InitialKernelState, NormalizationResult
 
         initial_state = InitialKernelState(
             status_date=1000000,

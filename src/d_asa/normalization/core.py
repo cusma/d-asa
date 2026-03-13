@@ -5,8 +5,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from decimal import Decimal
 
-from smart_contracts import constants as cst
-
+from .. import constants as cst
 from ..contracts import ContractAttributes
 from ..day_count import BusinessDayConvention, Calendar, year_fraction_fixed
 from ..errors import ActusNormalizationError, UnsupportedActusFeatureError

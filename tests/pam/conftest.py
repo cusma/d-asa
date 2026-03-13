@@ -1,7 +1,7 @@
 import pytest
 from algokit_utils import AlgorandClient
 
-from src.artifacts.dasa_client import (
+from d_asa.artifacts.dasa_client import (
     DasaClient,
 )
 from tests import conftest_helpers as helpers

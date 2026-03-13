@@ -19,9 +19,9 @@ supports the kernel contract families `PAM`, `ANN`, `NAM`, `LAM`, `LAX`, and `CL
 
 The canonical artifacts are:
 
-- `src/artifacts/DASA.arc56.json`
-- `src/artifacts/dasa_client.py`
-- `src/artifacts/dasa_avm_client.py`
+- `src/d_asa/artifacts/DASA.arc56.json`
+- `src/d_asa/artifacts/dasa_client.py`
+- `src/d_asa/artifacts/dasa_avm_client.py`
 
 The deployment helpers in `smart_contracts/d_asa/deploy_config.py` provide code-accurate
 demo normalization flows for:

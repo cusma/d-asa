@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from smart_contracts import enums
+from . import enums
 
 SUPPORTED_CONTRACT_TYPES: frozenset[str] = frozenset(
     {"PAM", "LAM", "NAM", "ANN", "LAX", "CLM"}

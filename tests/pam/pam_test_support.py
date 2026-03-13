@@ -5,14 +5,13 @@ from algokit_utils import (
     SigningAccount,
 )
 
-from smart_contracts import errors as err
-from src.artifacts.dasa_client import (
+from d_asa.artifacts.dasa_client import (
     ClaimDueCashflowsArgs,
     DasaClient,
     FundDueCashflowsArgs,
     TransferArgs,
 )
-from src.pam_lifecycle import (
+from d_asa.pam_lifecycle import (
     EVENT_TYPE_NAMES,
     ISSUANCE_DELAY_CYCLE,
     LOCALNET_EXPLORER_TX_BASE_URL,
@@ -32,6 +31,7 @@ from src.pam_lifecycle import (
     scale_currency_amount,
     setup_pam_lifecycle,
 )
+from smart_contracts import errors as err
 
 __all__ = [
     "EVENT_TYPE_NAMES",
