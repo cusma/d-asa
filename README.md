@@ -12,7 +12,7 @@ ACTUS contract -> AVM normalization -> AVM execution
 
 The canonical ABI artifact is:
 
-- `smart_contracts/artifacts/d_asa/DASA.arc56.json`
+- `src/artifacts/DASA.arc56.json`
 
 ## Local Setup and Tests
 

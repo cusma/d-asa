@@ -91,6 +91,7 @@ jobs:
           filters: |
             pam:
               - 'smart_contracts/artifacts/d_asa/**'
+              - 'src/artifacts/**'
               - 'tests/conftest.py'
               - 'tests/conftest_helpers.py'
               - 'tests/pam/pam_test_support.py'

@@ -10,13 +10,13 @@ from algokit_utils import (
 
 from smart_contracts import constants as cst
 from smart_contracts import enums
-from smart_contracts.artifacts.d_asa.dasa_client import (
+from src import NormalizationResult, normalize_contract_attributes
+from src.artifacts.dasa_client import (
     AccountGetPositionArgs,
     ClaimDueCashflowsArgs,
     DasaClient,
     FundDueCashflowsArgs,
 )
-from src import NormalizationResult, normalize_contract_attributes
 from src.contracts import make_pam_fixed_coupon_bond_profile
 from src.registry import CONTRACT_TYPE_IDS, EVENT_TYPE_IDS
 from src.schedule import Cycle

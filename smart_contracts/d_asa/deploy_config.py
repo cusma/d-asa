@@ -19,25 +19,21 @@ from algosdk.constants import ZERO_ADDRESS
 
 from smart_contracts import constants as cst
 from smart_contracts import enums
-from smart_contracts.artifacts.d_asa.dasa_client import (
+from src import (
+    ExecutionScheduleEntry,
+    NormalizationResult,
+    normalize_contract_attributes,
+)
+from src.artifacts.dasa_client import (
     ContractConfigArgs,
     ContractCreateArgs,
     ContractScheduleArgs,
     DasaClient,
     DasaFactory,
     DasaMethodCallCreateParams,
+    InitialKernelState,
+    NormalizedActusTerms,
     Prospectus,
-)
-from smart_contracts.artifacts.d_asa.dasa_client import (
-    InitialKernelState as ClientInitialKernelState,
-)
-from smart_contracts.artifacts.d_asa.dasa_client import (
-    NormalizedActusTerms as ClientNormalizedActusTerms,
-)
-from src import (
-    ExecutionScheduleEntry,
-    NormalizationResult,
-    normalize_contract_attributes,
 )
 from src.contracts import (
     make_pam_fixed_coupon_bond_profile,
@@ -258,8 +254,8 @@ def build_zero_coupon_bond_demo(context: DemoDeploymentContext) -> DemoInstrumen
     )
 
 
-def _client_terms(result: NormalizationResult) -> ClientNormalizedActusTerms:
-    return ClientNormalizedActusTerms(
+def _client_terms(result: NormalizationResult) -> NormalizedActusTerms:
+    return NormalizedActusTerms(
         contract_type=result.terms.contract_type,
         denomination_asset_id=result.terms.denomination_asset_id,
         settlement_asset_id=result.terms.denomination_asset_id,
@@ -281,8 +277,8 @@ def _client_terms(result: NormalizationResult) -> ClientNormalizedActusTerms:
     )
 
 
-def _client_initial_state(result: NormalizationResult) -> ClientInitialKernelState:
-    return ClientInitialKernelState(
+def _client_initial_state(result: NormalizationResult) -> InitialKernelState:
+    return InitialKernelState(
         status_date=result.initial_state.status_date,
         event_cursor=result.initial_state.event_cursor,
         outstanding_principal=result.initial_state.outstanding_principal,

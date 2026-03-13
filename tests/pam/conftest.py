@@ -1,7 +1,7 @@
 import pytest
 from algokit_utils import AlgorandClient
 
-from smart_contracts.artifacts.d_asa.dasa_client import (
+from src.artifacts.dasa_client import (
     DasaClient,
 )
 from tests import conftest_helpers as helpers

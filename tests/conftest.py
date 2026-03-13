@@ -9,7 +9,7 @@ from algokit_utils import (
 )
 from algokit_utils.config import config
 
-from smart_contracts.artifacts.d_asa.dasa_client import (
+from src.artifacts.dasa_client import (
     ContractCreateArgs,
     DasaClient,
     DasaFactory,
