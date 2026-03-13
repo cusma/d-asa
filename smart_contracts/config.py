@@ -1,7 +1,13 @@
 from typing import Final
 
-# State Schema (actual + spare for updates)
-GLOBAL_BYTES: Final[int] = 4 + 6
-GLOBAL_UINTS: Final[int] = 35 + 19
+# State Schema
+GLOBAL_BYTES_ACTUAL: Final[int] = 4
+GLOBAL_BYTES_SPARE: Final[int] = 6
+GLOBAL_BYTES: Final[int] = GLOBAL_BYTES_ACTUAL + GLOBAL_BYTES_SPARE
+
+GLOBAL_UINTS_ACTUAL: Final[int] = 34
+GLOBAL_UINTS_SPARE: Final[int] = 20
+GLOBAL_UINTS: Final[int] = GLOBAL_UINTS_ACTUAL + GLOBAL_UINTS_SPARE
+
 LOCAL_BYTES: Final[int] = 0
 LOCAL_UINTS: Final[int] = 0
