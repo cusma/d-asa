@@ -61,18 +61,6 @@ Open the published docs with:
 ./d-asa docs
 ```
 
-If you want the exact `d-asa ...` syntax in your current shell, you can add an alias:
-
-```shell
-alias d-asa="$PWD/d-asa"
-```
-
-If browser launch is not wanted:
-
-```shell
-D_ASA_NO_OPEN=1 ./d-asa docs
-```
-
 Notes:
 
 - targets macOS and Linux
@@ -132,7 +120,40 @@ Serve docs locally with live reload:
 make docs-serve
 ```
 
-Open the live LocalNet notebooks:
+## Interactive Notebooks
+
+The easiest way to explore the notebooks is using Docker (no local Python dependencies
+needed):
+
+```shell
+./d-asa jupyter
+```
+
+Or via make:
+
+```shell
+make jupyter-docker
+```
+
+This will:
+- Build the Docker image with Jupyter Lab included
+- Start AlgoKit LocalNet if needed
+- Launch Jupyter Lab at <http://localhost:8888>
+- Automatically configure LocalNet connectivity
+
+The notebooks will have full access to the D-ASA framework and LocalNet.
+
+Press `Ctrl+C` to stop.
+
+### Alternative: Local Jupyter (requires local dependencies)
+
+If you prefer running Jupyter locally, first install the optional notebook dependencies:
+
+```shell
+poetry install --with notebooks
+```
+
+Then start Jupyter Lab:
 
 ```shell
 poetry run jupyter lab examples/

@@ -25,9 +25,10 @@ print_help() {
 Usage: ./d-asa <command>
 
 Commands:
-  run    Build the demo image, start LocalNet if needed, print the showcase, and leave LocalNet running.
-  docs   Open the published D-ASA docs, or print the URL when browser opening is disabled.
-  help   Show this help text.
+  run      Build the demo image, start LocalNet if needed, print the showcase, and leave LocalNet running.
+  jupyter  Start Jupyter Lab in Docker with LocalNet integration (opens browser automatically).
+  docs     Open the published D-ASA docs, or print the URL when browser opening is disabled.
+  help     Show this help text.
 
 Prerequisites:
   - Docker Desktop or Docker Engine
@@ -36,6 +37,7 @@ Prerequisites:
 
 Examples:
   ./d-asa run
+  ./d-asa jupyter
   ./d-asa docs
   D_ASA_NO_OPEN=1 ./d-asa docs
 EOF
@@ -168,6 +170,76 @@ cmd_run() {
   run_in_image python -m src.showcase
 }
 
+cmd_jupyter() {
+  ensure_docker
+  ensure_algokit
+  cleanup_stale_localnet
+  build_image
+  trap cleanup EXIT INT TERM
+
+  if localnet_ready; then
+    printf '%s\n' "Reusing existing LocalNet."
+  else
+    printf '%s\n' "Starting AlgoKit LocalNet..."
+    algokit localnet start --force
+    STARTED_LOCALNET=1
+    printf '%s\n' "Waiting for algod..."
+    run_in_image python -m src.localnet wait --timeout 90 --poll-interval 2
+  fi
+
+  printf '%s\n' "Starting Jupyter Lab on http://localhost:8888..."
+  printf '%s\n' "Press Ctrl+C to stop Jupyter Lab."
+  printf '%s\n' ""
+
+  if localnet_network_exists; then
+    docker run --rm -it \
+      --network "$LOCALNET_NETWORK" \
+      -p 8888:8888 \
+      -e D_ASA_LOCALNET_HOST="$NETWORK_LOCALNET_HOST" \
+      -e D_ASA_ALGOD_HOST="$NETWORK_LOCALNET_HOST" \
+      -e D_ASA_KMD_HOST="$NETWORK_LOCALNET_HOST" \
+      -e D_ASA_INDEXER_HOST="$NETWORK_INDEXER_HOST" \
+      -e D_ASA_LOCALNET_TOKEN="$DEFAULT_LOCALNET_TOKEN" \
+      -e D_ASA_ALGOD_PORT="$NETWORK_ALGOD_PORT" \
+      -e D_ASA_KMD_PORT="$NETWORK_KMD_PORT" \
+      -e D_ASA_INDEXER_PORT="$NETWORK_INDEXER_PORT" \
+      -v "$REPO_ROOT:$REPO_ROOT" \
+      -w "$REPO_ROOT" \
+      "$IMAGE_TAG" \
+      jupyter lab examples/ --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+  else
+    case "$(uname -s)" in
+      Linux*)
+        docker run --rm -it \
+          --add-host=host.docker.internal:host-gateway \
+          -p 8888:8888 \
+          -e D_ASA_LOCALNET_HOST="$DEFAULT_LOCALNET_HOST" \
+          -e D_ASA_LOCALNET_TOKEN="$DEFAULT_LOCALNET_TOKEN" \
+          -e D_ASA_ALGOD_PORT="$DEFAULT_ALGOD_PORT" \
+          -e D_ASA_KMD_PORT="$DEFAULT_KMD_PORT" \
+          -e D_ASA_INDEXER_PORT="$DEFAULT_INDEXER_PORT" \
+          -v "$REPO_ROOT:$REPO_ROOT" \
+          -w "$REPO_ROOT" \
+          "$IMAGE_TAG" \
+          jupyter lab examples/ --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+        ;;
+      *)
+        docker run --rm -it \
+          -p 8888:8888 \
+          -e D_ASA_LOCALNET_HOST="$DEFAULT_LOCALNET_HOST" \
+          -e D_ASA_LOCALNET_TOKEN="$DEFAULT_LOCALNET_TOKEN" \
+          -e D_ASA_ALGOD_PORT="$DEFAULT_ALGOD_PORT" \
+          -e D_ASA_KMD_PORT="$DEFAULT_KMD_PORT" \
+          -e D_ASA_INDEXER_PORT="$DEFAULT_INDEXER_PORT" \
+          -v "$REPO_ROOT:$REPO_ROOT" \
+          -w "$REPO_ROOT" \
+          "$IMAGE_TAG" \
+          jupyter lab examples/ --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+        ;;
+    esac
+  fi
+}
+
 cmd_docs() {
   if [ "${D_ASA_NO_OPEN:-0}" = "1" ]; then
     printf '%s\n' "$DOCS_URL"
@@ -190,6 +262,9 @@ cmd_docs() {
 case "${1:-help}" in
   run)
     cmd_run
+    ;;
+  jupyter)
+    cmd_jupyter
     ;;
   docs)
     cmd_docs
