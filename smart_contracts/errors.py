@@ -13,7 +13,7 @@ INVALID_SORTING = "Time events must be sorted in strictly ascending order"
 NOT_ENOUGH_FUNDS = "Not enough funds for the payment"
 NO_UNITS = "No D-ASA units"
 
-# Asset Config
+# Contract Config
 NOT_CONFIGURED = "D-ASA not configured"
 TERMS_NOT_CONFIGURED = "D-ASA terms not configured"
 ALREADY_CONFIGURED = "D-ASA already configured"
@@ -40,11 +40,7 @@ OBSERVED_EVENT_REQUIRED = "Observed event required to execute this action"
 # Cashflows
 NO_DUE_CASHFLOW = "No due cashflow to pay"
 
-# Set Secondary Time Events
-INVALID_SECONDARY_OPENING_DATE = "Invalid secondary market opening date"
-INVALID_SECONDARY_CLOSURE_DATE = "Invalid secondary market closure date"
-
-# Open and Close Account
+# RBAC
 INVALID_ROLE = "Invalid role identifier"
 INVALID_ROLE_ADDRESS = "Invalid account role address"
 
@@ -54,11 +50,8 @@ OVER_DISTRIBUTION = "Insufficient remaining D-ASA units"
 PRIMARY_DISTRIBUTION_INCOMPLETE = "Primary distribution is not complete"
 PRIMARY_DISTRIBUTION_CLOSED = "Primary distribution is closed"
 
-# Asset Transfer
+# Transfer
 SELF_TRANSFER = "Sender and receiver must be different"
 NULL_TRANSFER = "Transfer units must be greater than zero"
 OVER_TRANSFER = "Insufficient sender units to transfer"
 CLOSED_TRANSFER = "Transfer is closed"
-
-# Get Account Units Current Value
-NO_PRIMARY_DISTRIBUTION = "Primary distribution not yet executed"
