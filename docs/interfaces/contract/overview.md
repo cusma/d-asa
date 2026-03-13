@@ -163,6 +163,9 @@ Only the Arranger may call this method.
 }
 ```
 
+`KernelState` does not include the separate RBAC-managed `defaulted` performance
+flag. Clients that need that value must read the dedicated global-state key.
+
 ## `contract_get_next_due_event`
 
 ```json

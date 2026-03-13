@@ -22,8 +22,8 @@ The current reference implementation uses the following role set:
 | `OPD` | `25` | Op Daemon       | Optional automation address for payment execution workflows                   |
 | `MNG` | `40` | Account Manager | Opens holder accounts                                                         |
 | `PYD` | `50` | Primary Dealer  | Allocates units during primary distribution                                   |
-| `TRS` | `60` | Trustee         | Reserved for workout/default extensions; no dedicated ABI endpoint in v0.5    |
-| `AUT` | `70` | Authority       | Suspends the asset or individual accounts                                     |
+| `TRS` | `60` | Trustee         | Sets or clears the contract default-performance flag                          |
+| `AUT` | `70` | Authority       | Suspends the contract or individual accounts                                  |
 | `MOC` | `80` | Observer        | Applies rate-reset events that depend on observed data                        |
 
 > [!TIP]
@@ -94,15 +94,16 @@ before `IED`.
 The Trustee role **MUST** control the contract performance \\( [PRF] \\) (see
 [Performance](../contract/attributes.md#performance) section for further details).
 
-The Trustee role is reserved by the ABI and state layout. The current reference
-implementation exposes no trustee-only method, but the role identifier remains
-part of the role model.
+In the current reference implementation, an active Trustee can set or clear the
+contract-level `defaulted` performance flag with `rbac_contract_default`.
+
+This performance flag is distinct from the kernel lifecycle `status`.
 
 ### Authority
 
 The Authority owns an Algorand Address.
 
-The Authority **MUST** be able to suspend the whole asset and individual holder
+The Authority **MUST** be able to suspend the contract and individual holder
 accounts.
 
 ### Observer

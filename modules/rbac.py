@@ -44,9 +44,11 @@ class RbacModule(ARC4Contract):
             Account, typ.RoleValidity, key_prefix=cst.PREFIX_ID_OBSERVER
         )
 
-        # D-ASA Governance
-        self.asset_suspended = False
-        self.asset_defaulted = False
+        # Contract Governance
+        self.contract_suspended = False
+
+        # Contract Performance
+        self.defaulted = False
 
     def _is_arranger(self, role_address: Account) -> bool:
         return role_address == self.arranger.value
@@ -79,11 +81,11 @@ class RbacModule(ARC4Contract):
     def _assert_caller_is_observer(self) -> None:
         assert self._role_is_active(self.observer, Txn.sender), err.UNAUTHORIZED
 
-    def _assert_is_not_asset_defaulted(self) -> None:
-        assert not self.asset_defaulted, err.DEFAULTED
+    def _assert_is_not_contract_defaulted(self) -> None:
+        assert not self.defaulted, err.DEFAULTED
 
-    def _assert_is_not_asset_suspended(self) -> None:
-        assert not self.asset_suspended, err.SUSPENDED
+    def _assert_is_not_contract_suspended(self) -> None:
+        assert not self.contract_suspended, err.SUSPENDED
 
     def _assert_valid_role(self, role_id: UInt64) -> None:
         assert role_id in (
@@ -220,7 +222,7 @@ class RbacModule(ARC4Contract):
         """
 
         self._assert_caller_is_arranger()
-        self._assert_is_not_asset_defaulted()
+        self._assert_is_not_contract_defaulted()
         self._assert_valid_role(role_id.as_uint64())
         self._set_role(role_id.as_uint64(), role_address, validity)
         return Global.latest_timestamp
@@ -245,12 +247,12 @@ class RbacModule(ARC4Contract):
         """
 
         self._assert_caller_is_arranger()
-        self._assert_is_not_asset_defaulted()
+        self._assert_is_not_contract_defaulted()
         self._assert_valid_role(role_id.as_uint64())
         self._delete_role(role_id.as_uint64(), role_address)
         return Global.latest_timestamp
 
-    @arc4.abimethod  # TODO: Update specs and add test
+    @arc4.abimethod
     def rbac_contract_suspension(self, *, suspended: bool) -> UInt64:
         """
         Set the asset-wide suspension status.
@@ -266,7 +268,23 @@ class RbacModule(ARC4Contract):
         """
 
         self._assert_caller_is_authority()
-        self.asset_suspended = suspended
+        self.contract_suspended = suspended
+        return Global.latest_timestamp
+
+    @arc4.abimethod
+    def rbac_contract_default(self, *, defaulted: bool) -> UInt64:
+        """
+        Set D-ASA default status
+
+        Args:
+            defaulted: Default status
+
+        Raises:
+            UNAUTHORIZED: Not authorized
+        """
+
+        self._assert_caller_is_trustee()
+        self.defaulted = defaulted
         return Global.latest_timestamp
 
     @arc4.abimethod(readonly=True)

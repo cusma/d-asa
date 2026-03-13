@@ -12,6 +12,7 @@ from smart_contracts.artifacts.mock_module_rbac.mock_rbac_module_client import (
     MockRbacModuleClient,
     MockRbacModuleSend,
     RbacAssignRoleArgs,
+    RbacContractDefaultArgs,
     RbacContractSuspensionArgs,
     RbacGetAddressRolesArgs,
     RbacGetRoleValidityArgs,
@@ -56,6 +57,7 @@ def test_mock_rbac_send_surface_matches_current_abi() -> None:
         "rbac_get_arranger",
         "rbac_get_role_validity",
         "rbac_contract_suspension",
+        "rbac_contract_default",
         "rbac_revoke_role",
         "rbac_rotate_arranger",
         "rbac_set_op_daemon",
@@ -257,29 +259,75 @@ def test_rbac_revoke_role_rejects_invalid_calls(
         )
 
 
-def test_rbac_gov_asset_suspension_is_authority_only(
+def test_rbac_gov_contract_suspension_is_authority_only(
     authority: DAsaAuthority,
     no_role_account: SigningAccount,
     rbac_client: MockRbacModuleClient,
 ) -> None:
-    assert not rbac_client.state.global_state.asset_suspended
+    assert not rbac_client.state.global_state.contract_suspended
 
     result = rbac_client.send.rbac_contract_suspension(
         RbacContractSuspensionArgs(suspended=True),
         params=CommonAppCallParams(sender=authority.address),
     )
     assert result.abi_return > 0
-    assert rbac_client.state.global_state.asset_suspended
+    assert rbac_client.state.global_state.contract_suspended
 
     rbac_client.send.rbac_contract_suspension(
         RbacContractSuspensionArgs(suspended=False),
         params=CommonAppCallParams(sender=authority.address),
     )
-    assert not rbac_client.state.global_state.asset_suspended
+    assert not rbac_client.state.global_state.contract_suspended
 
     with pytest.raises(LogicError, match=err.UNAUTHORIZED):
         rbac_client.send.rbac_contract_suspension(
             RbacContractSuspensionArgs(suspended=True),
+            params=CommonAppCallParams(sender=no_role_account.address),
+        )
+
+
+def test_rbac_contract_default_is_trustee_only_and_gates_default_state(
+    trustee: DAsaTrustee,
+    no_role_account: SigningAccount,
+    rbac_client: MockRbacModuleClient,
+) -> None:
+    assert not rbac_client.state.global_state.defaulted
+
+    result = rbac_client.send.rbac_contract_default(
+        RbacContractDefaultArgs(defaulted=True),
+        params=CommonAppCallParams(sender=trustee.address),
+    )
+    assert result.abi_return > 0
+    assert rbac_client.state.global_state.defaulted
+
+    with pytest.raises(LogicError, match=err.DEFAULTED):
+        rbac_client.send.rbac_assign_role(
+            RbacAssignRoleArgs(
+                role_id=enums.ROLE_AUTHORITY,
+                role_address=no_role_account.address,
+                validity=RoleValidity(0, 2**64 - 1),
+            )
+        )
+
+    result = rbac_client.send.rbac_contract_default(
+        RbacContractDefaultArgs(defaulted=False),
+        params=CommonAppCallParams(sender=trustee.address),
+    )
+    assert result.abi_return > 0
+    assert not rbac_client.state.global_state.defaulted
+
+    result = rbac_client.send.rbac_assign_role(
+        RbacAssignRoleArgs(
+            role_id=enums.ROLE_AUTHORITY,
+            role_address=no_role_account.address,
+            validity=RoleValidity(0, 2**64 - 1),
+        )
+    )
+    assert result.abi_return > 0
+
+    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
+        rbac_client.send.rbac_contract_default(
+            RbacContractDefaultArgs(defaulted=True),
             params=CommonAppCallParams(sender=no_role_account.address),
         )
 

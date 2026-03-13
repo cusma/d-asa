@@ -1141,8 +1141,8 @@ class ActusKernelModule(RbacModule):
         """
         self._assert_configured()
         self._assert_caller_is_arranger()
-        self._assert_is_not_asset_defaulted()
-        self._assert_is_not_asset_suspended()
+        self._assert_is_not_contract_defaulted()
+        self._assert_is_not_contract_suspended()
 
         assert self.event_cursor < self.schedule_entry_count, err.INVALID_EVENT_CURSOR
         entry = self._get_schedule_entry(self.event_cursor)
@@ -1201,8 +1201,8 @@ class ActusKernelModule(RbacModule):
             PENDING_IED: Initial exchange has not executed yet for post-IED events.
         """
         self._assert_configured()
-        self._assert_is_not_asset_defaulted()
-        self._assert_is_not_asset_suspended()
+        self._assert_is_not_contract_defaulted()
+        self._assert_is_not_contract_suspended()
 
         if payload.flags & UInt64(enums.FLAG_OBSERVED_EVENT):
             assert self._supports_observed_events(), err.OBSERVED_EVENT_REQUIRED
@@ -1252,8 +1252,8 @@ class ActusKernelModule(RbacModule):
         """
         self._assert_configured()
         self._assert_caller_is_arranger()
-        self._assert_is_not_asset_defaulted()
-        self._assert_is_not_asset_suspended()
+        self._assert_is_not_contract_defaulted()
+        self._assert_is_not_contract_suspended()
         self._assert_initial_exchange_executed()
 
         self._append_observed_cash_event(payload)

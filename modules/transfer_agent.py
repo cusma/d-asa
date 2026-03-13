@@ -73,8 +73,8 @@ class TransferAgent(AccountingModule):
         """
         self._assert_configured()
         self._assert_caller_is_primary_dealer()
-        self._assert_is_not_asset_defaulted()
-        self._assert_is_not_asset_suspended()
+        self._assert_is_not_contract_defaulted()
+        self._assert_is_not_contract_suspended()
         assert self._status_is_pending_ied(), err.PRIMARY_DISTRIBUTION_CLOSED
         self._assert_valid_holding_address(holding_address)
         self._assert_is_not_account_suspended(holding_address)
@@ -127,8 +127,8 @@ class TransferAgent(AccountingModule):
             PENDING_ACTUS_EVENT: A due ACTUS event must be processed before transfer.
         """
         self._assert_configured()
-        self._assert_is_not_asset_defaulted()
-        self._assert_is_not_asset_suspended()
+        self._assert_is_not_contract_defaulted()
+        self._assert_is_not_contract_suspended()
         self._assert_initial_exchange_executed()
         self._assert_transfer_is_open()
 

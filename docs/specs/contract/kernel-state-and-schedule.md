@@ -121,6 +121,20 @@ stateDiagram-v2
   state "ENDED (200)<br/>Terminal state reached" as ENDED
 ```
 
+## Performance default flag
+
+Kernel lifecycle `status` and contract performance are distinct concepts.
+
+Outside the kernel normalized state, the reference implementation stores a boolean
+RBAC-managed global-state flag, `defaulted`, to record manual contract default
+performance.
+
+An active Trustee **MAY** update this flag by calling `rbac_contract_default`
+with a boolean `defaulted` argument.
+
+`defaulted` is not part of `InitialKernelState` and is not returned by `contract_get_state`.
+Clients that need it **MUST** read the dedicated global-state key.
+
 ## Due-event execution
 
 The kernel advances the schedule through explicit ABI calls:

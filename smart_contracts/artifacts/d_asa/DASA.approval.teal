@@ -4,7 +4,7 @@
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
     intcblock 0 1 8 32 1500
-    bytecblock 0x151f7c75 "status" "event_cursor" "schedule_entry_count" "outstanding_principal" "fixed_point_scale" "accrued_interest" "interest_calculation_base" 0x4123 "nominal_interest_rate" "contract_type" "reserved_units_total" "reserved_principal" "total_units" "next_principal_redemption" "reserved_interest" "cumulative_interest_index" "cumulative_principal_index" 0x523a41525223 "settlement_asset_id" "initial_exchange_amount" 0x523a41555423 0x523a50594423 0x523a4d4e4723 0x5323 0x523a4d4f4323 0x523a4f504423 "initial_exchange_date" "transfer_opening_date" "transfer_closure_date" "rate_reset_floor" "rate_reset_cap" 0x523a54525323 "asset_suspended" "dynamic_principal_redemption" "rate_reset_spread" "rate_reset_multiplier" "rate_reset_next" "has_rate_reset_floor" "has_rate_reset_cap" 0x00 "asset_defaulted" "prospectus_hash" "prospectus_url" "denomination_asset_id" "maturity_date" "day_count_convention" 0x068101 0x0000
+    bytecblock 0x151f7c75 "status" "event_cursor" "schedule_entry_count" "outstanding_principal" "fixed_point_scale" "accrued_interest" "interest_calculation_base" 0x4123 "nominal_interest_rate" "contract_type" "reserved_units_total" "reserved_principal" "total_units" "next_principal_redemption" "reserved_interest" "cumulative_interest_index" "cumulative_principal_index" 0x523a41525223 "settlement_asset_id" "initial_exchange_amount" 0x523a41555423 0x523a50594423 0x523a4d4e4723 0x5323 0x523a4d4f4323 0x523a54525323 0x523a4f504423 "initial_exchange_date" "transfer_opening_date" "transfer_closure_date" "rate_reset_floor" "rate_reset_cap" "contract_suspended" "defaulted" "dynamic_principal_redemption" "rate_reset_spread" "rate_reset_multiplier" "rate_reset_next" "has_rate_reset_floor" "has_rate_reset_cap" 0x00 "prospectus_hash" "prospectus_url" "denomination_asset_id" "maturity_date" "day_count_convention" 0x068101 0x0000
     txn ApplicationID
     bnz main_after_if_else@2
     // modules/rbac.py:28-29
@@ -15,18 +15,19 @@ main:
     app_global_put
     // modules/rbac.py:30
     // self.op_daemon = GlobalState(Account(), key=cst.PREFIX_ID_OP_DAEMON)
-    bytec 26 // 0x523a4f504423
+    bytec 27 // 0x523a4f504423
     global ZeroAddress
     app_global_put
     // modules/rbac.py:47-48
-    // # D-ASA Governance
-    // self.asset_suspended = False
-    bytec 33 // "asset_suspended"
+    // # Contract Governance
+    // self.contract_suspended = False
+    bytec 33 // "contract_suspended"
     intc_0 // 0
     app_global_put
-    // modules/rbac.py:49
-    // self.asset_defaulted = False
-    bytec 41 // "asset_defaulted"
+    // modules/rbac.py:50-51
+    // # Contract Performance
+    // self.defaulted = False
+    bytec 34 // "defaulted"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:56-57
@@ -65,7 +66,7 @@ main:
     // modules/actus_kernel.py:68-69
     // # Time
     // self.initial_exchange_date = typ.TimeStamp()
-    bytec 27 // "initial_exchange_date"
+    bytec 28 // "initial_exchange_date"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:70
@@ -75,12 +76,12 @@ main:
     app_global_put
     // modules/actus_kernel.py:71
     // self.transfer_opening_date = typ.TimeStamp()
-    bytec 28 // "transfer_opening_date"
+    bytec 29 // "transfer_opening_date"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:72
     // self.transfer_closure_date = typ.TimeStamp()
-    bytec 29 // "transfer_closure_date"
+    bytec 30 // "transfer_closure_date"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:74-75
@@ -118,7 +119,7 @@ main:
     app_global_put
     // modules/actus_kernel.py:85
     // self.dynamic_principal_redemption = False
-    bytec 34 // "dynamic_principal_redemption"
+    bytec 35 // "dynamic_principal_redemption"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:87-88
@@ -140,37 +141,37 @@ main:
     app_global_put
     // modules/actus_kernel.py:93
     // self.rate_reset_spread = UInt64()
-    bytec 35 // "rate_reset_spread"
+    bytec 36 // "rate_reset_spread"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:94
     // self.rate_reset_multiplier = UInt64()
-    bytec 36 // "rate_reset_multiplier"
+    bytec 37 // "rate_reset_multiplier"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:95
     // self.rate_reset_floor = UInt64()
-    bytec 30 // "rate_reset_floor"
+    bytec 31 // "rate_reset_floor"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:96
     // self.rate_reset_cap = UInt64()
-    bytec 31 // "rate_reset_cap"
+    bytec 32 // "rate_reset_cap"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:97
     // self.rate_reset_next = UInt64()
-    bytec 37 // "rate_reset_next"
+    bytec 38 // "rate_reset_next"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:98
     // self.has_rate_reset_floor = False
-    bytec 38 // "has_rate_reset_floor"
+    bytec 39 // "has_rate_reset_floor"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:99
     // self.has_rate_reset_cap = False
-    bytec 39 // "has_rate_reset_cap"
+    bytec 40 // "has_rate_reset_cap"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:101-102
@@ -214,13 +215,13 @@ main:
     // smart_contracts/d_asa/contract.py:23
     // assert Txn.global_num_byte_slice == cfg.GLOBAL_BYTES, err.WRONG_GLOBAL_BYTES
     txn GlobalNumByteSlice
-    pushint 4
+    pushint 10
     ==
     assert // Wrong Global Bytes allocation
     // smart_contracts/d_asa/contract.py:24
     // assert Txn.global_num_uint == cfg.GLOBAL_UINTS, err.WRONG_GLOBAL_UINTS
     txn GlobalNumUint
-    pushint 37
+    pushint 54
     ==
     assert // Wrong Global UInts allocation
     // smart_contracts/d_asa/contract.py:25
@@ -268,13 +269,13 @@ main_switch_case_next@5:
     !
     assert
     txn ApplicationID
-    bz main_create_NoOp@32
-    pushbytess 0xb44618c8 0xe7832529 0x94388723 0x6c85e3ee 0xbdd1a944 0x7c0f1812 0x14fc10ef 0x74a7297f 0x09d4fe14 0x9a9bfa85 0x85eed33d 0xab2c0fc4 0xd9f225ac 0x9883505a 0x8ea6e74c 0x02af557a 0x82f71b2d 0xef04f5d3 0xdf343550 0x3dbe80bd 0x1e3e48e7 0x010c8299 0x7406acd2 0x1a72a2ee // method "fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64)", method "claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[])", method "transfer_set_schedule(uint64,uint64)uint64", method "primary_distribution(address,uint64)uint64", method "transfer(address,address,uint64)uint64", method "account_suspension(address,bool)uint64", method "account_open(address,address)uint64", method "account_update_payment_address(address,address)uint64", method "account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64)", method "contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64", method "contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64", method "contract_execute_ied()uint64", method "apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64", method "append_observed_cash_event((uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64", method "contract_get_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)", method "contract_get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)", method "rbac_rotate_arranger(address)uint64", method "rbac_set_op_daemon(address)uint64", method "rbac_assign_role(uint8,address,(uint64,uint64))uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_contract_suspension(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_validity(uint8,address)(uint64,uint64)"
+    bz main_create_NoOp@33
+    pushbytess 0xb44618c8 0xe7832529 0x94388723 0x6c85e3ee 0xbdd1a944 0x7c0f1812 0x14fc10ef 0x74a7297f 0x09d4fe14 0x9a9bfa85 0x85eed33d 0xab2c0fc4 0xd9f225ac 0x9883505a 0x8ea6e74c 0x02af557a 0x82f71b2d 0xef04f5d3 0xdf343550 0x3dbe80bd 0x1e3e48e7 0x39241fa3 0x010c8299 0x7406acd2 0x1a72a2ee // method "fund_due_cashflows(uint64)(uint64,uint64,uint64,uint64,uint64)", method "claim_due_cashflows(address,byte[])(uint64,uint64,uint64,uint64,byte[])", method "transfer_set_schedule(uint64,uint64)uint64", method "primary_distribution(address,uint64)uint64", method "transfer(address,address,uint64)uint64", method "account_suspension(address,bool)uint64", method "account_open(address,address)uint64", method "account_update_payment_address(address,address)uint64", method "account_get_position(address)(address,uint64,uint64,bool,uint64,uint64,uint64,uint64,uint64)", method "contract_config((uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint8,uint64,uint64,uint64,uint64,uint64,bool,bool,bool,uint64),(uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64),(byte[32],string))uint64", method "contract_schedule(uint64,bool,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)[])uint64", method "contract_execute_ied()uint64", method "apply_non_cash_event(uint64,(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64", method "append_observed_cash_event((uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64))uint64", method "contract_get_state()(uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64,uint64)", method "contract_get_next_due_event()(uint64,uint8,uint64,uint64,uint64,uint64,uint64,uint64,uint64)", method "rbac_rotate_arranger(address)uint64", method "rbac_set_op_daemon(address)uint64", method "rbac_assign_role(uint8,address,(uint64,uint64))uint64", method "rbac_revoke_role(uint8,address)uint64", method "rbac_contract_suspension(bool)uint64", method "rbac_contract_default(bool)uint64", method "rbac_get_arranger()address", method "rbac_get_address_roles(address)(bool,bool,bool,bool,bool)", method "rbac_get_role_validity(uint8,address)(uint64,uint64)"
     txna ApplicationArgs 0
-    match fund_due_cashflows claim_due_cashflows transfer_set_schedule primary_distribution transfer account_suspension account_open account_update_payment_address account_get_position contract_config contract_schedule contract_execute_ied apply_non_cash_event append_observed_cash_event contract_get_state contract_get_next_due_event rbac_rotate_arranger rbac_set_op_daemon rbac_assign_role rbac_revoke_role rbac_contract_suspension rbac_get_arranger rbac_get_address_roles rbac_get_role_validity
+    match fund_due_cashflows claim_due_cashflows transfer_set_schedule primary_distribution transfer account_suspension account_open account_update_payment_address account_get_position contract_config contract_schedule contract_execute_ied apply_non_cash_event append_observed_cash_event contract_get_state contract_get_next_due_event rbac_rotate_arranger rbac_set_op_daemon rbac_assign_role rbac_revoke_role rbac_contract_suspension rbac_contract_default rbac_get_arranger rbac_get_address_roles rbac_get_role_validity
     err
 
-main_create_NoOp@32:
+main_create_NoOp@33:
     // smart_contracts/d_asa/contract.py:8-18
     // class DASA(
     //     PaymentAgent,
@@ -293,7 +294,7 @@ main_create_NoOp@32:
     err
 
 main_contract_update_route@4:
-    // modules/rbac.py:148
+    // modules/rbac.py:150
     // @arc4.abimethod(allow_actions=["UpdateApplication"])
     txn OnCompletion
     pushint 4 // UpdateApplication
@@ -371,11 +372,11 @@ fund_due_cashflows:
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     // modules/payment_agent.py:69
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/payment_agent.py:70
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -1152,7 +1153,7 @@ claim_due_cashflows:
     // modules/payment_agent.py:15
     // if self.op_daemon.value != Global.zero_address:
     intc_0 // 0
-    bytec 26 // 0x523a4f504423
+    bytec 27 // 0x523a4f504423
     app_global_get_ex
     assert // check self.op_daemon exists
     global ZeroAddress
@@ -1162,7 +1163,7 @@ claim_due_cashflows:
     // Txn.sender == self.op_daemon.value
     txn Sender
     intc_0 // 0
-    bytec 26 // 0x523a4f504423
+    bytec 27 // 0x523a4f504423
     app_global_get_ex
     assert // check self.op_daemon exists
     ==
@@ -1209,11 +1210,11 @@ claim_due_cashflows_bool_merge@16:
 
 claim_due_cashflows_after_if_else@17:
     // modules/payment_agent.py:139
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/payment_agent.py:140
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -1523,12 +1524,12 @@ transfer_set_schedule:
     assert // Time events must be sorted in strictly ascending order
     // modules/transfer_agent.py:43
     // self.transfer_opening_date = open_date
-    bytec 28 // "transfer_opening_date"
+    bytec 29 // "transfer_opening_date"
     uncover 2
     app_global_put
     // modules/transfer_agent.py:44
     // self.transfer_closure_date = closure_date
-    bytec 29 // "transfer_closure_date"
+    bytec 30 // "transfer_closure_date"
     swap
     app_global_put
     // modules/transfer_agent.py:45
@@ -1571,18 +1572,18 @@ primary_distribution:
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/rbac.py:71
+    // modules/rbac.py:73
     // assert self._role_is_active(self.primary_dealer, Txn.sender), err.UNAUTHORIZED
     bytec 22 // 0x523a50594423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
     // modules/transfer_agent.py:76
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/transfer_agent.py:77
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -1632,7 +1633,7 @@ primary_distribution:
     // modules/transfer_agent.py:85
     // if self.initial_exchange_date:
     intc_0 // 0
-    bytec 27 // "initial_exchange_date"
+    bytec 28 // "initial_exchange_date"
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     bz primary_distribution_after_if_else@3
@@ -1640,7 +1641,7 @@ primary_distribution:
     // Global.latest_timestamp <= self.initial_exchange_date
     global LatestTimestamp
     intc_0 // 0
-    bytec 27 // "initial_exchange_date"
+    bytec 28 // "initial_exchange_date"
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     <=
@@ -1728,11 +1729,11 @@ transfer:
     assert // check self.status exists
     assert // D-ASA not configured
     // modules/transfer_agent.py:130
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/transfer_agent.py:131
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -1748,14 +1749,14 @@ transfer:
     // modules/transfer_agent.py:13
     // if self.transfer_opening_date:
     intc_0 // 0
-    bytec 28 // "transfer_opening_date"
+    bytec 29 // "transfer_opening_date"
     app_global_get_ex
     assert // check self.transfer_opening_date exists
     bz transfer_after_if_else@3
     // modules/transfer_agent.py:15
     // self.transfer_opening_date <= Global.latest_timestamp
     intc_0 // 0
-    bytec 28 // "transfer_opening_date"
+    bytec 29 // "transfer_opening_date"
     app_global_get_ex
     assert // check self.transfer_opening_date exists
     global LatestTimestamp
@@ -1770,7 +1771,7 @@ transfer_after_if_else@3:
     // modules/transfer_agent.py:17
     // if self.transfer_closure_date:
     intc_0 // 0
-    bytec 29 // "transfer_closure_date"
+    bytec 30 // "transfer_closure_date"
     app_global_get_ex
     assert // check self.transfer_closure_date exists
     bz transfer_after_if_else@5
@@ -1778,7 +1779,7 @@ transfer_after_if_else@3:
     // Global.latest_timestamp < self.transfer_closure_date
     global LatestTimestamp
     intc_0 // 0
-    bytec 29 // "transfer_closure_date"
+    bytec 30 // "transfer_closure_date"
     app_global_get_ex
     assert // check self.transfer_closure_date exists
     <
@@ -1961,7 +1962,7 @@ account_suspension:
     assert // invalid number of bytes for arc4.bool
     intc_0 // 0
     getbit
-    // modules/rbac.py:77
+    // modules/rbac.py:79
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
     bytec 21 // 0x523a41555423
     txn Sender
@@ -2018,7 +2019,7 @@ account_open:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:68
+    // modules/rbac.py:70
     // assert self._role_is_active(self.account_manager, Txn.sender), err.UNAUTHORIZED
     bytec 23 // 0x523a4d4e4723
     txn Sender
@@ -2037,11 +2038,11 @@ account_open:
     !
     assert // Not authorized
     // modules/accounting.py:211
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/accounting.py:212
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/accounting.py:213
     // assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
@@ -2073,7 +2074,7 @@ account_open:
     concat
     dig 1
     concat
-    bytec 40 // 0x00
+    bytec 41 // 0x00
     concat
     dig 1
     concat
@@ -2134,11 +2135,11 @@ account_update_payment_address:
     ==
     assert // Not authorized
     // modules/accounting.py:239
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/accounting.py:240
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/accounting.py:241
     // self.account[holding_address].payment_address = payment_address
     intc_0 // 0
@@ -2603,7 +2604,7 @@ contract_config_after_if_else@20:
     dup
     pushint 41
     extract_uint64
-    bytec 27 // "initial_exchange_date"
+    bytec 28 // "initial_exchange_date"
     dig 1
     app_global_put
     // modules/actus_kernel.py:827
@@ -2635,7 +2636,7 @@ contract_config_after_if_else@20:
     dig 3
     pushint 786
     getbit
-    bytec 34 // "dynamic_principal_redemption"
+    bytec 35 // "dynamic_principal_redemption"
     swap
     app_global_put
     // modules/actus_kernel.py:833
@@ -2677,7 +2678,7 @@ contract_config_after_if_else@20:
     dig 3
     pushint 58
     extract_uint64
-    bytec 35 // "rate_reset_spread"
+    bytec 36 // "rate_reset_spread"
     swap
     app_global_put
     // modules/actus_kernel.py:842
@@ -2685,7 +2686,7 @@ contract_config_after_if_else@20:
     dig 3
     pushint 66
     extract_uint64
-    bytec 36 // "rate_reset_multiplier"
+    bytec 37 // "rate_reset_multiplier"
     swap
     app_global_put
     // modules/actus_kernel.py:843
@@ -2693,7 +2694,7 @@ contract_config_after_if_else@20:
     dig 3
     pushint 74
     extract_uint64
-    bytec 30 // "rate_reset_floor"
+    bytec 31 // "rate_reset_floor"
     swap
     app_global_put
     // modules/actus_kernel.py:844
@@ -2701,7 +2702,7 @@ contract_config_after_if_else@20:
     dig 3
     pushint 82
     extract_uint64
-    bytec 31 // "rate_reset_cap"
+    bytec 32 // "rate_reset_cap"
     swap
     app_global_put
     // modules/actus_kernel.py:845
@@ -2709,7 +2710,7 @@ contract_config_after_if_else@20:
     dig 3
     pushint 90
     extract_uint64
-    bytec 37 // "rate_reset_next"
+    bytec 38 // "rate_reset_next"
     swap
     app_global_put
     // modules/actus_kernel.py:846
@@ -2717,7 +2718,7 @@ contract_config_after_if_else@20:
     dig 3
     pushint 784
     getbit
-    bytec 38 // "has_rate_reset_floor"
+    bytec 39 // "has_rate_reset_floor"
     swap
     app_global_put
     // modules/actus_kernel.py:847
@@ -2725,7 +2726,7 @@ contract_config_after_if_else@20:
     dig 3
     pushint 785
     getbit
-    bytec 39 // "has_rate_reset_cap"
+    bytec 40 // "has_rate_reset_cap"
     swap
     app_global_put
     // modules/actus_kernel.py:849-850
@@ -3172,11 +3173,11 @@ contract_execute_ied:
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     // modules/actus_kernel.py:1144
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/actus_kernel.py:1145
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:1147
     // assert self.event_cursor < self.schedule_entry_count, err.INVALID_EVENT_CURSOR
     intc_0 // 0
@@ -3342,11 +3343,11 @@ apply_non_cash_event:
     assert // check self.status exists
     assert // D-ASA not configured
     // modules/actus_kernel.py:1204
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/actus_kernel.py:1205
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:1207
     // if payload.flags & UInt64(enums.FLAG_OBSERVED_EVENT):
     pushint 65
@@ -3699,7 +3700,7 @@ apply_non_cash_event_bool_merge@23:
     // modules/actus_kernel.py:1218
     // if self._event_is_rate_reset(entry.event_type.as_uint64()):
     bz apply_non_cash_event_else_body@5
-    // modules/rbac.py:80
+    // modules/rbac.py:82
     // assert self._role_is_active(self.observer, Txn.sender), err.UNAUTHORIZED
     bytec 25 // 0x523a4d4f4323
     txn Sender
@@ -3764,11 +3765,11 @@ append_observed_cash_event:
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     // modules/actus_kernel.py:1255
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/actus_kernel.py:1256
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -4228,7 +4229,7 @@ contract_get_next_due_event:
     itob
     // modules/actus_kernel.py:1307
     // event_type=arc4.UInt8(0),
-    bytec 40 // 0x00
+    bytec 41 // 0x00
     // modules/actus_kernel.py:1305-1315
     // return typ.ExecutionScheduleEntry(
     //     event_id=self.event_cursor,
@@ -4299,13 +4300,13 @@ contract_get_next_due_event_after_if_else@3:
 
 // modules.rbac.RbacModule.contract_update[routing]() -> void:
 contract_update:
-    // modules/rbac.py:159-162
+    // modules/rbac.py:161-164
     // # The reference implementation grants the update permissions to the Arranger.
     // # ⚠️ WARNING: Application updates must be executed VERY carefully, as they
     // # might introduce breaking changes.
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/rbac.py:148
+    // modules/rbac.py:150
     // @arc4.abimethod(allow_actions=["UpdateApplication"])
     intc_1 // 1
     return
@@ -4313,7 +4314,7 @@ contract_update:
 
 // modules.rbac.RbacModule.rbac_rotate_arranger[routing]() -> void:
 rbac_rotate_arranger:
-    // modules/rbac.py:164
+    // modules/rbac.py:166
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -4321,18 +4322,18 @@ rbac_rotate_arranger:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:178
+    // modules/rbac.py:180
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/rbac.py:179
+    // modules/rbac.py:181
     // self.arranger.value = new_arranger
     bytec 18 // 0x523a41525223
     swap
     app_global_put
-    // modules/rbac.py:180
+    // modules/rbac.py:182
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:164
+    // modules/rbac.py:166
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4345,7 +4346,7 @@ rbac_rotate_arranger:
 
 // modules.rbac.RbacModule.rbac_set_op_daemon[routing]() -> void:
 rbac_set_op_daemon:
-    // modules/rbac.py:182
+    // modules/rbac.py:184
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -4353,18 +4354,18 @@ rbac_set_op_daemon:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:196
+    // modules/rbac.py:198
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/rbac.py:197
+    // modules/rbac.py:199
     // self.op_daemon.value = address
-    bytec 26 // 0x523a4f504423
+    bytec 27 // 0x523a4f504423
     swap
     app_global_put
-    // modules/rbac.py:198
+    // modules/rbac.py:200
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:182
+    // modules/rbac.py:184
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4377,7 +4378,7 @@ rbac_set_op_daemon:
 
 // modules.rbac.RbacModule.rbac_assign_role[routing]() -> void:
 rbac_assign_role:
-    // modules/rbac.py:200
+    // modules/rbac.py:202
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -4399,33 +4400,33 @@ rbac_assign_role:
     pushint 16
     ==
     assert // invalid number of bytes for smart_contracts.abi_types.RoleValidity
-    // modules/rbac.py:222
+    // modules/rbac.py:224
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/rbac.py:223
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
-    // modules/rbac.py:224
+    // modules/rbac.py:225
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
+    // modules/rbac.py:226
     // self._assert_valid_role(role_id.as_uint64())
     btoi
     dupn 2
     callsub _assert_valid_role
-    // modules/rbac.py:102
+    // modules/rbac.py:104
     // if role_id == UInt64(enums.ROLE_ARRANGER):
     pushint 20
     ==
     bz rbac_assign_role_after_if_else@3
-    // modules/rbac.py:103
+    // modules/rbac.py:105
     // self.arranger.value = role_address
     bytec 18 // 0x523a41525223
     dig 3
     app_global_put
 
 rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14:
-    // modules/rbac.py:226
+    // modules/rbac.py:228
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:200
+    // modules/rbac.py:202
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4436,13 +4437,13 @@ rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14:
     return
 
 rbac_assign_role_after_if_else@3:
-    // modules/rbac.py:106
+    // modules/rbac.py:108
     // if role_id == UInt64(enums.ROLE_ACCOUNT_MANAGER):
     dup
     pushint 40
     ==
     bz rbac_assign_role_after_if_else@5
-    // modules/rbac.py:107
+    // modules/rbac.py:109
     // assert role_address not in self.account_manager, err.INVALID_ROLE_ADDRESS
     bytec 23 // 0x523a4d4e4723
     dig 3
@@ -4452,22 +4453,22 @@ rbac_assign_role_after_if_else@3:
     bury 1
     !
     assert // Invalid account role address
-    // modules/rbac.py:108
+    // modules/rbac.py:110
     // self.account_manager[role_address] = validity.copy()
     dig 2
     box_put
-    // modules/rbac.py:225
+    // modules/rbac.py:227
     // self._set_role(role_id.as_uint64(), role_address, validity)
     b rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
 
 rbac_assign_role_after_if_else@5:
-    // modules/rbac.py:110
+    // modules/rbac.py:112
     // if role_id == UInt64(enums.ROLE_PRIMARY_DEALER):
     dup
     pushint 50
     ==
     bz rbac_assign_role_after_if_else@7
-    // modules/rbac.py:111
+    // modules/rbac.py:113
     // assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
     bytec 22 // 0x523a50594423
     dig 3
@@ -4477,24 +4478,24 @@ rbac_assign_role_after_if_else@5:
     bury 1
     !
     assert // Invalid account role address
-    // modules/rbac.py:112
+    // modules/rbac.py:114
     // self.primary_dealer[role_address] = validity.copy()
     dig 2
     box_put
-    // modules/rbac.py:225
+    // modules/rbac.py:227
     // self._set_role(role_id.as_uint64(), role_address, validity)
     b rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
 
 rbac_assign_role_after_if_else@7:
-    // modules/rbac.py:114
+    // modules/rbac.py:116
     // if role_id == UInt64(enums.ROLE_TRUSTEE):
     dup
     pushint 60
     ==
     bz rbac_assign_role_after_if_else@9
-    // modules/rbac.py:115
+    // modules/rbac.py:117
     // assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 32 // 0x523a54525323
+    bytec 26 // 0x523a54525323
     dig 3
     concat
     dup
@@ -4502,22 +4503,22 @@ rbac_assign_role_after_if_else@7:
     bury 1
     !
     assert // Invalid account role address
-    // modules/rbac.py:116
+    // modules/rbac.py:118
     // self.trustee[role_address] = validity.copy()
     dig 2
     box_put
-    // modules/rbac.py:225
+    // modules/rbac.py:227
     // self._set_role(role_id.as_uint64(), role_address, validity)
     b rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
 
 rbac_assign_role_after_if_else@9:
-    // modules/rbac.py:118
+    // modules/rbac.py:120
     // if role_id == UInt64(enums.ROLE_AUTHORITY):
     dup
     pushint 70
     ==
     bz rbac_assign_role_after_if_else@11
-    // modules/rbac.py:119
+    // modules/rbac.py:121
     // assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
     bytec 21 // 0x523a41555423
     dig 3
@@ -4527,22 +4528,22 @@ rbac_assign_role_after_if_else@9:
     bury 1
     !
     assert // Invalid account role address
-    // modules/rbac.py:120
+    // modules/rbac.py:122
     // self.authority[role_address] = validity.copy()
     dig 2
     box_put
-    // modules/rbac.py:225
+    // modules/rbac.py:227
     // self._set_role(role_id.as_uint64(), role_address, validity)
     b rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
 
 rbac_assign_role_after_if_else@11:
-    // modules/rbac.py:122
+    // modules/rbac.py:124
     // if role_id == UInt64(enums.ROLE_OBSERVER):
     dup
     pushint 80
     ==
     bz rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
-    // modules/rbac.py:123
+    // modules/rbac.py:125
     // assert role_address not in self.observer, err.INVALID_ROLE_ADDRESS
     bytec 25 // 0x523a4d4f4323
     dig 3
@@ -4552,7 +4553,7 @@ rbac_assign_role_after_if_else@11:
     bury 1
     !
     assert // Invalid account role address
-    // modules/rbac.py:124
+    // modules/rbac.py:126
     // self.observer[role_address] = validity.copy()
     dig 2
     box_put
@@ -4561,7 +4562,7 @@ rbac_assign_role_after_if_else@11:
 
 // modules.rbac.RbacModule.rbac_revoke_role[routing]() -> void:
 rbac_revoke_role:
-    // modules/rbac.py:228
+    // modules/rbac.py:230
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -4576,29 +4577,29 @@ rbac_revoke_role:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:247
+    // modules/rbac.py:249
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/rbac.py:248
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
-    // modules/rbac.py:249
+    // modules/rbac.py:250
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
+    // modules/rbac.py:251
     // self._assert_valid_role(role_id.as_uint64())
     btoi
     dupn 2
     callsub _assert_valid_role
-    // modules/rbac.py:127
+    // modules/rbac.py:129
     // assert role_id != UInt64(enums.ROLE_ARRANGER), err.INVALID_ROLE
     dup
     pushint 20
     !=
     assert // Invalid role identifier
-    // modules/rbac.py:128
+    // modules/rbac.py:130
     // if role_id == UInt64(enums.ROLE_ACCOUNT_MANAGER):
     pushint 40
     ==
     bz rbac_revoke_role_after_if_else@3
-    // modules/rbac.py:129
+    // modules/rbac.py:131
     // assert role_address in self.account_manager, err.INVALID_ROLE_ADDRESS
     bytec 23 // 0x523a4d4e4723
     dig 2
@@ -4607,16 +4608,16 @@ rbac_revoke_role:
     box_len
     bury 1
     assert // Invalid account role address
-    // modules/rbac.py:130
+    // modules/rbac.py:132
     // del self.account_manager[role_address]
     box_del
     pop
 
 rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12:
-    // modules/rbac.py:251
+    // modules/rbac.py:253
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:228
+    // modules/rbac.py:230
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4627,13 +4628,13 @@ rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12:
     return
 
 rbac_revoke_role_after_if_else@3:
-    // modules/rbac.py:132
+    // modules/rbac.py:134
     // if role_id == UInt64(enums.ROLE_PRIMARY_DEALER):
     dup
     pushint 50
     ==
     bz rbac_revoke_role_after_if_else@5
-    // modules/rbac.py:133
+    // modules/rbac.py:135
     // assert role_address in self.primary_dealer, err.INVALID_ROLE_ADDRESS
     bytec 22 // 0x523a50594423
     dig 2
@@ -4642,46 +4643,46 @@ rbac_revoke_role_after_if_else@3:
     box_len
     bury 1
     assert // Invalid account role address
-    // modules/rbac.py:134
+    // modules/rbac.py:136
     // del self.primary_dealer[role_address]
     box_del
     pop
-    // modules/rbac.py:250
+    // modules/rbac.py:252
     // self._delete_role(role_id.as_uint64(), role_address)
     b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
 
 rbac_revoke_role_after_if_else@5:
-    // modules/rbac.py:136
+    // modules/rbac.py:138
     // if role_id == UInt64(enums.ROLE_TRUSTEE):
     dup
     pushint 60
     ==
     bz rbac_revoke_role_after_if_else@7
-    // modules/rbac.py:137
+    // modules/rbac.py:139
     // assert role_address in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 32 // 0x523a54525323
+    bytec 26 // 0x523a54525323
     dig 2
     concat
     dup
     box_len
     bury 1
     assert // Invalid account role address
-    // modules/rbac.py:138
+    // modules/rbac.py:140
     // del self.trustee[role_address]
     box_del
     pop
-    // modules/rbac.py:250
+    // modules/rbac.py:252
     // self._delete_role(role_id.as_uint64(), role_address)
     b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
 
 rbac_revoke_role_after_if_else@7:
-    // modules/rbac.py:140
+    // modules/rbac.py:142
     // if role_id == UInt64(enums.ROLE_AUTHORITY):
     dup
     pushint 70
     ==
     bz rbac_revoke_role_after_if_else@9
-    // modules/rbac.py:141
+    // modules/rbac.py:143
     // assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
     bytec 21 // 0x523a41555423
     dig 2
@@ -4690,22 +4691,22 @@ rbac_revoke_role_after_if_else@7:
     box_len
     bury 1
     assert // Invalid account role address
-    // modules/rbac.py:142
+    // modules/rbac.py:144
     // del self.authority[role_address]
     box_del
     pop
-    // modules/rbac.py:250
+    // modules/rbac.py:252
     // self._delete_role(role_id.as_uint64(), role_address)
     b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
 
 rbac_revoke_role_after_if_else@9:
-    // modules/rbac.py:144
+    // modules/rbac.py:146
     // if role_id == UInt64(enums.ROLE_OBSERVER):
     dup
     pushint 80
     ==
     bz rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
-    // modules/rbac.py:145
+    // modules/rbac.py:147
     // assert role_address in self.observer, err.INVALID_ROLE_ADDRESS
     bytec 25 // 0x523a4d4f4323
     dig 2
@@ -4714,7 +4715,7 @@ rbac_revoke_role_after_if_else@9:
     box_len
     bury 1
     assert // Invalid account role address
-    // modules/rbac.py:146
+    // modules/rbac.py:148
     // del self.observer[role_address]
     box_del
     pop
@@ -4723,8 +4724,8 @@ rbac_revoke_role_after_if_else@9:
 
 // modules.rbac.RbacModule.rbac_contract_suspension[routing]() -> void:
 rbac_contract_suspension:
-    // modules/rbac.py:253
-    // @arc4.abimethod  # TODO: Update specs and add test
+    // modules/rbac.py:255
+    // @arc4.abimethod
     txna ApplicationArgs 1
     dup
     len
@@ -4733,22 +4734,59 @@ rbac_contract_suspension:
     assert // invalid number of bytes for arc4.bool
     intc_0 // 0
     getbit
-    // modules/rbac.py:77
+    // modules/rbac.py:79
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
     bytec 21 // 0x523a41555423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
-    // modules/rbac.py:269
-    // self.asset_suspended = suspended
-    bytec 33 // "asset_suspended"
+    // modules/rbac.py:271
+    // self.contract_suspended = suspended
+    bytec 33 // "contract_suspended"
     swap
     app_global_put
-    // modules/rbac.py:270
+    // modules/rbac.py:272
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:253
-    // @arc4.abimethod  # TODO: Update specs and add test
+    // modules/rbac.py:255
+    // @arc4.abimethod
+    itob
+    bytec_0 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// modules.rbac.RbacModule.rbac_contract_default[routing]() -> void:
+rbac_contract_default:
+    // modules/rbac.py:274
+    // @arc4.abimethod
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_1 // 1
+    ==
+    assert // invalid number of bytes for arc4.bool
+    intc_0 // 0
+    getbit
+    // modules/rbac.py:76
+    // assert self._role_is_active(self.trustee, Txn.sender), err.UNAUTHORIZED
+    bytec 26 // 0x523a54525323
+    txn Sender
+    callsub _role_is_active
+    assert // Not authorized
+    // modules/rbac.py:287
+    // self.defaulted = defaulted
+    bytec 34 // "defaulted"
+    swap
+    app_global_put
+    // modules/rbac.py:288
+    // return Global.latest_timestamp
+    global LatestTimestamp
+    // modules/rbac.py:274
+    // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
     swap
@@ -4760,13 +4798,13 @@ rbac_contract_suspension:
 
 // modules.rbac.RbacModule.rbac_get_arranger[routing]() -> void:
 rbac_get_arranger:
-    // modules/rbac.py:283
+    // modules/rbac.py:301
     // return self.arranger.value
     intc_0 // 0
     bytec 18 // 0x523a41525223
     app_global_get_ex
     assert // check self.arranger exists
-    // modules/rbac.py:272
+    // modules/rbac.py:290
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -4778,7 +4816,7 @@ rbac_get_arranger:
 
 // modules.rbac.RbacModule.rbac_get_address_roles[routing]() -> void:
 rbac_get_address_roles:
-    // modules/rbac.py:285
+    // modules/rbac.py:303
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -4786,34 +4824,34 @@ rbac_get_address_roles:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:303
+    // modules/rbac.py:321
     // self._role_is_active(self.account_manager, address),
     bytec 23 // 0x523a4d4e4723
     dig 1
     callsub _role_is_active
-    // modules/rbac.py:304
+    // modules/rbac.py:322
     // self._role_is_active(self.primary_dealer, address),
     bytec 22 // 0x523a50594423
     dig 2
     callsub _role_is_active
-    // modules/rbac.py:305
+    // modules/rbac.py:323
     // self._role_is_active(self.trustee, address),
-    bytec 32 // 0x523a54525323
+    bytec 26 // 0x523a54525323
     dig 3
     callsub _role_is_active
-    // modules/rbac.py:306
+    // modules/rbac.py:324
     // self._role_is_active(self.authority, address),
     bytec 21 // 0x523a41555423
     dig 4
     callsub _role_is_active
-    // modules/rbac.py:307
+    // modules/rbac.py:325
     // self._role_is_active(self.observer, address),
     bytec 25 // 0x523a4d4f4323
     uncover 5
     callsub _role_is_active
-    // modules/rbac.py:285
+    // modules/rbac.py:303
     // @arc4.abimethod(readonly=True)
-    bytec 40 // 0x00
+    bytec 41 // 0x00
     intc_0 // 0
     uncover 6
     setbit
@@ -4839,7 +4877,7 @@ rbac_get_address_roles:
 
 // modules.rbac.RbacModule.rbac_get_role_validity[routing]() -> void:
 rbac_get_role_validity:
-    // modules/rbac.py:310
+    // modules/rbac.py:328
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -4854,17 +4892,17 @@ rbac_get_role_validity:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:328
+    // modules/rbac.py:346
     // role = role_id.as_uint64()
     btoi
-    // modules/rbac.py:329
+    // modules/rbac.py:347
     // self._assert_valid_role(role)
     dup
     callsub _assert_valid_role
-    // modules/rbac.py:331
+    // modules/rbac.py:349
     // case UInt64(enums.ROLE_ARRANGER):
     pushints 20 40 50 60 70 80
-    // modules/rbac.py:330-361
+    // modules/rbac.py:348-379
     // match role:
     //     case UInt64(enums.ROLE_ARRANGER):
     //         return typ.RoleValidity(
@@ -4899,33 +4937,33 @@ rbac_get_role_validity:
     //         op.err(err.INVALID_ROLE)
     uncover 6
     match rbac_get_role_validity_switch_case_0@2 rbac_get_role_validity_switch_case_1@3 rbac_get_role_validity_switch_case_2@4 rbac_get_role_validity_switch_case_3@5 rbac_get_role_validity_switch_case_4@6 rbac_get_role_validity_switch_case_5@7
-    // modules/rbac.py:361
+    // modules/rbac.py:379
     // op.err(err.INVALID_ROLE)
     err // Invalid role identifier
 
 rbac_get_role_validity_switch_case_5@7:
-    // modules/rbac.py:357
+    // modules/rbac.py:375
     // self.observer, role_address
     bytec 25 // 0x523a4d4f4323
-    // modules/rbac.py:55
+    // modules/rbac.py:57
     // return role_address in role_map
     dig 1
     concat
     dup
     box_len
     bury 1
-    // modules/rbac.py:356-358
+    // modules/rbac.py:374-376
     // assert self._has_role(
     //     self.observer, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:359
+    // modules/rbac.py:377
     // return self.observer[role_address]
     box_get
     pop
 
 rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9:
-    // modules/rbac.py:310
+    // modules/rbac.py:328
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -4935,108 +4973,108 @@ rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_valid
     return
 
 rbac_get_role_validity_switch_case_4@6:
-    // modules/rbac.py:352
+    // modules/rbac.py:370
     // self.authority, role_address
     bytec 21 // 0x523a41555423
-    // modules/rbac.py:55
+    // modules/rbac.py:57
     // return role_address in role_map
     dig 1
     concat
     dup
     box_len
     bury 1
-    // modules/rbac.py:351-353
+    // modules/rbac.py:369-371
     // assert self._has_role(
     //     self.authority, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:354
+    // modules/rbac.py:372
     // return self.authority[role_address]
     box_get
     pop
-    // modules/rbac.py:310
+    // modules/rbac.py:328
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
 rbac_get_role_validity_switch_case_3@5:
-    // modules/rbac.py:347
+    // modules/rbac.py:365
     // self.trustee, role_address
-    bytec 32 // 0x523a54525323
-    // modules/rbac.py:55
+    bytec 26 // 0x523a54525323
+    // modules/rbac.py:57
     // return role_address in role_map
     dig 1
     concat
     dup
     box_len
     bury 1
-    // modules/rbac.py:346-348
+    // modules/rbac.py:364-366
     // assert self._has_role(
     //     self.trustee, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:349
+    // modules/rbac.py:367
     // return self.trustee[role_address]
     box_get
     pop
-    // modules/rbac.py:310
+    // modules/rbac.py:328
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
 rbac_get_role_validity_switch_case_2@4:
-    // modules/rbac.py:342
+    // modules/rbac.py:360
     // self.primary_dealer, role_address
     bytec 22 // 0x523a50594423
-    // modules/rbac.py:55
+    // modules/rbac.py:57
     // return role_address in role_map
     dig 1
     concat
     dup
     box_len
     bury 1
-    // modules/rbac.py:341-343
+    // modules/rbac.py:359-361
     // assert self._has_role(
     //     self.primary_dealer, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:344
+    // modules/rbac.py:362
     // return self.primary_dealer[role_address]
     box_get
     pop
-    // modules/rbac.py:310
+    // modules/rbac.py:328
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
 rbac_get_role_validity_switch_case_1@3:
-    // modules/rbac.py:337
+    // modules/rbac.py:355
     // self.account_manager, role_address
     bytec 23 // 0x523a4d4e4723
-    // modules/rbac.py:55
+    // modules/rbac.py:57
     // return role_address in role_map
     dig 1
     concat
     dup
     box_len
     bury 1
-    // modules/rbac.py:336-338
+    // modules/rbac.py:354-356
     // assert self._has_role(
     //     self.account_manager, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:339
+    // modules/rbac.py:357
     // return self.account_manager[role_address]
     box_get
     pop
-    // modules/rbac.py:310
+    // modules/rbac.py:328
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
 rbac_get_role_validity_switch_case_0@2:
-    // modules/rbac.py:332-334
+    // modules/rbac.py:350-352
     // return typ.RoleValidity(
     //     role_validity_start=UInt64(0), role_validity_end=UInt64(0)
     // )
     pushbytes 0x00000000000000000000000000000000
-    // modules/rbac.py:310
+    // modules/rbac.py:328
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
@@ -5807,7 +5845,7 @@ _is_dynamic_annuity:
     // modules/actus_kernel.py:336
     // and self.dynamic_principal_redemption
     intc_0 // 0
-    bytec 34 // "dynamic_principal_redemption"
+    bytec 35 // "dynamic_principal_redemption"
     app_global_get_ex
     assert // check self.dynamic_principal_redemption exists
     // modules/actus_kernel.py:335-336
@@ -6186,7 +6224,7 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     // modules/actus_kernel.py:656
     // self.rate_reset_multiplier,
     intc_0 // 0
-    bytec 36 // "rate_reset_multiplier"
+    bytec 37 // "rate_reset_multiplier"
     app_global_get_ex
     assert // check self.rate_reset_multiplier exists
     // modules/actus_kernel.py:657
@@ -6207,7 +6245,7 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     // modules/actus_kernel.py:660
     // observed_rate + self.rate_reset_spread
     intc_0 // 0
-    bytec 35 // "rate_reset_spread"
+    bytec 36 // "rate_reset_spread"
     app_global_get_ex
     assert // check self.rate_reset_spread exists
     +
@@ -6215,12 +6253,12 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     // modules/actus_kernel.py:741
     // if self.has_rate_reset_floor and rate < self.rate_reset_floor:
     intc_0 // 0
-    bytec 38 // "has_rate_reset_floor"
+    bytec 39 // "has_rate_reset_floor"
     app_global_get_ex
     assert // check self.has_rate_reset_floor exists
     bz _apply_non_cash_schedule_entry_after_if_else@55
     intc_0 // 0
-    bytec 30 // "rate_reset_floor"
+    bytec 31 // "rate_reset_floor"
     app_global_get_ex
     assert // check self.rate_reset_floor exists
     frame_dig 6
@@ -6229,7 +6267,7 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     // modules/actus_kernel.py:742
     // rate = self.rate_reset_floor
     intc_0 // 0
-    bytec 30 // "rate_reset_floor"
+    bytec 31 // "rate_reset_floor"
     app_global_get_ex
     swap
     frame_bury 6
@@ -6239,12 +6277,12 @@ _apply_non_cash_schedule_entry_after_if_else@55:
     // modules/actus_kernel.py:743
     // if self.has_rate_reset_cap and rate > self.rate_reset_cap:
     intc_0 // 0
-    bytec 39 // "has_rate_reset_cap"
+    bytec 40 // "has_rate_reset_cap"
     app_global_get_ex
     assert // check self.has_rate_reset_cap exists
     bz _apply_non_cash_schedule_entry_after_if_else@58
     intc_0 // 0
-    bytec 31 // "rate_reset_cap"
+    bytec 32 // "rate_reset_cap"
     app_global_get_ex
     assert // check self.rate_reset_cap exists
     frame_dig 6
@@ -6253,7 +6291,7 @@ _apply_non_cash_schedule_entry_after_if_else@55:
     // modules/actus_kernel.py:744
     // rate = self.rate_reset_cap
     intc_0 // 0
-    bytec 31 // "rate_reset_cap"
+    bytec 32 // "rate_reset_cap"
     app_global_get_ex
     swap
     frame_bury 6
@@ -6637,7 +6675,7 @@ _apply_non_cash_schedule_entry_else_body@10:
     // modules/actus_kernel.py:665
     // next_rate = self.rate_reset_next
     intc_0 // 0
-    bytec 37 // "rate_reset_next"
+    bytec 38 // "rate_reset_next"
     app_global_get_ex
     swap
     frame_bury 5
@@ -6836,11 +6874,11 @@ _emit_execution_event_after_if_else@6:
 
 // modules.rbac.RbacModule._role_is_active(role_map: bytes, role_address: bytes) -> uint64:
 _role_is_active:
-    // modules/rbac.py:57
+    // modules/rbac.py:59
     // def _role_is_active(self, role_map: typ.RbacRole, role_address: Account) -> bool:
     proto 2 1
     pushbytes ""
-    // modules/rbac.py:55
+    // modules/rbac.py:57
     // return role_address in role_map
     frame_dig -2
     frame_dig -1
@@ -6848,47 +6886,47 @@ _role_is_active:
     dup
     box_len
     bury 1
-    // modules/rbac.py:58-62
+    // modules/rbac.py:60-64
     // return self._has_role(role_map, role_address) and (
     //     role_map[role_address].role_validity_start
     //     <= Global.latest_timestamp
     //     <= role_map[role_address].role_validity_end
     // )
     bz _role_is_active_bool_false@4
-    // modules/rbac.py:59
+    // modules/rbac.py:61
     // role_map[role_address].role_validity_start
     frame_dig 1
     box_get
     assert // check BoxMap entry exists
     intc_0 // 0
     extract_uint64
-    // modules/rbac.py:60
+    // modules/rbac.py:62
     // <= Global.latest_timestamp
     global LatestTimestamp
     dup
     frame_bury 0
-    // modules/rbac.py:59-60
+    // modules/rbac.py:61-62
     // role_map[role_address].role_validity_start
     // <= Global.latest_timestamp
     <=
-    // modules/rbac.py:59-61
+    // modules/rbac.py:61-63
     // role_map[role_address].role_validity_start
     // <= Global.latest_timestamp
     // <= role_map[role_address].role_validity_end
     bz _role_is_active_bool_false@4
-    // modules/rbac.py:61
+    // modules/rbac.py:63
     // <= role_map[role_address].role_validity_end
     frame_dig 1
     box_get
     assert // check BoxMap entry exists
     intc_2 // 8
     extract_uint64
-    // modules/rbac.py:60-61
+    // modules/rbac.py:62-63
     // <= Global.latest_timestamp
     // <= role_map[role_address].role_validity_end
     frame_dig 0
     >=
-    // modules/rbac.py:59-61
+    // modules/rbac.py:61-63
     // role_map[role_address].role_validity_start
     // <= Global.latest_timestamp
     // <= role_map[role_address].role_validity_end
@@ -6896,7 +6934,7 @@ _role_is_active:
     intc_1 // 1
 
 _role_is_active_bool_merge@5:
-    // modules/rbac.py:58-62
+    // modules/rbac.py:60-64
     // return self._has_role(role_map, role_address) and (
     //     role_map[role_address].role_validity_start
     //     <= Global.latest_timestamp
@@ -6912,43 +6950,43 @@ _role_is_active_bool_false@4:
 
 // modules.rbac.RbacModule._assert_caller_is_arranger() -> void:
 _assert_caller_is_arranger:
-    // modules/rbac.py:65
+    // modules/rbac.py:67
     // assert self._is_arranger(Txn.sender), err.UNAUTHORIZED
     txn Sender
-    // modules/rbac.py:52
+    // modules/rbac.py:54
     // return role_address == self.arranger.value
     intc_0 // 0
     bytec 18 // 0x523a41525223
     app_global_get_ex
     assert // check self.arranger exists
     ==
-    // modules/rbac.py:65
+    // modules/rbac.py:67
     // assert self._is_arranger(Txn.sender), err.UNAUTHORIZED
     assert // Not authorized
     retsub
 
 
-// modules.rbac.RbacModule._assert_is_not_asset_defaulted() -> void:
-_assert_is_not_asset_defaulted:
-    // modules/rbac.py:83
-    // assert not self.asset_defaulted, err.DEFAULTED
+// modules.rbac.RbacModule._assert_is_not_contract_defaulted() -> void:
+_assert_is_not_contract_defaulted:
+    // modules/rbac.py:85
+    // assert not self.defaulted, err.DEFAULTED
     intc_0 // 0
-    bytec 41 // "asset_defaulted"
+    bytec 34 // "defaulted"
     app_global_get_ex
-    assert // check self.asset_defaulted exists
+    assert // check self.defaulted exists
     !
     assert // Defaulted
     retsub
 
 
-// modules.rbac.RbacModule._assert_is_not_asset_suspended() -> void:
-_assert_is_not_asset_suspended:
-    // modules/rbac.py:86
-    // assert not self.asset_suspended, err.SUSPENDED
+// modules.rbac.RbacModule._assert_is_not_contract_suspended() -> void:
+_assert_is_not_contract_suspended:
+    // modules/rbac.py:88
+    // assert not self.contract_suspended, err.SUSPENDED
     intc_0 // 0
-    bytec 33 // "asset_suspended"
+    bytec 33 // "contract_suspended"
     app_global_get_ex
-    assert // check self.asset_suspended exists
+    assert // check self.contract_suspended exists
     !
     assert // Suspended operations
     retsub
@@ -6956,10 +6994,10 @@ _assert_is_not_asset_suspended:
 
 // modules.rbac.RbacModule._assert_valid_role(role_id: uint64) -> void:
 _assert_valid_role:
-    // modules/rbac.py:88
+    // modules/rbac.py:90
     // def _assert_valid_role(self, role_id: UInt64) -> None:
     proto 1 0
-    // modules/rbac.py:89-97
+    // modules/rbac.py:91-99
     // assert role_id in (
     //     UInt64(enums.ROLE_ARRANGER),
     //     UInt64(enums.ROLE_OP_DAEMON),
@@ -6969,43 +7007,11 @@ _assert_valid_role:
     //     UInt64(enums.ROLE_AUTHORITY),
     //     UInt64(enums.ROLE_OBSERVER),
     // ), err.INVALID_ROLE
-    frame_dig -1
-    // modules/rbac.py:90
-    // UInt64(enums.ROLE_ARRANGER),
-    pushint 20
-    // modules/rbac.py:89-97
-    // assert role_id in (
-    //     UInt64(enums.ROLE_ARRANGER),
-    //     UInt64(enums.ROLE_OP_DAEMON),
-    //     UInt64(enums.ROLE_ACCOUNT_MANAGER),
-    //     UInt64(enums.ROLE_PRIMARY_DEALER),
-    //     UInt64(enums.ROLE_TRUSTEE),
-    //     UInt64(enums.ROLE_AUTHORITY),
-    //     UInt64(enums.ROLE_OBSERVER),
-    // ), err.INVALID_ROLE
-    ==
-    bnz _assert_valid_role_bool_true@7
-    frame_dig -1
-    // modules/rbac.py:91
-    // UInt64(enums.ROLE_OP_DAEMON),
-    pushint 25
-    // modules/rbac.py:89-97
-    // assert role_id in (
-    //     UInt64(enums.ROLE_ARRANGER),
-    //     UInt64(enums.ROLE_OP_DAEMON),
-    //     UInt64(enums.ROLE_ACCOUNT_MANAGER),
-    //     UInt64(enums.ROLE_PRIMARY_DEALER),
-    //     UInt64(enums.ROLE_TRUSTEE),
-    //     UInt64(enums.ROLE_AUTHORITY),
-    //     UInt64(enums.ROLE_OBSERVER),
-    // ), err.INVALID_ROLE
-    ==
-    bnz _assert_valid_role_bool_true@7
     frame_dig -1
     // modules/rbac.py:92
-    // UInt64(enums.ROLE_ACCOUNT_MANAGER),
-    pushint 40
-    // modules/rbac.py:89-97
+    // UInt64(enums.ROLE_ARRANGER),
+    pushint 20
+    // modules/rbac.py:91-99
     // assert role_id in (
     //     UInt64(enums.ROLE_ARRANGER),
     //     UInt64(enums.ROLE_OP_DAEMON),
@@ -7019,9 +7025,9 @@ _assert_valid_role:
     bnz _assert_valid_role_bool_true@7
     frame_dig -1
     // modules/rbac.py:93
-    // UInt64(enums.ROLE_PRIMARY_DEALER),
-    pushint 50
-    // modules/rbac.py:89-97
+    // UInt64(enums.ROLE_OP_DAEMON),
+    pushint 25
+    // modules/rbac.py:91-99
     // assert role_id in (
     //     UInt64(enums.ROLE_ARRANGER),
     //     UInt64(enums.ROLE_OP_DAEMON),
@@ -7035,9 +7041,9 @@ _assert_valid_role:
     bnz _assert_valid_role_bool_true@7
     frame_dig -1
     // modules/rbac.py:94
-    // UInt64(enums.ROLE_TRUSTEE),
-    pushint 60
-    // modules/rbac.py:89-97
+    // UInt64(enums.ROLE_ACCOUNT_MANAGER),
+    pushint 40
+    // modules/rbac.py:91-99
     // assert role_id in (
     //     UInt64(enums.ROLE_ARRANGER),
     //     UInt64(enums.ROLE_OP_DAEMON),
@@ -7051,9 +7057,9 @@ _assert_valid_role:
     bnz _assert_valid_role_bool_true@7
     frame_dig -1
     // modules/rbac.py:95
-    // UInt64(enums.ROLE_AUTHORITY),
-    pushint 70
-    // modules/rbac.py:89-97
+    // UInt64(enums.ROLE_PRIMARY_DEALER),
+    pushint 50
+    // modules/rbac.py:91-99
     // assert role_id in (
     //     UInt64(enums.ROLE_ARRANGER),
     //     UInt64(enums.ROLE_OP_DAEMON),
@@ -7067,9 +7073,41 @@ _assert_valid_role:
     bnz _assert_valid_role_bool_true@7
     frame_dig -1
     // modules/rbac.py:96
+    // UInt64(enums.ROLE_TRUSTEE),
+    pushint 60
+    // modules/rbac.py:91-99
+    // assert role_id in (
+    //     UInt64(enums.ROLE_ARRANGER),
+    //     UInt64(enums.ROLE_OP_DAEMON),
+    //     UInt64(enums.ROLE_ACCOUNT_MANAGER),
+    //     UInt64(enums.ROLE_PRIMARY_DEALER),
+    //     UInt64(enums.ROLE_TRUSTEE),
+    //     UInt64(enums.ROLE_AUTHORITY),
+    //     UInt64(enums.ROLE_OBSERVER),
+    // ), err.INVALID_ROLE
+    ==
+    bnz _assert_valid_role_bool_true@7
+    frame_dig -1
+    // modules/rbac.py:97
+    // UInt64(enums.ROLE_AUTHORITY),
+    pushint 70
+    // modules/rbac.py:91-99
+    // assert role_id in (
+    //     UInt64(enums.ROLE_ARRANGER),
+    //     UInt64(enums.ROLE_OP_DAEMON),
+    //     UInt64(enums.ROLE_ACCOUNT_MANAGER),
+    //     UInt64(enums.ROLE_PRIMARY_DEALER),
+    //     UInt64(enums.ROLE_TRUSTEE),
+    //     UInt64(enums.ROLE_AUTHORITY),
+    //     UInt64(enums.ROLE_OBSERVER),
+    // ), err.INVALID_ROLE
+    ==
+    bnz _assert_valid_role_bool_true@7
+    frame_dig -1
+    // modules/rbac.py:98
     // UInt64(enums.ROLE_OBSERVER),
     pushint 80
-    // modules/rbac.py:89-97
+    // modules/rbac.py:91-99
     // assert role_id in (
     //     UInt64(enums.ROLE_ARRANGER),
     //     UInt64(enums.ROLE_OP_DAEMON),
@@ -7086,7 +7124,7 @@ _assert_valid_role_bool_true@7:
     intc_1 // 1
 
 _assert_valid_role_bool_merge@9:
-    // modules/rbac.py:89-97
+    // modules/rbac.py:91-99
     // assert role_id in (
     //     UInt64(enums.ROLE_ARRANGER),
     //     UInt64(enums.ROLE_OP_DAEMON),

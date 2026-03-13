@@ -168,8 +168,10 @@ enumerated IDs:
 | `5` | Terminated | \\( [TE] \\)  | Contract has been terminated                                                         |
 
 > [!NOTE]
-> The current version of D-ASA reference implementation does not support contract
-> performance and its attributes defined below.
+> The current reference implementation supports manual default-performance tracking
+> through an RBAC-managed boolean `defaulted` flag. It does not yet model the full
+> `PRF` lifecycle enum or automatic grace-period and delinquency transitions on
+> chain.
 
 ### Grace Period
 
@@ -202,8 +204,12 @@ The D-ASA **MAY** disable all non-administrative methods on *default* status.
 > The D-ASA default can be called either automatically (based on program conditions)
 > or manually (based on the decision of a trustee).
 
-The *default* status **MAY** be set by the Trustee with the `set_default_status`
+The *Trustee* **MAY** set the default status with the `rbac_contract_default`
 method.
+
+In the current reference implementation, `rbac_contract_default(defaulted: bool)`
+stores a boolean `defaulted` flag in RBAC global state. This performance flag is
+distinct from the kernel lifecycle `status`.
 
 > [!TIP]
 > The D-ASA has no *grace period* and no *delinquency period*. A D-ASA coupon payment
