@@ -1,6 +1,7 @@
-# OTC DvP Builder
+# Over-the-Counter (OTC) DvP Builder
 
-`HoldingAccount.build_otc_dvp(...)` builds an atomic delivery-vs-payment group for OTC secondary trades.
+`HoldingAccount.build_otc_dvp(...)` builds an atomic delivery-vs-payment group for
+OTC secondary trades.
 
 The builder is intentionally non-custodial:
 
@@ -41,4 +42,5 @@ The builder validates:
 - the seller signer matches the transfer sender holding address
 - optional quote tolerance, when provided
 
-You can combine it with `quote_trade(...)` inputs to fail fast when the negotiated payment amount drifts too far from the SDK's accrual-aware reference.
+You can combine it with `quote_trade(...)` inputs to fail fast when the negotiated
+payment amount drifts too far from the SDK's accrual-aware reference.
