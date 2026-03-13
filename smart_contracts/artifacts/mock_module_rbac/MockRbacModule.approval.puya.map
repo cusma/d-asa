@@ -970,8 +970,8 @@
       "op": "callsub _assert_caller_is_arranger"
     },
     "320": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "323": {
       "op": "btoi",
@@ -2285,8 +2285,8 @@
       "op": "callsub _assert_caller_is_arranger"
     },
     "486": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "489": {
       "op": "btoi",
@@ -5521,9 +5521,9 @@
       "op": "retsub"
     },
     "962": {
-      "subroutine": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
+      "subroutine": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
       "params": {},
-      "block": "_assert_is_not_asset_defaulted",
+      "block": "_assert_is_not_contract_defaulted",
       "stack_in": [],
       "op": "intc_1 // 0",
       "defined_out": [

@@ -372,11 +372,11 @@ fund_due_cashflows:
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     // modules/payment_agent.py:69
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/payment_agent.py:70
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -1210,11 +1210,11 @@ claim_due_cashflows_bool_merge@16:
 
 claim_due_cashflows_after_if_else@17:
     // modules/payment_agent.py:139
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/payment_agent.py:140
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -1579,11 +1579,11 @@ primary_distribution:
     callsub _role_is_active
     assert // Not authorized
     // modules/transfer_agent.py:76
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/transfer_agent.py:77
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -1729,11 +1729,11 @@ transfer:
     assert // check self.status exists
     assert // D-ASA not configured
     // modules/transfer_agent.py:130
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/transfer_agent.py:131
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -2038,11 +2038,11 @@ account_open:
     !
     assert // Not authorized
     // modules/accounting.py:211
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/accounting.py:212
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/accounting.py:213
     // assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
@@ -2135,11 +2135,11 @@ account_update_payment_address:
     ==
     assert // Not authorized
     // modules/accounting.py:239
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/accounting.py:240
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/accounting.py:241
     // self.account[holding_address].payment_address = payment_address
     intc_0 // 0
@@ -3173,11 +3173,11 @@ contract_execute_ied:
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     // modules/actus_kernel.py:1144
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/actus_kernel.py:1145
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:1147
     // assert self.event_cursor < self.schedule_entry_count, err.INVALID_EVENT_CURSOR
     intc_0 // 0
@@ -3343,11 +3343,11 @@ apply_non_cash_event:
     assert // check self.status exists
     assert // D-ASA not configured
     // modules/actus_kernel.py:1204
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/actus_kernel.py:1205
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:1207
     // if payload.flags & UInt64(enums.FLAG_OBSERVED_EVENT):
     pushint 65
@@ -3765,11 +3765,11 @@ append_observed_cash_event:
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     // modules/actus_kernel.py:1255
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/actus_kernel.py:1256
-    // self._assert_is_not_asset_suspended()
-    callsub _assert_is_not_asset_suspended
+    // self._assert_is_not_contract_suspended()
+    callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
@@ -4404,8 +4404,8 @@ rbac_assign_role:
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     // modules/rbac.py:225
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/rbac.py:226
     // self._assert_valid_role(role_id.as_uint64())
     btoi
@@ -4581,8 +4581,8 @@ rbac_revoke_role:
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     // modules/rbac.py:250
-    // self._assert_is_not_asset_defaulted()
-    callsub _assert_is_not_asset_defaulted
+    // self._assert_is_not_contract_defaulted()
+    callsub _assert_is_not_contract_defaulted
     // modules/rbac.py:251
     // self._assert_valid_role(role_id.as_uint64())
     btoi
@@ -6966,8 +6966,8 @@ _assert_caller_is_arranger:
     retsub
 
 
-// modules.rbac.RbacModule._assert_is_not_asset_defaulted() -> void:
-_assert_is_not_asset_defaulted:
+// modules.rbac.RbacModule._assert_is_not_contract_defaulted() -> void:
+_assert_is_not_contract_defaulted:
     // modules/rbac.py:85
     // assert not self.defaulted, err.DEFAULTED
     intc_0 // 0
@@ -6979,8 +6979,8 @@ _assert_is_not_asset_defaulted:
     retsub
 
 
-// modules.rbac.RbacModule._assert_is_not_asset_suspended() -> void:
-_assert_is_not_asset_suspended:
+// modules.rbac.RbacModule._assert_is_not_contract_suspended() -> void:
+_assert_is_not_contract_suspended:
     // modules/rbac.py:88
     // assert not self.contract_suspended, err.SUSPENDED
     intc_0 // 0

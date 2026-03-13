@@ -1772,12 +1772,12 @@
       "op": "callsub _assert_caller_is_arranger"
     },
     "1263": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "1266": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
-      "op": "callsub _assert_is_not_asset_suspended"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
+      "op": "callsub _assert_is_not_contract_suspended"
     },
     "1269": {
       "op": "intc_0 // 0",
@@ -14411,12 +14411,12 @@
         "payment_info#0",
         "box_prefixed_key%0#4"
       ],
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "2049": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
-      "op": "callsub _assert_is_not_asset_suspended"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
+      "op": "callsub _assert_is_not_contract_suspended"
     },
     "2052": {
       "op": "intc_0 // 0",
@@ -17931,12 +17931,12 @@
       ]
     },
     "2379": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "2382": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
-      "op": "callsub _assert_is_not_asset_suspended"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
+      "op": "callsub _assert_is_not_contract_suspended"
     },
     "2385": {
       "op": "intc_0 // 0",
@@ -19181,12 +19181,12 @@
       ]
     },
     "2517": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "2520": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
-      "op": "callsub _assert_is_not_asset_suspended"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
+      "op": "callsub _assert_is_not_contract_suspended"
     },
     "2523": {
       "op": "intc_0 // 0",
@@ -22277,12 +22277,12 @@
       ]
     },
     "2816": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "2819": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
-      "op": "callsub _assert_is_not_asset_suspended"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
+      "op": "callsub _assert_is_not_contract_suspended"
     },
     "2822": {
       "op": "bytec 8 // 0x4123",
@@ -22917,12 +22917,12 @@
       ]
     },
     "2902": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "2905": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
-      "op": "callsub _assert_is_not_asset_suspended"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
+      "op": "callsub _assert_is_not_contract_suspended"
     },
     "2908": {
       "op": "intc_0 // 0",
@@ -33666,12 +33666,12 @@
       "op": "callsub _assert_caller_is_arranger"
     },
     "3754": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "3757": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
-      "op": "callsub _assert_is_not_asset_suspended"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
+      "op": "callsub _assert_is_not_contract_suspended"
     },
     "3760": {
       "op": "intc_0 // 0",
@@ -34854,12 +34854,12 @@
       ]
     },
     "3897": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "3900": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
-      "op": "callsub _assert_is_not_asset_suspended"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
+      "op": "callsub _assert_is_not_contract_suspended"
     },
     "3903": {
       "op": "pushint 65",
@@ -39423,12 +39423,12 @@
       "op": "callsub _assert_caller_is_arranger"
     },
     "4251": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "4254": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
-      "op": "callsub _assert_is_not_asset_suspended"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
+      "op": "callsub _assert_is_not_contract_suspended"
     },
     "4257": {
       "op": "intc_0 // 0",
@@ -45256,8 +45256,8 @@
       "op": "callsub _assert_caller_is_arranger"
     },
     "4769": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "4772": {
       "op": "btoi",
@@ -46571,8 +46571,8 @@
       "op": "callsub _assert_caller_is_arranger"
     },
     "4939": {
-      "callsub": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
-      "op": "callsub _assert_is_not_asset_defaulted"
+      "callsub": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
+      "op": "callsub _assert_is_not_contract_defaulted"
     },
     "4942": {
       "op": "btoi",
@@ -63634,9 +63634,9 @@
       "op": "retsub"
     },
     "6838": {
-      "subroutine": "modules.rbac.RbacModule._assert_is_not_asset_defaulted",
+      "subroutine": "modules.rbac.RbacModule._assert_is_not_contract_defaulted",
       "params": {},
-      "block": "_assert_is_not_asset_defaulted",
+      "block": "_assert_is_not_contract_defaulted",
       "stack_in": [],
       "op": "intc_0 // 0",
       "defined_out": [
@@ -63694,9 +63694,9 @@
       "op": "retsub"
     },
     "6846": {
-      "subroutine": "modules.rbac.RbacModule._assert_is_not_asset_suspended",
+      "subroutine": "modules.rbac.RbacModule._assert_is_not_contract_suspended",
       "params": {},
-      "block": "_assert_is_not_asset_suspended",
+      "block": "_assert_is_not_contract_suspended",
       "stack_in": [],
       "op": "intc_0 // 0",
       "defined_out": [
