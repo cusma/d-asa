@@ -62,6 +62,13 @@ When an account is suspended, the implementation **MUST** reject:
 - transfers from or to that account;
 - on-chain cashflow execution to that account while the suspension remains in force.
 
+## Trustee-controlled default
+
+`contract_set_default_status` **MUST** be restricted to the Trustee role.
+
+In the current reference implementation, this method sets or clears the contract-level
+`defaulted` performance flag. It does not change the kernel lifecycle `status`.
+
 ## Observer-controlled events
 
 The Observer role **MUST** authorize due `RR` and `RRF` event application through

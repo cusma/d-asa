@@ -88,3 +88,9 @@ preserve:
 `transfer_set_schedule` is separate from kernel configuration. Secondary-market
 dates are not part of the on-chain `NormalizedActusTerms` struct in the current
 ABI and, if enforced, **MUST** be configured separately at the execution layer.
+
+## Performance state
+
+The contract-level `defaulted` performance flag is not part of normalization or
+`InitialKernelState`. If used, it is updated separately at execution time through
+`contract_set_default_status`.
