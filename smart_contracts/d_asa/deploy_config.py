@@ -422,6 +422,7 @@ def _deploy_instrument(
 # define deployment behaviour based on supplied app spec
 def deploy() -> None:
     algorand = algokit_utils.AlgorandClient.from_environment()
+    algorand.set_default_validity_window(200)
     deployer = algorand.account.from_environment("DEPLOYER")
     arranger = _get_arranger_account(algorand=algorand, deployer=deployer)
 
