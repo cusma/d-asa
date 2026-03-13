@@ -27,14 +27,14 @@ that can be normalized and executed on the AVM.
 
 The current kernel supports the following ACTUS contract family identifiers:
 
-| ID  | Contract Type | Description                                                                                                                            | Rate                  | Use case                                                       |
-|:---:|:-------------:|:---------------------------------------------------------------------------------------------------------------------------------------|:----------------------|:---------------------------------------------------------------|
+| ID  | Contract Type | Description                                                                                                                            | Rate                  | Use case                                                        |
+|:---:|:-------------:|:---------------------------------------------------------------------------------------------------------------------------------------|:----------------------|:----------------------------------------------------------------|
 | `0` |     `PAM`     | Principal payment fully at \\( [IED] \\) and repaid at \\( [MD] \\).                                                                   | Fix or variable rates | All kind of bonds, term deposits, bullet loans, mortgages, etc. |
-| `1` |     `ANN`     | Principal payment fully at \\( [IED] \\) and repaid periodically in constants amounts till \\( [MD] \\).                               | Fix or variable rates | Classical level payment mortgages, leasing contracts, etc.     |
-| `2` |     `NAM`     | As `ANN`, when resetting rate total amount (principal + interest) stays constant. \\( [MD] \\) shifts.                                 | Variable only         | Adjustable rate mortgages                                      |
-| `3` |     `LAM`     | Principal payment fully at \\( [IED] \\) and repaid periodically in constants amounts till \\( [MD] \\), interest reduced accordingly. | Fix or variable       | Amortizing loans                                               |
-| `4` |     `LAX`     | Flexible version of `LAM`.                                                                                                             | Fix or variable       | Teaser rate loans                                              |
-| `5` |     `CLM`     | Loans rolled over as long as they are not called. Once called, it has to be paid back after noticed period.                            | Fix or variable       | Loans with call options                                        |
+| `1` |     `ANN`     | Principal payment fully at \\( [IED] \\) and repaid periodically in constants amounts till \\( [MD] \\).                               | Fix or variable rates | Classical level payment mortgages, leasing contracts, etc.      |
+| `2` |     `NAM`     | As `ANN`, when resetting rate total amount (principal + interest) stays constant. \\( [MD] \\) shifts.                                 | Variable only         | Adjustable rate mortgages                                       |
+| `3` |     `LAM`     | Principal payment fully at \\( [IED] \\) and repaid periodically in constants amounts till \\( [MD] \\), interest reduced accordingly. | Fix or variable       | Amortizing loans                                                |
+| `4` |     `LAX`     | Flexible version of `LAM`.                                                                                                             | Fix or variable       | Teaser rate loans                                               |
+| `5` |     `CLM`     | Loans rolled over as long as they are not called. Once called, it has to be paid back after noticed period.                            | Fix or variable       | Loans with call options                                         |
 
 > Non-normative subtypes such as `PAM:ZCB` and `PAM:FCB` are resolved before normalization.
 > The AVM kernel stores only the normalized family identifier.
