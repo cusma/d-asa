@@ -259,7 +259,7 @@ def test_rbac_revoke_role_rejects_invalid_calls(
         )
 
 
-def test_rbac_gov_asset_suspension_is_authority_only(
+def test_rbac_gov_contract_suspension_is_authority_only(
     authority: DAsaAuthority,
     no_role_account: SigningAccount,
     rbac_client: MockRbacModuleClient,
