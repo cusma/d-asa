@@ -1,4 +1,4 @@
-"""Copy of smart_contracts/constants.py"""
+"""Copy of smart_contracts/enums.py"""
 
 from typing import Final
 
