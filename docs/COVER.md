@@ -7,30 +7,34 @@
 The *Debt Algorand Standard Application* (D-ASA) is a standard for tokenizing *debt
 instruments* on the Algorand Virtual Machine.
 
-It provides the interfaces for arranging the asset, configuring its role-based access
+It provides a framework for arranging the asset, configuring its role-based access
 control, issuing and distributing it on the primary market, executing cash flows,
 exchanging it on the secondary market, and querying information about the debt instrument.
 
-The specification provides recommendations to conform, to the best effort[^1], to
-the *Algorithmic Contract Types Unified Standards* (<a href="https://www.actusfrf.org/">ACTUS</a>).
+The specification complies with the *Algorithmic Contract Types Unified Standards*
+(<a href="https://www.actusfrf.org/">ACTUS</a>) for the definition of the contracts.
+
+**D-ASA is, at its core, an ACTUS execution engine for the Algorand Virtual Machine.**
 
 The specification allows the tokenization of various debt instruments, such as bonds,
-loans, commercial papers, mortgages, etc. A [reference implementation](./implementation/reference-implementation.md)
-of some fixed income contract examples are provided.
+loans, commercial papers, mortgages, etc.
 
-This document is a *technical specification*, it is not intended to be as a legal
-or a financial document.
+The [reference implementation](./implementation/reference-implementation.md) of
+some fixed income contracts is provided.
+
+This document is a *technical specification*, it is not intended to be a legal or
+a financial document.
 
 ## Contents
 
-Contents are organized in four hierarchical levels (see the navigation sidebar on
-the left):
+Contents are organized in three hierarchical levels (see the navigation sidebar
+on the left):
 
 ```text
 Part
 └── 1. Chapter
     └── 1.1. Section
-        └── 1.1.1. Sub Section
+        └── 1.1.1. Sub-section
 ```
 
 The navigation sidebar can be folded up to the *Chapter* level by clicking the folding
@@ -40,20 +44,16 @@ icon (**>**), next to the level name.
 
 The D-ASA is free and open source.
 
-The source code is released on the official
-<a href="https://github.com/cusma/d-asa">GitHub repository</a>.
+The source code is released on the official [GitHub repository](https://github.com/cusma/d-asa).
 
 External contributions are welcome, the project relies on the community to improve
-and expand. Issues and features requests can be submitted on the <a href="https://github.com/cusma/d-asa/issues">GitHub
-issues page</a>.
+and expand.
 
-If you would like to contribute, please read the [guidelines](CONTRIBUTIONS.md#guidelines-guidelines)
-and consider submitting a <a href="https://github.com/cusma/d-asa/pulls">pull request</a>.
+Issues and feature requests can be submitted on the [GitHub issues page](https://github.com/cusma/d-asa/issues).
+
+If you would like to contribute, please read the [guidelines](./CONTRIBUTIONS.md#guidelines-guidelines)
+and consider submitting a [pull request](https://github.com/cusma/d-asa/pulls).
 
 ## License {#license}
 
-The D-ASA source and documentation are released under the [AGPL-3.0 license](LICENSE.md).
-
----
-
-[^1]: ACTUS compliance is recommended but not mandatory.
+The D-ASA source and documentation are released under the [AGPL-3.0 license](./LICENSE.md).

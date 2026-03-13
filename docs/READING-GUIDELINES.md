@@ -2,21 +2,20 @@
 
 The keywords "**MUST**", "**MUST NOT**", "**REQUIRED**", "**SHALL**", "**SHALL
 NOT**", "**SHOULD**", "**SHOULD NOT**", "**RECOMMENDED**", "**MAY**", and "**OPTIONAL**"
-in this document are to be interpreted as described in <a href="https://datatracker.ietf.org/doc/html/rfc2119">RFC
-2119</a>.
+in this document are to be interpreted as described in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
 
 The data types (like `uint64`, `byte[]`, etc.) in this document are to be interpreted
 as specified in <a href="https://arc.algorand.foundation/ARCs/arc-0004">ARC-4</a>.
 
-Acronyms in square brackets like \\([THIS]\\) are to be interpreted as defined in
-the <a href="https://github.com/actusfrf/actus-dictionary">ACTUS dictionary</a>.
+Acronyms in square brackets like \\( [THIS] \\) are to be interpreted as defined
+in the [ACTUS dictionary](https://github.com/actusfrf/actus-dictionary).
 
 > Notes like this are non-normative
 
 Non-normative sections mainly contextualize the specification for technical readers
 unfamiliar with the financial concepts described.
 
-{{#include ./_include/styles.md:example}}
+> [!TIP]
 > Sections like this are examples aiming to clarify the specifications.
 
 ```text

@@ -2,11 +2,8 @@
 
 > Debt instruments cash flows may be settled in a currency different from the denomination.
 
-The D-ASA **MUST** define either an on-chain or off-chain *settlement asset* \\([CURS]\\)[^1]
-to regulate the cash flows.
-
-The *settlement asset identifier* (`uint64`) **MUST** be set using the `asset_config`
-method.
+The D-ASA **MUST** define either an on-chain or off-chain *settlement asset*
+\\( [CURS] \\)[^1] to regulate the cash flows.
 
 All values (`uint64`) are integer minor units of the relevant on-chain or off-chain
 *settlement asset*.
@@ -22,6 +19,13 @@ If the D-ASA **does not define** a different *settlement asset*, then the cash f
 **MUST** be settled in the denomination asset and the *settlement asset identifier*
 **MUST** be equal to the *denomination asset identifier*.
 
+> [!NOTE]
+> The D-ASA reference implementation supports only on-chain ASA settlement assets.
+
+> [!NOTE]
+> The D-ASA reference implementation requires settlement assets to be the denomination
+> asset.
+
 ## On-chain settlement {#on-chain-settlement}
 
 The *settlement asset* **MUST** be an Algorand Standard Asset (ASA), an Application
@@ -34,7 +38,7 @@ If asset is ALGO (`0`): amount is in microALGOs (\\( 10^{-6} \\) ALGO).
 
 If asset is ASA or App: amount is in base units as per that asset’s `decimals`.
 
-{{#include ../../../_include/styles.md:example}}
+> [!TIP]
 > The value (`uint64`) `10000` of settlement in ASA settlement 2 decimals is interpreted
 > as `100.00` units of the ASA.
 
@@ -52,7 +56,7 @@ The *settlement asset* **MUST** use the decimal digits specified by the <a href=
 If asset is ISO 4217 numeric code: amount is in minor units (\\( 10^{-d} \\) with
 \\( d \\) as per ISO 4217 *digits*).
 
-{{#include ../../../_include/styles.md:example}}
+> [!TIP]
 > The value (`uint64`) `10000` of a settlement in EUR (ISO 4217, 2 decimals) is
 > interpreted as `100.00` Euro.
 

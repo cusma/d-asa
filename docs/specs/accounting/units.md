@@ -1,69 +1,61 @@
 # D-ASA units {#d-asa-units}
 
-> D-ASA units represent the ownership of the tokenized debt instrument.
+D-ASA units represent pro-rata ownership of the normalized ACTUS contract.
 
-## Supply {#supply}
+## Total supply
 
-The D-ASA **MUST** define its *total units* (`uint64`).
+The kernel **MUST** store `total_units` as a `uint64`.
 
-If the D-ASA has a *principal*, its initials *total units* **MUST** be equal to
-the *principal* divided by the *minimum denomination.*
+The off-chain normalization process **MUST** derive `total_units` exactly as:
 
-{{#include ../../_include/styles.md:example}}
-> Let’s have a D-ASA denominated in EUR, with a principal of 1M EUR and a minimum
-> denomination of 1,000 EUR. The D-ASA has 1,000 initial total units.
+```text
+notional_principal / notional_unit_value
+```
 
-The D-ASA *total units* **MAY** be updated with the **OPTIONAL** `update_total_units`
-method.
+The division **MUST** be exact. If the principal is not divisible by the chosen
+unit value, normalization **MUST** fail.
 
-## Value {#value}
+`notional_unit_value` is an SDK-side normalization input. It is used to derive
+`total_units`, but it is not persisted on chain.
 
-> The D-ASA unit’s value is always intended as **nominal value** (at redemption).
+## Unit states
 
-The D-ASA *unit value* (`uint64`) **MUST** be expressed in the *denomination asset*.
+A holder account stores two unit balances:
 
-If the D-ASA has a *principal*, its initial *unit value* **MUST** be equal to the
-*minimum denomination.*
+- `reserved_units`: units allocated before `IED`;
+- `units`: active units participating in funded ACTUS cashflows.
 
-The D-ASA *unit* *value* **MAY** change over time.
+When `IED` executes, reserved units become activatable and are moved into `units`
+the first time the holder position is touched.
 
-> The D-ASA unit’s value may change according to different conditions, such as an
-> amortizing principal repayment schedule (see [Amortizing Schedule](../execution/payment-agent/principal-repayment.md#amortizing-schedule)
-> section).
+## Position accounting
 
-The D-ASA *unit value* **MAY** change globally or locally (per account).
+Each holder position **MUST** track:
 
-> The D-ASA unit’s value can be global or local (per-account). Global unit value
-> should be used when the value of all the units can be updated at the same time.
-> Local unit value should be used when the units' value is updated at different
-> times per each account.
+- The payment address;
+- Active and reserved unit balances;
+- Suspension state;
+- The last settled event cursor;
+- The last applied cumulative interest index;
+- The last applied cumulative principal index;
+- Claimable interest and principal amounts.
 
-{{#include ../../_include/styles.md:example}}
-> Let’s have a D-ASA denominated in EUR, with an initial unit value of 1,000 EUR.
-> The D-ASA accrues interest on a daily basis, paid at redemption. The unit value
-> is updated globally (for all the units).
+The accounting layer does not maintain a mutable on-chain nominal unit value. Transfers
+and claims are therefore unit-based and index-based, not value-array-based.
 
-{{#include ../../_include/styles.md:example}}
-> Let’s have a D-ASA denominated in EUR, with an initial unit value of 1,000 EUR.
-> The D-ASA has an amortizing principal repayment schedule. Repayments are executed
-> per-account. The unit value is updated per-account (for the account’s units).
+## Lazy settlement
 
-The D-ASA *unit value* **MAY** be globally updated with the **OPTIONAL** `update_global_unit_value`
-method.
+The accounting layer **MUST** settle holder positions lazily against the global
+cumulative indices maintained by the kernel.
 
-## Fungibility {#fungibility}
+On settlement:
 
-> D-ASA units' fungibility depends on:
->
-> - Units value (nominal);
-> - Executed payments.
->
+1. The delta between global and account checkpoints is computed;
+1. The delta is multiplied by the holder's active units;
+1. The result is moved into `claimable_interest` and `claimable_principal`;
+1. The checkpoints and settled cursor are advanced.
 
-The D-ASA *fungible units* **MUST** have the same *value* and *executed payments.*
+This model allows:
 
-{{#include ../../_include/styles.md:example}}
-> Let’s have a D-ASA with 4 coupons. Investors A and B are holding 10 D-ASA units
-> each. The 1st coupon is due. Coupon payments might not be executed synchronously
-> for all the Investors. The coupon payment is executed for Investor A, while Investor
-> B is still waiting for the payment settlement. Investor A units are temporarily
-> non-fungible with Investor B units until the 1st coupon is paid for both.
+- Contract-wide funding of due ACTUS cash events once;
+- Account-by-Account realization of the funded cashflows later.
