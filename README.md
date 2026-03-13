@@ -43,6 +43,13 @@ or, for verbose results:
 poetry run pytest -s -v tests/<contract_name>/<test_case>.py
 ```
 
+For a lifecycle walkthrough that prints the normalized ACTUS schedule beside the
+real ARC-28 execution proofs and realized cashflows, run:
+
+```shell
+poetry run pytest -s -v -m showcase tests/pam/test_pam_lifecycle_showcase.py
+```
+
 ## How to contribute
 
 Refer to D-ASA documentation!
