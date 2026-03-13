@@ -200,6 +200,17 @@ py-algorand-sdk = ">=2.11.0,<3.0.0"
 typing-extensions = ">=4.6.0"
 
 [[package]]
+name = "algorand-python"
+version = "3.4.0"
+description = "API for writing Algorand Python Smart contracts"
+optional = false
+python-versions = "<4,>=3.12.0"
+groups = ["dev"]
+files = [
+    {file = "algorand_python-3.4.0-py3-none-any.whl", hash = "sha256:5cede1c1b2bc7fae237fb3ba251f6a6a919d39de7b8de1f817973d45ced5bdf8"},
+]
+
+[[package]]
 name = "anyio"
 version = "4.12.1"
 description = "High-level concurrency and networking framework on top of asyncio or Trio"
@@ -2757,4 +2768,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "2d31176094e75f81a76bcff40cb612c927658f9c4ead58bf000960576afb94f0"
+content-hash = "64e77ae4b8ee9692346c426785643fd63da726d1f386b9cb2b7b5d7ce636760d"
