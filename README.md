@@ -1,6 +1,7 @@
 # Debt Algorand Standard Application (D-ASA)
 
-D-ASA is an ACTUS execution engine for the Algorand Virtual Machine.
+D-ASA is a full tokenization framework for ACTUS-compliant debt instruments, issued
+and executed on the Algorand Virtual Machine.
 
 ```mermaid
 flowchart LR
@@ -69,15 +70,6 @@ Notes:
 - requires both Docker and AlgoKit on the host
 - the demo joins the LocalNet Docker network when available, which keeps the showcase
 on direct container-to-container networking
-- advanced overrides are available through
-  - `D_ASA_LOCALNET_HOST`,
-  - `D_ASA_ALGOD_HOST`,
-  - `D_ASA_KMD_HOST`,
-  - `D_ASA_INDEXER_HOST`,
-  - `D_ASA_LOCALNET_TOKEN`,
-  - `D_ASA_ALGOD_PORT`,
-  - `D_ASA_KMD_PORT`,
-  - and `D_ASA_INDEXER_PORT`
 
 ## Development
 

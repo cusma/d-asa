@@ -14,7 +14,8 @@ exchanging it on the secondary market, and querying information about the debt i
 The specification complies with the *Algorithmic Contract Types Unified Standards*
 (<a href="https://www.actusfrf.org/">ACTUS</a>) for the definition of the contracts.
 
-**D-ASA is, at its core, an ACTUS execution engine for the Algorand Virtual Machine.**
+**D-ASA is, in essence, a full tokenization framework for ACTUS-compliant debt instruments,
+issued and executed on the Algorand Virtual Machine.**
 
 The specification allows the tokenization of various debt instruments, such as bonds,
 loans, commercial papers, mortgages, etc.
