@@ -1,6 +1,7 @@
 import dataclasses
 import importlib
 import logging
+import re
 import subprocess
 import sys
 from collections.abc import Callable
@@ -26,6 +27,7 @@ src_artifact_path = root_path.parent / "src" / "artifacts"
 canonical_src_contract_name = "d_asa"
 canonical_src_app_spec_name = "DASA.arc56.json"
 canonical_src_client_name = "dasa_client.py"
+canonical_src_avm_client_name = "dasa_avm_client.py"
 generated_artifacts_init = '"""Generated client artifacts."""\n'
 
 # ----------------------- Contract Configuration ----------------------- #
@@ -79,17 +81,49 @@ contracts: list[SmartContract] = [
 deployment_extension = "py"
 
 
-def _get_output_path(
-    output_dir: Path, contract_name: str, deployment_extension: str
+def _to_snake_case(name: str) -> str:
+    """Converts CamelCase or acronym-heavy names to snake_case."""
+    if name.isupper():
+        return name.lower()
+
+    first_pass = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", name)
+    second_pass = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", first_pass)
+    return second_pass.lower()
+
+
+def _get_client_output_dir(output_dir: Path, contract_name: str) -> Path:
+    """Returns where generated clients should be written for a contract."""
+    if contract_name == canonical_src_contract_name:
+        return src_artifact_path
+    return output_dir
+
+
+def _get_typed_client_output_path(
+    target_dir: Path,
+    contract_name: str,
+    app_spec_contract_name: str,
+    deployment_extension: str,
 ) -> Path:
     """Constructs the output path for the generated client file."""
     if contract_name == canonical_src_contract_name:
-        return src_artifact_path / canonical_src_client_name
-    return output_dir / Path(
-        "{contract_name}"
-        + ("_client" if deployment_extension == "py" else "Client")
-        + f".{deployment_extension}"
+        return target_dir / canonical_src_client_name
+
+    base_name = (
+        f"{_to_snake_case(app_spec_contract_name)}_client"
+        if deployment_extension == "py"
+        else f"{app_spec_contract_name}Client"
     )
+    return target_dir / f"{base_name}.{deployment_extension}"
+
+
+def _get_avm_client_output_path(
+    target_dir: Path, contract_name: str, app_spec_contract_name: str
+) -> Path:
+    """Constructs the output path for the generated AVM client file."""
+    if contract_name == canonical_src_contract_name:
+        return target_dir / canonical_src_avm_client_name
+
+    return target_dir / f"{_to_snake_case(app_spec_contract_name)}_avm_client.py"
 
 
 def _get_app_spec_path(output_dir: Path, contract_name: str) -> Path | None:
@@ -181,13 +215,20 @@ def build(output_dir: Path, contract_name: str, contract_path: Path) -> Path:
             "No '*.arc56.json' file found (likely a logic signature being compiled). Skipping client generation."
         )
     else:
+        target_dir = _get_client_output_dir(output_dir, contract_name)
+        target_dir.mkdir(exist_ok=True, parents=True)
+
+        # Generate Python App Clients (off-chain)
         for file_name in app_spec_file_names:
             client_file = file_name
             print(file_name)
-            client_output_path = _get_output_path(
-                output_dir, contract_name, deployment_extension
+            app_spec_contract_name = file_name.removesuffix(".arc56.json")
+            client_output_path = _get_typed_client_output_path(
+                target_dir,
+                contract_name,
+                app_spec_contract_name,
+                deployment_extension,
             )
-            client_output_path.parent.mkdir(exist_ok=True, parents=True)
             generate_result = subprocess.run(
                 [
                     "algokit",
@@ -214,6 +255,49 @@ def build(output_dir: Path, contract_name: str, contract_path: Path) -> Path:
                     raise Exception(
                         f"Could not generate typed client:\n{generate_result.stdout}"
                     )
+
+        # Generate Python AVM Clients (on-chain)
+        for file_name in app_spec_file_names:
+            app_spec_contract_name = file_name.removesuffix(".arc56.json")
+            logger.info(f"Generating AVM Client (on-chain) for {file_name}")
+
+            puyapy_result = subprocess.run(
+                [
+                    "poetry",
+                    "run",
+                    "puyapy-clientgen",
+                    str(output_dir / file_name),
+                    "--out-dir",
+                    str(target_dir),
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+            )
+
+            if puyapy_result.stdout:
+                print(puyapy_result.stdout)
+
+            if puyapy_result.returncode:
+                raise Exception(
+                    f"Could not generate client with puyapy-clientgen:\n{puyapy_result.stdout}"
+                )
+
+            generated_file = target_dir / f"client_{app_spec_contract_name}.py"
+            desired_file = _get_avm_client_output_path(
+                target_dir, contract_name, app_spec_contract_name
+            )
+
+            if not generated_file.exists():
+                raise FileNotFoundError(
+                    f"Expected generated AVM client '{generated_file.name}' was not created by puyapy-clientgen"
+                )
+
+            if desired_file.exists():
+                desired_file.unlink()
+
+            generated_file.rename(desired_file)
+            logger.info(f"Renamed AVM client to {desired_file.name}")
     canonical_app_spec_path = _sync_src_artifacts(output_dir, contract_name)
     if client_file:
         return canonical_app_spec_path or output_dir / client_file
