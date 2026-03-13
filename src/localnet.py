@@ -7,6 +7,7 @@ import time
 from base64 import b64decode
 from dataclasses import dataclass
 from typing import Any
+from urllib.error import URLError
 
 from algokit_utils import (
     AlgoAmount,
@@ -17,6 +18,7 @@ from algokit_utils import (
 )
 from algokit_utils.config import config as algokit_config
 from algokit_utils.models.network import AlgoClientNetworkConfig
+from algosdk.kmd import KMDClient
 from algosdk.v2client.algod import AlgodClient
 
 from src.artifacts.dasa_client import AccountGetPositionArgs
@@ -27,6 +29,7 @@ DEFAULT_ALGOD_PORT = 4001
 DEFAULT_KMD_PORT = 4002
 DEFAULT_INDEXER_PORT = 8980
 DEFAULT_INITIAL_ALGO_FUNDS = AlgoAmount.from_algo(10_000)
+ROUND_WARP_MAX_ATTEMPTS = 3
 
 
 @dataclass(frozen=True, slots=True)
@@ -36,32 +39,55 @@ class LocalNetConfig:
     algod_port: int = DEFAULT_ALGOD_PORT
     kmd_port: int = DEFAULT_KMD_PORT
     indexer_port: int = DEFAULT_INDEXER_PORT
+    algod_host: str | None = None
+    kmd_host: str | None = None
+    indexer_host: str | None = None
 
     @property
     def server(self) -> str:
         return f"http://{self.host}"
 
     @property
+    def algod_server(self) -> str:
+        return f"http://{self.algod_host or self.host}"
+
+    @property
+    def kmd_server(self) -> str:
+        return f"http://{self.kmd_host or self.host}"
+
+    @property
+    def indexer_server(self) -> str:
+        return f"http://{self.indexer_host or self.host}"
+
+    @property
     def algod_address(self) -> str:
-        return f"{self.server}:{self.algod_port}"
+        return f"{self.algod_server}:{self.algod_port}"
+
+    @property
+    def kmd_address(self) -> str:
+        return f"{self.kmd_server}:{self.kmd_port}"
+
+    @property
+    def indexer_address(self) -> str:
+        return f"{self.indexer_server}:{self.indexer_port}"
 
     def algod_client_config(self) -> AlgoClientNetworkConfig:
         return AlgoClientNetworkConfig(
-            server=self.server,
+            server=self.algod_server,
             token=self.token,
             port=self.algod_port,
         )
 
     def indexer_client_config(self) -> AlgoClientNetworkConfig:
         return AlgoClientNetworkConfig(
-            server=self.server,
+            server=self.indexer_server,
             token=self.token,
             port=self.indexer_port,
         )
 
     def kmd_client_config(self) -> AlgoClientNetworkConfig:
         return AlgoClientNetworkConfig(
-            server=self.server,
+            server=self.kmd_server,
             token=self.token,
             port=self.kmd_port,
         )
@@ -155,6 +181,9 @@ def load_localnet_config(default_host: str = DEFAULT_LOCALNET_HOST) -> LocalNetC
         algod_port=int(os.getenv("D_ASA_ALGOD_PORT", str(DEFAULT_ALGOD_PORT))),
         kmd_port=int(os.getenv("D_ASA_KMD_PORT", str(DEFAULT_KMD_PORT))),
         indexer_port=int(os.getenv("D_ASA_INDEXER_PORT", str(DEFAULT_INDEXER_PORT))),
+        algod_host=os.getenv("D_ASA_ALGOD_HOST"),
+        kmd_host=os.getenv("D_ASA_KMD_HOST"),
+        indexer_host=os.getenv("D_ASA_INDEXER_HOST"),
     )
 
 
@@ -201,14 +230,25 @@ def round_warp(
         n_rounds = 1
 
     for _ in range(n_rounds):
-        algorand_client.send.payment(
-            PaymentParams(
-                signer=dispenser.signer,
-                sender=dispenser.address,
-                receiver=dispenser.address,
-                amount=AlgoAmount.from_algo(0),
-            )
-        )
+        for attempt in range(1, ROUND_WARP_MAX_ATTEMPTS + 1):
+            try:
+                algorand_client.send.payment(
+                    PaymentParams(
+                        signer=dispenser.signer,
+                        sender=dispenser.address,
+                        receiver=dispenser.address,
+                        amount=AlgoAmount.from_algo(0),
+                    )
+                )
+                break
+            except (TimeoutError, URLError, ConnectionError):
+                if attempt == ROUND_WARP_MAX_ATTEMPTS:
+                    raise
+                wait_for_algod(
+                    localnet_config=localnet_config,
+                    timeout_seconds=15.0,
+                    poll_interval_seconds=1.0,
+                )
 
 
 def time_warp(
@@ -220,7 +260,7 @@ def time_warp(
     algorand_client = algorand or algorand_client_from_localnet(localnet_config)
     algod_client = algorand_client.client.algod
     algod_client.set_timestamp_offset(to_timestamp - get_latest_timestamp(algod_client))
-    round_warp(algorand=algorand_client)
+    round_warp(algorand=algorand_client, localnet_config=localnet_config)
     algod_client.set_timestamp_offset(0)
 
 
@@ -248,6 +288,49 @@ def wait_for_algod(
     if last_error is not None:
         raise TimeoutError(f"{message}: {last_error}") from last_error
     raise TimeoutError(message)
+
+
+def wait_for_kmd(
+    *,
+    localnet_config: LocalNetConfig | None = None,
+    timeout_seconds: float = 60.0,
+    poll_interval_seconds: float = 2.0,
+) -> None:
+    localnet = localnet_config or load_localnet_config()
+    kmd_client = KMDClient(localnet.token, localnet.kmd_address)
+    deadline = time.monotonic() + timeout_seconds
+    last_error: Exception | None = None
+
+    while time.monotonic() < deadline:
+        try:
+            kmd_client.list_wallets()
+            return
+        except Exception as exc:  # pragma: no cover - exercised via CLI/manual flow
+            last_error = exc
+        time.sleep(poll_interval_seconds)
+
+    message = f"Timed out waiting for kmd at {localnet.kmd_address}"
+    if last_error is not None:
+        raise TimeoutError(f"{message}: {last_error}") from last_error
+    raise TimeoutError(message)
+
+
+def wait_for_localnet(
+    *,
+    localnet_config: LocalNetConfig | None = None,
+    timeout_seconds: float = 60.0,
+    poll_interval_seconds: float = 2.0,
+) -> None:
+    wait_for_algod(
+        localnet_config=localnet_config,
+        timeout_seconds=timeout_seconds,
+        poll_interval_seconds=poll_interval_seconds,
+    )
+    wait_for_kmd(
+        localnet_config=localnet_config,
+        timeout_seconds=timeout_seconds,
+        poll_interval_seconds=poll_interval_seconds,
+    )
 
 
 def ensure_funded_role_account(
@@ -381,7 +464,7 @@ def _build_parser() -> argparse.ArgumentParser:
     subcommands = parser.add_subparsers(dest="command", required=True)
     wait_parser = subcommands.add_parser(
         "wait",
-        help="Wait for algod to become reachable.",
+        help="Wait for the LocalNet services required by the showcase.",
     )
     wait_parser.add_argument(
         "--timeout",
@@ -402,7 +485,7 @@ def main() -> None:
     parser = _build_parser()
     args = parser.parse_args()
     if args.command == "wait":
-        wait_for_algod(
+        wait_for_localnet(
             localnet_config=load_localnet_config(),
             timeout_seconds=args.timeout,
             poll_interval_seconds=args.poll_interval,
