@@ -1,0 +1,145 @@
+#!/bin/sh
+
+set -eu
+
+IMAGE_TAG="d-asa-demo:local"
+ALGOKIT_HOME_VOLUME="d-asa-algokit-home"
+DOCS_URL="https://cusma.github.io/d-asa/"
+DEFAULT_LOCALNET_HOST="${D_ASA_LOCALNET_HOST:-host.docker.internal}"
+STARTED_LOCALNET=0
+REPO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+print_help() {
+  cat <<EOF
+Usage: ./d-asa <command>
+
+Commands:
+  run    Build the demo image, start LocalNet if needed, print the showcase, then clean up.
+  docs   Open the published D-ASA docs, or print the URL when browser opening is disabled.
+  help   Show this help text.
+
+Prerequisites:
+  - Docker Desktop or Docker Engine
+  - macOS or Linux
+
+Examples:
+  ./d-asa run
+  ./d-asa docs
+  D_ASA_NO_OPEN=1 ./d-asa docs
+EOF
+}
+
+die() {
+  printf '%s\n' "$*" >&2
+  exit 1
+}
+
+ensure_docker() {
+  command -v docker >/dev/null 2>&1 || die "Docker is required but was not found in PATH."
+  docker info >/dev/null 2>&1 || die "Docker is installed but the daemon is not reachable."
+}
+
+build_image() {
+  printf '%s\n' "Building ${IMAGE_TAG}..."
+  docker build --tag "$IMAGE_TAG" "$REPO_ROOT"
+}
+
+run_in_image() {
+  case "$(uname -s)" in
+    Linux*)
+      docker run --rm \
+        --add-host=host.docker.internal:host-gateway \
+        -e HOME=/home/dasa \
+        -e XDG_CONFIG_HOME=/home/dasa/.config \
+        -e XDG_DATA_HOME=/home/dasa/.local/share \
+        -e XDG_STATE_HOME=/home/dasa/.local/state \
+        -e D_ASA_LOCALNET_HOST="$DEFAULT_LOCALNET_HOST" \
+        -v "$REPO_ROOT:/workspace" \
+        -v "$ALGOKIT_HOME_VOLUME:/home/dasa" \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -w /workspace \
+        "$IMAGE_TAG" "$@"
+      ;;
+    *)
+      docker run --rm \
+        -e HOME=/home/dasa \
+        -e XDG_CONFIG_HOME=/home/dasa/.config \
+        -e XDG_DATA_HOME=/home/dasa/.local/share \
+        -e XDG_STATE_HOME=/home/dasa/.local/state \
+        -e D_ASA_LOCALNET_HOST="$DEFAULT_LOCALNET_HOST" \
+        -v "$REPO_ROOT:/workspace" \
+        -v "$ALGOKIT_HOME_VOLUME:/home/dasa" \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -w /workspace \
+        "$IMAGE_TAG" "$@"
+      ;;
+  esac
+}
+
+cleanup() {
+  status=$?
+  trap - EXIT INT TERM
+  if [ "$STARTED_LOCALNET" -eq 1 ]; then
+    printf '%s\n' "Stopping AlgoKit LocalNet..."
+    run_in_image algokit localnet stop >/dev/null 2>&1 || true
+  fi
+  exit "$status"
+}
+
+localnet_ready() {
+  run_in_image python -m src.localnet wait --timeout 2 --poll-interval 1 >/dev/null 2>&1
+}
+
+cmd_run() {
+  ensure_docker
+  build_image
+  trap cleanup EXIT INT TERM
+
+  if localnet_ready; then
+    printf '%s\n' "Reusing existing LocalNet."
+  else
+    printf '%s\n' "Starting AlgoKit LocalNet..."
+    run_in_image algokit localnet start
+    STARTED_LOCALNET=1
+    printf '%s\n' "Waiting for algod..."
+    run_in_image python -m src.localnet wait --timeout 90 --poll-interval 2
+  fi
+
+  printf '%s\n' "Running D-ASA showcase..."
+  run_in_image python -m src.showcase
+}
+
+cmd_docs() {
+  if [ "${D_ASA_NO_OPEN:-0}" = "1" ]; then
+    printf '%s\n' "$DOCS_URL"
+    return
+  fi
+
+  if command -v open >/dev/null 2>&1; then
+    open "$DOCS_URL" >/dev/null 2>&1 || printf '%s\n' "$DOCS_URL"
+    return
+  fi
+
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$DOCS_URL" >/dev/null 2>&1 || printf '%s\n' "$DOCS_URL"
+    return
+  fi
+
+  printf '%s\n' "$DOCS_URL"
+}
+
+case "${1:-help}" in
+  run)
+    cmd_run
+    ;;
+  docs)
+    cmd_docs
+    ;;
+  help|-h|--help)
+    print_help
+    ;;
+  *)
+    print_help
+    exit 1
+    ;;
+esac
