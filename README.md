@@ -1,7 +1,7 @@
 # Debt Algorand Standard Application (D-ASA)
 
-D-ASA is a full tokenization framework for ACTUS-compliant debt instruments, issued
-and executed on the Algorand Virtual Machine.
+D-ASA is a full tokenization framework for [ACTUS](https://www.actusfrf.org/)-compliant
+debt instruments, issued and executed on the Algorand Virtual Machine.
 
 ```mermaid
 flowchart LR
