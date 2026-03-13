@@ -23,6 +23,20 @@ class TransferAgent(AccountingModule):
     def transfer_set_schedule(
         self, *, open_date: UInt64, closure_date: UInt64
     ) -> UInt64:
+        """
+        Configure the secondary-market transfer window.
+
+        Args:
+            open_date: Inclusive UNIX timestamp at which transfers may start.
+            closure_date: Exclusive UNIX timestamp at which transfers stop.
+
+        Returns:
+            UNIX timestamp of the schedule update.
+
+        Raises:
+            UNAUTHORIZED: Caller is not the arranger.
+            INVALID_SORTING: The opening date is not earlier than the closure date.
+        """
         self._assert_caller_is_arranger()
         assert open_date < closure_date, err.INVALID_SORTING
 
@@ -37,7 +51,26 @@ class TransferAgent(AccountingModule):
         holding_address: Account,
         units: UInt64,
     ) -> UInt64:
-        """Reserve units for a holder before IED finalizes issuance."""
+        """
+        Reserve units for a holder before the initial exchange activates issuance.
+
+        Args:
+            holding_address: Account receiving the reserved units.
+            units: Number of units to reserve.
+
+        Returns:
+            Remaining undistributed unit balance.
+
+        Raises:
+            NOT_CONFIGURED: Contract terms and schedule are not fully configured.
+            UNAUTHORIZED: Caller is not an active primary dealer.
+            DEFAULTED: Asset is defaulted.
+            SUSPENDED: Asset or account operations are suspended.
+            PRIMARY_DISTRIBUTION_CLOSED: Issuance is no longer accepting allocations.
+            INVALID_HOLDING_ADDRESS: Holding address has no opened account.
+            ZERO_UNITS: Requested distribution amount is zero.
+            OVER_DISTRIBUTION: Requested units exceed the remaining supply.
+        """
         self._assert_configured()
         self._assert_caller_is_primary_dealer()
         self._assert_is_not_asset_defaulted()
@@ -66,10 +99,32 @@ class TransferAgent(AccountingModule):
         receiver_holding_address: Account,
         units: UInt64,
     ) -> UInt64:
-        """Transfer active units after settling both counterparties to the current cursor.
+        """
+        Transfer active units after settling both counterparties to the current cursor.
 
         Returns the number of units moved. The ACTUS kernel no longer persists a
         nominal per-unit value on-chain, so transfer results are unit-based.
+
+        Args:
+            sender_holding_address: Account debited for the transfer.
+            receiver_holding_address: Account credited for the transfer.
+            units: Number of active units to move.
+
+        Returns:
+            Number of units transferred.
+
+        Raises:
+            NOT_CONFIGURED: Contract terms and schedule are not fully configured.
+            DEFAULTED: Asset is defaulted.
+            SUSPENDED: Asset or account operations are suspended.
+            PENDING_IED: Initial exchange has not executed yet.
+            CLOSED_TRANSFER: Transfer window is closed.
+            UNAUTHORIZED: Caller is not the sender holding address.
+            INVALID_HOLDING_ADDRESS: Sender or receiver account does not exist.
+            SELF_TRANSFER: Sender and receiver are the same address.
+            NULL_TRANSFER: Requested transfer amount is zero.
+            OVER_TRANSFER: Sender does not hold enough active units.
+            PENDING_ACTUS_EVENT: A due ACTUS event must be processed before transfer.
         """
         self._assert_configured()
         self._assert_is_not_asset_defaulted()

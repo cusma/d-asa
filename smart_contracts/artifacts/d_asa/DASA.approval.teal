@@ -4,18 +4,18 @@
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
     intcblock 0 1 8 32 1500
-    bytecblock 0x151f7c75 "status" "event_cursor" "schedule_entry_count" "outstanding_principal" "fixed_point_scale" "accrued_interest" "interest_calculation_base" 0x52234163636f756e7423 "nominal_interest_rate" "contract_type" "reserved_units_total" "reserved_principal" "total_units" "next_principal_redemption" "reserved_interest" "cumulative_interest_index" "cumulative_principal_index" 0x5223417272616e67657223 "settlement_asset_id" "initial_exchange_amount" 0x5223417574686f7269747923 0x52235072696d6172794465616c657223 0x52234163636f756e744d616e6167657223 0x5323 0x52234f6273657276657223 0x52234f704461656d6f6e23 "initial_exchange_date" "transfer_opening_date" "transfer_closure_date" "rate_reset_floor" "rate_reset_cap" 0x52235472757374656523 "asset_suspended" "dynamic_principal_redemption" "rate_reset_spread" "rate_reset_multiplier" "rate_reset_next" "has_rate_reset_floor" "has_rate_reset_cap" 0x00 "asset_defaulted" "prospectus_hash" "prospectus_url" "denomination_asset_id" "maturity_date" "day_count_convention" 0x068101 0x0000
+    bytecblock 0x151f7c75 "status" "event_cursor" "schedule_entry_count" "outstanding_principal" "fixed_point_scale" "accrued_interest" "interest_calculation_base" 0x4123 "nominal_interest_rate" "contract_type" "reserved_units_total" "reserved_principal" "total_units" "next_principal_redemption" "reserved_interest" "cumulative_interest_index" "cumulative_principal_index" 0x523a41525223 "settlement_asset_id" "initial_exchange_amount" 0x523a41555423 0x523a50594423 0x523a4d4e4723 0x5323 0x523a4d4f4323 0x523a4f504423 "initial_exchange_date" "transfer_opening_date" "transfer_closure_date" "rate_reset_floor" "rate_reset_cap" 0x523a54525323 "asset_suspended" "dynamic_principal_redemption" "rate_reset_spread" "rate_reset_multiplier" "rate_reset_next" "has_rate_reset_floor" "has_rate_reset_cap" 0x00 "asset_defaulted" "prospectus_hash" "prospectus_url" "denomination_asset_id" "maturity_date" "day_count_convention" 0x068101 0x0000
     txn ApplicationID
     bnz main_after_if_else@2
     // modules/rbac.py:28-29
     // # RBAC Roles
     // self.arranger = GlobalState(Account(), key=cst.PREFIX_ID_ARRANGER)
-    bytec 18 // 0x5223417272616e67657223
+    bytec 18 // 0x523a41525223
     global ZeroAddress
     app_global_put
     // modules/rbac.py:30
     // self.op_daemon = GlobalState(Account(), key=cst.PREFIX_ID_OP_DAEMON)
-    bytec 26 // 0x52234f704461656d6f6e23
+    bytec 26 // 0x523a4f504423
     global ZeroAddress
     app_global_put
     // modules/rbac.py:47-48
@@ -367,13 +367,13 @@ fund_due_cashflows:
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/payment_agent.py:51
+    // modules/payment_agent.py:68
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/payment_agent.py:52
+    // modules/payment_agent.py:69
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/payment_agent.py:53
+    // modules/payment_agent.py:70
     // self._assert_is_not_asset_suspended()
     callsub _assert_is_not_asset_suspended
     // modules/actus_kernel.py:135
@@ -388,30 +388,30 @@ fund_due_cashflows:
     // assert not self._status_is_pending_ied(), err.PENDING_IED
     !
     assert // IED not yet executed
-    // modules/payment_agent.py:55
+    // modules/payment_agent.py:72
     // if self._is_dynamic_annuity():
     callsub _is_dynamic_annuity
     bz fund_due_cashflows_after_if_else@3
-    // modules/payment_agent.py:59-60
+    // modules/payment_agent.py:76-77
     // + max_event_count
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     dup
-    // modules/payment_agent.py:60
+    // modules/payment_agent.py:77
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     pushint 100
-    // modules/payment_agent.py:59-60
+    // modules/payment_agent.py:76-77
     // + max_event_count
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     *
-    // modules/payment_agent.py:58
+    // modules/payment_agent.py:75
     // UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
     intc 4 // 1500
-    // modules/payment_agent.py:58-60
+    // modules/payment_agent.py:75-77
     // UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
     // + max_event_count
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     +
-    // modules/payment_agent.py:56-62
+    // modules/payment_agent.py:73-79
     // ensure_budget(
     //     required_budget=(
     //         UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
@@ -423,30 +423,30 @@ fund_due_cashflows:
     callsub ensure_budget
 
 fund_due_cashflows_after_if_else@3:
-    // modules/payment_agent.py:64
+    // modules/payment_agent.py:81
     // processed_events = UInt64(0)
     intc_0 // 0
     bury 5
-    // modules/payment_agent.py:65
+    // modules/payment_agent.py:82
     // funded_interest = UInt64(0)
     intc_0 // 0
     bury 14
-    // modules/payment_agent.py:66
+    // modules/payment_agent.py:83
     // funded_principal = UInt64(0)
     intc_0 // 0
     bury 13
 
 fund_due_cashflows_while_top@4:
-    // modules/payment_agent.py:69
+    // modules/payment_agent.py:86
     // processed_events < max_event_count
     dig 4
     dig 1
     <
-    // modules/payment_agent.py:69-70
+    // modules/payment_agent.py:86-87
     // processed_events < max_event_count
     // and self.event_cursor < self.schedule_entry_count
     bz fund_due_cashflows_after_while@11
-    // modules/payment_agent.py:70
+    // modules/payment_agent.py:87
     // and self.event_cursor < self.schedule_entry_count
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -457,11 +457,11 @@ fund_due_cashflows_while_top@4:
     app_global_get_ex
     assert // check self.schedule_entry_count exists
     <
-    // modules/payment_agent.py:69-70
+    // modules/payment_agent.py:86-87
     // processed_events < max_event_count
     // and self.event_cursor < self.schedule_entry_count
     bz fund_due_cashflows_after_while@11
-    // modules/payment_agent.py:72
+    // modules/payment_agent.py:89
     // entry = self._get_schedule_entry(self.event_cursor)
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -470,7 +470,7 @@ fund_due_cashflows_while_top@4:
     callsub _get_schedule_entry
     dup
     bury 17
-    // modules/payment_agent.py:73
+    // modules/payment_agent.py:90
     // if entry.scheduled_time > Global.latest_timestamp:
     pushint 9
     extract_uint64
@@ -479,7 +479,7 @@ fund_due_cashflows_while_top@4:
     global LatestTimestamp
     >
     bnz fund_due_cashflows_after_while@11
-    // modules/payment_agent.py:75
+    // modules/payment_agent.py:92
     // if not self._event_is_cash(entry.event_type.as_uint64()):
     dig 15
     intc_2 // 8
@@ -528,7 +528,7 @@ fund_due_cashflows_bool_true@52:
     intc_1 // 1
 
 fund_due_cashflows_bool_merge@54:
-    // modules/payment_agent.py:75
+    // modules/payment_agent.py:92
     // if not self._event_is_cash(entry.event_type.as_uint64()):
     bz fund_due_cashflows_after_while@11
     // modules/actus_kernel.py:548
@@ -823,19 +823,19 @@ fund_due_cashflows_after_if_else@47:
     dup
     callsub _emit_execution_event
     pop
-    // modules/payment_agent.py:79
+    // modules/payment_agent.py:96
     // funded_interest += interest_amount
     dig 13
     dig 12
     +
     bury 14
-    // modules/payment_agent.py:80
+    // modules/payment_agent.py:97
     // funded_principal += principal_amount
     dig 12
     dig 7
     +
     bury 13
-    // modules/payment_agent.py:81
+    // modules/payment_agent.py:98
     // processed_events += UInt64(1)
     dig 4
     intc_1 // 1
@@ -1057,12 +1057,12 @@ fund_due_cashflows_after_if_else@15:
     b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_interest_amount@16
 
 fund_due_cashflows_after_while@11:
-    // modules/payment_agent.py:83
+    // modules/payment_agent.py:100
     // assert processed_events > UInt64(0), err.NO_DUE_CASHFLOW
     dig 4
     dup
     assert // No due cashflow to pay
-    // modules/payment_agent.py:87
+    // modules/payment_agent.py:104
     // total_funded=funded_interest + funded_principal,
     dig 14
     dup
@@ -1070,10 +1070,10 @@ fund_due_cashflows_after_while@11:
     dup
     cover 3
     +
-    // modules/payment_agent.py:89
+    // modules/payment_agent.py:106
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // modules/payment_agent.py:84-90
+    // modules/payment_agent.py:101-107
     // return typ.CashFundingResult(
     //     funded_interest=funded_interest,
     //     funded_principal=funded_principal,
@@ -1113,7 +1113,7 @@ fund_due_cashflows_bool_false@53:
 claim_due_cashflows:
     pushbytes ""
     dupn 2
-    // modules/payment_agent.py:92
+    // modules/payment_agent.py:109
     // @arc4.abimethod
     txna ApplicationArgs 1
     dupn 2
@@ -1142,7 +1142,7 @@ claim_due_cashflows:
     assert // D-ASA not configured
     // modules/accounting.py:24
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     swap
     concat
     dup
@@ -1152,7 +1152,7 @@ claim_due_cashflows:
     // modules/payment_agent.py:15
     // if self.op_daemon.value != Global.zero_address:
     intc_0 // 0
-    bytec 26 // 0x52234f704461656d6f6e23
+    bytec 26 // 0x523a4f504423
     app_global_get_ex
     assert // check self.op_daemon exists
     global ZeroAddress
@@ -1162,7 +1162,7 @@ claim_due_cashflows:
     // Txn.sender == self.op_daemon.value
     txn Sender
     intc_0 // 0
-    bytec 26 // 0x52234f704461656d6f6e23
+    bytec 26 // 0x523a4f504423
     app_global_get_ex
     assert // check self.op_daemon exists
     ==
@@ -1208,10 +1208,10 @@ claim_due_cashflows_bool_merge@16:
     assert // Not authorized
 
 claim_due_cashflows_after_if_else@17:
-    // modules/payment_agent.py:103
+    // modules/payment_agent.py:139
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/payment_agent.py:104
+    // modules/payment_agent.py:140
     // self._assert_is_not_asset_suspended()
     callsub _assert_is_not_asset_suspended
     // modules/actus_kernel.py:135
@@ -1226,12 +1226,12 @@ claim_due_cashflows_after_if_else@17:
     // assert not self._status_is_pending_ied(), err.PENDING_IED
     !
     assert // IED not yet executed
-    // modules/payment_agent.py:107
+    // modules/payment_agent.py:143
     // self._ensure_units_activated(holding_address)
     dig 2
     dup
     callsub _ensure_units_activated
-    // modules/payment_agent.py:108
+    // modules/payment_agent.py:144
     // self._settle_position(holding_address)
     callsub _settle_position
     popn 2
@@ -1260,7 +1260,7 @@ claim_due_cashflows_after_if_else@17:
     +
     dup
     bury 6
-    // modules/payment_agent.py:110
+    // modules/payment_agent.py:146
     // assert total_amount > UInt64(0), err.NO_DUE_CASHFLOW
     assert // No due cashflow to pay
     // modules/payment_agent.py:25
@@ -1295,7 +1295,7 @@ claim_due_cashflows_after_if_else@17:
     intc_1 // 1
 
 claim_due_cashflows_bool_merge@25:
-    // modules/payment_agent.py:115
+    // modules/payment_agent.py:151
     // if self._is_payment_executable(holding_address):
     bz claim_due_cashflows_after_if_else@3
     // modules/payment_agent.py:34
@@ -1322,7 +1322,7 @@ claim_due_cashflows_bool_merge@25:
     //     >= payment_amount
     // ), err.NOT_ENOUGH_FUNDS
     assert // Not enough funds for the payment
-    // modules/payment_agent.py:117
+    // modules/payment_agent.py:153
     // self._pay(self.account[holding_address].payment_address, total_amount)
     dig 2
     dup
@@ -1435,7 +1435,7 @@ claim_due_cashflows_bool_merge@25:
     app_global_put
 
 claim_due_cashflows_after_if_else@3:
-    // modules/payment_agent.py:123
+    // modules/payment_agent.py:159
     // total_amount=interest_amount + principal_amount,
     dig 5
     dup
@@ -1443,10 +1443,10 @@ claim_due_cashflows_after_if_else@3:
     dup
     cover 3
     +
-    // modules/payment_agent.py:124
+    // modules/payment_agent.py:160
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // modules/payment_agent.py:120-126
+    // modules/payment_agent.py:156-162
     // return typ.CashClaimResult(
     //     interest_amount=interest_amount,
     //     principal_amount=principal_amount,
@@ -1477,7 +1477,7 @@ claim_due_cashflows_after_if_else@3:
     concat
     swap
     concat
-    // modules/payment_agent.py:92
+    // modules/payment_agent.py:109
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     swap
@@ -1513,25 +1513,25 @@ transfer_set_schedule:
     ==
     assert // invalid number of bytes for arc4.uint64
     btoi
-    // modules/transfer_agent.py:26
+    // modules/transfer_agent.py:40
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/transfer_agent.py:27
+    // modules/transfer_agent.py:41
     // assert open_date < closure_date, err.INVALID_SORTING
     dup2
     <
     assert // Time events must be sorted in strictly ascending order
-    // modules/transfer_agent.py:29
+    // modules/transfer_agent.py:43
     // self.transfer_opening_date = open_date
     bytec 28 // "transfer_opening_date"
     uncover 2
     app_global_put
-    // modules/transfer_agent.py:30
+    // modules/transfer_agent.py:44
     // self.transfer_closure_date = closure_date
     bytec 29 // "transfer_closure_date"
     swap
     app_global_put
-    // modules/transfer_agent.py:31
+    // modules/transfer_agent.py:45
     // return Global.latest_timestamp
     global LatestTimestamp
     // modules/transfer_agent.py:22
@@ -1547,7 +1547,7 @@ transfer_set_schedule:
 
 // modules.transfer_agent.TransferAgent.primary_distribution[routing]() -> void:
 primary_distribution:
-    // modules/transfer_agent.py:33
+    // modules/transfer_agent.py:47
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -1573,14 +1573,14 @@ primary_distribution:
     assert // D-ASA not configured
     // modules/rbac.py:71
     // assert self._role_is_active(self.primary_dealer, Txn.sender), err.UNAUTHORIZED
-    bytec 22 // 0x52235072696d6172794465616c657223
+    bytec 22 // 0x523a50594423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
-    // modules/transfer_agent.py:43
+    // modules/transfer_agent.py:76
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/transfer_agent.py:44
+    // modules/transfer_agent.py:77
     // self._assert_is_not_asset_suspended()
     callsub _assert_is_not_asset_suspended
     // modules/actus_kernel.py:135
@@ -1591,12 +1591,12 @@ primary_distribution:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/transfer_agent.py:45
+    // modules/transfer_agent.py:78
     // assert self._status_is_pending_ied(), err.PRIMARY_DISTRIBUTION_CLOSED
     assert // Primary distribution is closed
     // modules/accounting.py:24
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     dig 2
     concat
     dup
@@ -1604,15 +1604,15 @@ primary_distribution:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/transfer_agent.py:47
+    // modules/transfer_agent.py:80
     // self._assert_is_not_account_suspended(holding_address)
     swap
     callsub _assert_is_not_account_suspended
-    // modules/transfer_agent.py:48
+    // modules/transfer_agent.py:81
     // assert units > UInt64(0), err.ZERO_UNITS
     dup
     assert // Can not distribute zero units
-    // modules/transfer_agent.py:50
+    // modules/transfer_agent.py:83
     // self.reserved_units_total + units <= self.total_units
     intc_0 // 0
     bytec 11 // "reserved_units_total"
@@ -1624,19 +1624,19 @@ primary_distribution:
     app_global_get_ex
     assert // check self.total_units exists
     <=
-    // modules/transfer_agent.py:49-51
+    // modules/transfer_agent.py:82-84
     // assert (
     //     self.reserved_units_total + units <= self.total_units
     // ), err.OVER_DISTRIBUTION
     assert // Insufficient remaining D-ASA units
-    // modules/transfer_agent.py:52
+    // modules/transfer_agent.py:85
     // if self.initial_exchange_date:
     intc_0 // 0
     bytec 27 // "initial_exchange_date"
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     bz primary_distribution_after_if_else@3
-    // modules/transfer_agent.py:54
+    // modules/transfer_agent.py:87
     // Global.latest_timestamp <= self.initial_exchange_date
     global LatestTimestamp
     intc_0 // 0
@@ -1644,7 +1644,7 @@ primary_distribution:
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     <=
-    // modules/transfer_agent.py:53-55
+    // modules/transfer_agent.py:86-88
     // assert (
     //     Global.latest_timestamp <= self.initial_exchange_date
     // ), err.PRIMARY_DISTRIBUTION_CLOSED
@@ -1666,7 +1666,7 @@ primary_distribution_after_if_else@3:
     pushint 40
     swap
     box_replace
-    // modules/transfer_agent.py:58
+    // modules/transfer_agent.py:91
     // self.reserved_units_total += units
     intc_0 // 0
     bytec 11 // "reserved_units_total"
@@ -1676,7 +1676,7 @@ primary_distribution_after_if_else@3:
     bytec 11 // "reserved_units_total"
     dig 1
     app_global_put
-    // modules/transfer_agent.py:59
+    // modules/transfer_agent.py:92
     // return self.total_units - self.reserved_units_total
     intc_0 // 0
     bytec 13 // "total_units"
@@ -1684,7 +1684,7 @@ primary_distribution_after_if_else@3:
     assert // check self.total_units exists
     swap
     -
-    // modules/transfer_agent.py:33
+    // modules/transfer_agent.py:47
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -1699,7 +1699,7 @@ primary_distribution_after_if_else@3:
 transfer:
     intc_0 // 0
     dup
-    // modules/transfer_agent.py:61
+    // modules/transfer_agent.py:94
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -1727,10 +1727,10 @@ transfer:
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/transfer_agent.py:75
+    // modules/transfer_agent.py:130
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/transfer_agent.py:76
+    // modules/transfer_agent.py:131
     // self._assert_is_not_asset_suspended()
     callsub _assert_is_not_asset_suspended
     // modules/actus_kernel.py:135
@@ -1789,7 +1789,7 @@ transfer_after_if_else@3:
     assert // Transfer is closed
 
 transfer_after_if_else@5:
-    // modules/transfer_agent.py:80
+    // modules/transfer_agent.py:135
     // assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
     txn Sender
     dig 4
@@ -1799,7 +1799,7 @@ transfer_after_if_else@5:
     assert // Not authorized
     // modules/accounting.py:24
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     dig 1
     concat
     dup
@@ -1808,7 +1808,7 @@ transfer_after_if_else@5:
     box_len
     bury 1
     assert // Invalid account holding address
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     dig 5
     dup
     cover 2
@@ -1818,25 +1818,25 @@ transfer_after_if_else@5:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/transfer_agent.py:83
+    // modules/transfer_agent.py:138
     // self._assert_is_not_account_suspended(sender_holding_address)
     dig 2
     callsub _assert_is_not_account_suspended
-    // modules/transfer_agent.py:84
+    // modules/transfer_agent.py:139
     // self._assert_is_not_account_suspended(receiver_holding_address)
     dup
     callsub _assert_is_not_account_suspended
-    // modules/transfer_agent.py:85
+    // modules/transfer_agent.py:140
     // assert sender_holding_address != receiver_holding_address, err.SELF_TRANSFER
     uncover 2
     !=
     assert // Sender and receiver must be different
-    // modules/transfer_agent.py:86
+    // modules/transfer_agent.py:141
     // assert units > UInt64(0), err.NULL_TRANSFER
     dig 1
     dup
     assert // Transfer units must be greater than zero
-    // modules/transfer_agent.py:87
+    // modules/transfer_agent.py:142
     // assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
     swap
     box_get
@@ -1877,22 +1877,22 @@ transfer_after_if_else@5:
     assert // ACTUS event not yet executed
 
 transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_event_pending@10:
-    // modules/transfer_agent.py:90
+    // modules/transfer_agent.py:145
     // self._ensure_units_activated(sender_holding_address)
     dig 3
     dup
     callsub _ensure_units_activated
-    // modules/transfer_agent.py:91
+    // modules/transfer_agent.py:146
     // self._ensure_units_activated(receiver_holding_address)
     dig 3
     dup
     cover 2
     callsub _ensure_units_activated
-    // modules/transfer_agent.py:92
+    // modules/transfer_agent.py:147
     // self._settle_position(sender_holding_address)
     callsub _settle_position
     popn 2
-    // modules/transfer_agent.py:93
+    // modules/transfer_agent.py:148
     // self._settle_position(receiver_holding_address)
     callsub _settle_position
     popn 2
@@ -1933,7 +1933,7 @@ transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_eve
     intc_3 // 32
     swap
     box_replace
-    // modules/transfer_agent.py:61
+    // modules/transfer_agent.py:94
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     dig 2
@@ -1963,13 +1963,13 @@ account_suspension:
     getbit
     // modules/rbac.py:77
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
-    bytec 21 // 0x5223417574686f7269747923
+    bytec 21 // 0x523a41555423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
     // modules/accounting.py:24
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     uncover 2
     concat
     dup
@@ -2020,7 +2020,7 @@ account_open:
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
     // modules/rbac.py:68
     // assert self._role_is_active(self.account_manager, Txn.sender), err.UNAUTHORIZED
-    bytec 23 // 0x52234163636f756e744d616e6167657223
+    bytec 23 // 0x523a4d4e4723
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -2044,7 +2044,7 @@ account_open:
     callsub _assert_is_not_asset_suspended
     // modules/accounting.py:213
     // assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     uncover 2
     concat
     dup
@@ -2120,7 +2120,7 @@ account_update_payment_address:
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
     // modules/accounting.py:24
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     dig 2
     concat
     dup
@@ -2170,7 +2170,7 @@ account_get_position:
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
     // modules/accounting.py:24
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     swap
     concat
     dup
@@ -2201,12 +2201,12 @@ contract_create:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/actus_kernel.py:1030
+    // modules/actus_kernel.py:1033
     // self.arranger.value = arranger
-    bytec 18 // 0x5223417272616e67657223
+    bytec 18 // 0x523a41525223
     swap
     app_global_put
-    // modules/actus_kernel.py:1031
+    // modules/actus_kernel.py:1034
     // return Global.latest_timestamp
     global LatestTimestamp
     // modules/actus_kernel.py:1019
@@ -2224,7 +2224,7 @@ contract_create:
 contract_config:
     pushbytes ""
     dup
-    // modules/actus_kernel.py:1033
+    // modules/actus_kernel.py:1036
     // @arc4.abimethod
     txna ApplicationArgs 1
     dupn 2
@@ -2263,10 +2263,10 @@ contract_config:
     +
     ==
     assert // invalid number of bytes for smart_contracts.abi_types.Prospectus
-    // modules/actus_kernel.py:1062
+    // modules/actus_kernel.py:1066
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:1064-1065
+    // modules/actus_kernel.py:1068-1069
     // # Configure Contract
     // self.contract_type = terms.contract_type.as_uint64()
     intc_0 // 0
@@ -2368,7 +2368,7 @@ contract_config_bool_merge@9:
     // modules/actus_kernel.py:229
     // assert self._is_supported_contract_type(contract_type), err.INVALID_ACTUS_CONFIG
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:1067
+    // modules/actus_kernel.py:1071
     // self._store_contract_config(self.contract_type, terms, initial_state)
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -2792,7 +2792,7 @@ contract_config_after_if_else@20:
     // assert terms.initial_exchange_date < terms.maturity_date, err.INVALID_IED
     <
     assert // IED must be set in the future
-    // modules/actus_kernel.py:1069-1070
+    // modules/actus_kernel.py:1073-1074
     // # Notarize prospectus (optional)
     // self.prospectus_hash = prospectus.hash.bytes
     dig 2
@@ -2800,17 +2800,17 @@ contract_config_after_if_else@20:
     bytec 42 // "prospectus_hash"
     swap
     app_global_put
-    // modules/actus_kernel.py:1071
+    // modules/actus_kernel.py:1075
     // self.prospectus_url = prospectus.url
     dig 1
     extract 2 0
     bytec 43 // "prospectus_url"
     swap
     app_global_put
-    // modules/actus_kernel.py:1072
+    // modules/actus_kernel.py:1076
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1033
+    // modules/actus_kernel.py:1036
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -2834,7 +2834,7 @@ contract_schedule:
     intc_0 // 0
     pushbytes ""
     dupn 2
-    // modules/actus_kernel.py:1074
+    // modules/actus_kernel.py:1078
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2870,10 +2870,10 @@ contract_schedule:
     len
     ==
     assert // invalid number of bytes for arc4.dynamic_array<smart_contracts.abi_types.ExecutionScheduleEntry>
-    // modules/actus_kernel.py:1089
+    // modules/actus_kernel.py:1110
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:1092
+    // modules/actus_kernel.py:1113
     // contract_type=self.contract_type,
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -3145,10 +3145,10 @@ contract_schedule_after_while@11:
     app_global_put
 
 contract_schedule_after_if_else@13:
-    // modules/actus_kernel.py:1097
+    // modules/actus_kernel.py:1118
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1074
+    // modules/actus_kernel.py:1078
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -3168,16 +3168,16 @@ contract_execute_ied:
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1107
+    // modules/actus_kernel.py:1143
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:1108
+    // modules/actus_kernel.py:1144
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/actus_kernel.py:1109
+    // modules/actus_kernel.py:1145
     // self._assert_is_not_asset_suspended()
     callsub _assert_is_not_asset_suspended
-    // modules/actus_kernel.py:1111
+    // modules/actus_kernel.py:1147
     // assert self.event_cursor < self.schedule_entry_count, err.INVALID_EVENT_CURSOR
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -3190,10 +3190,10 @@ contract_execute_ied:
     dig 1
     >
     assert // Invalid event cursor
-    // modules/actus_kernel.py:1112
+    // modules/actus_kernel.py:1148
     // entry = self._get_schedule_entry(self.event_cursor)
     callsub _get_schedule_entry
-    // modules/actus_kernel.py:1113
+    // modules/actus_kernel.py:1149
     // assert entry.event_type == arc4.UInt8(enums.EVT_IED), err.INVALID_EVENT_TYPE
     dup
     extract 8 1
@@ -3201,39 +3201,39 @@ contract_execute_ied:
     pushbytes 0x01
     b==
     assert // Invalid event type
-    // modules/actus_kernel.py:1117
+    // modules/actus_kernel.py:1153
     // event_id=entry.event_id,
     dig 1
     extract 0 8
-    // modules/actus_kernel.py:1119
+    // modules/actus_kernel.py:1155
     // scheduled_time=entry.scheduled_time,
     dig 2
     extract 9 8
-    // modules/actus_kernel.py:1120
+    // modules/actus_kernel.py:1156
     // accrual_factor=entry.accrual_factor,
     dig 3
     extract 17 8
-    // modules/actus_kernel.py:1121
+    // modules/actus_kernel.py:1157
     // redemption_accrual_factor=entry.redemption_accrual_factor,
     dig 4
     extract 25 8
-    // modules/actus_kernel.py:1123
+    // modules/actus_kernel.py:1159
     // next_nominal_interest_rate=entry.next_nominal_interest_rate,
     dig 5
     extract 33 8
-    // modules/actus_kernel.py:1124
+    // modules/actus_kernel.py:1160
     // next_principal_redemption=entry.next_principal_redemption,
     dig 6
     extract 41 8
-    // modules/actus_kernel.py:1125
+    // modules/actus_kernel.py:1161
     // next_outstanding_principal=entry.next_outstanding_principal,
     dig 7
     extract 49 8
-    // modules/actus_kernel.py:1126
+    // modules/actus_kernel.py:1162
     // flags=entry.flags,
     dig 8
     extract 57 8
-    // modules/actus_kernel.py:1116-1127
+    // modules/actus_kernel.py:1152-1163
     // typ.ObservedEventRequest(
     //     event_id=entry.event_id,
     //     event_type=entry.event_type,
@@ -3255,10 +3255,10 @@ contract_execute_ied:
     concat
     uncover 5
     concat
-    // modules/actus_kernel.py:1122
+    // modules/actus_kernel.py:1158
     // observed_rate=UInt64(0),
     intc_0 // 0
-    // modules/actus_kernel.py:1116-1127
+    // modules/actus_kernel.py:1152-1163
     // typ.ObservedEventRequest(
     //     event_id=entry.event_id,
     //     event_type=entry.event_type,
@@ -3281,7 +3281,7 @@ contract_execute_ied:
     concat
     swap
     concat
-    // modules/actus_kernel.py:1114-1128
+    // modules/actus_kernel.py:1150-1164
     // self._apply_non_cash_schedule_entry(
     //     entry,
     //     typ.ObservedEventRequest(
@@ -3299,10 +3299,10 @@ contract_execute_ied:
     // )
     callsub _apply_non_cash_schedule_entry
     popn 2
-    // modules/actus_kernel.py:1129
+    // modules/actus_kernel.py:1165
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1099
+    // modules/actus_kernel.py:1120
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -3319,7 +3319,7 @@ apply_non_cash_event:
     dupn 4
     pushbytes ""
     dup
-    // modules/actus_kernel.py:1131
+    // modules/actus_kernel.py:1167
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -3341,13 +3341,13 @@ apply_non_cash_event:
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1145
+    // modules/actus_kernel.py:1204
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/actus_kernel.py:1146
+    // modules/actus_kernel.py:1205
     // self._assert_is_not_asset_suspended()
     callsub _assert_is_not_asset_suspended
-    // modules/actus_kernel.py:1148
+    // modules/actus_kernel.py:1207
     // if payload.flags & UInt64(enums.FLAG_OBSERVED_EVENT):
     pushint 65
     extract_uint64
@@ -3363,10 +3363,10 @@ apply_non_cash_event:
     assert // check self.contract_type exists
     pushint 5
     ==
-    // modules/actus_kernel.py:1149
+    // modules/actus_kernel.py:1208
     // assert self._supports_observed_events(), err.OBSERVED_EVENT_REQUIRED
     assert // Observed event required to execute this action
-    // modules/actus_kernel.py:1150
+    // modules/actus_kernel.py:1209
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     // modules/actus_kernel.py:233
@@ -3551,7 +3551,7 @@ apply_non_cash_event_after_if_else@27:
     app_global_put
 
 apply_non_cash_event_after_if_else@3:
-    // modules/actus_kernel.py:1153
+    // modules/actus_kernel.py:1212
     // assert event_id == self.event_cursor, err.INVALID_EVENT_CURSOR
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -3562,12 +3562,12 @@ apply_non_cash_event_after_if_else@3:
     uncover 2
     ==
     assert // Invalid event cursor
-    // modules/actus_kernel.py:1154
+    // modules/actus_kernel.py:1213
     // entry = self._get_schedule_entry(event_id)
     callsub _get_schedule_entry
     dup
     bury 8
-    // modules/actus_kernel.py:1156
+    // modules/actus_kernel.py:1215
     // entry.event_type.as_uint64()
     dup
     extract 8 1
@@ -3670,12 +3670,12 @@ apply_non_cash_event_bool_true@15:
     intc_1 // 1
 
 apply_non_cash_event_bool_merge@17:
-    // modules/actus_kernel.py:1155-1157
+    // modules/actus_kernel.py:1214-1216
     // assert self._event_is_non_cash(
     //     entry.event_type.as_uint64()
     // ), err.INVALID_EVENT_TYPE
     assert // Invalid event type
-    // modules/actus_kernel.py:1158
+    // modules/actus_kernel.py:1217
     // assert entry.event_type != arc4.UInt8(enums.EVT_IED), err.INVALID_EVENT_TYPE
     dig 8
     pushbytes 0x01
@@ -3696,27 +3696,27 @@ apply_non_cash_event_bool_true@21:
     intc_1 // 1
 
 apply_non_cash_event_bool_merge@23:
-    // modules/actus_kernel.py:1159
+    // modules/actus_kernel.py:1218
     // if self._event_is_rate_reset(entry.event_type.as_uint64()):
     bz apply_non_cash_event_else_body@5
     // modules/rbac.py:80
     // assert self._role_is_active(self.observer, Txn.sender), err.UNAUTHORIZED
-    bytec 25 // 0x52234f6273657276657223
+    bytec 25 // 0x523a4d4f4323
     txn Sender
     callsub _role_is_active
     assert // Not authorized
 
 apply_non_cash_event_after_if_else@6:
-    // modules/actus_kernel.py:1163
+    // modules/actus_kernel.py:1222
     // self._apply_non_cash_schedule_entry(entry, payload)
     dig 6
     dig 2
     callsub _apply_non_cash_schedule_entry
     popn 2
-    // modules/actus_kernel.py:1164
+    // modules/actus_kernel.py:1223
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1131
+    // modules/actus_kernel.py:1167
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -3727,7 +3727,7 @@ apply_non_cash_event_after_if_else@6:
     return
 
 apply_non_cash_event_else_body@5:
-    // modules/actus_kernel.py:1162
+    // modules/actus_kernel.py:1221
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     b apply_non_cash_event_after_if_else@6
@@ -3745,7 +3745,7 @@ apply_non_cash_event_bool_false@16:
 append_observed_cash_event:
     intc_0 // 0
     dup
-    // modules/actus_kernel.py:1166
+    // modules/actus_kernel.py:1225
     // @arc4.abimethod
     txna ApplicationArgs 1
     dupn 2
@@ -3760,13 +3760,13 @@ append_observed_cash_event:
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1174
+    // modules/actus_kernel.py:1254
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:1175
+    // modules/actus_kernel.py:1255
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/actus_kernel.py:1176
+    // modules/actus_kernel.py:1256
     // self._assert_is_not_asset_suspended()
     callsub _assert_is_not_asset_suspended
     // modules/actus_kernel.py:135
@@ -3999,10 +3999,10 @@ append_observed_cash_event_after_if_else@5:
     bytec_3 // "schedule_entry_count"
     swap
     app_global_put
-    // modules/actus_kernel.py:1180
+    // modules/actus_kernel.py:1260
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1166
+    // modules/actus_kernel.py:1225
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4023,7 +4023,7 @@ contract_get_state:
     assert // check self.status exists
     dup
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1187
+    // modules/actus_kernel.py:1275
     // contract_type=arc4.UInt8(self.contract_type),
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -4036,85 +4036,85 @@ contract_get_state:
     <=
     assert // overflow
     extract 7 1
-    // modules/actus_kernel.py:1189
+    // modules/actus_kernel.py:1277
     // total_units=self.total_units,
     intc_0 // 0
     bytec 13 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
-    // modules/actus_kernel.py:1190
+    // modules/actus_kernel.py:1278
     // reserved_units_total=self.reserved_units_total,
     intc_0 // 0
     bytec 11 // "reserved_units_total"
     app_global_get_ex
     assert // check self.reserved_units_total exists
-    // modules/actus_kernel.py:1191
+    // modules/actus_kernel.py:1279
     // initial_exchange_amount=self.initial_exchange_amount,
     intc_0 // 0
     bytec 20 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
-    // modules/actus_kernel.py:1192
+    // modules/actus_kernel.py:1280
     // event_cursor=self.event_cursor,
     intc_0 // 0
     bytec_2 // "event_cursor"
     app_global_get_ex
     assert // check self.event_cursor exists
-    // modules/actus_kernel.py:1193
+    // modules/actus_kernel.py:1281
     // schedule_entry_count=self.schedule_entry_count,
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
     app_global_get_ex
     assert // check self.schedule_entry_count exists
-    // modules/actus_kernel.py:1194
+    // modules/actus_kernel.py:1282
     // outstanding_principal=self.outstanding_principal,
     intc_0 // 0
     bytec 4 // "outstanding_principal"
     app_global_get_ex
     assert // check self.outstanding_principal exists
-    // modules/actus_kernel.py:1195
+    // modules/actus_kernel.py:1283
     // interest_calculation_base=self.interest_calculation_base,
     intc_0 // 0
     bytec 7 // "interest_calculation_base"
     app_global_get_ex
     assert // check self.interest_calculation_base exists
-    // modules/actus_kernel.py:1196
+    // modules/actus_kernel.py:1284
     // nominal_interest_rate=self.nominal_interest_rate,
     intc_0 // 0
     bytec 9 // "nominal_interest_rate"
     app_global_get_ex
     assert // check self.nominal_interest_rate exists
-    // modules/actus_kernel.py:1197
+    // modules/actus_kernel.py:1285
     // accrued_interest=self.accrued_interest,
     intc_0 // 0
     bytec 6 // "accrued_interest"
     app_global_get_ex
     assert // check self.accrued_interest exists
-    // modules/actus_kernel.py:1198
+    // modules/actus_kernel.py:1286
     // cumulative_interest_index=self.cumulative_interest_index,
     intc_0 // 0
     bytec 16 // "cumulative_interest_index"
     app_global_get_ex
     assert // check self.cumulative_interest_index exists
-    // modules/actus_kernel.py:1199
+    // modules/actus_kernel.py:1287
     // cumulative_principal_index=self.cumulative_principal_index,
     intc_0 // 0
     bytec 17 // "cumulative_principal_index"
     app_global_get_ex
     assert // check self.cumulative_principal_index exists
-    // modules/actus_kernel.py:1200
+    // modules/actus_kernel.py:1288
     // reserved_interest=self.reserved_interest,
     intc_0 // 0
     bytec 15 // "reserved_interest"
     app_global_get_ex
     assert // check self.reserved_interest exists
-    // modules/actus_kernel.py:1201
+    // modules/actus_kernel.py:1289
     // reserved_principal=self.reserved_principal,
     intc_0 // 0
     bytec 12 // "reserved_principal"
     app_global_get_ex
     assert // check self.reserved_principal exists
-    // modules/actus_kernel.py:1186-1202
+    // modules/actus_kernel.py:1274-1290
     // return typ.KernelState(
     //     contract_type=arc4.UInt8(self.contract_type),
     //     status=self.status,
@@ -4176,7 +4176,7 @@ contract_get_state:
     swap
     itob
     concat
-    // modules/actus_kernel.py:1182
+    // modules/actus_kernel.py:1262
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -4195,7 +4195,7 @@ contract_get_next_due_event:
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1208
+    // modules/actus_kernel.py:1304
     // if self.event_cursor >= self.schedule_entry_count:
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -4207,13 +4207,13 @@ contract_get_next_due_event:
     assert // check self.schedule_entry_count exists
     >=
     bz contract_get_next_due_event_after_if_else@3
-    // modules/actus_kernel.py:1210
+    // modules/actus_kernel.py:1306
     // event_id=self.event_cursor,
     intc_0 // 0
     bytec_2 // "event_cursor"
     app_global_get_ex
     assert // check self.event_cursor exists
-    // modules/actus_kernel.py:1209-1219
+    // modules/actus_kernel.py:1305-1315
     // return typ.ExecutionScheduleEntry(
     //     event_id=self.event_cursor,
     //     event_type=arc4.UInt8(0),
@@ -4226,10 +4226,10 @@ contract_get_next_due_event:
     //     flags=UInt64(0),
     // )
     itob
-    // modules/actus_kernel.py:1211
+    // modules/actus_kernel.py:1307
     // event_type=arc4.UInt8(0),
     bytec 40 // 0x00
-    // modules/actus_kernel.py:1209-1219
+    // modules/actus_kernel.py:1305-1315
     // return typ.ExecutionScheduleEntry(
     //     event_id=self.event_cursor,
     //     event_type=arc4.UInt8(0),
@@ -4242,10 +4242,10 @@ contract_get_next_due_event:
     //     flags=UInt64(0),
     // )
     concat
-    // modules/actus_kernel.py:1212
+    // modules/actus_kernel.py:1308
     // scheduled_time=UInt64(0),
     intc_0 // 0
-    // modules/actus_kernel.py:1209-1219
+    // modules/actus_kernel.py:1305-1315
     // return typ.ExecutionScheduleEntry(
     //     event_id=self.event_cursor,
     //     event_type=arc4.UInt8(0),
@@ -4275,7 +4275,7 @@ contract_get_next_due_event:
     concat
 
 contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.contract_get_next_due_event@4:
-    // modules/actus_kernel.py:1204
+    // modules/actus_kernel.py:1292
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -4285,21 +4285,21 @@ contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule
     return
 
 contract_get_next_due_event_after_if_else@3:
-    // modules/actus_kernel.py:1220
+    // modules/actus_kernel.py:1316
     // return self._get_schedule_entry(self.event_cursor)
     intc_0 // 0
     bytec_2 // "event_cursor"
     app_global_get_ex
     assert // check self.event_cursor exists
     callsub _get_schedule_entry
-    // modules/actus_kernel.py:1204
+    // modules/actus_kernel.py:1292
     // @arc4.abimethod(readonly=True)
     b contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.contract_get_next_due_event@4
 
 
 // modules.rbac.RbacModule.contract_update[routing]() -> void:
 contract_update:
-    // modules/rbac.py:153-156
+    // modules/rbac.py:159-162
     // # The reference implementation grants the update permissions to the Arranger.
     // # ⚠️ WARNING: Application updates must be executed VERY carefully, as they
     // # might introduce breaking changes.
@@ -4313,7 +4313,7 @@ contract_update:
 
 // modules.rbac.RbacModule.rbac_rotate_arranger[routing]() -> void:
 rbac_rotate_arranger:
-    // modules/rbac.py:158
+    // modules/rbac.py:164
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -4321,18 +4321,18 @@ rbac_rotate_arranger:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:169
+    // modules/rbac.py:178
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/rbac.py:170
+    // modules/rbac.py:179
     // self.arranger.value = new_arranger
-    bytec 18 // 0x5223417272616e67657223
+    bytec 18 // 0x523a41525223
     swap
     app_global_put
-    // modules/rbac.py:171
+    // modules/rbac.py:180
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:158
+    // modules/rbac.py:164
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4345,7 +4345,7 @@ rbac_rotate_arranger:
 
 // modules.rbac.RbacModule.rbac_set_op_daemon[routing]() -> void:
 rbac_set_op_daemon:
-    // modules/rbac.py:173
+    // modules/rbac.py:182
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -4353,18 +4353,18 @@ rbac_set_op_daemon:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:184
+    // modules/rbac.py:196
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/rbac.py:185
+    // modules/rbac.py:197
     // self.op_daemon.value = address
-    bytec 26 // 0x52234f704461656d6f6e23
+    bytec 26 // 0x523a4f504423
     swap
     app_global_put
-    // modules/rbac.py:186
+    // modules/rbac.py:198
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:173
+    // modules/rbac.py:182
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4377,7 +4377,7 @@ rbac_set_op_daemon:
 
 // modules.rbac.RbacModule.rbac_assign_role[routing]() -> void:
 rbac_assign_role:
-    // modules/rbac.py:188
+    // modules/rbac.py:200
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -4399,13 +4399,13 @@ rbac_assign_role:
     pushint 16
     ==
     assert // invalid number of bytes for smart_contracts.abi_types.RoleValidity
-    // modules/rbac.py:210
+    // modules/rbac.py:222
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/rbac.py:211
+    // modules/rbac.py:223
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/rbac.py:212
+    // modules/rbac.py:224
     // self._assert_valid_role(role_id.as_uint64())
     btoi
     dupn 2
@@ -4417,15 +4417,15 @@ rbac_assign_role:
     bz rbac_assign_role_after_if_else@3
     // modules/rbac.py:103
     // self.arranger.value = role_address
-    bytec 18 // 0x5223417272616e67657223
+    bytec 18 // 0x523a41525223
     dig 3
     app_global_put
 
 rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14:
-    // modules/rbac.py:214
+    // modules/rbac.py:226
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:188
+    // modules/rbac.py:200
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4444,7 +4444,7 @@ rbac_assign_role_after_if_else@3:
     bz rbac_assign_role_after_if_else@5
     // modules/rbac.py:107
     // assert role_address not in self.account_manager, err.INVALID_ROLE_ADDRESS
-    bytec 23 // 0x52234163636f756e744d616e6167657223
+    bytec 23 // 0x523a4d4e4723
     dig 3
     concat
     dup
@@ -4456,7 +4456,7 @@ rbac_assign_role_after_if_else@3:
     // self.account_manager[role_address] = validity.copy()
     dig 2
     box_put
-    // modules/rbac.py:213
+    // modules/rbac.py:225
     // self._set_role(role_id.as_uint64(), role_address, validity)
     b rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
 
@@ -4469,7 +4469,7 @@ rbac_assign_role_after_if_else@5:
     bz rbac_assign_role_after_if_else@7
     // modules/rbac.py:111
     // assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 22 // 0x52235072696d6172794465616c657223
+    bytec 22 // 0x523a50594423
     dig 3
     concat
     dup
@@ -4481,7 +4481,7 @@ rbac_assign_role_after_if_else@5:
     // self.primary_dealer[role_address] = validity.copy()
     dig 2
     box_put
-    // modules/rbac.py:213
+    // modules/rbac.py:225
     // self._set_role(role_id.as_uint64(), role_address, validity)
     b rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
 
@@ -4494,7 +4494,7 @@ rbac_assign_role_after_if_else@7:
     bz rbac_assign_role_after_if_else@9
     // modules/rbac.py:115
     // assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 32 // 0x52235472757374656523
+    bytec 32 // 0x523a54525323
     dig 3
     concat
     dup
@@ -4506,7 +4506,7 @@ rbac_assign_role_after_if_else@7:
     // self.trustee[role_address] = validity.copy()
     dig 2
     box_put
-    // modules/rbac.py:213
+    // modules/rbac.py:225
     // self._set_role(role_id.as_uint64(), role_address, validity)
     b rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
 
@@ -4519,7 +4519,7 @@ rbac_assign_role_after_if_else@9:
     bz rbac_assign_role_after_if_else@11
     // modules/rbac.py:119
     // assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec 21 // 0x5223417574686f7269747923
+    bytec 21 // 0x523a41555423
     dig 3
     concat
     dup
@@ -4531,7 +4531,7 @@ rbac_assign_role_after_if_else@9:
     // self.authority[role_address] = validity.copy()
     dig 2
     box_put
-    // modules/rbac.py:213
+    // modules/rbac.py:225
     // self._set_role(role_id.as_uint64(), role_address, validity)
     b rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
 
@@ -4544,7 +4544,7 @@ rbac_assign_role_after_if_else@11:
     bz rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
     // modules/rbac.py:123
     // assert role_address not in self.observer, err.INVALID_ROLE_ADDRESS
-    bytec 25 // 0x52234f6273657276657223
+    bytec 25 // 0x523a4d4f4323
     dig 3
     concat
     dup
@@ -4561,7 +4561,7 @@ rbac_assign_role_after_if_else@11:
 
 // modules.rbac.RbacModule.rbac_revoke_role[routing]() -> void:
 rbac_revoke_role:
-    // modules/rbac.py:216
+    // modules/rbac.py:228
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -4576,13 +4576,13 @@ rbac_revoke_role:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:235
+    // modules/rbac.py:247
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/rbac.py:236
+    // modules/rbac.py:248
     // self._assert_is_not_asset_defaulted()
     callsub _assert_is_not_asset_defaulted
-    // modules/rbac.py:237
+    // modules/rbac.py:249
     // self._assert_valid_role(role_id.as_uint64())
     btoi
     dupn 2
@@ -4600,7 +4600,7 @@ rbac_revoke_role:
     bz rbac_revoke_role_after_if_else@3
     // modules/rbac.py:129
     // assert role_address in self.account_manager, err.INVALID_ROLE_ADDRESS
-    bytec 23 // 0x52234163636f756e744d616e6167657223
+    bytec 23 // 0x523a4d4e4723
     dig 2
     concat
     dup
@@ -4613,10 +4613,10 @@ rbac_revoke_role:
     pop
 
 rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12:
-    // modules/rbac.py:239
+    // modules/rbac.py:251
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:216
+    // modules/rbac.py:228
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4635,7 +4635,7 @@ rbac_revoke_role_after_if_else@3:
     bz rbac_revoke_role_after_if_else@5
     // modules/rbac.py:133
     // assert role_address in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 22 // 0x52235072696d6172794465616c657223
+    bytec 22 // 0x523a50594423
     dig 2
     concat
     dup
@@ -4646,7 +4646,7 @@ rbac_revoke_role_after_if_else@3:
     // del self.primary_dealer[role_address]
     box_del
     pop
-    // modules/rbac.py:238
+    // modules/rbac.py:250
     // self._delete_role(role_id.as_uint64(), role_address)
     b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
 
@@ -4659,7 +4659,7 @@ rbac_revoke_role_after_if_else@5:
     bz rbac_revoke_role_after_if_else@7
     // modules/rbac.py:137
     // assert role_address in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 32 // 0x52235472757374656523
+    bytec 32 // 0x523a54525323
     dig 2
     concat
     dup
@@ -4670,7 +4670,7 @@ rbac_revoke_role_after_if_else@5:
     // del self.trustee[role_address]
     box_del
     pop
-    // modules/rbac.py:238
+    // modules/rbac.py:250
     // self._delete_role(role_id.as_uint64(), role_address)
     b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
 
@@ -4683,7 +4683,7 @@ rbac_revoke_role_after_if_else@7:
     bz rbac_revoke_role_after_if_else@9
     // modules/rbac.py:141
     // assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec 21 // 0x5223417574686f7269747923
+    bytec 21 // 0x523a41555423
     dig 2
     concat
     dup
@@ -4694,7 +4694,7 @@ rbac_revoke_role_after_if_else@7:
     // del self.authority[role_address]
     box_del
     pop
-    // modules/rbac.py:238
+    // modules/rbac.py:250
     // self._delete_role(role_id.as_uint64(), role_address)
     b rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
 
@@ -4707,7 +4707,7 @@ rbac_revoke_role_after_if_else@9:
     bz rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
     // modules/rbac.py:145
     // assert role_address in self.observer, err.INVALID_ROLE_ADDRESS
-    bytec 25 // 0x52234f6273657276657223
+    bytec 25 // 0x523a4d4f4323
     dig 2
     concat
     dup
@@ -4723,7 +4723,7 @@ rbac_revoke_role_after_if_else@9:
 
 // modules.rbac.RbacModule.rbac_contract_suspension[routing]() -> void:
 rbac_contract_suspension:
-    // modules/rbac.py:241
+    // modules/rbac.py:253
     // @arc4.abimethod  # TODO: Update specs and add test
     txna ApplicationArgs 1
     dup
@@ -4735,19 +4735,19 @@ rbac_contract_suspension:
     getbit
     // modules/rbac.py:77
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
-    bytec 21 // 0x5223417574686f7269747923
+    bytec 21 // 0x523a41555423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
-    // modules/rbac.py:257
+    // modules/rbac.py:269
     // self.asset_suspended = suspended
     bytec 33 // "asset_suspended"
     swap
     app_global_put
-    // modules/rbac.py:258
+    // modules/rbac.py:270
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/rbac.py:241
+    // modules/rbac.py:253
     // @arc4.abimethod  # TODO: Update specs and add test
     itob
     bytec_0 // 0x151f7c75
@@ -4760,13 +4760,13 @@ rbac_contract_suspension:
 
 // modules.rbac.RbacModule.rbac_get_arranger[routing]() -> void:
 rbac_get_arranger:
-    // modules/rbac.py:268
+    // modules/rbac.py:283
     // return self.arranger.value
     intc_0 // 0
-    bytec 18 // 0x5223417272616e67657223
+    bytec 18 // 0x523a41525223
     app_global_get_ex
     assert // check self.arranger exists
-    // modules/rbac.py:260
+    // modules/rbac.py:272
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -4778,7 +4778,7 @@ rbac_get_arranger:
 
 // modules.rbac.RbacModule.rbac_get_address_roles[routing]() -> void:
 rbac_get_address_roles:
-    // modules/rbac.py:270
+    // modules/rbac.py:285
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -4786,32 +4786,32 @@ rbac_get_address_roles:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:284
+    // modules/rbac.py:303
     // self._role_is_active(self.account_manager, address),
-    bytec 23 // 0x52234163636f756e744d616e6167657223
+    bytec 23 // 0x523a4d4e4723
     dig 1
     callsub _role_is_active
-    // modules/rbac.py:285
+    // modules/rbac.py:304
     // self._role_is_active(self.primary_dealer, address),
-    bytec 22 // 0x52235072696d6172794465616c657223
+    bytec 22 // 0x523a50594423
     dig 2
     callsub _role_is_active
-    // modules/rbac.py:286
+    // modules/rbac.py:305
     // self._role_is_active(self.trustee, address),
-    bytec 32 // 0x52235472757374656523
+    bytec 32 // 0x523a54525323
     dig 3
     callsub _role_is_active
-    // modules/rbac.py:287
+    // modules/rbac.py:306
     // self._role_is_active(self.authority, address),
-    bytec 21 // 0x5223417574686f7269747923
+    bytec 21 // 0x523a41555423
     dig 4
     callsub _role_is_active
-    // modules/rbac.py:288
+    // modules/rbac.py:307
     // self._role_is_active(self.observer, address),
-    bytec 25 // 0x52234f6273657276657223
+    bytec 25 // 0x523a4d4f4323
     uncover 5
     callsub _role_is_active
-    // modules/rbac.py:270
+    // modules/rbac.py:285
     // @arc4.abimethod(readonly=True)
     bytec 40 // 0x00
     intc_0 // 0
@@ -4839,7 +4839,7 @@ rbac_get_address_roles:
 
 // modules.rbac.RbacModule.rbac_get_role_validity[routing]() -> void:
 rbac_get_role_validity:
-    // modules/rbac.py:291
+    // modules/rbac.py:310
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -4854,17 +4854,17 @@ rbac_get_role_validity:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/rbac.py:305
+    // modules/rbac.py:328
     // role = role_id.as_uint64()
     btoi
-    // modules/rbac.py:306
+    // modules/rbac.py:329
     // self._assert_valid_role(role)
     dup
     callsub _assert_valid_role
-    // modules/rbac.py:308
+    // modules/rbac.py:331
     // case UInt64(enums.ROLE_ARRANGER):
     pushints 20 40 50 60 70 80
-    // modules/rbac.py:307-338
+    // modules/rbac.py:330-361
     // match role:
     //     case UInt64(enums.ROLE_ARRANGER):
     //         return typ.RoleValidity(
@@ -4899,14 +4899,14 @@ rbac_get_role_validity:
     //         op.err(err.INVALID_ROLE)
     uncover 6
     match rbac_get_role_validity_switch_case_0@2 rbac_get_role_validity_switch_case_1@3 rbac_get_role_validity_switch_case_2@4 rbac_get_role_validity_switch_case_3@5 rbac_get_role_validity_switch_case_4@6 rbac_get_role_validity_switch_case_5@7
-    // modules/rbac.py:338
+    // modules/rbac.py:361
     // op.err(err.INVALID_ROLE)
     err // Invalid role identifier
 
 rbac_get_role_validity_switch_case_5@7:
-    // modules/rbac.py:334
+    // modules/rbac.py:357
     // self.observer, role_address
-    bytec 25 // 0x52234f6273657276657223
+    bytec 25 // 0x523a4d4f4323
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -4914,18 +4914,18 @@ rbac_get_role_validity_switch_case_5@7:
     dup
     box_len
     bury 1
-    // modules/rbac.py:333-335
+    // modules/rbac.py:356-358
     // assert self._has_role(
     //     self.observer, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:336
+    // modules/rbac.py:359
     // return self.observer[role_address]
     box_get
     pop
 
 rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9:
-    // modules/rbac.py:291
+    // modules/rbac.py:310
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -4935,9 +4935,9 @@ rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_valid
     return
 
 rbac_get_role_validity_switch_case_4@6:
-    // modules/rbac.py:329
+    // modules/rbac.py:352
     // self.authority, role_address
-    bytec 21 // 0x5223417574686f7269747923
+    bytec 21 // 0x523a41555423
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -4945,23 +4945,23 @@ rbac_get_role_validity_switch_case_4@6:
     dup
     box_len
     bury 1
-    // modules/rbac.py:328-330
+    // modules/rbac.py:351-353
     // assert self._has_role(
     //     self.authority, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:331
+    // modules/rbac.py:354
     // return self.authority[role_address]
     box_get
     pop
-    // modules/rbac.py:291
+    // modules/rbac.py:310
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
 rbac_get_role_validity_switch_case_3@5:
-    // modules/rbac.py:324
+    // modules/rbac.py:347
     // self.trustee, role_address
-    bytec 32 // 0x52235472757374656523
+    bytec 32 // 0x523a54525323
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -4969,23 +4969,23 @@ rbac_get_role_validity_switch_case_3@5:
     dup
     box_len
     bury 1
-    // modules/rbac.py:323-325
+    // modules/rbac.py:346-348
     // assert self._has_role(
     //     self.trustee, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:326
+    // modules/rbac.py:349
     // return self.trustee[role_address]
     box_get
     pop
-    // modules/rbac.py:291
+    // modules/rbac.py:310
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
 rbac_get_role_validity_switch_case_2@4:
-    // modules/rbac.py:319
+    // modules/rbac.py:342
     // self.primary_dealer, role_address
-    bytec 22 // 0x52235072696d6172794465616c657223
+    bytec 22 // 0x523a50594423
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -4993,23 +4993,23 @@ rbac_get_role_validity_switch_case_2@4:
     dup
     box_len
     bury 1
-    // modules/rbac.py:318-320
+    // modules/rbac.py:341-343
     // assert self._has_role(
     //     self.primary_dealer, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:321
+    // modules/rbac.py:344
     // return self.primary_dealer[role_address]
     box_get
     pop
-    // modules/rbac.py:291
+    // modules/rbac.py:310
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
 rbac_get_role_validity_switch_case_1@3:
-    // modules/rbac.py:314
+    // modules/rbac.py:337
     // self.account_manager, role_address
-    bytec 23 // 0x52234163636f756e744d616e6167657223
+    bytec 23 // 0x523a4d4e4723
     // modules/rbac.py:55
     // return role_address in role_map
     dig 1
@@ -5017,26 +5017,26 @@ rbac_get_role_validity_switch_case_1@3:
     dup
     box_len
     bury 1
-    // modules/rbac.py:313-315
+    // modules/rbac.py:336-338
     // assert self._has_role(
     //     self.account_manager, role_address
     // ), err.INVALID_ROLE_ADDRESS
     assert // Invalid account role address
-    // modules/rbac.py:316
+    // modules/rbac.py:339
     // return self.account_manager[role_address]
     box_get
     pop
-    // modules/rbac.py:291
+    // modules/rbac.py:310
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
 rbac_get_role_validity_switch_case_0@2:
-    // modules/rbac.py:309-311
+    // modules/rbac.py:332-334
     // return typ.RoleValidity(
     //     role_validity_start=UInt64(0), role_validity_end=UInt64(0)
     // )
     pushbytes 0x00000000000000000000000000000000
-    // modules/rbac.py:291
+    // modules/rbac.py:310
     // @arc4.abimethod(readonly=True)
     b rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_validity@9
 
@@ -5048,7 +5048,7 @@ _assert_is_not_account_suspended:
     proto 1 0
     // modules/accounting.py:28
     // assert not self.account[holding_address].suspended, err.SUSPENDED
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     frame_dig -1
     concat
     box_get
@@ -5067,7 +5067,7 @@ _settle_position:
     proto 1 2
     // modules/accounting.py:24
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     frame_dig -1
     concat
     dup
@@ -5204,7 +5204,7 @@ _ensure_units_activated:
     pushbytes ""
     // modules/accounting.py:24
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
-    bytec 8 // 0x52234163636f756e7423
+    bytec 8 // 0x4123
     frame_dig -1
     concat
     dup
@@ -6918,7 +6918,7 @@ _assert_caller_is_arranger:
     // modules/rbac.py:52
     // return role_address == self.arranger.value
     intc_0 // 0
-    bytec 18 // 0x5223417272616e67657223
+    bytec 18 // 0x523a41525223
     app_global_get_ex
     assert // check self.arranger exists
     ==

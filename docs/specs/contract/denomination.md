@@ -6,11 +6,10 @@
 The D-ASA **MUST** be denominated either in an on-chain or off-chain *denomination
 asset* \\([CUR]\\)[^1].
 
-The *denomination asset identifier* (`uint64`) **MUST** be set using the `asset_config`
-method.
-
 All values (`uint64`) are integer minor units of the relevant on-chain or off-chain
 *denomination asset*.
+
+> The reference implementation supports only on-chain ASA denominations (e.g., "stablecoins").
 
 ## On-chain denomination {#on-chain-denomination}
 
@@ -24,7 +23,7 @@ If asset is ALGO (`0`): amount is in microALGOs (\\( 10^{-6} \\) ALGO).
 
 If asset is ASA or App: amount is in base units as per that asset’s `decimals`.
 
-{{#include ../../_include/styles.md:example}}
+> [!TIP]
 > The value (`uint64`) `10000` of an ASA denomination with 2 `decimals` is interpreted
 > as `100.00` units of the ASA.
 
@@ -39,7 +38,7 @@ The *denomination asset* **MUST** use the decimal digits specified by the <a hre
 If asset is ISO 4217 numeric code: amount is in minor units (\\( 10^{-d} \\) with
 \\( d \\) as per ISO 4217 *digits*).
 
-{{#include ../../_include/styles.md:example}}
+> [!TIP]
 > The value (`uint64`) `10000` an EUR (ISO 4217, 2 decimals) denomination is interpreted
 > as `100.00` Euro.
 

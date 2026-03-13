@@ -13,7 +13,13 @@ mathjax-support = true
 git-repository-url = "https://github.com/cusma/d-asa"
 edit-url-template = "https://github.com/cusma/d-asa/edit/main/{path}"
 site-url = "https://cusma.github.io/d-asa/"
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
 
 [output.html.fold]
 enable = true
 level = 3
+
+[preprocessor]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"

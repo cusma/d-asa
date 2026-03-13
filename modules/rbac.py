@@ -149,6 +149,12 @@ class RbacModule(ARC4Contract):
     def contract_update(self) -> None:
         """
         Update D-ASA application.
+
+        Returns:
+            None.
+
+        Raises:
+            UNAUTHORIZED: Caller is not the arranger.
         """
         # The reference implementation grants the update permissions to the Arranger.
         # ⚠️ WARNING: Application updates must be executed VERY carefully, as they
@@ -158,13 +164,16 @@ class RbacModule(ARC4Contract):
     @arc4.abimethod
     def rbac_rotate_arranger(self, *, new_arranger: Account) -> UInt64:
         """
-        Rotate the Arranger address
+        Rotate the arranger address.
 
         Args:
-            new_arranger: New Arranger address
+            new_arranger: New arranger address.
 
         Returns:
-            Timestamp of the role assignment
+            UNIX timestamp of the role assignment.
+
+        Raises:
+            UNAUTHORIZED: Caller is not the current arranger.
         """
         self._assert_caller_is_arranger()
         self.arranger.value = new_arranger
@@ -173,13 +182,16 @@ class RbacModule(ARC4Contract):
     @arc4.abimethod
     def rbac_set_op_daemon(self, *, address: Account) -> UInt64:
         """
-        Non-Normative: Set the Operation Daemon address
+        Non-normative helper to set the operation daemon address.
 
         Args:
-            address: Operation Daemon address
+            address: Operation daemon address.
 
         Returns:
-            Timestamp of the role assignment
+            UNIX timestamp of the role assignment.
+
+        Raises:
+            UNAUTHORIZED: Caller is not the arranger.
         """
         self._assert_caller_is_arranger()
         self.op_daemon.value = address
@@ -190,21 +202,21 @@ class RbacModule(ARC4Contract):
         self, *, role_id: arc4.UInt8, role_address: Account, validity: typ.RoleValidity
     ) -> UInt64:
         """
-        Assign a role to an address
+        Assign a role to an address.
 
         Args:
-            role_id: Role Identifier
-            role_address: Account Role Address
-            validity: Role time validity
+            role_id: Role identifier.
+            role_address: Account role address.
+            validity: Inclusive validity interval for the assignment.
 
         Returns:
-            Timestamp of the role assignment
+            UNIX timestamp of the role assignment.
 
         Raises:
-            UNAUTHORIZED: Not authorized
-            DEFAULTED: Defaulted
-            INVALID_ROLE: Invalid role identifier
-            INVALID_ROLE_ADDRESS: Invalid account role address
+            UNAUTHORIZED: Caller is not the arranger.
+            DEFAULTED: Asset is defaulted.
+            INVALID_ROLE: Role identifier is not supported.
+            INVALID_ROLE_ADDRESS: Address is invalid for the requested role.
         """
 
         self._assert_caller_is_arranger()
@@ -216,20 +228,20 @@ class RbacModule(ARC4Contract):
     @arc4.abimethod
     def rbac_revoke_role(self, *, role_id: arc4.UInt8, role_address: Account) -> UInt64:
         """
-        Revoke a role from an address
+        Revoke a role from an address.
 
         Args:
-            role_id: Role Identifier
-            role_address: Account Role Address
+            role_id: Role identifier.
+            role_address: Account role address.
 
         Returns:
-            Timestamp of the role revocation
+            UNIX timestamp of the role revocation.
 
         Raises:
-            UNAUTHORIZED: Not authorized
-            DEFAULTED: Defaulted
-            INVALID_ROLE: Invalid role identifier
-            INVALID_ROLE_ADDRESS: Invalid account role address
+            UNAUTHORIZED: Caller is not the arranger.
+            DEFAULTED: Asset is defaulted.
+            INVALID_ROLE: Role identifier is not supported.
+            INVALID_ROLE_ADDRESS: Address is not currently assigned to that role.
         """
 
         self._assert_caller_is_arranger()
@@ -241,16 +253,16 @@ class RbacModule(ARC4Contract):
     @arc4.abimethod  # TODO: Update specs and add test
     def rbac_contract_suspension(self, *, suspended: bool) -> UInt64:
         """
-        Set asset suspension status
+        Set the asset-wide suspension status.
 
         Args:
-            suspended: Suspension status
+            suspended: Suspension status to apply.
 
         Returns:
-            Timestamp of the set asset suspension status
+            UNIX timestamp of the suspension update.
 
         Raises:
-            UNAUTHORIZED: Not authorized
+            UNAUTHORIZED: Caller is not an active authority.
         """
 
         self._assert_caller_is_authority()
@@ -260,10 +272,13 @@ class RbacModule(ARC4Contract):
     @arc4.abimethod(readonly=True)
     def rbac_get_arranger(self) -> Account:
         """
-        Get Arranger address
+        Get the arranger address.
 
         Returns:
-            Arranger address
+            Current arranger address.
+
+        Raises:
+            None: This method does not raise contract-specific errors.
         """
         return self.arranger.value
 
@@ -272,13 +287,17 @@ class RbacModule(ARC4Contract):
         self, address: Account
     ) -> tuple[bool, bool, bool, bool, bool]:
         """
-        Non-normative - Get roles assigned to an address
+        Non-normative helper to get the active roles assigned to an address.
 
         Args:
-            address: Address to get roles for
+            address: Address to query.
 
         Returns:
-            Roles mask: (Account Manager, Primary Dealer, Trustee, Authority, Observer)
+            Roles mask in the order: account manager, primary dealer, trustee,
+            authority, observer.
+
+        Raises:
+            None: This method does not raise contract-specific errors.
         """
         return (
             self._role_is_active(self.account_manager, address),
@@ -293,14 +312,18 @@ class RbacModule(ARC4Contract):
         self, *, role_id: arc4.UInt8, role_address: Account
     ) -> typ.RoleValidity:
         """
-        Get role validity
+        Get the stored validity interval for a role assignment.
 
         Args:
-            role_id: Role Identifier
-            role_address: Account Role Address
+            role_id: Role identifier.
+            role_address: Account role address.
 
         Returns:
-            Role validity
+            Stored role validity interval.
+
+        Raises:
+            INVALID_ROLE: Role identifier is not supported.
+            INVALID_ROLE_ADDRESS: Address is not assigned to that role.
         """
         role = role_id.as_uint64()
         self._assert_valid_role(role)

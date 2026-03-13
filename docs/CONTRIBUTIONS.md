@@ -33,7 +33,6 @@ The source code is structured as follows:
 .algokit/                -> AlgoKit configurations
 .github/                 -> GitHub actions and CI/CD workflows
 docs/                    -> mdBook source code
-└── _include/            -> Templates, etc.
 └── images/              -> Image files
 └── images/              -> D-ASA implementation documents
 └── interfaces/          -> D-ASA interfaces
@@ -92,7 +91,7 @@ The CI pipeline enforces Markdown linting, formatting, and style checking with
 
 Numbered lists **MUST** be defined with `1`-only style.
 
-{{#include ./_include/styles.md:example}}
+> [!TIP]
 > ```text
 > 1. First item
 > 1. Second item
@@ -108,7 +107,7 @@ Numbered lists **MUST** be defined with `1`-only style.
 
 Table rows **MUST** use the same column widths.
 
-{{#include ./_include/styles.md:example}}
+> [!TIP]
 > ✅ Correct table format
 > ```text
 > | Month    | Savings |
@@ -138,7 +137,7 @@ Consider aligning text in the columns to the left, right, or center by adding a
 colon `:` to the left, right, or on both sides of the dashes `---` within the header
 row.
 
-{{#include ./_include/styles.md:example}}
+> [!TIP]
 > ```text
 > | Name   | Quantity | Size |
 > |:-------|:--------:|-----:|
@@ -159,18 +158,3 @@ row.
 Mathematical formulas are defined with [MathJax](https://www.mathjax.org/).
 
 > mdBook MathJax [documentation](https://rust-lang.github.io/mdBook/format/mathjax.html).
-
-#### Block Styles
-
-Block styles are defined in the `./docs/_include/styles.md` file using the mdBook
-[include feature](https://rust-lang.github.io/mdBook/format/mdbook.html#including-files).
-
-Block styles (e.g., examples, implementation notes, etc.) are “styled quote” blocks
-included in the book.
-
-{{#include ./_include/styles.md:example}}
-> This example block has been included with the following syntax:
-> ```text
-> \{{#include ./_include/styles.md:example}}
-> > This example block has been included with the following syntax:
-> ```

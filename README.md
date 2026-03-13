@@ -4,20 +4,15 @@
 
 Documentation: https://cusma.github.io/d-asa/
 
-## Deployments
+The reference implementation follows the execution chain:
 
-D-ASA examples deployed on TestNet:
+```text
+ACTUS contract -> AVM normalization -> AVM execution
+```
 
-| Type              | App ID                                                             | App Spec                                                                                                                  |
-|-------------------|--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| Zero Coupon Bond  | [756574705](https://lora.algokit.io/testnet/application/756574705) | [ARC-56](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/zero_coupon_bond/ZeroCouponBond.arc56.json)   |
-| Fixed Coupon Bond | [756574716](https://lora.algokit.io/testnet/application/756574716) | [ARC-56](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/fixed_coupon_bond/FixedCouponBond.arc56.json) |
-| Perpetual Bond    | [756574702](https://lora.algokit.io/testnet/application/756574702) | [ARC-56](https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/perpetual_bond/PerpetualBond.arc56.json)      |
+The canonical ABI artifact is:
 
-1. Download the App Spec JSON file;
-1. Navigate to the [Lora App Lab](https://lora.algokit.io/testnet/app-lab);
-1. Create the App Interface using the existing App ID and App Spec JSON;
-1. Explore the D-ASA interface.
+- `smart_contracts/artifacts/d_asa/DASA.arc56.json`
 
 ## Local Setup and Tests
 

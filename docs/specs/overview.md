@@ -1,38 +1,84 @@
 # Overview {#overview}
 
-A *Debt Algorand Standard Application* (D-ASA) is a debt instrument issued as an
-Algorand Application, that conforms to this specification, and whose operations
-and cash flows are executed on the AVM.
+A *Debt Algorand Standard Application* (D-ASA) is an Algorand application that
+executes a fixed-income ACTUS contract on the AVM.
 
-This specification defines the actors of a D-ASA and the interfaces of the Algorand
-Application to:
+A conforming D-ASA **MUST** process a debt instrument through the following stages:
 
-- Arrange and configure the D-ASA (e.g. principal, interest, time events, etc.);
-- Manage D-ASA accounts (e.g. opening and closing accounts, etc.);
-- Distribute the D-ASA on the primary market (e.g. book building, auctions, etc.);
-- Execute D-ASA cash flows (e.g coupon payments, principal repayment, etc.);
-- Exchange the D-ASA on secondary markets (if any);
-- Query D-ASA information (e.g. due coupons, next coupon due date, etc.).
+1. Define the debt instrument as an ACTUS contract.
 
-This specification also provides the interfaces to comply with regulatory requirements,
-such as defining a role-based access control, suspending D-ASA operations completely
-or for specific accounts, managing default processes, etc.
+1. Normalize the ACTUS contract into AVM-compatible integers, state, and schedule
+pages.
 
-The contents are structured on four functional layers:
+1. Execute the normalized contract on the AVM through explicit ABI methods.
 
-1. *Trust Model*: this layer defines the application role-based access
-control model to manage the fixed income contract and comply with regulatory frameworks;
-1. *Contract*: this layer provides the algorithmic definitions of the debt instrument
-(data model, attributes, and cash flows);
-1. *Accounting*: this layer defines the tokenization of the contract;
-1. *Execution*: this layer defines the execution of the contract, both the distribution,
-cash flows and transfers.
+The D-ASA therefore uses the AVM as the execution layer of ACTUS. The canonical
+contract interface is the normalized ACTUS interface defined in this specification.
+
+This specification is structured in four layers:
+
+1. **RBAC**: identifies operational actors and their authorities.
+
+1. **ACTUS Kernel**: defines the normalized contract terms, schedule, and lifecycle
+state machine.
+
+1. **Accounting**: defines holder positions, unit balances, checkpoints, and claims.
+
+1. **Execution**: executes the ACTUS cashflows and tokenized contract transfers.
+
+   - *Payment Agent*: defines funding and withdrawal of due ACTUS cashflows.
+
+   - *Transfer Agent*: defines primary distribution and secondary transfer execution.
+
+---
+
+```mermaid
+flowchart TD
+  RBAC["Layer 1: RBAC<br/>Operational actors & authorities"]
+  KERNEL["Layer 2: ACTUS Kernel<br/>Contract terms, schedule & state machine"]
+  ACCOUNTING["Layer 3: Accounting<br/>Positions, balances, checkpoints & claims"]
+  PAYMENT["Layer 4a: Payment Agent<br/>Funding & withdrawal of cashflows"]
+  TRANSFER["Layer 4b: Transfer Agent<br/>Primary distribution & secondary transfers"]
+  
+  RBAC --> KERNEL
+  KERNEL --> ACCOUNTING
+  ACCOUNTING --> PAYMENT
+  ACCOUNTING --> TRANSFER
+  
+  style RBAC fill:#bbdefb,stroke:#1976d2,stroke-width:2px,color:#000
+  style KERNEL fill:#fff9c4,stroke:#f57f17,stroke-width:2px,color:#000
+  style ACCOUNTING fill:#c8e6c9,stroke:#388e3c,stroke-width:2px,color:#000
+  style PAYMENT fill:#ffccbc,stroke:#d84315,stroke-width:2px,color:#000
+  style TRANSFER fill:#ffccbc,stroke:#d84315,stroke-width:2px,color:#000
+```
+
+---
+
+## Conformance
+
+A conforming implementation:
+
+- **MUST** implement the public ABI described in the [Interfaces](../interfaces/types.md)
+section;
+
+- **MUST** accept normalized ACTUS terms, an initial kernel state, and a paged execution
+schedule;
+
+- **MUST** execute ACTUS non-cash and cash events through the kernel and agent interfaces;
+
+- **MUST** follow the ACTUS compliance profile defined in the [Contract](./contract/intro.md)
+section.
 
 ## ACTUS compliance
 
-<a href="https://www.actusfrf.org/">ACTUS</a> still presents some limitations with
-respect to blockchain-based implementations.
+D-ASA is designed to be ACTUS-compliant, with three minor deviations required by
+AVM constraints:
 
-Therefore, ACTUS compliance is **RECOMMENDED** but not mandatory.
+|                | ACTUS                                              | D-ASA                                           |
+|:---------------|:---------------------------------------------------|:------------------------------------------------|
+| Time format    | [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) | [UNIX](https://en.wikipedia.org/wiki/Unix_time) |
+| Time precision | Millisecond \\( 10^{-3} [s] \\)                    | Second \\( [s] \\)                              |
+| Arithmetic     | Floating-point                                     | Fixed-point                                     |
 
-ACTUS limitations are usually marked with footnotes.
+> The ACTUS compliance has not yet been certified by an *official* ACTUS standardization
+> body.

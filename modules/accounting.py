@@ -167,18 +167,18 @@ class AccountingModule(ActusKernelModule):
         self, *, holding_address: Account, suspended: bool
     ) -> UInt64:
         """
-        Set account suspension status
+        Set the suspension status of one account.
 
         Args:
-            holding_address: Account Holding Address
-            suspended: Suspension status
+            holding_address: Account holding address.
+            suspended: Suspension status to apply.
 
         Returns:
-            Timestamp of the set account suspension status
+            UNIX timestamp of the suspension update.
 
         Raises:
-            UNAUTHORIZED: Not authorized
-            INVALID_HOLDING_ADDRESS: Invalid account holding address
+            UNAUTHORIZED: Caller is not an active authority.
+            INVALID_HOLDING_ADDRESS: Holding address does not exist.
         """
         self._assert_caller_is_authority()
         self._assert_valid_holding_address(holding_address)
@@ -193,17 +193,17 @@ class AccountingModule(ActusKernelModule):
         Open a contract account with a new position and register its payment address.
 
         Args:
-            holding_address: Account Holding Address
-            payment_address: Account Payment Address
+            holding_address: Account holding address.
+            payment_address: Account payment address.
 
         Returns:
-            Timestamp of the account opening
+            UNIX timestamp of the account opening.
 
         Raises:
-            UNAUTHORIZED: Not authorized
-            DEFAULTED: Defaulted
-            SUSPENDED: Suspended operations
-            INVALID_HOLDING_ADDRESS: Invalid account holding address
+            UNAUTHORIZED: Caller is not an active account manager or contract already ended.
+            DEFAULTED: Asset is defaulted.
+            SUSPENDED: Asset operations are suspended.
+            INVALID_HOLDING_ADDRESS: Holding address already exists.
         """
 
         self._assert_caller_is_account_manager()
@@ -219,20 +219,20 @@ class AccountingModule(ActusKernelModule):
         self, *, holding_address: Account, payment_address: Account
     ) -> UInt64:
         """
-        Update the Payment Address of an account
+        Update the payment address of an account.
 
         Args:
-            holding_address: Account Holding Address
-            payment_address: Account Payment Address
+            holding_address: Account holding address.
+            payment_address: New account payment address.
 
         Returns:
-            Timestamp of the account update
+            UNIX timestamp of the account update.
 
         Raises:
-            UNAUTHORIZED: Not authorized
-            DEFAULTED: Defaulted
-            SUSPENDED: Suspended operations
-            INVALID_HOLDING_ADDRESS: Invalid account holding address
+            UNAUTHORIZED: Caller is not the holding address owner.
+            DEFAULTED: Asset is defaulted.
+            SUSPENDED: Asset operations are suspended.
+            INVALID_HOLDING_ADDRESS: Holding address does not exist.
         """
         self._assert_valid_holding_address(holding_address)
         assert Txn.sender == holding_address, err.UNAUTHORIZED
@@ -244,16 +244,16 @@ class AccountingModule(ActusKernelModule):
     @arc4.abimethod(readonly=True)
     def account_get_position(self, *, holding_address: Account) -> typ.AccountPosition:
         """
-        Get account position
+        Get the full accounting position for one holder.
 
         Args:
-            holding_address: Account Holding Address
+            holding_address: Account holding address.
 
         Returns:
-            Account position
+            Account position record.
 
         Raises:
-            INVALID_HOLDING_ADDRESS: Invalid account holding address
+            INVALID_HOLDING_ADDRESS: Holding address does not exist.
         """
         self._assert_valid_holding_address(holding_address)
         return self.account[holding_address]
