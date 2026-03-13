@@ -1,10 +1,6 @@
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cusma/d-asa)
-
 # Debt Algorand Standard Application (D-ASA)
 
-Documentation: https://cusma.github.io/d-asa/
-
-The reference implementation follows the execution chain:
+D-ASA is an ACTUS execution engine for the Algorand Virtual Machine.
 
 ```mermaid
 flowchart LR
@@ -16,6 +12,10 @@ flowchart LR
 The canonical ABI artifact is:
 
 - `src/artifacts/DASA.arc56.json`
+
+Documentation: <https://cusma.github.io/d-asa/>
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cusma/d-asa)
 
 ## Demo in One Command
 
@@ -56,7 +56,12 @@ Notes:
 - targets macOS and Linux
 - Docker is the only required host dependency
 - the demo defaults to `host.docker.internal` for LocalNet access inside the container
-- advanced overrides are available through `D_ASA_LOCALNET_HOST`, `D_ASA_LOCALNET_TOKEN`, `D_ASA_ALGOD_PORT`, `D_ASA_KMD_PORT`, and `D_ASA_INDEXER_PORT`
+- advanced overrides are available through
+  - `D_ASA_LOCALNET_HOST`,
+  - `D_ASA_LOCALNET_TOKEN`,
+  - `D_ASA_ALGOD_PORT`,
+  - `D_ASA_KMD_PORT`,
+  - and `D_ASA_INDEXER_PORT`
 
 ## Development
 
@@ -65,33 +70,51 @@ The D-ASA project is developed with [AlgoKit](https://algorand.co/algokit) and [
 Bootstrap the development environment:
 
 ```shell
-algokit bootstrap all
+make install-dev
+```
+
+Verify your environment:
+
+```shell
+make doctor
+```
+
+See the available contributor commands:
+
+```shell
+make help
 ```
 
 Start your Algorand LocalNet:
 
 ```shell
-algokit localnet start
+make localnet
 ```
 
 Run the default test suite:
 
 ```shell
-algokit project run test
+make test
 ```
 
 Build smart contracts:
 
 ```shell
-algokit project run build
+make build
 ```
 
 Run the showcase tests directly:
 
 ```shell
-poetry run pytest -s -v -m showcase tests/pam/test_pam_lifecycle_showcase.py
+make showcase
+```
+
+Serve docs locally with live reload:
+
+```shell
+make docs-serve
 ```
 
 ## Contributing
 
-Refer to the published D-ASA documentation.
+Contributor setup and workflow guidance live in [CONTRIBUTING.md](./CONTRIBUTING.md).
