@@ -48,6 +48,6 @@ audit-teal = { commands = [
 # Commands intented for CI only, prefixed with `ci-` by convention
 ci-teal-diff = { commands = [
   'git add -N ./smart_contracts/artifacts',
-  'git add -N ./src/artifacts',
-  'git diff --exit-code --minimal ./smart_contracts/artifacts ./src/artifacts',
+  'git add -N ./src/d_asa/artifacts',
+  'git diff --exit-code --minimal ./smart_contracts/artifacts ./src/d_asa/artifacts',
 ], description = 'Check generated artifacts for differences' }

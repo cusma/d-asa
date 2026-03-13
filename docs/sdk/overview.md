@@ -1,12 +1,12 @@
 # SDK Overview
 
-The high-level Python API lives directly under `src` and is centered on `DAsa`.
+The high-level Python API lives in the `d_asa` package and is centered on `DAsa`.
 
-It wraps the generated ARC-56 client in [`src.artifacts.dasa_client`](../../src/artifacts/dasa_client.py)
+It wraps the generated ARC-56 client in [`d_asa.artifacts.dasa_client`](../../src/d_asa/artifacts/dasa_client.py)
 and keeps the generated ABI structs out of the normal user flow.
 
 ```python
-from src import (
+from d_asa import (
     DAsa,
     ContractAttributes,
     PricingContext,
@@ -31,5 +31,5 @@ directly:
 - `ObservedCashEventRequest`
 - `Cycle`
 
-Use `DAsa` for contract interaction, and keep `src.artifacts.dasa_client` as the
+Use `DAsa` for contract interaction, and keep `d_asa.artifacts.dasa_client` as the
 explicit low-level escape hatch when needed.

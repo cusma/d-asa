@@ -3,7 +3,7 @@
 ## Deploy
 
 ```python
-from src import DAsa
+from d_asa import DAsa
 
 app = DAsa.deploy(
     algorand=algorand,
@@ -41,7 +41,7 @@ app = DAsa.from_app_id(
 If you already have the generated client:
 
 ```python
-from src.artifacts.dasa_client import DasaClient
+from d_asa.artifacts.dasa_client import DasaClient
 
 raw_client = DasaClient(algorand=algorand, app_id=12345)
 app = DAsa.from_client(raw_client)

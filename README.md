@@ -12,12 +12,13 @@ flowchart LR
 
 The canonical generated artifacts are:
 
-- `src/artifacts/DASA.arc56.json`: D-ASA AppSpec, generates clients and can be used
-on [Lora App Lab](https://lora.algokit.io/localnet/app-lab/create);
+- `src/d_asa/artifacts/DASA.arc56.json`: D-ASA AppSpec, generates clients and can
+be used on [Lora App Lab](https://lora.algokit.io/localnet/app-lab/create);
 
-- `src/artifacts/dasa_client.py`: D-ASA client, expanded by the SDK;
+- `src/d_asa/artifacts/dasa_client.py`: D-ASA client, expanded by the SDK;
 
-- `src/artifacts/dasa_avm_client.py`: D-ASA AVM client, for on-chain App-2-App calls.
+- `src/d_asa/artifacts/dasa_avm_client.py`: D-ASA AVM client, for on-chain App-2-App
+calls.
 
 Documentation: <https://cusma.github.io/d-asa/>
 
