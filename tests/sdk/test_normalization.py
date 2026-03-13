@@ -4,6 +4,8 @@ from decimal import Decimal
 
 import pytest
 
+from smart_contracts import constants as cst
+from smart_contracts import enums
 from src.d_asa.contracts import (
     ContractAttributes,
     make_pam_fixed_coupon_bond_profile,
@@ -25,8 +27,6 @@ from src.d_asa.normalization.conversions import (
 )
 from src.d_asa.normalization.event_seeds import deduplicate_timestamps
 from src.d_asa.schedule import Cycle
-from smart_contracts import constants as cst
-from smart_contracts import enums
 
 
 class TestToAsaUnits:
