@@ -1,0 +1,204 @@
+#!/bin/sh
+
+set -eu
+
+IMAGE_TAG="d-asa-demo:local"
+DOCS_URL="https://cusma.github.io/d-asa/"
+DEFAULT_LOCALNET_HOST="${D_ASA_LOCALNET_HOST:-host.docker.internal}"
+DEFAULT_LOCALNET_TOKEN="${D_ASA_LOCALNET_TOKEN:-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}"
+DEFAULT_ALGOD_PORT="${D_ASA_ALGOD_PORT:-4001}"
+DEFAULT_KMD_PORT="${D_ASA_KMD_PORT:-4002}"
+DEFAULT_INDEXER_PORT="${D_ASA_INDEXER_PORT:-8980}"
+LOCALNET_NETWORK="algokit_sandbox_default"
+NETWORK_LOCALNET_HOST="algod"
+NETWORK_INDEXER_HOST="indexer"
+NETWORK_ALGOD_PORT="8080"
+NETWORK_KMD_PORT="7833"
+NETWORK_INDEXER_PORT="8980"
+STARTED_LOCALNET=0
+REPO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+STALE_LOCALNET_CONFIG_IMAGE="/home/dasa/.config/algokit/sandbox/docker-compose.yml"
+STALE_LOCALNET_CONFIG_REPO="$REPO_ROOT/.d-asa/algokit-home/.config/algokit/sandbox/docker-compose.yml"
+
+print_help() {
+  cat <<EOF
+Usage: ./d-asa <command>
+
+Commands:
+  run    Build the demo image, start LocalNet if needed, print the showcase, and leave LocalNet running.
+  docs   Open the published D-ASA docs, or print the URL when browser opening is disabled.
+  help   Show this help text.
+
+Prerequisites:
+  - Docker Desktop or Docker Engine
+  - AlgoKit
+  - macOS or Linux
+
+Examples:
+  ./d-asa run
+  ./d-asa docs
+  D_ASA_NO_OPEN=1 ./d-asa docs
+EOF
+}
+
+die() {
+  printf '%s\n' "$*" >&2
+  exit 1
+}
+
+ensure_docker() {
+  command -v docker >/dev/null 2>&1 || die "Docker is required but was not found in PATH."
+  docker info >/dev/null 2>&1 || die "Docker is installed but the daemon is not reachable."
+}
+
+ensure_algokit() {
+  command -v algokit >/dev/null 2>&1 || die "AlgoKit is required but was not found in PATH."
+}
+
+cleanup_stale_localnet() {
+  stale_ids=$(
+    {
+      docker ps -aq \
+        --filter "label=com.docker.compose.project=algokit_sandbox" \
+        --filter "label=com.docker.compose.project.config_files=$STALE_LOCALNET_CONFIG_IMAGE"
+      docker ps -aq \
+        --filter "label=com.docker.compose.project=algokit_sandbox" \
+        --filter "label=com.docker.compose.project.config_files=$STALE_LOCALNET_CONFIG_REPO"
+    } | sort -u
+  )
+  if [ -z "$stale_ids" ]; then
+    return
+  fi
+
+  printf '%s\n' "Removing stale LocalNet containers from an older d-asa launcher..."
+  # shellcheck disable=SC2086
+  docker rm -f $stale_ids >/dev/null
+  docker network rm algokit_sandbox_default >/dev/null 2>&1 || true
+}
+
+build_image() {
+  printf '%s\n' "Building ${IMAGE_TAG}..."
+  docker build --tag "$IMAGE_TAG" "$REPO_ROOT"
+}
+
+localnet_network_exists() {
+  docker network inspect "$LOCALNET_NETWORK" >/dev/null 2>&1
+}
+
+run_in_image() {
+  if localnet_network_exists; then
+    docker run --rm \
+      --network "$LOCALNET_NETWORK" \
+      -e D_ASA_LOCALNET_HOST="$NETWORK_LOCALNET_HOST" \
+      -e D_ASA_ALGOD_HOST="$NETWORK_LOCALNET_HOST" \
+      -e D_ASA_KMD_HOST="$NETWORK_LOCALNET_HOST" \
+      -e D_ASA_INDEXER_HOST="$NETWORK_INDEXER_HOST" \
+      -e D_ASA_LOCALNET_TOKEN="$DEFAULT_LOCALNET_TOKEN" \
+      -e D_ASA_ALGOD_PORT="$NETWORK_ALGOD_PORT" \
+      -e D_ASA_KMD_PORT="$NETWORK_KMD_PORT" \
+      -e D_ASA_INDEXER_PORT="$NETWORK_INDEXER_PORT" \
+      -v "$REPO_ROOT:$REPO_ROOT" \
+      -w "$REPO_ROOT" \
+      "$IMAGE_TAG" "$@"
+    return
+  fi
+
+  case "$(uname -s)" in
+    Linux*)
+      docker run --rm \
+        --add-host=host.docker.internal:host-gateway \
+        -e D_ASA_LOCALNET_HOST="$DEFAULT_LOCALNET_HOST" \
+        -e D_ASA_LOCALNET_TOKEN="$DEFAULT_LOCALNET_TOKEN" \
+        -e D_ASA_ALGOD_PORT="$DEFAULT_ALGOD_PORT" \
+        -e D_ASA_KMD_PORT="$DEFAULT_KMD_PORT" \
+        -e D_ASA_INDEXER_PORT="$DEFAULT_INDEXER_PORT" \
+        -v "$REPO_ROOT:$REPO_ROOT" \
+        -w "$REPO_ROOT" \
+        "$IMAGE_TAG" "$@"
+      ;;
+    *)
+      docker run --rm \
+        -e D_ASA_LOCALNET_HOST="$DEFAULT_LOCALNET_HOST" \
+        -e D_ASA_LOCALNET_TOKEN="$DEFAULT_LOCALNET_TOKEN" \
+        -e D_ASA_ALGOD_PORT="$DEFAULT_ALGOD_PORT" \
+        -e D_ASA_KMD_PORT="$DEFAULT_KMD_PORT" \
+        -e D_ASA_INDEXER_PORT="$DEFAULT_INDEXER_PORT" \
+        -v "$REPO_ROOT:$REPO_ROOT" \
+        -w "$REPO_ROOT" \
+        "$IMAGE_TAG" "$@"
+      ;;
+  esac
+}
+
+cleanup() {
+  status=$?
+  trap - EXIT INT TERM
+  if [ "$STARTED_LOCALNET" -eq 1 ] && [ "$status" -ne 0 ]; then
+    printf '%s\n' "Stopping AlgoKit LocalNet after failed run..."
+    algokit localnet stop >/dev/null 2>&1 || true
+  elif [ "$STARTED_LOCALNET" -eq 1 ]; then
+    printf '%s\n' "LocalNet is still running so the Lora links stay available."
+    printf '%s\n' "Stop it when finished with: algokit localnet stop"
+  fi
+  exit "$status"
+}
+
+localnet_ready() {
+  run_in_image python -m src.localnet wait --timeout 2 --poll-interval 1 >/dev/null 2>&1
+}
+
+cmd_run() {
+  ensure_docker
+  ensure_algokit
+  cleanup_stale_localnet
+  build_image
+  trap cleanup EXIT INT TERM
+
+  if localnet_ready; then
+    printf '%s\n' "Reusing existing LocalNet."
+  else
+    printf '%s\n' "Starting AlgoKit LocalNet..."
+    algokit localnet start --force
+    STARTED_LOCALNET=1
+    printf '%s\n' "Waiting for algod..."
+    run_in_image python -m src.localnet wait --timeout 90 --poll-interval 2
+  fi
+
+  printf '%s\n' "Running D-ASA showcase..."
+  run_in_image python -m src.showcase
+}
+
+cmd_docs() {
+  if [ "${D_ASA_NO_OPEN:-0}" = "1" ]; then
+    printf '%s\n' "$DOCS_URL"
+    return
+  fi
+
+  if command -v open >/dev/null 2>&1; then
+    open "$DOCS_URL" >/dev/null 2>&1 || printf '%s\n' "$DOCS_URL"
+    return
+  fi
+
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$DOCS_URL" >/dev/null 2>&1 || printf '%s\n' "$DOCS_URL"
+    return
+  fi
+
+  printf '%s\n' "$DOCS_URL"
+}
+
+case "${1:-help}" in
+  run)
+    cmd_run
+    ;;
+  docs)
+    cmd_docs
+    ;;
+  help|-h|--help)
+    print_help
+    ;;
+  *)
+    print_help
+    exit 1
+    ;;
+esac

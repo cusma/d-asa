@@ -1,4 +1,5 @@
 from .artifacts import dasa_client
+from .contracts import ContractAttributes
 from .errors import ActusNormalizationError, UnsupportedActusFeatureError
 from .models import (
     AccountPosition,
@@ -15,6 +16,7 @@ from .schedule import Cycle
 __all__ = [
     "AccountPosition",
     "ActusNormalizationError",
+    "ContractAttributes",
     "Cycle",
     "ExecutionScheduleEntry",
     "InitialKernelState",

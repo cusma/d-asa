@@ -22,10 +22,10 @@ flowchart LR
   ACTUS["ACTUS Contract"]
   NORMALIZE["AVM Normalization"]
   EXEC["AVM Execution"]
-  
+
   ACTUS --> NORMALIZE
   NORMALIZE --> EXEC
-  
+
   style ACTUS fill:#fff9c4,stroke:#f57f17,stroke-width:2px,color:#000
   style NORMALIZE fill:#c8e6c9,stroke:#388e3c,stroke-width:2px,color:#000
   style EXEC fill:#ffccbc,stroke:#d84315,stroke-width:2px,color:#000
