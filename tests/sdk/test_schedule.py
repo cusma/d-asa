@@ -1,18 +1,18 @@
-"""Tests for src.schedule module."""
+"""Tests for d_asa.schedule module."""
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
-from src.day_count import (
+from src.d_asa.day_count import (
     BusinessDayConvention,
     Calendar,
     EndOfMonthConvention,
 )
-from src.errors import UnsupportedActusFeatureError
-from src.schedule import (
+from src.d_asa.errors import UnsupportedActusFeatureError
+from src.d_asa.schedule import (
     Cycle,
     add_cycle,
     generate_array_schedule,
@@ -20,7 +20,7 @@ from src.schedule import (
     resolve_array_schedule,
     resolve_cycle_schedule,
 )
-from src.unix_time import datetime_to_timestamp
+from src.d_asa.unix_time import datetime_to_timestamp
 
 
 class TestCycle:
@@ -137,127 +137,93 @@ class TestAddCycle:
 
     def test_add_day_cycle(self) -> None:
         """Test adding day cycles."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start,
             "30D",
             end_of_month_convention=EndOfMonthConvention.SAME_DAY,
         )
-        expected = datetime_to_timestamp(
-            datetime(2024, 2, 14, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 2, 14, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_week_cycle(self) -> None:
         """Test adding week cycles."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start,
             "2W",
             end_of_month_convention=EndOfMonthConvention.SAME_DAY,
         )
-        expected = datetime_to_timestamp(
-            datetime(2024, 1, 29, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 1, 29, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_month_cycle(self) -> None:
         """Test adding month cycles."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start,
             "1M",
             end_of_month_convention=EndOfMonthConvention.SAME_DAY,
         )
-        expected = datetime_to_timestamp(
-            datetime(2024, 2, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 2, 15, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_quarter_cycle(self) -> None:
         """Test adding quarter cycles."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start,
             "1Q",
             end_of_month_convention=EndOfMonthConvention.SAME_DAY,
         )
-        expected = datetime_to_timestamp(
-            datetime(2024, 4, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 4, 15, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_half_year_cycle(self) -> None:
         """Test adding half-year cycles."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start,
             "1H",
             end_of_month_convention=EndOfMonthConvention.SAME_DAY,
         )
-        expected = datetime_to_timestamp(
-            datetime(2024, 7, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 7, 15, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_year_cycle(self) -> None:
         """Test adding year cycles."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start,
             "1Y",
             end_of_month_convention=EndOfMonthConvention.SAME_DAY,
         )
-        expected = datetime_to_timestamp(
-            datetime(2025, 1, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2025, 1, 15, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_month_cycle_with_same_day_convention(self) -> None:
         """Test adding month cycle with SAME_DAY convention."""
         # Jan 31 + 1M = Feb 29 (capped to last day of Feb in leap year)
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 31, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start, "1M", end_of_month_convention=EndOfMonthConvention.SAME_DAY
         )
-        expected = datetime_to_timestamp(
-            datetime(2024, 2, 29, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 2, 29, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_month_cycle_with_eom_convention(self) -> None:
         """Test adding month cycle with END_OF_MONTH convention."""
         # Jan 31 (end of month) + 1M = Feb 29 (end of month in leap year)
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 31, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start, "1M", end_of_month_convention=EndOfMonthConvention.END_OF_MONTH
         )
-        expected = datetime_to_timestamp(
-            datetime(2024, 2, 29, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 2, 29, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_cycle_with_anchor_and_occurrence(self) -> None:
         """Test adding cycle with anchor and occurrence index."""
-        anchor = datetime_to_timestamp(
-            datetime(2024, 1, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        anchor = datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             anchor,
             "1M",
@@ -265,37 +231,27 @@ class TestAddCycle:
             anchor_timestamp=anchor,
             occurrence_index=3,
         )
-        expected = datetime_to_timestamp(
-            datetime(2024, 4, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 4, 15, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_month_cycle_handles_short_months(self) -> None:
         """Test month cycle handles months with different days."""
         # Jan 31 + 3M = Apr 30 (April has only 30 days)
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 31, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start, "3M", end_of_month_convention=EndOfMonthConvention.SAME_DAY
         )
-        expected = datetime_to_timestamp(
-            datetime(2024, 4, 30, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 4, 30, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
     def test_add_cycle_leap_year_february(self) -> None:
         """Test adding cycles around leap year February."""
         # Feb 29 2024 (leap year) + 1Y = Feb 28 2025 (non-leap year)
-        start = datetime_to_timestamp(
-            datetime(2024, 2, 29, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 2, 29, 0, 0, 0, tzinfo=UTC))
         result = add_cycle(
             start, "1Y", end_of_month_convention=EndOfMonthConvention.SAME_DAY
         )
-        expected = datetime_to_timestamp(
-            datetime(2025, 2, 28, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2025, 2, 28, 0, 0, 0, tzinfo=UTC))
         assert result == expected
 
 
@@ -304,50 +260,42 @@ class TestGenerateSchedule:
 
     def test_generate_monthly_schedule(self) -> None:
         """Test generating monthly schedule."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 15, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2024, 4, 15, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 4, 15, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_schedule(
             start, "1M", end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
         )
 
         expected = (
-            datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 2, 15, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 3, 15, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 4, 15, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 15, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 2, 15, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 3, 15, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 4, 15, 0, 0, 0, tzinfo=UTC)),
         )
         assert schedule == expected
 
     def test_generate_quarterly_schedule(self) -> None:
         """Test generating quarterly schedule."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_schedule(
             start, "1Q", end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
         )
 
         expected = (
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 7, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 10, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 7, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 10, 1, 0, 0, 0, tzinfo=UTC)),
         )
         assert schedule == expected
 
     def test_generate_daily_schedule(self) -> None:
         """Test generating daily schedule."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2024, 1, 5, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 1, 5, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_schedule(
             start, "1D", end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
@@ -359,29 +307,25 @@ class TestGenerateSchedule:
 
     def test_generate_yearly_schedule(self) -> None:
         """Test generating yearly schedule."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2027, 1, 1, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2027, 1, 1, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_schedule(
             start, "1Y", end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
         )
 
         expected = (
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2025, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2026, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2027, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2025, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2026, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2027, 1, 1, 0, 0, 0, tzinfo=UTC)),
         )
         assert schedule == expected
 
     def test_generate_schedule_stops_at_end(self) -> None:
         """Test schedule generation stops at end date."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2024, 3, 15, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 3, 15, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_schedule(
             start, "1M", end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
@@ -393,10 +337,8 @@ class TestGenerateSchedule:
 
     def test_generate_schedule_includes_end_if_exact_match(self) -> None:
         """Test schedule includes end if it matches exactly."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_schedule(
             start, "1M", end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
@@ -407,10 +349,8 @@ class TestGenerateSchedule:
     def test_generate_schedule_with_eom_convention(self) -> None:
         """Test schedule generation with END_OF_MONTH convention."""
         # Jan 31 (end of month)
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2024, 5, 1, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 1, 31, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 5, 1, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_schedule(
             start,
@@ -421,19 +361,17 @@ class TestGenerateSchedule:
 
         # Should generate: Jan 31, Feb 29, Mar 31, Apr 30
         expected = (
-            datetime_to_timestamp(datetime(2024, 1, 31, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 2, 29, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 3, 31, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 4, 30, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 31, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 2, 29, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 3, 31, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 4, 30, 0, 0, 0, tzinfo=UTC)),
         )
         assert schedule == expected
 
     def test_generate_schedule_empty_if_start_after_end(self) -> None:
         """Test empty schedule if start > end."""
-        start = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_schedule(
             start, "1M", end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
@@ -443,9 +381,7 @@ class TestGenerateSchedule:
 
     def test_generate_schedule_empty_if_start_zero_or_negative(self) -> None:
         """Test empty schedule if start <= 0."""
-        end = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        end = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
 
         assert (
             generate_schedule(
@@ -462,9 +398,7 @@ class TestGenerateSchedule:
 
     def test_generate_schedule_empty_if_end_zero_or_negative(self) -> None:
         """Test empty schedule if end <= 0."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        start = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
 
         assert (
             generate_schedule(
@@ -485,34 +419,30 @@ class TestGenerateArraySchedule:
 
     def test_generate_single_segment_schedule(self) -> None:
         """Test array schedule with single anchor/cycle."""
-        anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc))
-        ]
+        anchors = [datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))]
         cycles = ["1M"]
-        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc))
+        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_array_schedule(
             anchors, cycles, end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
         )
 
         expected = (
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 2, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 2, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC)),
         )
         assert schedule == expected
 
     def test_generate_multi_segment_schedule(self) -> None:
         """Test array schedule with multiple anchor/cycle pairs."""
         anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         cycles = ["1M", "3M"]
-        end = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        end = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_array_schedule(
             anchors, cycles, end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
@@ -522,13 +452,13 @@ class TestGenerateArraySchedule:
         # Second segment: quarterly Apr 1, Jul 1, Oct 1
         # Plus end date Dec 31
         expected_dates = [
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc),
-            datetime(2024, 2, 1, 0, 0, 0, tzinfo=timezone.utc),
-            datetime(2024, 3, 1, 0, 0, 0, tzinfo=timezone.utc),
-            datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc),
-            datetime(2024, 7, 1, 0, 0, 0, tzinfo=timezone.utc),
-            datetime(2024, 10, 1, 0, 0, 0, tzinfo=timezone.utc),
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc),
+            datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC),
+            datetime(2024, 2, 1, 0, 0, 0, tzinfo=UTC),
+            datetime(2024, 3, 1, 0, 0, 0, tzinfo=UTC),
+            datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC),
+            datetime(2024, 7, 1, 0, 0, 0, tzinfo=UTC),
+            datetime(2024, 10, 1, 0, 0, 0, tzinfo=UTC),
+            datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC),
         ]
         expected = tuple(datetime_to_timestamp(dt) for dt in expected_dates)
         assert schedule == expected
@@ -536,11 +466,11 @@ class TestGenerateArraySchedule:
     def test_generate_array_schedule_deduplicates(self) -> None:
         """Test array schedule removes duplicates."""
         anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         cycles = ["1M", "1M"]
-        end = datetime_to_timestamp(datetime(2024, 5, 1, 0, 0, 0, tzinfo=timezone.utc))
+        end = datetime_to_timestamp(datetime(2024, 5, 1, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_array_schedule(
             anchors, cycles, end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
@@ -552,11 +482,11 @@ class TestGenerateArraySchedule:
     def test_generate_array_schedule_sorts_dates(self) -> None:
         """Test array schedule returns sorted dates."""
         anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         cycles = ["1M", "1M"]
-        end = datetime_to_timestamp(datetime(2024, 5, 1, 0, 0, 0, tzinfo=timezone.utc))
+        end = datetime_to_timestamp(datetime(2024, 5, 1, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_array_schedule(
             anchors, cycles, end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
@@ -567,11 +497,9 @@ class TestGenerateArraySchedule:
 
     def test_generate_array_schedule_includes_end(self) -> None:
         """Test array schedule always includes end date."""
-        anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc))
-        ]
+        anchors = [datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))]
         cycles = ["1M"]
-        end = datetime_to_timestamp(datetime(2024, 3, 15, 0, 0, 0, tzinfo=timezone.utc))
+        end = datetime_to_timestamp(datetime(2024, 3, 15, 0, 0, 0, tzinfo=UTC))
 
         schedule = generate_array_schedule(
             anchors, cycles, end, end_of_month_convention=EndOfMonthConvention.SAME_DAY
@@ -589,13 +517,11 @@ class TestGenerateArraySchedule:
     def test_generate_array_schedule_raises_if_length_mismatch(self) -> None:
         """Test array schedule raises if anchors and cycles have different lengths."""
         anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         cycles = ["1M"]  # Only one cycle for two anchors
-        end = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        end = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
 
         with pytest.raises(
             ValueError, match="anchors and cycles must have same length"
@@ -610,7 +536,7 @@ class TestGenerateArraySchedule:
     def test_generate_array_schedule_empty_if_end_zero_or_negative(self) -> None:
         """Test array schedule returns empty tuple if end <= 0."""
         anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         cycles = ["1M"]
 
@@ -635,9 +561,7 @@ class TestGenerateArraySchedule:
 
     def test_generate_array_schedule_empty_if_anchor_invalid(self) -> None:
         """Test array schedule returns empty tuple if any anchor is invalid."""
-        end = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        end = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
         cycles = ["1M"]
 
         # Test anchor <= 0
@@ -668,15 +592,13 @@ class TestGenerateArraySchedule:
 
     def test_generate_array_schedule_raises_if_anchors_descending(self) -> None:
         """Test array schedule raises if anchors are in descending order."""
-        end = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        end = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
         cycles = ["1M", "1M"]
 
         # Test descending order
         anchors = [
-            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         with pytest.raises(
             ValueError, match="anchors must be in strictly ascending order"
@@ -690,15 +612,13 @@ class TestGenerateArraySchedule:
 
     def test_generate_array_schedule_raises_if_anchors_equal(self) -> None:
         """Test array schedule raises if anchors are equal (not strictly ascending)."""
-        end = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        end = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
         cycles = ["1M", "1M"]
 
         # Test equal anchors (not strictly ascending)
         anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         with pytest.raises(
             ValueError, match="anchors must be in strictly ascending order"
@@ -714,16 +634,14 @@ class TestGenerateArraySchedule:
         self,
     ) -> None:
         """Test array schedule raises if anchors are partially unsorted."""
-        end = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        end = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
         cycles = ["1M", "1M", "1M"]
 
         # First two in order, but third is out of order
         anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 2, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 2, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         with pytest.raises(
             ValueError, match="anchors must be in strictly ascending order"
@@ -741,10 +659,8 @@ class TestResolveCycleSchedule:
 
     def test_resolve_cycle_schedule_no_adjustment(self) -> None:
         """Test resolve_cycle_schedule with NO_SHIFT convention."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC))
 
         schedule = resolve_cycle_schedule(
             start,
@@ -756,19 +672,17 @@ class TestResolveCycleSchedule:
         )
 
         expected = (
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 2, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 2, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 3, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC)),
         )
         assert schedule == expected
 
     def test_resolve_cycle_schedule_raises_for_unsupported_bdc(self) -> None:
         """Test raises error for unsupported business day convention."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC))
 
         with pytest.raises(
             UnsupportedActusFeatureError, match="Business Day Convention"
@@ -784,10 +698,8 @@ class TestResolveCycleSchedule:
 
     def test_resolve_cycle_schedule_raises_for_unsupported_calendar(self) -> None:
         """Test raises error for unsupported calendar."""
-        start = datetime_to_timestamp(
-            datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
-        )
-        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc))
+        start = datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))
+        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC))
 
         with pytest.raises(UnsupportedActusFeatureError, match="Calendar"):
             resolve_cycle_schedule(
@@ -806,13 +718,11 @@ class TestResolveArraySchedule:
     def test_resolve_array_schedule_no_adjustment(self) -> None:
         """Test resolve_array_schedule with NO_SHIFT convention."""
         anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc)),
-            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc)),
+            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)),
+            datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC)),
         ]
         cycles = ["1M", "3M"]
-        end = datetime_to_timestamp(
-            datetime(2024, 12, 31, 0, 0, 0, tzinfo=timezone.utc)
-        )
+        end = datetime_to_timestamp(datetime(2024, 12, 31, 0, 0, 0, tzinfo=UTC))
 
         schedule = resolve_array_schedule(
             anchors,
@@ -829,11 +739,9 @@ class TestResolveArraySchedule:
 
     def test_resolve_array_schedule_raises_for_unsupported_bdc(self) -> None:
         """Test raises error for unsupported business day convention."""
-        anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc))
-        ]
+        anchors = [datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))]
         cycles = ["1M"]
-        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc))
+        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC))
 
         with pytest.raises(
             UnsupportedActusFeatureError, match="Business Day Convention"
@@ -849,11 +757,9 @@ class TestResolveArraySchedule:
 
     def test_resolve_array_schedule_raises_for_unsupported_calendar(self) -> None:
         """Test raises error for unsupported calendar."""
-        anchors = [
-            datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc))
-        ]
+        anchors = [datetime_to_timestamp(datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC))]
         cycles = ["1M"]
-        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=timezone.utc))
+        end = datetime_to_timestamp(datetime(2024, 4, 1, 0, 0, 0, tzinfo=UTC))
 
         with pytest.raises(UnsupportedActusFeatureError, match="Calendar"):
             resolve_array_schedule(

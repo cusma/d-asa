@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.models import (
+from src.d_asa.models import (
     ExecutionScheduleEntry,
     InitialKernelState,
     NormalizationResult,

@@ -1,10 +1,10 @@
-"""Tests for src.day_count module."""
+"""Tests for d_asa.day_count module."""
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
-from src.day_count import (
+from src.d_asa.day_count import (
     BusinessDayConvention,
     Calendar,
     EndOfMonthConvention,
@@ -14,7 +14,7 @@ from src.day_count import (
     is_end_of_month,
     is_shift_calculate,
 )
-from src.unix_time import datetime_to_timestamp
+from src.d_asa.unix_time import datetime_to_timestamp
 
 
 class TestCalendarEnum:
@@ -156,17 +156,11 @@ class TestIsBusinessDay:
     def test_no_calendar_all_days_are_business_days(self) -> None:
         """Test with NO_CALENDAR, all days are business days."""
         # Monday 2024-01-15
-        monday = datetime_to_timestamp(
-            datetime(2024, 1, 15, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        monday = datetime_to_timestamp(datetime(2024, 1, 15, 12, 0, 0, tzinfo=UTC))
         # Saturday 2024-01-20
-        saturday = datetime_to_timestamp(
-            datetime(2024, 1, 20, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        saturday = datetime_to_timestamp(datetime(2024, 1, 20, 12, 0, 0, tzinfo=UTC))
         # Sunday 2024-01-21
-        sunday = datetime_to_timestamp(
-            datetime(2024, 1, 21, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        sunday = datetime_to_timestamp(datetime(2024, 1, 21, 12, 0, 0, tzinfo=UTC))
 
         assert is_business_day(monday, Calendar.NO_CALENDAR) is True
         assert is_business_day(saturday, Calendar.NO_CALENDAR) is True
@@ -177,29 +171,23 @@ class TestIsBusinessDay:
         # Week of 2024-01-15 (Monday) to 2024-01-19 (Friday)
         for day in range(15, 20):
             timestamp = datetime_to_timestamp(
-                datetime(2024, 1, day, 12, 0, 0, tzinfo=timezone.utc)
+                datetime(2024, 1, day, 12, 0, 0, tzinfo=UTC)
             )
             assert is_business_day(timestamp, Calendar.MONDAY_TO_FRIDAY) is True
 
     def test_monday_to_friday_weekends_are_not_business_days(self) -> None:
         """Test with MONDAY_TO_FRIDAY, weekends are not business days."""
         # Saturday 2024-01-20
-        saturday = datetime_to_timestamp(
-            datetime(2024, 1, 20, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        saturday = datetime_to_timestamp(datetime(2024, 1, 20, 12, 0, 0, tzinfo=UTC))
         # Sunday 2024-01-21
-        sunday = datetime_to_timestamp(
-            datetime(2024, 1, 21, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        sunday = datetime_to_timestamp(datetime(2024, 1, 21, 12, 0, 0, tzinfo=UTC))
 
         assert is_business_day(saturday, Calendar.MONDAY_TO_FRIDAY) is False
         assert is_business_day(sunday, Calendar.MONDAY_TO_FRIDAY) is False
 
     def test_default_calendar_is_no_calendar(self) -> None:
         """Test default calendar parameter is NO_CALENDAR."""
-        saturday = datetime_to_timestamp(
-            datetime(2024, 1, 20, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        saturday = datetime_to_timestamp(datetime(2024, 1, 20, 12, 0, 0, tzinfo=UTC))
         assert is_business_day(saturday) is True
 
 
@@ -209,9 +197,7 @@ class TestAdjustToBusinessDay:
     def test_no_shift_returns_original(self) -> None:
         """Test NO_SHIFT returns timestamp unchanged."""
         # Saturday 2024-01-20
-        saturday = datetime_to_timestamp(
-            datetime(2024, 1, 20, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        saturday = datetime_to_timestamp(datetime(2024, 1, 20, 12, 0, 0, tzinfo=UTC))
         result = adjust_to_business_day(
             saturday,
             business_day_convention=BusinessDayConvention.NO_SHIFT,
@@ -222,9 +208,7 @@ class TestAdjustToBusinessDay:
     def test_business_day_unchanged(self) -> None:
         """Test business day returns unchanged for any convention."""
         # Monday 2024-01-15
-        monday = datetime_to_timestamp(
-            datetime(2024, 1, 15, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        monday = datetime_to_timestamp(datetime(2024, 1, 15, 12, 0, 0, tzinfo=UTC))
         conventions = [
             BusinessDayConvention.SHIFT_CALCULATE_FOLLOWING,
             BusinessDayConvention.SHIFT_CALCULATE_PRECEDING,
@@ -242,12 +226,10 @@ class TestAdjustToBusinessDay:
     def test_shift_calculate_following_shifts_forward(self) -> None:
         """Test SCF shifts Saturday to next Monday."""
         # Saturday 2024-01-20
-        saturday = datetime_to_timestamp(
-            datetime(2024, 1, 20, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        saturday = datetime_to_timestamp(datetime(2024, 1, 20, 12, 0, 0, tzinfo=UTC))
         # Expected: Monday 2024-01-22
         expected_monday = datetime_to_timestamp(
-            datetime(2024, 1, 22, 12, 0, 0, tzinfo=timezone.utc)
+            datetime(2024, 1, 22, 12, 0, 0, tzinfo=UTC)
         )
 
         result = adjust_to_business_day(
@@ -260,12 +242,10 @@ class TestAdjustToBusinessDay:
     def test_calculate_shift_following_shifts_forward(self) -> None:
         """Test CSF shifts Saturday to next Monday."""
         # Saturday 2024-01-20
-        saturday = datetime_to_timestamp(
-            datetime(2024, 1, 20, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        saturday = datetime_to_timestamp(datetime(2024, 1, 20, 12, 0, 0, tzinfo=UTC))
         # Expected: Monday 2024-01-22
         expected_monday = datetime_to_timestamp(
-            datetime(2024, 1, 22, 12, 0, 0, tzinfo=timezone.utc)
+            datetime(2024, 1, 22, 12, 0, 0, tzinfo=UTC)
         )
 
         result = adjust_to_business_day(
@@ -278,12 +258,10 @@ class TestAdjustToBusinessDay:
     def test_shift_calculate_preceding_shifts_backward(self) -> None:
         """Test SCP shifts Saturday to previous Friday."""
         # Saturday 2024-01-20
-        saturday = datetime_to_timestamp(
-            datetime(2024, 1, 20, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        saturday = datetime_to_timestamp(datetime(2024, 1, 20, 12, 0, 0, tzinfo=UTC))
         # Expected: Friday 2024-01-19
         expected_friday = datetime_to_timestamp(
-            datetime(2024, 1, 19, 12, 0, 0, tzinfo=timezone.utc)
+            datetime(2024, 1, 19, 12, 0, 0, tzinfo=UTC)
         )
 
         result = adjust_to_business_day(
@@ -296,12 +274,10 @@ class TestAdjustToBusinessDay:
     def test_calculate_shift_preceding_shifts_backward(self) -> None:
         """Test CSP shifts Saturday to previous Friday."""
         # Saturday 2024-01-20
-        saturday = datetime_to_timestamp(
-            datetime(2024, 1, 20, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        saturday = datetime_to_timestamp(datetime(2024, 1, 20, 12, 0, 0, tzinfo=UTC))
         # Expected: Friday 2024-01-19
         expected_friday = datetime_to_timestamp(
-            datetime(2024, 1, 19, 12, 0, 0, tzinfo=timezone.utc)
+            datetime(2024, 1, 19, 12, 0, 0, tzinfo=UTC)
         )
 
         result = adjust_to_business_day(
@@ -314,13 +290,9 @@ class TestAdjustToBusinessDay:
     def test_modified_following_shifts_back_if_next_month(self) -> None:
         """Test SCMF shifts back to preceding if following goes to next month."""
         # Saturday 2024-01-27 (last Saturday of January)
-        saturday = datetime_to_timestamp(
-            datetime(2024, 1, 27, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        saturday = datetime_to_timestamp(datetime(2024, 1, 27, 12, 0, 0, tzinfo=UTC))
         # Following would be Monday 2024-01-29 (same month, so should follow)
-        expected = datetime_to_timestamp(
-            datetime(2024, 1, 29, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        expected = datetime_to_timestamp(datetime(2024, 1, 29, 12, 0, 0, tzinfo=UTC))
 
         result = adjust_to_business_day(
             saturday,
@@ -332,11 +304,9 @@ class TestAdjustToBusinessDay:
         # Sunday 2024-03-31 (last day of March)
         # Following would be Monday 2024-04-01 (next month)
         # Should shift back to Friday 2024-03-29
-        sunday = datetime_to_timestamp(
-            datetime(2024, 3, 31, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        sunday = datetime_to_timestamp(datetime(2024, 3, 31, 12, 0, 0, tzinfo=UTC))
         expected_friday = datetime_to_timestamp(
-            datetime(2024, 3, 29, 12, 0, 0, tzinfo=timezone.utc)
+            datetime(2024, 3, 29, 12, 0, 0, tzinfo=UTC)
         )
 
         result = adjust_to_business_day(
@@ -351,11 +321,9 @@ class TestAdjustToBusinessDay:
         # Sunday 2024-09-01 (first day of September)
         # Preceding would be Friday 2024-08-30 (previous month)
         # Should shift forward to Monday 2024-09-02
-        sunday = datetime_to_timestamp(
-            datetime(2024, 9, 1, 12, 0, 0, tzinfo=timezone.utc)
-        )
+        sunday = datetime_to_timestamp(datetime(2024, 9, 1, 12, 0, 0, tzinfo=UTC))
         expected_monday = datetime_to_timestamp(
-            datetime(2024, 9, 2, 12, 0, 0, tzinfo=timezone.utc)
+            datetime(2024, 9, 2, 12, 0, 0, tzinfo=UTC)
         )
 
         result = adjust_to_business_day(

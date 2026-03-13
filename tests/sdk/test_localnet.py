@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 from urllib.error import URLError
 
-from src.localnet import (
+from src.d_asa.localnet import (
     DEFAULT_ALGOD_PORT,
     DEFAULT_INDEXER_PORT,
     DEFAULT_KMD_PORT,
@@ -88,9 +88,9 @@ def test_round_warp_retries_on_transient_algod_timeout(monkeypatch) -> None:
         send=fake_send,
     )
 
-    monkeypatch.setattr("src.localnet.wait_for_algod", fake_wait_for_algod)
+    monkeypatch.setattr("d_asa.localnet.wait_for_algod", fake_wait_for_algod)
 
-    from src.localnet import round_warp
+    from d_asa.localnet import round_warp
 
     round_warp(algorand=fake_algorand)  # type: ignore[arg-type]
 
@@ -107,8 +107,8 @@ def test_wait_for_localnet_checks_algod_then_kmd(monkeypatch) -> None:
     def fake_wait_for_kmd(**_: object) -> None:
         calls.append("kmd")
 
-    monkeypatch.setattr("src.localnet.wait_for_algod", fake_wait_for_algod)
-    monkeypatch.setattr("src.localnet.wait_for_kmd", fake_wait_for_kmd)
+    monkeypatch.setattr("d_asa.localnet.wait_for_algod", fake_wait_for_algod)
+    monkeypatch.setattr("d_asa.localnet.wait_for_kmd", fake_wait_for_kmd)
 
     wait_for_localnet()
 

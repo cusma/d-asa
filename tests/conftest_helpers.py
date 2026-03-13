@@ -1,20 +1,18 @@
-from typing import Any, TypeVar
+from typing import Any
 
 from algokit_utils import (
     AlgorandClient,
     SigningAccount,
 )
 
-from src.artifacts.dasa_client import (
+from src.d_asa.artifacts.dasa_client import (
     RbacAssignRoleArgs,
     RoleValidity,
 )
 from tests.conftest import INITIAL_ALGO_FUNDS
 
-RoleAccountType = TypeVar("RoleAccountType", bound=SigningAccount)
 
-
-def create_role_account(
+def create_role_account[RoleAccountType: SigningAccount](
     algorand: AlgorandClient,
     role_account_class: type[RoleAccountType],
     client: Any,

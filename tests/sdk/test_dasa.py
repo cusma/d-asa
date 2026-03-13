@@ -1,16 +1,14 @@
 from __future__ import annotations
 
+import tomllib
 from dataclasses import dataclass
 from decimal import Decimal
 from pathlib import Path
 from types import SimpleNamespace
 
-import tomllib
 from algosdk.constants import ZERO_ADDRESS
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-from src import (
+from src.d_asa import (
     DAsa,
     DAsaRole,
     PricingContext,
@@ -19,7 +17,9 @@ from src import (
     make_pam_zero_coupon_bond,
     normalize_contract_attributes,
 )
-from src.models import AccountPosition
+from src.d_asa.models import AccountPosition
+from smart_contracts import constants as cst
+from smart_contracts import enums
 
 
 @dataclass(frozen=True, slots=True)
@@ -231,13 +231,15 @@ def _schedule_entry(
 
 
 def test_root_exports_include_high_level_surface() -> None:
-    import src
+    import d_asa
 
-    assert src.DAsa is DAsa
-    assert src.make_pam_zero_coupon_bond is make_pam_zero_coupon_bond
-    assert src.normalize_contract_attributes is normalize_contract_attributes
-    assert not hasattr(src, "dasa_client")
-    assert not hasattr(src, "dasa_avm_client")
+    assert d_asa.DAsa is DAsa
+    assert d_asa.make_pam_zero_coupon_bond is make_pam_zero_coupon_bond
+    assert d_asa.normalize_contract_attributes is normalize_contract_attributes
+    assert d_asa.constants.DAY_2_SEC == cst.DAY_2_SEC
+    assert d_asa.enums.CT_PAM == enums.CT_PAM
+    assert not hasattr(d_asa, "dasa_client")
+    assert not hasattr(d_asa, "dasa_avm_client")
 
 
 def test_actualized_position_activates_reserved_units_and_settles_indices() -> None:
@@ -468,18 +470,16 @@ def test_arranger_configure_contract_uses_mappers_and_updates_pricing_context() 
 def test_pyproject_runtime_dependencies_only_keep_algokit_utils() -> None:
     pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
     parsed = tomllib.loads(pyproject.read_text())
-    poetry = parsed["tool"]["poetry"]
-    runtime_dependencies = poetry["dependencies"]
-    dev_dependencies = poetry["group"]["dev"]["dependencies"]
+    project = parsed["project"]
+    tool_poetry = parsed["tool"]["poetry"]
+    dev_dependencies = tool_poetry["group"]["dev"]["dependencies"]
 
-    assert "algokit-utils" in runtime_dependencies
-    assert "python-dotenv" not in runtime_dependencies
-    assert "algorand-python" not in runtime_dependencies
+    assert "algokit-utils>=4.2.3,<5.0.0" in project["dependencies"]
+    assert all("python-dotenv" not in dep for dep in project["dependencies"])
+    assert all("algorand-python" not in dep for dep in project["dependencies"])
     assert "python-dotenv" in dev_dependencies
-    assert poetry["packages"] == [
-        {"include": "src"},
-        {"include": "smart_contracts"},
-        {"include": "modules"},
+    assert tool_poetry["packages"] == [
+        {"include": "d_asa", "from": "src"},
     ]
 
 

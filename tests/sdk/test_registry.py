@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from smart_contracts import enums
-from src.registry import (
+from src.d_asa.registry import (
     ALLOWED_EVENT_TYPES,
     CASH_EVENT_TYPES,
     CONTRACT_TYPE_IDS,
@@ -13,6 +12,7 @@ from src.registry import (
     REJECTED_EVENT_TYPES,
     SUPPORTED_CONTRACT_TYPES,
 )
+from smart_contracts import enums
 
 
 def test_supported_contract_types_match_v1_scope() -> None:
