@@ -237,6 +237,7 @@ def test_root_exports_include_high_level_surface() -> None:
     assert src.make_pam_zero_coupon_bond is make_pam_zero_coupon_bond
     assert src.normalize_contract_attributes is normalize_contract_attributes
     assert not hasattr(src, "dasa_client")
+    assert not hasattr(src, "dasa_avm_client")
 
 
 def test_actualized_position_activates_reserved_units_and_settles_indices() -> None:
