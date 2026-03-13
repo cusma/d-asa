@@ -170,7 +170,8 @@ enumerated IDs:
 > [!NOTE]
 > The current reference implementation supports manual default-performance tracking
 > through an RBAC-managed boolean `defaulted` flag. It does not yet model the full
-> `PRF` lifecycle enum or automatic grace-period and delinquency transitions on chain.
+> `PRF` lifecycle enum or automatic grace-period and delinquency transitions on
+> chain.
 
 ### Grace Period
 
