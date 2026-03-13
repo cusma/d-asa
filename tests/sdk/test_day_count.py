@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from src.d_asa.day_count import (
+from d_asa.day_count import (
     BusinessDayConvention,
     Calendar,
     EndOfMonthConvention,
@@ -14,7 +14,7 @@ from src.d_asa.day_count import (
     is_end_of_month,
     is_shift_calculate,
 )
-from src.d_asa.unix_time import datetime_to_timestamp
+from d_asa.unix_time import datetime_to_timestamp
 
 
 class TestCalendarEnum:

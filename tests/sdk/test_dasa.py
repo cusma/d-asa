@@ -8,9 +8,7 @@ from types import SimpleNamespace
 
 from algosdk.constants import ZERO_ADDRESS
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-from src.d_asa import (
+from d_asa import (
     DAsa,
     DAsaRole,
     PricingContext,
@@ -19,7 +17,9 @@ from src.d_asa import (
     make_pam_zero_coupon_bond,
     normalize_contract_attributes,
 )
-from src.d_asa.models import AccountPosition
+from d_asa.models import AccountPosition
+from smart_contracts import constants as cst
+from smart_contracts import enums
 
 
 @dataclass(frozen=True, slots=True)

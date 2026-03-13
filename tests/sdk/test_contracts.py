@@ -4,19 +4,19 @@ from decimal import Decimal
 
 import pytest
 
-from src.d_asa.contracts import (
+from d_asa.contracts import (
     ContractAttributes,
     make_pam_fixed_coupon_bond_profile,
     make_pam_zero_coupon_bond,
 )
-from src.d_asa.day_count import (
+from d_asa.day_count import (
     BusinessDayConvention,
     Calendar,
     DayCountConvention,
     EndOfMonthConvention,
 )
-from src.d_asa.errors import UnsupportedActusFeatureError
-from src.d_asa.schedule import Cycle
+from d_asa.errors import UnsupportedActusFeatureError
+from d_asa.schedule import Cycle
 
 
 class TestContractAttributes:

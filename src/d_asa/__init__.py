@@ -1,4 +1,7 @@
 # ruff: noqa: RUF022
+"""
+Debt Algorand Standard Application (D-ASA) SDK.
+"""
 
 from . import constants, enums
 from .contracts import (

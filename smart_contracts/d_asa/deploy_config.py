@@ -17,14 +17,12 @@ from algokit_utils import (
 )
 from algosdk.constants import ZERO_ADDRESS
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-from src.d_asa import (
+from d_asa import (
     ExecutionScheduleEntry,
     NormalizationResult,
     normalize_contract_attributes,
 )
-from src.d_asa.artifacts.dasa_client import (
+from d_asa.artifacts.dasa_client import (
     ContractConfigArgs,
     ContractCreateArgs,
     ContractScheduleArgs,
@@ -35,11 +33,13 @@ from src.d_asa.artifacts.dasa_client import (
     NormalizedActusTerms,
     Prospectus,
 )
-from src.d_asa.contracts import (
+from d_asa.contracts import (
     make_pam_fixed_coupon_bond_profile,
     make_pam_zero_coupon_bond,
 )
-from src.d_asa.schedule import Cycle
+from d_asa.schedule import Cycle
+from smart_contracts import constants as cst
+from smart_contracts import enums
 
 logger = logging.getLogger(__name__)
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from src.d_asa.unix_time import datetime_to_timestamp, timestamp_to_datetime
+from d_asa.unix_time import datetime_to_timestamp, timestamp_to_datetime
 
 
 class TestTimestampToDatetime:

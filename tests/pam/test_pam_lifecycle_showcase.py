@@ -5,9 +5,9 @@ from collections.abc import Callable
 import pytest
 from algokit_utils import AlgorandClient, SigningAccount
 
-from src.d_asa.artifacts.dasa_client import DasaClient
-from src.d_asa.localnet import Currency, DAsaAccountManager, DAsaPrimaryDealer
-from src.d_asa.showcase import (
+from d_asa.artifacts.dasa_client import DasaClient
+from d_asa.localnet import Currency, DAsaAccountManager, DAsaPrimaryDealer
+from d_asa.showcase import (
     SHOWCASE_BUILDERS,
     PamShowcaseScenario,
     run_showcase_scenario,

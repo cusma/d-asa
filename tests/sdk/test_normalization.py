@@ -4,29 +4,29 @@ from decimal import Decimal
 
 import pytest
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-from src.d_asa.contracts import (
+from d_asa.contracts import (
     ContractAttributes,
     make_pam_fixed_coupon_bond_profile,
     make_pam_zero_coupon_bond,
 )
-from src.d_asa.day_count import (
+from d_asa.day_count import (
     BusinessDayConvention,
     Calendar,
     DayCountConvention,
     EndOfMonthConvention,
 )
-from src.d_asa.errors import ActusNormalizationError
-from src.d_asa.models import ExecutionScheduleEntry, NormalizedActusTerms
-from src.d_asa.normalization import normalize_contract_attributes
-from src.d_asa.normalization.conversions import (
+from d_asa.errors import ActusNormalizationError
+from d_asa.models import ExecutionScheduleEntry, NormalizedActusTerms
+from d_asa.normalization import normalize_contract_attributes
+from d_asa.normalization.conversions import (
     compute_initial_exchange_amount,
     rate_to_fp,
     to_asa_units,
 )
-from src.d_asa.normalization.event_seeds import deduplicate_timestamps
-from src.d_asa.schedule import Cycle
+from d_asa.normalization.event_seeds import deduplicate_timestamps
+from d_asa.schedule import Cycle
+from smart_contracts import constants as cst
+from smart_contracts import enums
 
 
 class TestToAsaUnits:

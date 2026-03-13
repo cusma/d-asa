@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 from urllib.error import URLError
 
-from src.d_asa.localnet import (
+from d_asa.localnet import (
     DEFAULT_ALGOD_PORT,
     DEFAULT_INDEXER_PORT,
     DEFAULT_KMD_PORT,

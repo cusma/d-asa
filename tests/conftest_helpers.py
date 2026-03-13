@@ -5,7 +5,7 @@ from algokit_utils import (
     SigningAccount,
 )
 
-from src.d_asa.artifacts.dasa_client import (
+from d_asa.artifacts.dasa_client import (
     RbacAssignRoleArgs,
     RoleValidity,
 )

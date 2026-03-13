@@ -8,18 +8,18 @@ from algokit_utils import (
     SigningAccount,
 )
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-from src.d_asa import normalize_contract_attributes
-from src.d_asa.artifacts.dasa_client import (
+from d_asa import normalize_contract_attributes
+from d_asa.artifacts.dasa_client import (
     AccountGetPositionArgs,
     ClaimDueCashflowsArgs,
     DasaClient,
     FundDueCashflowsArgs,
 )
-from src.d_asa.contracts import make_pam_zero_coupon_bond
-from src.d_asa.registry import CONTRACT_TYPE_IDS, EVENT_TYPE_IDS
-from src.d_asa.schedule import Cycle
+from d_asa.contracts import make_pam_zero_coupon_bond
+from d_asa.registry import CONTRACT_TYPE_IDS, EVENT_TYPE_IDS
+from d_asa.schedule import Cycle
+from smart_contracts import constants as cst
+from smart_contracts import enums
 from tests import utils
 from tests.pam.pam_test_support import (
     ISSUANCE_DELAY_CYCLE,

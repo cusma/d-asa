@@ -6,13 +6,13 @@ from datetime import UTC, datetime
 
 import pytest
 
-from src.d_asa.day_count import (
+from d_asa.day_count import (
     BusinessDayConvention,
     Calendar,
     EndOfMonthConvention,
 )
-from src.d_asa.errors import UnsupportedActusFeatureError
-from src.d_asa.schedule import (
+from d_asa.errors import UnsupportedActusFeatureError
+from d_asa.schedule import (
     Cycle,
     add_cycle,
     generate_array_schedule,
@@ -20,7 +20,7 @@ from src.d_asa.schedule import (
     resolve_array_schedule,
     resolve_cycle_schedule,
 )
-from src.d_asa.unix_time import datetime_to_timestamp
+from d_asa.unix_time import datetime_to_timestamp
 
 
 class TestCycle:
