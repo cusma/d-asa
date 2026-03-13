@@ -104,7 +104,7 @@ markers = [
 
 [tool.mypy]
 files = "smart_contracts/"
-python_version = "3.12"
+python_version = "3.13"
 mypy_path = "src"
 disallow_any_generics = true
 disallow_subclassing_any = true
