@@ -139,7 +139,7 @@ def schedule_rows(
                         entry.next_nominal_interest_rate,
                         fixed_point_scale=normalized.terms.fixed_point_scale,
                     )
-                    if entry.next_nominal_interest_rate
+                    if entry.next_nominal_interest_rate is not None
                     else "-"
                 ),
             }
