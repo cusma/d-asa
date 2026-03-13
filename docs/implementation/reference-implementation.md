@@ -1,76 +1,33 @@
 # Reference Implementation {#reference-implementation}
 
-> ⚠️The reference implementations have not been audited. Do not use this code for
+> ⚠️The reference implementation has not been audited. Do not use this code for
 > real products. The author declines all responsibility.
 
-> ⚠️The reference implementation does not guarantee compliance with ACTUS reference
-> implementation.
+The reference implementation exposes one canonical on-chain contract, `DASA`, and
+composes it from five modules:
 
-The reference implementation provides the following features:
+- `RbacModule`
+- `ActusKernelModule`
+- `AccountingModule`
+- `PaymentAgent`
+- `TransferAgent`
 
-- RBAC and Accounting:
-  - Arranger: creates, configures and updates the D-ASA
-  - Account Manager: opens and closes accounts (proxy a KYC process)
-  - Primary Dealer: performs the primary distribution on the primary market
-  - Trustee: can call a default
-  - Authority: can suspend accounts or the whole asset
-  - Interest Oracle: can update the interest rate in case of variable rates
+The implementation executes normalized ACTUS schedules on the AVM and currently
+supports the kernel contract families `PAM`, `ANN`, `NAM`, `LAM`, `LAX`, and `CLM`.
 
-- Types:
-  - Zero Coupon Bond
-  - Fixed Coupon Bond
-  - Perpetual Bond
+## Delivered artifacts
 
-- Denomination:
-  - On-chain (ASA)
-  - Off-chain
+The canonical artifacts are:
 
-- Payment Agent (Settlement):
-  - On-chain (ASA)
+- `src/d_asa/artifacts/DASA.arc56.json`
+- `src/d_asa/artifacts/dasa_client.py`
+- `src/d_asa/artifacts/dasa_avm_client.py`
 
-- Day-count conventions:
-  - Actual/Actual (time periods must be in days, i.e., multiples of `86400` seconds)
-  - Continuous
+The deployment helpers in `smart_contracts/d_asa/deploy_config.py` provide code-accurate
+demo normalization flows for:
 
-- Transfer Agent:
-  - On-chain
-  - Direct (i.e., from investor to investor)
+- a PAM fixed coupon bond profile;
+- a PAM zero coupon bond profile.
 
-- Secondary market
-
-- Notarize metadata (e.g., prospectus, etc.)
-
-- Updatable program (restricted to the Arranger)
-
-## Architecture
-
-The reference implementation architecture is structured in composable modules with
-a clear separation of concerns:
-
-- RBAC Module
-- Accounting Module
-- Core Financial Module
-  - Common Cashflow Utilities
-  - Coupon Cashflow
-  - No-coupon Cashflow
-- Payment Agent
-- Transfer Agent
-
-The concrete financial contract inherits mixins to achieve compile-time specialization
-across the ACTUS Contract Types (e.g., `PAM`, `PBN`), so each deployed contract
-includes only the logic it actually needs.
-
-## Deployments {#deployments}
-
-D-ASA examples deployed on TestNet:
-
-| Type                                            | App ID                                                                        | App Spec                                                                                                                             |
-|-------------------------------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| [Zero Coupon Bond](./ref-zero-coupon-bond.md)   | <a href="https://lora.algokit.io/testnet/application/756574705">756574705</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/zero_coupon_bond/ZeroCouponBond.arc56.json">ARC-56</a>   |
-| [Fixed Coupon Bond](./ref-fixed-coupon-bond.md) | <a href="https://lora.algokit.io/testnet/application/756574716">756574716</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/fixed_coupon_bond/FixedCouponBond.arc56.json">ARC-56</a> |
-| [Perpetual Bond](./ref-perpetual-bond.md)       | <a href="https://lora.algokit.io/testnet/application/756574702">756574702</a> | <a href="https://github.com/cusma/d-asa/blob/main/smart_contracts/artifacts/perpetual_bond/PerpetualBond.arc56.json">ARC-56</a>      |
-
-1. Download the App Spec JSON file;
-1. Navigate to the <a href="https://lora.algokit.io/testnet/app-lab">Lora App Lab</a>;
-1. Create the App Interface using the existing App ID and App Spec JSON;
-1. Explore the D-ASA interface.
+Those demos are examples of normalized inputs to the shared kernel, not separate
+contract classes with different public ABIs.

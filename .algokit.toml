@@ -30,7 +30,7 @@ build = { commands = [
   'poetry run python -m smart_contracts build',
 ], description = 'Build all smart contracts in the project' }
 test = { commands = [
-  'poetry run pytest',
+  'poetry run pytest -m "not showcase"',
 ], description = 'Run smart contract tests' }
 audit = { commands = [
   'poetry run pip-audit',
@@ -48,5 +48,6 @@ audit-teal = { commands = [
 # Commands intented for CI only, prefixed with `ci-` by convention
 ci-teal-diff = { commands = [
   'git add -N ./smart_contracts/artifacts',
-  'git diff --exit-code --minimal ./smart_contracts/artifacts',
-], description = 'Check TEAL files for differences' }
+  'git add -N ./src/d_asa/artifacts',
+  'git diff --exit-code --minimal ./smart_contracts/artifacts ./src/d_asa/artifacts',
+], description = 'Check generated artifacts for differences' }

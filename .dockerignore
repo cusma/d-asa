@@ -1,0 +1,13 @@
+.git
+.github
+.idea
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.vscode
+__pycache__
+book
+docs
+tests
+.env.localnet
+.env.testnet

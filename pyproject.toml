@@ -1,14 +1,19 @@
-[tool.poetry]
-package-mode = false
+[project]
 name = "d-asa"
-version = "0.5.0"
+version = "0.20.0"
 description = "Debt Algorand Standard Application"
 license = "AGPL-3.0"
-authors = ["cusma <cosimo.bassi@gmail.com>"]
-maintainers = ["cusma <cosimo.bassi@gmail.com>"]
-readme = ["README.md", "docs/SUMMARY.md"]
-documentation = "https://cusma.github.io/d-asa/"
-repository = "https://github.com/cusma/d-asa"
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+authors = [
+  { name = "cusma", email = "cosimo.bassi@gmail.com" },
+]
+maintainers = [
+  { name = "cusma", email = "cosimo.bassi@gmail.com" },
+]
+dependencies = [
+  "algokit-utils>=4.2.3,<5.0.0",
+]
 keywords = [
   "algorand",
   "blockchain",
@@ -18,16 +23,27 @@ keywords = [
   "actus",
 ]
 
+[project.urls]
+Documentation = "https://cusma.github.io/d-asa/"
+Repository = "https://github.com/cusma/d-asa"
+
+[tool.poetry]
+packages = [
+  { include = "d_asa", from = "src" },
+]
+include = [
+  { path = "src/d_asa/artifacts/*.json", format = ["sdist", "wheel"] },
+  { path = "src/d_asa/py.typed", format = ["sdist", "wheel"] },
+]
+
 [tool.poetry.dependencies]
-python = "^3.13"
-algokit-utils = "^4.2.3"
-python-dotenv = "^1.2.2"
-algorand-python = "^3.4.0"
+python = ">=3.13,<4.0"
 
 [tool.poetry.group.dev.dependencies]
 algokit-client-generator = "^2.2.0"
-black = { extras = ["d"], version = "^26.1.0" }
-ruff = "^0.15.4"
+algorand-python = "^3.4.0"
+black = { extras = ["d"], version = "^26.3.1" }
+ruff = "^0.15.5"
 mypy = "^1.19.1"
 pytest = "^9.0.2"
 pytest-cov = "^7.0.0"
@@ -37,9 +53,17 @@ pre-commit = "^4.5.1"
 puyapy = "^5.7.1"
 urllib3 = "^2.6.3"
 pip = "^26.0.1"
+python-dotenv = "^1.2.2"
+
+[tool.poetry.group.notebooks]
+optional = true
+
+[tool.poetry.group.notebooks.dependencies]
+ipykernel = "^7.2.0"
+jupyterlab = "^4.4.7"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
@@ -64,17 +88,24 @@ lint.unfixable = ["B", "RUF"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["ANN001", "ANN401", "E501"]
+"smart_contracts/abi_types.py" = ["UP040"]
+"smart_contracts/events.py" = ["UP040"]
+"modules/**" = ["UP040"]
 
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true
 suppress-none-returning = true
 
 [tool.pytest.ini_options]
-pythonpath = ["smart_contracts", "tests"]
+pythonpath = ["src", "tests"]
+markers = [
+  "showcase: narrative LocalNet walkthroughs that are excluded from the default test run",
+]
 
 [tool.mypy]
 files = "smart_contracts/"
-python_version = "3.12"
+python_version = "3.13"
+mypy_path = "src"
 disallow_any_generics = true
 disallow_subclassing_any = true
 disallow_untyped_calls = true
@@ -92,6 +123,12 @@ disallow_any_expr = true
 disallow_any_decorated = true
 disallow_any_explicit = true
 untyped_calls_exclude = ["algosdk"]
+
+[[tool.mypy.overrides]]
+module = "smart_contracts.d_asa.deploy_config"
+disallow_any_unimported = false
+disallow_any_expr = false
+follow_imports = "skip"
 
 [[tool.mypy.overrides]]
 module = "tests.*"

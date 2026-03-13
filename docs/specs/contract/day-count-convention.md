@@ -1,10 +1,10 @@
 # Day-Count Convention {#day-count-convention}
 
-> Debt instruments use a <a href="https://en.wikipedia.org/wiki/Day_count_convention">day-count
-> convention</a> to calculate the amount of accrued interest when the next coupon
-> payment is less than a full coupon period away.
+> Debt instruments use a [day-count convention](https://en.wikipedia.org/wiki/Day_count_convention)
+> to calculate the amount of accrued interest when the next coupon payment is less
+> than a full coupon period away.
 
-The D-ASA **MUST** specify one *day-count convention* \\([IPCD]\\) (`uint8`).
+The D-ASA **MUST** specify one *day-count convention* \\( [IPCD] \\).
 
 The *day-count convention* **MUST** be identified with one of the following enumerated
 IDs (`uint8`):
@@ -18,40 +18,6 @@ IDs (`uint8`):
 | `4`   |    30/360     | \\([30E360]\\)     | Year fractions accrue on the basis of 30 days per month and 360 days per year in the respective period                   |
 | `5`   |    28/366     | \\([28E366]\\)     | Year fractions accrue on the basis of 28 days per month and 366 days per year in the respective period                   |
 | `6`   |    30/365     | -                  | Year fractions accrue on the basis of 30 days per month and 365 days per year in the respective period                   |
-| `255` |  Continuous   | -                  | Time fractions accrue on the basis of the number of UNIX time units (non-leap seconds) in the respective time period     |
-
-The *day-count convention* defines the *day-count factor* as a fraction of:
-
-- Numerator: elapsed time of the accrual period to date;
-- Denominator: time of the full accrual period defined by the *time schedule*.
-
-The *day-count convention* **MUST** be set using the `asset_config` method.
-
-{{#include ../../_include/styles.md:example}}
-> Let’s have a D-ASA with the following coupon dates:
->
-> - `date1`: starting date for the current coupon’s interest accrual, defined by
-> the *time schedule*;
-> - `date2`: date through which the interest is being accrued (“to” date), equals
-> to the current block timestamp;
-> - `date3`: next coupon due date, defined by the *time schedule*.
->
-> The day-count factor is calculated as:
->
-> **Continuous** (`255`) convention:
->
-> ```text
-> (date2 - date1) / (date3 - date1)
-> ```
->
-> **Actual/Actual** (`0`) convention:
->
-> ```text
-> days_in(date2 - date1) / days_in(date3 - date1)
-> ```
->
-> Where `days_in` returns the actual number of days (equal to `86400` seconds) in
-> the time interval.
 
 ## Calendar
 
@@ -60,22 +26,16 @@ The *day-count convention* **MUST** be set using the `asset_config` method.
 
 > The AVM (so the D-ASA) time has no notion of calendars. Conversion of serial UNIX
 > timestamps into a year/month/day triple[^1] (and vice versa) can be performed
-> by external Algorand Applications[^2] or client side.
+> by external Algorand Applications[^2] or client side (normalization).
 
-The D-ASA **MAY** specify a *calendar* \\([CLDR]\\).
+The D-ASA **MAY** specify a *calendar* \\( [CLDR] \\).
 
-The *calendar* **MUST** be identified with one of the following enumerated IDs (`uint8`):
+The *calendar* **MUST** be identified with one of the following enumerated IDs:
 
 | ID    |       Name       | ACTUS      | Description                                    |
 |:------|:----------------:|------------|:-----------------------------------------------|
 | `0`   |   No Calendar    | \\([NC]\\) | No holidays defined (default if not specified) |
 | `1`   | Monday to Friday | \\([MF]\\) | Saturdays and Sundays are holidays             |
-| `255` |      Custom      | -          | Custom holidays definition                     |
-
-The *calendar* **MAY** be set using the **OPTIONAL** `set_asset_metadata` method
-(see [Metadata](metadata.md) section).
-
-> A reference implementation **SHOULD** use the default *calendar* (`0`).
 
 ## Business Day Convention
 
@@ -85,15 +45,7 @@ The *calendar* **MAY** be set using the **OPTIONAL** `set_asset_metadata` method
 > The business day convention defines how D-ASA execution can be shifted to the
 > next business day (following) or the previous on (preceding).
 
-The D-ASA **MAY** specify a *business day convention* \\([BDC]\\).
-
-It is **RECOMMENDED** to use an ACTUS *business day convention*.
-
-The *business day convention* **MAY** be set using the **OPTIONAL** `set_asset_metadata`
-method (see [Metadata](metadata.md) section).
-
-> A reference implementation **SHOULD NOT** adopt a *business day convention* (as
-> it has no defined calendar).
+The D-ASA **MAY** specify a *business day convention* \\( [BDC] \\).
 
 ## End of Month Convention
 
@@ -102,15 +54,44 @@ method (see [Metadata](metadata.md) section).
 > The end-of-month convention defines how D-ASA execution can be shifted according
 > to the different number of days in months (31, 30, and 28) according to the calendar.
 
-The D-ASA **MAY** specify a *end-of-month convention* \\([EOMC]\\).
+The D-ASA **MAY** specify a *end-of-month convention* \\( [EOMC] \\).
 
-It is **RECOMMENDED** to use an ACTUS *end-of-month convention*.
+## Normalization profile restrictions
 
-The *end-of-month convention* **MAY** be set using the **OPTIONAL** `set_asset_metadata`
-method (see [Metadata](metadata.md) section).
+The D-ASA kernel **MUST** store one normalized day-count convention identifier.
 
-> A reference implementation **SHOULD NOT** adopt an *end-of-month day convention*
-> (as it has no defined calendar).
+The current kernel accepts the following identifiers:
+
+| ID  | Name          | ACTUS        |
+|:----|:--------------|:-------------|
+| `0` | Actual/Actual | `AA`         |
+| `1` | Actual/360    | `A360`       |
+| `2` | Actual/365    | `A365`       |
+| `3` | 30E/360 ISDA  | `30E360ISDA` |
+| `4` | 30E/360       | `30E360`     |
+
+A contract configuration **MUST** fail if the normalized terms use any other day-count
+identifier.
+
+The current D-ASA ACTUS profile imposes the following additional constraints on
+date handling:
+
+- `business_day_convention` **MUST** be `NOS`;
+- `calendar` **MUST** be `NC`;
+- Timestamps **MUST** be expressed as UTC UNIX seconds.
+
+Those constraints are enforced during normalization so that the AVM only receives
+values that can be executed deterministically without external calendar logic.
+
+## Accrual factors
+
+The AVM kernel does not recompute year fractions from raw dates. Instead, normalization
+**MUST** precompute the relevant accrual factors and place them in each `ExecutionScheduleEntry`.
+
+This split is intentional:
+
+- Date arithmetic and ACTUS schedule generation happen off chain;
+- Execution, validation, and state transitions happen on chain.
 
 ---
 

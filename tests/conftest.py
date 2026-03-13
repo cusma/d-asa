@@ -9,30 +9,20 @@ from algokit_utils import (
 )
 from algokit_utils.config import config
 
-from smart_contracts import constants as sc_cst
+from d_asa.artifacts.dasa_client import (
+    ContractCreateArgs,
+    DasaClient,
+    DasaFactory,
+)
 from tests import utils
 
 INITIAL_ALGO_FUNDS: Final[AlgoAmount] = AlgoAmount.from_algo(10_000)
 
 DENOMINATION_ASA_NAME: Final[str] = "Euro"
-DENOMINATION_ASA_UNIT: Final[str] = "EUR"
+DENOMINATION_ASA_UNIT: Final[str] = "€"
 DENOMINATION_ASA_DECIMALS: Final[int] = 2
 DENOMINATION_ASA_SCALE: Final[int] = 10**DENOMINATION_ASA_DECIMALS
 DENOMINATION_ASA_TOTAL: Final[int] = 10_000_000 * DENOMINATION_ASA_SCALE  # 10M Euro
-
-PRINCIPAL: Final[int] = 1_000_000 * DENOMINATION_ASA_SCALE  # 1M Euro
-MINIMUM_DENOMINATION: Final[int] = 1_000 * DENOMINATION_ASA_SCALE  # 1k Euro
-DAY_COUNT_CONVENTION: Final[list[int]] = [sc_cst.DCC_CONT, sc_cst.DCC_A_A]
-
-PRIMARY_DISTRIBUTION_DELAY: Final[int] = 1 * sc_cst.DAY_2_SEC
-PRIMARY_DISTRIBUTION_DURATION: Final[int] = 15 * sc_cst.DAY_2_SEC
-ISSUANCE_DELAY: Final[int] = 1 * sc_cst.DAY_2_SEC
-MATURITY_DELAY: Final[int] = 1 * sc_cst.DAY_2_SEC
-
-APR: Final[int] = 300  # BPS equal to 3%
-
-TOTAL_UNITS: Final[int] = PRINCIPAL // MINIMUM_DENOMINATION
-INITIAL_D_ASA_UNITS: Final[int] = 100
 
 
 @pytest.fixture(scope="session")
@@ -100,6 +90,21 @@ def currency(algorand: AlgorandClient, bank: SigningAccount) -> utils.Currency:
     )
 
 
-@pytest.fixture(scope="function", params=DAY_COUNT_CONVENTION)
-def day_count_convention(request) -> int:
-    return request.param
+@pytest.fixture(scope="function")
+def d_asa_client(
+    algorand: AlgorandClient,
+    arranger: SigningAccount,
+) -> DasaClient:
+    factory = algorand.client.get_typed_app_factory(
+        DasaFactory,
+        default_sender=arranger.address,
+        default_signer=arranger.signer,
+    )
+    client, _ = factory.send.create.contract_create(
+        ContractCreateArgs(arranger=arranger.address)
+    )
+    algorand.account.ensure_funded_from_environment(
+        account_to_fund=client.app_address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
+    )
+    return client

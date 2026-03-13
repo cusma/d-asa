@@ -8,6 +8,12 @@ runs:
       with:
         mdbook-version: '0.5.2'
 
+    - name: Install mdbook-mermaid
+      shell: bash
+      run: |
+        cargo install mdbook-mermaid --version 0.17.0 --locked
+        mdbook-mermaid install .
+
     - name: Test docs
       shell: bash
       run: mdbook test

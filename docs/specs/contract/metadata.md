@@ -1,12 +1,10 @@
 # Metadata {#metadata}
 
-> Metadata can be used to inform optional properties that define the specific D-ASA
-> implementation.
+> Metadata can be used to inform optional properties that define the specific D-ASA.
 
-The D-ASA metadata **MAY** be set using the **OPTIONAL** `set_asset_metadata` method.
-
-The D-ASA metadata **MAY** be updated using the **OPTIONAL** `set_asset_metadata`
-method.
+> [!IMPORTANT]
+> D-ASA metadata is *informational only*, they have no influence on the contract
+> execution and are non-normative with respect to ACTUS specifications.
 
 ## Prospectus
 
@@ -15,7 +13,7 @@ method.
 > The D-ASA can notarize the debt instrument prospectus in the metadata.
 
 The D-ASA *prospectus hash* (`byte[32]`) and *prospectus URL* (`string`) **MAY**
-be set using the **OPTIONAL** `set_asset_metadata` method.
+be set on contract configuration.
 
 The *prospectus hash* **MUST** be computed with SHA-512/256, as defined in
 <a href="https://doi.org/10.6028/NIST.FIPS.180-4">NIST FIPS 180-4</a>.

@@ -1,35 +1,13 @@
 import pytest
-from algokit_utils import (
-    AlgorandClient,
-    SigningAccount,
-)
+from algokit_utils import AlgorandClient, SigningAccount
 
 from smart_contracts.artifacts.mock_module_rbac.mock_rbac_module_client import (
     MockRbacModuleClient,
     MockRbacModuleFactory,
-    RbacAssignRoleArgs,
 )
 from tests import conftest_helpers as helpers
 from tests import utils
-from tests.shared import conftest as shared_fixtures
-
-contract_case = shared_fixtures.contract_case
-shared_asset_metadata = shared_fixtures.shared_asset_metadata
-shared_time_events = shared_fixtures.shared_time_events
-shared_cfg = shared_fixtures.shared_cfg
-shared_client_empty = shared_fixtures.shared_client_empty
-shared_account_manager = shared_fixtures.shared_account_manager
-shared_authority = shared_fixtures.shared_authority
-shared_trustee = shared_fixtures.shared_trustee
-shared_interest_oracle = shared_fixtures.shared_interest_oracle
-shared_client_active = shared_fixtures.shared_client_active
-shared_primary_dealer = shared_fixtures.shared_primary_dealer
-shared_account_factory = shared_fixtures.shared_account_factory
-shared_client_primary = shared_fixtures.shared_client_primary
-shared_account_with_units_factory = shared_fixtures.shared_account_with_units_factory
-shared_account_a = shared_fixtures.shared_account_a
-shared_account_b = shared_fixtures.shared_account_b
-shared_client_ongoing = shared_fixtures.shared_client_ongoing
+from tests.conftest import INITIAL_ALGO_FUNDS
 
 
 @pytest.fixture(scope="function")
@@ -37,9 +15,17 @@ def rbac_client(
     algorand: AlgorandClient,
     arranger: SigningAccount,
 ) -> MockRbacModuleClient:
-    return helpers.create_bare_client_and_fund(
-        algorand, MockRbacModuleFactory, arranger
+    factory = algorand.client.get_typed_app_factory(
+        MockRbacModuleFactory,
+        default_sender=arranger.address,
+        default_signer=arranger.signer,
     )
+    client, _ = factory.send.create.bare()
+    algorand.account.ensure_funded_from_environment(
+        account_to_fund=client.app_address,
+        min_spending_balance=INITIAL_ALGO_FUNDS,
+    )
+    return client
 
 
 @pytest.fixture(scope="function")
@@ -51,7 +37,6 @@ def authority(
         algorand,
         utils.DAsaAuthority,
         rbac_client,
-        rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
 
 
@@ -64,7 +49,6 @@ def trustee(
         algorand,
         utils.DAsaTrustee,
         rbac_client,
-        rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
 
 
@@ -77,7 +61,6 @@ def account_manager(
         algorand,
         utils.DAsaAccountManager,
         rbac_client,
-        rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
 
 
@@ -90,7 +73,6 @@ def primary_dealer(
         algorand,
         utils.DAsaPrimaryDealer,
         rbac_client,
-        rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
 
 
@@ -103,5 +85,4 @@ def interest_oracle(
         algorand,
         utils.DAsaInterestOracle,
         rbac_client,
-        rbac_assign_role_args_class=RbacAssignRoleArgs,
     )
