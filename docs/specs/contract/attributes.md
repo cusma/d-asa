@@ -99,7 +99,7 @@ The D-ASA **MUST** have an *initial exchange date* \\( [IED] \\) (issuance).
 
 The D-ASA **MAY** have a *maturity date* \\( [MD] \\).
 
-The *maturity date* **MAY** be updated in case or pre-payment options.
+The *maturity date* **MAY** be updated in case of pre-payment options.
 
 ## Prepayment Options
 
