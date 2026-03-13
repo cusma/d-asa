@@ -507,12 +507,16 @@ def _build_parser() -> argparse.ArgumentParser:
 
 def _config_from_args(args: argparse.Namespace) -> LocalNetConfig:
     base = load_localnet_config(default_host="host.docker.internal")
+    override_host = args.localnet_host
     return LocalNetConfig(
-        host=args.localnet_host or base.host,
+        host=override_host or base.host,
         token=args.localnet_token or base.token,
         algod_port=args.algod_port or base.algod_port,
         kmd_port=args.kmd_port or base.kmd_port,
         indexer_port=args.indexer_port or base.indexer_port,
+        algod_host=override_host or base.algod_host,
+        kmd_host=override_host or base.kmd_host,
+        indexer_host=override_host or base.indexer_host,
     )
 
 
