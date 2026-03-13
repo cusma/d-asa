@@ -71,6 +71,9 @@ suppress-none-returning = true
 
 [tool.pytest.ini_options]
 pythonpath = ["smart_contracts", "tests"]
+markers = [
+  "showcase: narrative LocalNet walkthroughs that are excluded from the default test run",
+]
 
 [tool.mypy]
 files = "smart_contracts/"

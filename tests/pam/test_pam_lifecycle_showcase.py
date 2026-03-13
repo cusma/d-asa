@@ -339,6 +339,7 @@ SHOWCASE_BUILDERS: tuple[
     SHOWCASE_BUILDERS,
     ids=("fcb", "zcb"),
 )
+@pytest.mark.showcase
 def test_pam_lifecycle_showcase(
     algorand: AlgorandClient,
     bank: SigningAccount,
