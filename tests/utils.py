@@ -172,6 +172,21 @@ def get_event_from_call_result(call_result: SendAppTransactionResult) -> bytes:
     return event_bytes[4:]
 
 
+def get_primary_tx_id(call_result: SendAppTransactionResult) -> str:
+    tx_ids = getattr(call_result, "tx_ids", None)
+    if isinstance(tx_ids, list) and tx_ids:
+        return tx_ids[0]
+
+    transaction = getattr(call_result, "transaction", None)
+    tx_id = getattr(transaction, "tx_id", None)
+    if callable(tx_id):
+        return tx_id()
+    if isinstance(tx_id, str):
+        return tx_id
+
+    raise ValueError("Unable to extract transaction id from call result")
+
+
 def decode_actus_event(event_bytes: bytes) -> dict:
     """
     Decode an ACTUS ARC-28 Event from bytes using ARC-4 encoding.
