@@ -6,50 +6,92 @@ Documentation: https://cusma.github.io/d-asa/
 
 The reference implementation follows the execution chain:
 
-```text
-ACTUS contract -> AVM normalization -> AVM execution
+```mermaid
+flowchart LR
+  ACTUS["ACTUS Contract"] --> NORMALIZE["AVM Normalization"]
+  NORMALIZE --> ABI["ABI Upload"]
+  ABI --> EXEC["AVM Execution"]
 ```
 
 The canonical ABI artifact is:
 
 - `src/artifacts/DASA.arc56.json`
 
-## Local Setup and Tests
+## Demo in One Command
 
-The D-ASA project is developed with [AlgoKit](https://algorand.co/algokit).
+The fastest way to showcase D-ASA is with Docker only.
 
-- Install AlgoKit
-- Set up your virtual environment (managed with [Poetry](https://python-poetry.org/))
+```shell
+./d-asa run
+```
+
+What `./d-asa run` does:
+
+- builds the local demo image
+- starts AlgoKit LocalNet if it is not already running
+- waits for algod to become reachable
+- runs the PAM fixed coupon and zero coupon showcase walkthroughs
+- tears LocalNet back down if this invocation started it
+
+Open the published docs with:
+
+```shell
+./d-asa docs
+```
+
+If you want the exact `d-asa ...` syntax in your current shell, you can add an alias:
+
+```shell
+alias d-asa="$PWD/d-asa"
+```
+
+If browser launch is not wanted:
+
+```shell
+D_ASA_NO_OPEN=1 ./d-asa docs
+```
+
+Notes:
+
+- targets macOS and Linux
+- Docker is the only required host dependency
+- the demo defaults to `host.docker.internal` for LocalNet access inside the container
+- advanced overrides are available through `D_ASA_LOCALNET_HOST`, `D_ASA_LOCALNET_TOKEN`, `D_ASA_ALGOD_PORT`, `D_ASA_KMD_PORT`, and `D_ASA_INDEXER_PORT`
+
+## Development
+
+The D-ASA project is developed with [AlgoKit](https://algorand.co/algokit) and [Poetry](https://python-poetry.org/).
+
+Bootstrap the development environment:
 
 ```shell
 algokit bootstrap all
 ```
 
-- Start your Algorand LocalNet (requires [Docker](https://www.docker.com/get-started/))
+Start your Algorand LocalNet:
 
 ```shell
 algokit localnet start
 ```
 
-- Run tests (managed with PyTest)
+Run the default test suite:
 
 ```shell
 algokit project run test
 ```
 
-or, for verbose results:
+Build smart contracts:
 
 ```shell
-poetry run pytest -s -v tests/<contract_name>/<test_case>.py
+algokit project run build
 ```
 
-For a lifecycle walkthrough that prints the normalized ACTUS schedule beside the
-real ARC-28 execution proofs and realized cashflows, run:
+Run the showcase tests directly:
 
 ```shell
 poetry run pytest -s -v -m showcase tests/pam/test_pam_lifecycle_showcase.py
 ```
 
-## How to contribute
+## Contributing
 
-Refer to D-ASA documentation!
+Refer to the published D-ASA documentation.
