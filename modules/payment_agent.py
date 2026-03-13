@@ -46,7 +46,24 @@ class PaymentAgent(AccountingModule):
 
     @arc4.abimethod
     def fund_due_cashflows(self, *, max_event_count: UInt64) -> typ.CashFundingResult:
-        """Reserve due ACTUS cash events into the escrow-style claim ledger."""
+        """
+        Reserve due ACTUS cash events into the escrow-style claim ledger.
+
+        Args:
+            max_event_count: Maximum number of due cash events to process in this call.
+
+        Returns:
+            Funding result with reserved interest, reserved principal, and event count.
+
+        Raises:
+            NOT_CONFIGURED: Contract terms and schedule are not fully configured.
+            UNAUTHORIZED: Caller is not the arranger.
+            DEFAULTED: Asset is defaulted.
+            SUSPENDED: Asset operations are suspended.
+            PENDING_IED: Initial exchange has not executed yet.
+            NO_DUE_CASHFLOW: No due cash event is currently available for funding.
+            NOT_ENOUGH_FUNDS: Contract account does not hold enough free settlement funds.
+        """
         self._assert_configured()
         self._assert_caller_is_arranger()
         self._assert_is_not_asset_defaulted()
@@ -96,7 +113,26 @@ class PaymentAgent(AccountingModule):
         holding_address: Account,
         payment_info: Bytes,
     ) -> typ.CashClaimResult:
-        """Withdraw the holder's already funded ACTUS cash entitlements."""
+        """
+        Withdraw the holder's already funded ACTUS cash entitlements.
+
+        Args:
+            holding_address: Holder whose position should be settled and claimed.
+            payment_info: Opaque settlement context returned in the result.
+
+        Returns:
+            Claim result with realized interest, principal, and passthrough context.
+
+        Raises:
+            NOT_CONFIGURED: Contract terms and schedule are not fully configured.
+            INVALID_HOLDING_ADDRESS: Holding address has no opened account.
+            UNAUTHORIZED: Caller is not authorized to trigger the claim.
+            DEFAULTED: Asset is defaulted.
+            SUSPENDED: Asset operations are suspended.
+            PENDING_IED: Initial exchange has not executed yet.
+            NO_DUE_CASHFLOW: The account has no claimable funded cashflow.
+            NOT_ENOUGH_FUNDS: Contract account lacks settlement funds for an executable payment.
+        """
         self._assert_configured()
         self._assert_valid_holding_address(holding_address)
         self._assert_payment_authorization(holding_address)

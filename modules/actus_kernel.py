@@ -1019,13 +1019,16 @@ class ActusKernelModule(RbacModule):
     @arc4.abimethod(create="require")
     def contract_create(self, *, arranger: Account) -> typ.TimeStamp:
         """
-        Create a new D-ASA contract and set the Arranger role
+        Create a new D-ASA contract and set the arranger role.
 
         Args:
-            arranger: D-ASA Arranger Address
+            arranger: D-ASA arranger address.
 
         Returns:
-            UNIX timestamp of contract creation
+            UNIX timestamp of contract creation.
+
+        Raises:
+            None: This method does not raise contract-specific errors.
         """
         self.arranger.value = arranger
         return Global.latest_timestamp
@@ -1044,20 +1047,21 @@ class ActusKernelModule(RbacModule):
         until all schedule pages are configured next.
 
         Args:
-            terms: Normalized ACTUS terms
-            initial_state: Initial kernel state (pre-IED)
-            prospectus: Prospectus (informational only)
+            terms: Normalized ACTUS terms.
+            initial_state: Initial kernel state captured before `IED`.
+            prospectus: Prospectus metadata stored for reference only.
 
         Returns:
-            UNIX timestamp of contract configuration
+            UNIX timestamp of contract configuration.
 
         Raises:
-            UNAUTHORIZED: Not authorized
-            ALREADY_CONFIGURED: Contract already configured
-            INVALID_ACTUS_CONFIG: Invalid ACTUS configuration
-            INVALID_DAY_COUNT_CONVENTION: Invalid day-count convention ID
-            INVALID_IED: IED must be set in the future
-            INVALID_SORTING: Time events are not sorted correctly
+            UNAUTHORIZED: Caller is not the arranger.
+            ALREADY_CONFIGURED: Contract configuration was already stored.
+            INVALID_ACTUS_CONFIG: Normalized terms are incompatible with the kernel.
+            INVALID_DAY_COUNT_CONVENTION: Day-count identifier is not supported on chain.
+            INVALID_DENOMINATION: Denomination asset is not valid for this implementation.
+            INVALID_SETTLEMENT_ASSET: Settlement asset does not match implementation rules.
+            INVALID_IED: Initial exchange date is not in a valid future position.
         """
         self._assert_caller_is_arranger()
 
@@ -1085,6 +1089,23 @@ class ActusKernelModule(RbacModule):
         The configuration operation is considered complete only when the last
         page is stored. At that point `schedule_entry_count` is finalized and
         the contract moves to `STATUS_PENDING_IED`.
+
+        Args:
+            schedule_page_index: Zero-based page index within the boxed schedule.
+            is_last_page: Whether this page finalizes the schedule upload.
+            schedule_page: Normalized schedule entries for the requested page.
+
+        Returns:
+            UNIX timestamp of the schedule upload.
+
+        Raises:
+            UNAUTHORIZED: Caller is not the arranger.
+            ALREADY_CONFIGURED: Schedule upload already finalized or contract is active.
+            TERMS_NOT_CONFIGURED: Terms were not stored before schedule upload.
+            INVALID_SCHEDULE_PAGE: Page size or page continuity is invalid.
+            INVALID_EVENT_ID: Event identifiers do not match the expected page offsets.
+            INVALID_ACTUS_CONFIG: Event type or entry payload is incompatible with the contract type.
+            INVALID_SORTING: Schedule entries are not chronologically ordered.
         """
         self._assert_caller_is_arranger()
 
@@ -1098,10 +1119,25 @@ class ActusKernelModule(RbacModule):
 
     @arc4.abimethod
     def contract_execute_ied(self) -> UInt64:
-        """Execute the first due `IED` entry and activate the contract.
+        """
+        Execute the first due `IED` entry and activate the contract.
 
         `IED` is the one non-cash event that moves the app from
         `STATUS_PENDING_IED` to `STATUS_ACTIVE`.
+
+        Returns:
+            UNIX timestamp of the `IED` execution.
+
+        Raises:
+            NOT_CONFIGURED: Contract terms and schedule are not fully configured.
+            UNAUTHORIZED: Caller is not the arranger.
+            DEFAULTED: Asset is defaulted.
+            SUSPENDED: Asset operations are suspended.
+            INVALID_EVENT_CURSOR: Current cursor does not point to the first schedule entry.
+            INVALID_EVENT_TYPE: Next due event is not `IED`.
+            NO_DUE_CASHFLOW: The `IED` entry is not yet due.
+            INVALID_ACTUS_CONFIG: Contract is not in the expected pre-IED state.
+            PRIMARY_DISTRIBUTION_INCOMPLETE: Not all units were allocated before issuance.
         """
         self._assert_configured()
         self._assert_caller_is_arranger()
@@ -1135,11 +1171,34 @@ class ActusKernelModule(RbacModule):
         event_id: UInt64,
         payload: typ.ObservedEventRequest,
     ) -> UInt64:
-        """Apply the next due non-cash event, optionally appending one first.
+        """
+        Apply the next due non-cash event, optionally appending one first.
 
         Observed payloads are appended before execution when flagged. Rate reset
         events require the interest oracle because they can change the running
         nominal rate; other non-cash events stay arranger-controlled.
+
+        Args:
+            event_id: Expected global schedule event identifier at the current cursor.
+            payload: Observed payload used for append-on-execute and/or rate resets.
+
+        Returns:
+            UNIX timestamp of the non-cash event application.
+
+        Raises:
+            NOT_CONFIGURED: Contract terms and schedule are not fully configured.
+            DEFAULTED: Asset is defaulted.
+            SUSPENDED: Asset operations are suspended.
+            OBSERVED_EVENT_REQUIRED: Observed-event append is not supported for this contract.
+            UNAUTHORIZED: Caller is not authorized for the selected non-cash event.
+            INVALID_EVENT_ID: Observed append payload does not target the schedule tail.
+            INVALID_EVENT_CURSOR: Requested event is not the next due cursor position.
+            INVALID_EVENT_TYPE: Requested event is not a supported non-cash event.
+            INVALID_SCHEDULE_PAGE: Observed append cannot be stored in the tail page.
+            INVALID_ACTUS_CONFIG: Event payload is incompatible with kernel state.
+            INVALID_SORTING: Observed append would break schedule ordering.
+            NO_DUE_CASHFLOW: The targeted non-cash event is not yet due.
+            PENDING_IED: Initial exchange has not executed yet for post-IED events.
         """
         self._assert_configured()
         self._assert_is_not_asset_defaulted()
@@ -1169,7 +1228,28 @@ class ActusKernelModule(RbacModule):
         *,
         payload: typ.ObservedCashEventRequest,
     ) -> UInt64:
-        """Append an arranger-authorized observed cash event to the schedule tail."""
+        """
+        Append an arranger-authorized observed cash event to the schedule tail.
+
+        Args:
+            payload: Observed cash-event payload to append after the current tail.
+
+        Returns:
+            UNIX timestamp of the append operation.
+
+        Raises:
+            NOT_CONFIGURED: Contract terms and schedule are not fully configured.
+            UNAUTHORIZED: Caller is not the arranger.
+            DEFAULTED: Asset is defaulted.
+            SUSPENDED: Asset operations are suspended.
+            PENDING_IED: Initial exchange has not executed yet.
+            OBSERVED_EVENT_REQUIRED: Observed cash events are not supported for this contract.
+            INVALID_EVENT_ID: Payload event id does not match the schedule tail.
+            INVALID_EVENT_TYPE: Payload event type is not the supported observed cash type.
+            INVALID_SCHEDULE_PAGE: Tail page cannot accept another schedule entry.
+            INVALID_ACTUS_CONFIG: Payload flags or values are inconsistent with the contract.
+            INVALID_SORTING: Payload time is earlier than the current schedule tail.
+        """
         self._assert_configured()
         self._assert_caller_is_arranger()
         self._assert_is_not_asset_defaulted()
@@ -1181,7 +1261,15 @@ class ActusKernelModule(RbacModule):
 
     @arc4.abimethod(readonly=True)
     def contract_get_state(self) -> typ.KernelState:
-        """Return a readonly snapshot of the generic ACTUS kernel state."""
+        """
+        Return a readonly snapshot of the generic ACTUS kernel state.
+
+        Returns:
+            Current kernel state snapshot.
+
+        Raises:
+            NOT_CONFIGURED: Contract terms and schedule are not fully configured.
+        """
         self._assert_configured()
         return typ.KernelState(
             contract_type=arc4.UInt8(self.contract_type),
@@ -1203,7 +1291,15 @@ class ActusKernelModule(RbacModule):
 
     @arc4.abimethod(readonly=True)
     def contract_get_next_due_event(self) -> typ.ExecutionScheduleEntry:
-        """Return the next boxed schedule entry, or a zeroed sentinel if ended."""
+        """
+        Return the next boxed schedule entry, or a zeroed sentinel if ended.
+
+        Returns:
+            Next due schedule entry, or an all-zero sentinel if the contract ended.
+
+        Raises:
+            NOT_CONFIGURED: Contract terms and schedule are not fully configured.
+        """
         self._assert_configured()
         if self.event_cursor >= self.schedule_entry_count:
             return typ.ExecutionScheduleEntry(
