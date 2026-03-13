@@ -1,8 +1,7 @@
 # ACTUS Kernel Interface
 
 The ACTUS Kernel interface configures the normalized contract, stores the execution
-schedule, records the contract-performance default flag, and advances non-cash
-lifecycle events.
+schedule, and advances non-cash lifecycle events.
 
 ## `contract_create`
 
@@ -152,25 +151,6 @@ Only the Arranger may call this method.
 }
 ```
 
-## `contract_set_default_status`
-
-```json
-{
-  "name": "contract_set_default_status",
-  "readonly": false,
-  "args": [
-    { "name": "defaulted", "type": "bool" }
-  ],
-  "returns": { "type": "uint64", "desc": "UNIX timestamp of the default-status update" },
-  "errors": ["UNAUTHORIZED"]
-}
-```
-
-Only an active Trustee may call this method.
-
-It sets or clears the contract-level `defaulted` performance flag. This flag is
-distinct from the kernel lifecycle `status`.
-
 ## `contract_get_state`
 
 ```json
@@ -183,8 +163,8 @@ distinct from the kernel lifecycle `status`.
 }
 ```
 
-`KernelState` does not include the separate `defaulted` performance flag. Clients
-that need that value must read the dedicated global-state key.
+`KernelState` does not include the separate RBAC-managed `defaulted` performance
+flag. Clients that need that value must read the dedicated global-state key.
 
 ## `contract_get_next_due_event`
 

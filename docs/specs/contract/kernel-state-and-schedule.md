@@ -125,10 +125,11 @@ stateDiagram-v2
 
 Kernel lifecycle `status` and contract performance are distinct concepts.
 
-In addition to `status`, the reference implementation stores a boolean global-state
-flag, `defaulted`, to record manual contract default performance.
+Outside the kernel normalized state, the reference implementation stores a boolean
+RBAC-managed global-state flag, `defaulted`, to record manual contract default
+performance.
 
-An active Trustee **MAY** update this flag by calling `contract_set_default_status`
+An active Trustee **MAY** update this flag by calling `rbac_contract_default`
 with a boolean `defaulted` argument.
 
 `defaulted` is not part of `InitialKernelState` and is not returned by `contract_get_state`.

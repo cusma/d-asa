@@ -148,8 +148,8 @@ Readonly snapshot returned by `contract_get_state`.
 | `reserved_interest`          | `uint64` | Reserved interest balance        |
 | `reserved_principal`         | `uint64` | Reserved principal balance       |
 
-The contract-level `defaulted` performance flag is stored separately in global
-state and is not part of `KernelState`.
+The contract-level `defaulted` performance flag is stored separately in RBAC-managed
+global state and is not part of `KernelState`.
 
 ## `AccountPosition`
 

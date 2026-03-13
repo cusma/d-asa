@@ -64,10 +64,11 @@ When an account is suspended, the implementation **MUST** reject:
 
 ## Trustee-controlled default
 
-`contract_set_default_status` **MUST** be restricted to the Trustee role.
+`rbac_contract_default` **MUST** be restricted to the Trustee role.
 
 In the current reference implementation, this method sets or clears the contract-level
-`defaulted` performance flag. It does not change the kernel lifecycle `status`.
+`defaulted` performance flag in RBAC global state. It does not change the kernel
+lifecycle `status`.
 
 ## Observer-controlled events
 

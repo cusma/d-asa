@@ -93,4 +93,4 @@ ABI and, if enforced, **MUST** be configured separately at the execution layer.
 
 The contract-level `defaulted` performance flag is not part of normalization or
 `InitialKernelState`. If used, it is updated separately at execution time through
-`contract_set_default_status`.
+the RBAC method `rbac_contract_default`.

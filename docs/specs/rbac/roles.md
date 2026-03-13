@@ -95,7 +95,7 @@ The Trustee role **MUST** control the contract performance \\( [PRF] \\) (see
 [Performance](../contract/attributes.md#performance) section for further details).
 
 In the current reference implementation, an active Trustee can set or clear the
-contract-level `defaulted` performance flag with `contract_set_default_status`.
+contract-level `defaulted` performance flag with `rbac_contract_default`.
 
 This performance flag is distinct from the kernel lifecycle `status`.
 

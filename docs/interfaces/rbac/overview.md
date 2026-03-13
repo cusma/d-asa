@@ -1,6 +1,7 @@
 # RBAC Interface
 
-The RBAC interface manages privileged roles, suspension state, and application control.
+The RBAC interface manages privileged roles, suspension state, contract default
+state, and application control.
 
 Only the Arranger may call RBAC methods, unless otherwise specified.
 
@@ -92,6 +93,25 @@ This is a non-normative helper for payment automation.
 ```
 
 Only an active Authority may call this method.
+
+## `rbac_contract_default`
+
+```json
+{
+  "name": "rbac_contract_default",
+  "readonly": false,
+  "args": [
+    { "name": "defaulted", "type": "bool" }
+  ],
+  "returns": { "type": "uint64", "desc": "UNIX timestamp of the default update" },
+  "errors": ["UNAUTHORIZED"]
+}
+```
+
+Only an active Trustee may call this method.
+
+It sets or clears the contract-level `defaulted` performance flag. This flag is
+distinct from the kernel lifecycle `status`.
 
 ## `rbac_get_arranger`
 
