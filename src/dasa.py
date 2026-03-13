@@ -18,6 +18,7 @@ from algokit_utils import (
 from algosdk.atomic_transaction_composer import TransactionSigner
 from algosdk.constants import ZERO_ADDRESS
 from algosdk.transaction import Transaction
+from algosdk.v2client.models import SimulateTraceConfig
 
 from smart_contracts import constants as cst
 from smart_contracts import enums
@@ -39,6 +40,8 @@ from .artifacts.dasa_client import (
     AccountUpdatePaymentAddressArgs,
     AppendObservedCashEventArgs,
     ApplyNonCashEventArgs,
+    CashClaimResult,
+    CashFundingResult,
     ClaimDueCashflowsArgs,
     ContractConfigArgs,
     ContractCreateArgs,
@@ -264,8 +267,26 @@ class OtcDvpDraft:
     def send(self, send_params: SendParams | None = None) -> object:
         return self.composer.send(send_params)
 
-    def simulate(self, **kwargs: object) -> object:
-        return self.composer.simulate(**kwargs)
+    def simulate(
+        self,
+        *,
+        allow_more_logs: bool | None = None,
+        allow_empty_signatures: bool | None = None,
+        allow_unnamed_resources: bool | None = None,
+        extra_opcode_budget: int | None = None,
+        exec_trace_config: SimulateTraceConfig | None = None,
+        simulation_round: int | None = None,
+        skip_signatures: bool | None = None,
+    ) -> object:
+        return self.composer.simulate(
+            allow_more_logs=allow_more_logs,
+            allow_empty_signatures=allow_empty_signatures,
+            allow_unnamed_resources=allow_unnamed_resources,
+            extra_opcode_budget=extra_opcode_budget,
+            exec_trace_config=exec_trace_config,
+            simulation_round=simulation_round,
+            skip_signatures=skip_signatures,
+        )
 
 
 def _scaled_mul_div(multiplicand: int, multiplier: int, divisor: int) -> int:
@@ -711,7 +732,7 @@ class ArrangerRole(_BoundRole):
         result = self._client.send.fund_due_cashflows(
             FundDueCashflowsArgs(max_event_count=max_event_count)
         )
-        funding = result.abi_return
+        funding = cast(CashFundingResult, result.abi_return)
         return FundingResult(
             funded_interest=funding.funded_interest,
             funded_principal=funding.funded_principal,
@@ -859,7 +880,7 @@ class OpDaemonRole(_BoundRole):
             params=CommonAppCallParams(max_fee=DEFAULT_CLAIM_FEE),
             send_params=SendParams(cover_app_call_inner_transaction_fees=True),
         )
-        claim = result.abi_return
+        claim = cast(CashClaimResult, result.abi_return)
         return ClaimResult(
             interest_amount=claim.interest_amount,
             principal_amount=claim.principal_amount,
@@ -1133,7 +1154,7 @@ class HoldingAccount(_BoundRole):
             params=CommonAppCallParams(max_fee=DEFAULT_CLAIM_FEE),
             send_params=SendParams(cover_app_call_inner_transaction_fees=True),
         )
-        claim = result.abi_return
+        claim = cast(CashClaimResult, result.abi_return)
         return ClaimResult(
             interest_amount=claim.interest_amount,
             principal_amount=claim.principal_amount,
