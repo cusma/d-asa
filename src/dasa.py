@@ -533,7 +533,10 @@ class ContractView:
         *,
         at_time: int | None = None,
     ) -> AddressRoles:
-        timestamp = at_time or _latest_timestamp(self._client)
+        if at_time is None:
+            timestamp = _latest_timestamp(self._client)
+        else:
+            timestamp = at_time
         arranger = self._client.state.global_state.arranger
         op_daemon = self._client.state.global_state.op_daemon
 
