@@ -5,8 +5,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Literal, cast
 
-from smart_contracts.constants import DAY_2_SEC
-
+from .constants import DAY_2_SEC
 from .day_count import (
     BusinessDayConvention,
     Calendar,

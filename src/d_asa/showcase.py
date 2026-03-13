@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import TypeVar
 
 from algokit_utils import (
     AlgoAmount,
@@ -14,10 +13,9 @@ from algokit_utils import (
     SigningAccount,
 )
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-from src import NormalizationResult, normalize_contract_attributes
-from src.artifacts.dasa_client import (
+from . import constants as cst
+from . import enums
+from .artifacts.dasa_client import (
     ClaimDueCashflowsArgs,
     ContractCreateArgs,
     DasaClient,
@@ -26,8 +24,8 @@ from src.artifacts.dasa_client import (
     RbacAssignRoleArgs,
     RoleValidity,
 )
-from src.contracts import make_pam_fixed_coupon_bond_profile, make_pam_zero_coupon_bond
-from src.localnet import (
+from .contracts import make_pam_fixed_coupon_bond_profile, make_pam_zero_coupon_bond
+from .localnet import (
     Currency,
     DAsaAccountManager,
     DAsaPrimaryDealer,
@@ -40,7 +38,9 @@ from src.localnet import (
     load_localnet_config,
     time_warp,
 )
-from src.pam_lifecycle import (
+from .models import NormalizationResult
+from .normalization import normalize_contract_attributes
+from .pam_lifecycle import (
     ISSUANCE_DELAY_CYCLE,
     MINIMUM_DENOMINATION,
     PRINCIPAL,
@@ -51,8 +51,8 @@ from src.pam_lifecycle import (
     make_claim_trace,
     setup_pam_lifecycle,
 )
-from src.registry import EVENT_TYPE_IDS
-from src.schedule import Cycle
+from .registry import EVENT_TYPE_IDS
+from .schedule import Cycle
 
 INITIAL_ALGO_FUNDS = AlgoAmount.from_algo(10_000)
 DENOMINATION_ASA_NAME = "Euro"
@@ -66,8 +66,6 @@ INTEREST_PAYMENT_CYCLE = Cycle.parse_cycle("90D")
 MATURITY_OFFSET_CYCLE = Cycle.parse_cycle("1800D")
 ZERO_COUPON_MATURITY_CYCLE = Cycle.parse_cycle("360D")
 ZERO_COUPON_DISCOUNT_BPS = 200
-
-RoleAccountType = TypeVar("RoleAccountType", bound=SigningAccount)
 
 
 @dataclass(frozen=True, slots=True)
@@ -435,7 +433,7 @@ def _create_dasa_client(
     return client
 
 
-def _create_role_account(
+def _create_role_account[RoleAccountType: SigningAccount](
     algorand: AlgorandClient,
     role_account_class: type[RoleAccountType],
     client: DasaClient,

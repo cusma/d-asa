@@ -2,9 +2,8 @@ from calendar import monthrange
 from datetime import datetime
 from enum import IntEnum
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-
+from . import constants as cst
+from . import enums
 from .errors import ActusNormalizationError
 from .unix_time import UTCTimeStamp, timestamp_to_datetime
 

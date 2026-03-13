@@ -20,9 +20,8 @@ from algosdk.constants import ZERO_ADDRESS
 from algosdk.transaction import Transaction
 from algosdk.v2client.models import SimulateTraceConfig
 
-from smart_contracts import constants as cst
-from smart_contracts import enums
-
+from . import constants as cst
+from . import enums
 from ._dasa_mappers import (
     to_client_initial_state,
     to_client_observed_cash_event,

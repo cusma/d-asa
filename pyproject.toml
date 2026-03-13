@@ -1,21 +1,18 @@
-[tool.poetry]
+[project]
 name = "d-asa"
 version = "0.20.0"
 description = "Debt Algorand Standard Application"
 license = "AGPL-3.0"
-authors = ["cusma <cosimo.bassi@gmail.com>"]
-maintainers = ["cusma <cosimo.bassi@gmail.com>"]
 readme = "README.md"
-documentation = "https://cusma.github.io/d-asa/"
-repository = "https://github.com/cusma/d-asa"
-packages = [
-  { include = "src" },
-  { include = "smart_contracts" },
-  { include = "modules" },
+requires-python = ">=3.13,<4.0"
+authors = [
+  { name = "cusma", email = "cosimo.bassi@gmail.com" },
 ]
-include = [
-  "src/artifacts/*.json",
-  "smart_contracts/artifacts/**/*",
+maintainers = [
+  { name = "cusma", email = "cosimo.bassi@gmail.com" },
+]
+dependencies = [
+  "algokit-utils>=4.2.3,<5.0.0",
 ]
 keywords = [
   "algorand",
@@ -26,9 +23,20 @@ keywords = [
   "actus",
 ]
 
+[project.urls]
+Documentation = "https://cusma.github.io/d-asa/"
+Repository = "https://github.com/cusma/d-asa"
+
+[tool.poetry]
+packages = [
+  { include = "d_asa", from = "src" },
+]
+include = [
+  { path = "src/d_asa/artifacts/*.json", format = ["sdist", "wheel"] },
+]
+
 [tool.poetry.dependencies]
-python = "^3.13"
-algokit-utils = "^4.2.3"
+python = ">=3.13,<4.0"
 
 [tool.poetry.group.dev.dependencies]
 algokit-client-generator = "^2.2.0"
@@ -54,7 +62,7 @@ ipykernel = "^7.2.0"
 jupyterlab = "^4.4.7"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
@@ -79,13 +87,16 @@ lint.unfixable = ["B", "RUF"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["ANN001", "ANN401", "E501"]
+"smart_contracts/abi_types.py" = ["UP040"]
+"smart_contracts/events.py" = ["UP040"]
+"modules/**" = ["UP040"]
 
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true
 suppress-none-returning = true
 
 [tool.pytest.ini_options]
-pythonpath = ["smart_contracts", "tests"]
+pythonpath = ["src", "tests"]
 markers = [
   "showcase: narrative LocalNet walkthroughs that are excluded from the default test run",
 ]
@@ -93,6 +104,7 @@ markers = [
 [tool.mypy]
 files = "smart_contracts/"
 python_version = "3.12"
+mypy_path = "src"
 disallow_any_generics = true
 disallow_subclassing_any = true
 disallow_untyped_calls = true
@@ -110,6 +122,12 @@ disallow_any_expr = true
 disallow_any_decorated = true
 disallow_any_explicit = true
 untyped_calls_exclude = ["algosdk"]
+
+[[tool.mypy.overrides]]
+module = "smart_contracts.d_asa.deploy_config"
+disallow_any_unimported = false
+disallow_any_expr = false
+follow_imports = "skip"
 
 [[tool.mypy.overrides]]
 module = "tests.*"

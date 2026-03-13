@@ -269,7 +269,7 @@ def make_pam_fixed_coupon_bond_profile(
 
     Example:
         >>> from decimal import Decimal
-        >>> from src.schedule import Cycle
+        >>> from d_asa.schedule import Cycle
         >>> fcb = make_pam_fixed_coupon_bond_profile(
         ...     contract_id=2,
         ...     status_date=1609459200,  # 2021-01-01

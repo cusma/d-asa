@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from smart_contracts import enums
-
+from . import enums
 from .errors import ActusNormalizationError
 from .unix_time import UTCTimeStamp
 

@@ -1,0 +1,42 @@
+from typing import Final
+
+################################################################################
+# AVM
+################################################################################
+MAX_UINT64: Final[int] = 2**64 - 1
+MAX_ARGS_SIZE: Final[int] = 2048
+OP_UP_CONTRACT_CONFIG_BASE_BUDGET: Final[int] = 1_500
+OP_UP_CONTRACT_CONFIG_PER_ENTRY_BUDGET: Final[int] = 100
+OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET: Final[int] = 1_500
+OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET: Final[int] = 100
+OP_UP_NON_CASH_BASE_BUDGET: Final[int] = 1_500
+OP_UP_NON_CASH_PER_ENTRY_BUDGET: Final[int] = 100
+SCHEDULE_PAGE_SIZE: Final[int] = 16
+
+################################################################################
+# Conversions
+################################################################################
+BPS: Final[int] = 10_000
+FIXED_POINT_SCALE: Final[int] = 1_000_000_000
+DAY_2_SEC: Final[int] = 24 * 60 * 60
+
+################################################################################
+# Role Keys Prefix
+################################################################################
+PREFIX_ID_ARRANGER: Final[bytes] = b"R:ARR#"
+PREFIX_ID_OP_DAEMON: Final[bytes] = b"R:OPD#"
+PREFIX_ID_ACCOUNT_MANAGER: Final[bytes] = b"R:MNG#"
+PREFIX_ID_PRIMARY_DEALER: Final[bytes] = b"R:PYD#"
+PREFIX_ID_TRUSTEE: Final[bytes] = b"R:TRS#"
+PREFIX_ID_AUTHORITY: Final[bytes] = b"R:AUT#"
+PREFIX_ID_OBSERVER: Final[bytes] = b"R:MOC#"
+
+################################################################################
+# Accounting Prefix
+################################################################################
+PREFIX_ID_ACCOUNT: Final[bytes] = b"A#"
+
+################################################################################
+# ACTUS Schedule Prefix
+################################################################################
+PREFIX_ID_SCHEDULE_PAGE: Final[bytes] = b"S#"

@@ -21,7 +21,8 @@ from algokit_utils.models.network import AlgoClientNetworkConfig
 from algosdk.kmd import KMDClient
 from algosdk.v2client.algod import AlgodClient
 
-from src.artifacts.dasa_client import AccountGetPositionArgs
+from . import enums
+from .artifacts.dasa_client import AccountGetPositionArgs
 
 DEFAULT_LOCALNET_HOST = "localhost"
 DEFAULT_LOCALNET_TOKEN = "a" * 64
@@ -107,8 +108,6 @@ class Currency:
 class DAsaAccountManager(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
-        from smart_contracts import enums
-
         return enums.ROLE_ACCOUNT_MANAGER
 
 
@@ -116,8 +115,6 @@ class DAsaAccountManager(SigningAccount):
 class DAsaPrimaryDealer(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
-        from smart_contracts import enums
-
         return enums.ROLE_PRIMARY_DEALER
 
 
@@ -125,8 +122,6 @@ class DAsaPrimaryDealer(SigningAccount):
 class DAsaTrustee(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
-        from smart_contracts import enums
-
         return enums.ROLE_TRUSTEE
 
 
@@ -134,8 +129,6 @@ class DAsaTrustee(SigningAccount):
 class DAsaAuthority(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
-        from smart_contracts import enums
-
         return enums.ROLE_AUTHORITY
 
 
@@ -143,8 +136,6 @@ class DAsaAuthority(SigningAccount):
 class DAsaInterestOracle(SigningAccount):
     @classmethod
     def role_id(cls) -> int:
-        from smart_contracts import enums
-
         return enums.ROLE_OBSERVER
 
 
