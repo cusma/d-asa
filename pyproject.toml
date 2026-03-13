@@ -33,6 +33,7 @@ packages = [
 ]
 include = [
   { path = "src/d_asa/artifacts/*.json", format = ["sdist", "wheel"] },
+  { path = "src/d_asa/py.typed", format = ["sdist", "wheel"] },
 ]
 
 [tool.poetry.dependencies]
