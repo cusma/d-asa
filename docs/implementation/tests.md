@@ -27,14 +27,31 @@ or, for verbose results:
 poetry run pytest -s -v tests/<contract_name>/<test_case>.py
 ```
 
-## Coverage Principles
+The repository also includes a D-ASA showcase walkthrough that prints the
+normalized ACTUS schedule beside the real ARC-28 execution proofs and realized
+cashflows for PAM fixed coupon and zero coupon bonds:
 
-- Module-level RBAC and Accounting behavior in `tests/module_*` (both with stand-alone
-mocked modules and concrete contracts).
+```shell
+poetry run pytest -s -v tests/pam/test_pam_lifecycle_showcase.py
+```
 
-- Shared CoreFinancial behavior is validated through `tests/shared/*` and runs on:
-  - `zero_coupon_bond`
-  - `fixed_coupon_bond`
-  - `perpetual_bond`
+## Coverage Areas
 
-- Product-specific financial behavior is validated in contract-specific suites.
+- `tests/sdk/*` covers the Python-side SDK and normalization layer: contract
+  builders, schedules, day-count conventions, registry mappings, models, and
+  deploy configuration helpers.
+
+- `tests/mock_module_rbac/*` exercises RBAC behavior in isolation through the
+  dedicated mock module artifact.
+
+- `tests/pam/fcb/*` and `tests/pam/zcb/*` run end-to-end PAM lifecycle tests on
+  LocalNet for fixed coupon and zero coupon bonds, including schedule upload,
+  `IED`, cashflow funding, holder claims, and final contract state.
+
+- `tests/pam/test_pam_lifecycle_showcase.py` is the narrative walkthrough suite
+  for new users. It prints the normalized ACTUS schedule beside the emitted
+  ARC-28 execution receipts and realized cashflows.
+
+- Shared fixtures live in `tests/conftest.py`, `tests/pam/conftest.py`, and
+  `tests/conftest_helpers.py`; helper decoding and time-warp utilities live in
+  `tests/utils.py`.
