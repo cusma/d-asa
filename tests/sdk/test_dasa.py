@@ -505,3 +505,38 @@ def test_contract_view_role_helpers_resolve_active_roles() -> None:
         DAsaRole.ACCOUNT_MANAGER,
         "MANAGER",
     ) == RoleValidityWindow(0, 2**64 - 1)
+
+
+def test_contract_view_get_address_roles_at_time_zero() -> None:
+    """Test that get_address_roles correctly uses timestamp 0 when at_time=0 is passed."""
+    # Current timestamp is much later than 0
+    current_timestamp = 1_700_000_000
+
+    client = FakeClient(
+        timestamp=current_timestamp,
+        global_state=_global_state(op_daemon="OP_DAEMON"),
+        role_maps={
+            "account_manager": {
+                "MANAGER": SimpleNamespace(
+                    # Role is only valid from timestamp 1000 onwards
+                    role_validity_start=1000,
+                    role_validity_end=2**64 - 1,
+                )
+            }
+        },
+    )
+
+    contract_view = DAsa.from_client(client).contract
+
+    # When checking roles at current time, the role should be active (1000 < current_timestamp)
+    roles_now = contract_view.get_address_roles("MANAGER")
+    assert roles_now.account_manager is True
+
+    # When checking roles at timestamp 0, the role should NOT be active (0 < 1000)
+    # This tests the edge case where at_time=0 should use 0, not fall back to current timestamp
+    roles_at_zero = contract_view.get_address_roles("MANAGER", at_time=0)
+    assert roles_at_zero.account_manager is False
+
+    # When checking roles at timestamp 1000, the role should be active (exactly at start)
+    roles_at_start = contract_view.get_address_roles("MANAGER", at_time=1000)
+    assert roles_at_start.account_manager is True
