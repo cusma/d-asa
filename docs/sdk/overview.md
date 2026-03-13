@@ -2,7 +2,7 @@
 
 The high-level Python API lives directly under `src` and is centered on `DAsa`.
 
-It wraps the generated ARC-56 client in [`src.artifacts.dasa_client`](/Users/cosimo/Workspace/code/d-asa/src/artifacts/dasa_client.py) and keeps the generated ABI structs out of the normal user flow.
+It wraps the generated ARC-56 client in [`src.artifacts.dasa_client`](../../src/artifacts/dasa_client.py) and keeps the generated ABI structs out of the normal user flow.
 
 ```python
 from src import (

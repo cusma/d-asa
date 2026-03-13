@@ -533,7 +533,10 @@ class ContractView:
         *,
         at_time: int | None = None,
     ) -> AddressRoles:
-        timestamp = _latest_timestamp(self._client) if at_time is None else at_time
+        if at_time is None:
+            timestamp = _latest_timestamp(self._client)
+        else:
+            timestamp = at_time
         arranger = self._client.state.global_state.arranger
         op_daemon = self._client.state.global_state.op_daemon
 
@@ -889,14 +892,9 @@ class HoldingAccount(_BoundRole):
             raise ValueError(f"unknown holding address: {self.holding_address}")
         return to_sdk_account_position(position)
 
-    def get_actualized_position(self) -> AccountPosition:
-        return _actualize_position(
-            self.get_raw_position(),
-            state=self.contract.get_state(),
-        )
-
-    def _get_actualized_position_at_timestamp(self, timestamp: int) -> AccountPosition:
-        """Internal method that accepts a pre-resolved timestamp."""
+    def get_actualized_position(self, at_time: int | None = None) -> AccountPosition:
+        if at_time is not None:
+            self._resolve_quote_timestamp(at_time)
         return _actualize_position(
             self.get_raw_position(),
             state=self.contract.get_state(),
@@ -904,12 +902,8 @@ class HoldingAccount(_BoundRole):
 
     def get_valuation(self, at_time: int | None = None) -> AccountValuation:
         valuation_timestamp = self._resolve_quote_timestamp(at_time)
-        return self._get_valuation_at_timestamp(valuation_timestamp)
-
-    def _get_valuation_at_timestamp(self, timestamp: int) -> AccountValuation:
-        """Internal method that accepts a pre-resolved timestamp to avoid redundant network calls."""
         state = self.contract.get_state()
-        position = self._get_actualized_position_at_timestamp(timestamp)
+        position = self.get_actualized_position(valuation_timestamp)
         principal_share = _share_amount(
             state.outstanding_principal,
             units=position.units,
@@ -919,10 +913,10 @@ class HoldingAccount(_BoundRole):
         accrued_interest_not_due = self._accrued_interest_not_due(
             state=state,
             units=position.units,
-            at_time=timestamp,
+            at_time=valuation_timestamp,
         )
         return AccountValuation(
-            valuation_timestamp=timestamp,
+            valuation_timestamp=valuation_timestamp,
             position=position,
             principal_share=principal_share,
             claimable_interest=position.claimable_interest,
@@ -956,7 +950,7 @@ class HoldingAccount(_BoundRole):
             raise ValueError("cannot quote while a due ACTUS event is pending")
         self._assert_transfer_is_open(state=state, at_time=valuation_timestamp)
 
-        valuation = self._get_valuation_at_timestamp(valuation_timestamp)
+        valuation = self.get_valuation(valuation_timestamp)
         if units <= 0:
             raise ValueError("units must be greater than zero")
         if units > valuation.position.units:
@@ -1327,6 +1321,10 @@ class DAsa:
             transfer_opening_date=transfer_opening_date,
             transfer_closure_date=transfer_closure_date,
         )
+        app._pricing_context = PricingContext(
+            notional_unit_value=resolved.terms.notional_unit_value
+        )
+        app.contract._pricing_context = app._pricing_context
         return app
 
     @classmethod
