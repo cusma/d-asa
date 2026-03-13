@@ -1,3 +1,4 @@
+from .artifacts import dasa_client
 from .errors import ActusNormalizationError, UnsupportedActusFeatureError
 from .models import (
     AccountPosition,
@@ -22,5 +23,6 @@ __all__ = [
     "ObservedCashEventRequest",
     "ObservedEventRequest",
     "UnsupportedActusFeatureError",
+    "dasa_client",
     "normalize_contract_attributes",
 ]

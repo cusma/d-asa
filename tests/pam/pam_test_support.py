@@ -16,7 +16,8 @@ from algokit_utils import (
 
 from smart_contracts import constants as cst
 from smart_contracts import errors as err
-from smart_contracts.artifacts.d_asa.dasa_client import (
+from src import NormalizationResult
+from src.artifacts.dasa_client import (
     AccountOpenArgs,
     ClaimDueCashflowsArgs,
     ContractConfigArgs,
@@ -29,7 +30,6 @@ from smart_contracts.artifacts.d_asa.dasa_client import (
     Prospectus,
     TransferArgs,
 )
-from src import NormalizationResult
 from src.registry import EVENT_TYPE_IDS
 from src.schedule import Cycle
 from tests import utils

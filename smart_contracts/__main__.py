@@ -22,6 +22,11 @@ load_dotenv()
 
 # Determine the root path based on this file's location.
 root_path = Path(__file__).parent
+src_artifact_path = root_path.parent / "src" / "artifacts"
+canonical_src_contract_name = "d_asa"
+canonical_src_app_spec_name = "DASA.arc56.json"
+canonical_src_client_name = "dasa_client.py"
+generated_artifacts_init = '"""Generated client artifacts."""\n'
 
 # ----------------------- Contract Configuration ----------------------- #
 
@@ -74,8 +79,12 @@ contracts: list[SmartContract] = [
 deployment_extension = "py"
 
 
-def _get_output_path(output_dir: Path, deployment_extension: str) -> Path:
+def _get_output_path(
+    output_dir: Path, contract_name: str, deployment_extension: str
+) -> Path:
     """Constructs the output path for the generated client file."""
+    if contract_name == canonical_src_contract_name:
+        return src_artifact_path / canonical_src_client_name
     return output_dir / Path(
         "{contract_name}"
         + ("_client" if deployment_extension == "py" else "Client")
@@ -83,7 +92,52 @@ def _get_output_path(output_dir: Path, deployment_extension: str) -> Path:
     )
 
 
-def build(output_dir: Path, contract_path: Path) -> Path:
+def _get_app_spec_path(output_dir: Path, contract_name: str) -> Path | None:
+    """Gets the canonical ARC-56 path for a contract if it exists."""
+    if contract_name == canonical_src_contract_name:
+        app_spec_path = src_artifact_path / canonical_src_app_spec_name
+        return app_spec_path if app_spec_path.exists() else None
+
+    return next(
+        (
+            file
+            for file in output_dir.iterdir()
+            if file.is_file() and file.suffixes == [".arc56", ".json"]
+        ),
+        None,
+    )
+
+
+def _reset_src_artifacts(contract_name: str) -> None:
+    """Clears and recreates the canonical generated artifact package."""
+    if contract_name != canonical_src_contract_name:
+        return
+
+    if src_artifact_path.exists():
+        rmtree(src_artifact_path)
+    src_artifact_path.mkdir(parents=True, exist_ok=True)
+    (src_artifact_path / "__init__.py").write_text(
+        generated_artifacts_init, encoding="utf-8"
+    )
+
+
+def _sync_src_artifacts(output_dir: Path, contract_name: str) -> Path | None:
+    """Moves the canonical D-ASA artifacts into src/artifacts."""
+    if contract_name != canonical_src_contract_name:
+        return None
+
+    src_artifact_path.mkdir(parents=True, exist_ok=True)
+
+    app_spec_path = output_dir / canonical_src_app_spec_name
+    if not app_spec_path.exists():
+        raise Exception("Could not build contract, DASA.arc56.json file not found")
+
+    canonical_app_spec_path = src_artifact_path / canonical_src_app_spec_name
+    app_spec_path.replace(canonical_app_spec_path)
+    return canonical_app_spec_path
+
+
+def build(output_dir: Path, contract_name: str, contract_path: Path) -> Path:
     """
     Builds the contract by exporting (compiling) its source and generating a client.
     If the output directory already exists, it is cleared.
@@ -92,6 +146,7 @@ def build(output_dir: Path, contract_path: Path) -> Path:
     if output_dir.exists():
         rmtree(output_dir)
     output_dir.mkdir(exist_ok=True, parents=True)
+    _reset_src_artifacts(contract_name)
     logger.info(f"Exporting {contract_path} to {output_dir}")
 
     build_result = subprocess.run(
@@ -129,6 +184,10 @@ def build(output_dir: Path, contract_path: Path) -> Path:
         for file_name in app_spec_file_names:
             client_file = file_name
             print(file_name)
+            client_output_path = _get_output_path(
+                output_dir, contract_name, deployment_extension
+            )
+            client_output_path.parent.mkdir(exist_ok=True, parents=True)
             generate_result = subprocess.run(
                 [
                     "algokit",
@@ -136,7 +195,7 @@ def build(output_dir: Path, contract_path: Path) -> Path:
                     "client",
                     str(output_dir),
                     "--output",
-                    str(_get_output_path(output_dir, deployment_extension)),
+                    str(client_output_path),
                 ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
@@ -155,8 +214,9 @@ def build(output_dir: Path, contract_path: Path) -> Path:
                     raise Exception(
                         f"Could not generate typed client:\n{generate_result.stdout}"
                     )
+    canonical_app_spec_path = _sync_src_artifacts(output_dir, contract_name)
     if client_file:
-        return output_dir / client_file
+        return canonical_app_spec_path or output_dir / client_file
     return output_dir
 
 
@@ -177,19 +237,12 @@ def main(action: str, contract_name: str | None = None) -> None:
         case "build":
             for contract in filtered_contracts:
                 logger.info(f"Building app at {contract.path}")
-                build(artifact_path / contract.name, contract.path)
+                build(artifact_path / contract.name, contract.name, contract.path)
         case "deploy":
             for contract in filtered_contracts:
                 output_dir = artifact_path / contract.name
-                app_spec_file_name = next(
-                    (
-                        file.name
-                        for file in output_dir.iterdir()
-                        if file.is_file() and file.suffixes == [".arc56", ".json"]
-                    ),
-                    None,
-                )
-                if app_spec_file_name is None:
+                app_spec_path = _get_app_spec_path(output_dir, contract.name)
+                if app_spec_path is None:
                     raise Exception("Could not deploy app, .arc56.json file not found")
                 if contract.deploy:
                     logger.info(f"Deploying app {contract.name}")
@@ -197,7 +250,7 @@ def main(action: str, contract_name: str | None = None) -> None:
         case "all":
             for contract in filtered_contracts:
                 logger.info(f"Building app at {contract.path}")
-                build(artifact_path / contract.name, contract.path)
+                build(artifact_path / contract.name, contract.name, contract.path)
                 if contract.deploy:
                     logger.info(f"Deploying {contract.name}")
                     contract.deploy()

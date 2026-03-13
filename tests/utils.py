@@ -1,4 +1,3 @@
-import math
 from base64 import b64decode
 from dataclasses import asdict, dataclass
 from typing import Any, TypeAlias
@@ -10,15 +9,12 @@ from algokit_utils import (
     SendAppTransactionResult,
     SigningAccount,
 )
-from algosdk.constants import min_txn_fee
 from algosdk.v2client.algod import AlgodClient
 
 from smart_contracts import enums
-from smart_contracts.artifacts.d_asa.dasa_client import (
+from src.artifacts.dasa_client import (
     AccountGetPositionArgs,
 )
-
-COUPON_PER_OP_UP_TXN = 10  # This parameter is empirical and depends on the complexity of `count_due_coupons` subroutine
 
 CouponRates: TypeAlias = list[int]
 TimeEvents: TypeAlias = list[int]
@@ -166,21 +162,6 @@ def time_warp(to_timestamp: int) -> None:
     )
     round_warp()
     algorand_client.client.algod.set_timestamp_offset(0)
-
-
-def max_fee_per_coupon(coupon_idx: int) -> AlgoAmount:
-    """
-    Compute max fee credit for opcode budget, based on coupon index to process
-
-    Args:
-        coupon_idx: coupon index to process
-
-    Returns:
-        Max fee
-    """
-    return AlgoAmount.from_micro_algo(
-        math.ceil(coupon_idx / COUPON_PER_OP_UP_TXN) * min_txn_fee
-    )
 
 
 def get_event_from_call_result(call_result: SendAppTransactionResult) -> bytes:
