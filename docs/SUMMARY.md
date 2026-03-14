@@ -29,7 +29,7 @@
   - [Account](./specs/accounting/account.md)
   - [Units and Positions](./specs/accounting/units.md)
 - [Execution](./specs/execution/overview.md)
-  - [Time](./specs/execution/time.md)
+  - [Algorand Virtual Machine](./specs/execution/avm.md)
   - [Payment Agent](./specs/execution/payment-agent/payment-agent.md)
     - [Settlement](./specs/execution/payment-agent/settlement.md)
   - [Transfer Agent](./specs/execution/transfer-agent/transfer-agent.md)

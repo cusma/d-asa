@@ -52,12 +52,3 @@ calls from:
 
 If no Op Daemon is configured, the current implementation applies no extra caller
 restriction beyond the contract and account checks.
-
-## Payment ordering
-
-> [!IMPORTANT]
-> Algorand block proposers could order transactions in a block. In a *healthy network*,
-> block proposers are selected randomly by the Algorand consensus based on a Verifiable
-> Random Function (VRF). Therefore, the order of payments in a block is random and
-> unbiased, with no systematic advantage or precedence of a payee with respect to
-> others.
