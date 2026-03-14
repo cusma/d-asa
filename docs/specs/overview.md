@@ -32,6 +32,8 @@ state machine.
 
 ---
 
+<div style="text-align: center;">
+
 ```mermaid
 flowchart TD
   RBAC["Layer 1: RBAC<br/>Operational actors & authorities"]
@@ -51,6 +53,8 @@ flowchart TD
   style PAYMENT fill:#ffccbc,stroke:#d84315,stroke-width:2px,color:#000
   style TRANSFER fill:#ffccbc,stroke:#d84315,stroke-width:2px,color:#000
 ```
+
+</div>
 
 ---
 

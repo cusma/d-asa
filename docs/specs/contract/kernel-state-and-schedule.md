@@ -38,6 +38,10 @@ with `contract_config`. It defines:
 
 ## Execution schedule
 
+The normalized ACTUS execution schedule is an array of `ExecutionScheduleEntry`s.
+
+### Execution schedule entry
+
 Each `ExecutionScheduleEntry` **MUST** contain:
 
 - A contiguous `event_id`;
@@ -47,7 +51,19 @@ Each `ExecutionScheduleEntry` **MUST** contain:
 - The next normalized rate and principal state;
 - Entry flags.
 
+Entry flags are stored as a bitfield integer and **MUST** comply with the following
+bit positions:
+
+| Flag             | Bit Position | Decimal Value | Meaning                                                |
+|:-----------------|:------------:|:-------------:|:-------------------------------------------------------|
+| `CASH_EVENT`     |   `1 << 0`   |      `1`      | Event produces cash flows (requires contract funds)    |
+| `NON_CASH_EVENT` |   `1 << 1`   |      `2`      | Event updates state without cash flows                 |
+| `OBSERVED_EVENT` |   `1 << 2`   |      `4`      | Event requires external observation (e.g., rate reset) |
+| `INITIAL_PRF`    |   `1 << 3`   |      `8`      | Event is the initial performance flag update           |
+
 The schedule **MUST** satisfy the following invariants:
+
+### Schedule invariants
 
 - `event_id = 0` **MUST** be `IED`;
 - Event IDs **MUST** be contiguous across all pages;
@@ -55,6 +71,12 @@ The schedule **MUST** satisfy the following invariants:
 - Page size **MUST NOT** exceed `16` entries in the current kernel;
 - The last uploaded page **MUST** finalize `schedule_entry_count` and move the
 contract to `STATUS_PENDING_IED`.
+
+A normalized ACTUS schedule page **MUST** be identified with a key of the form:
+
+`[S#||<0-based page index>]`
+
+Where || denotes concatenation.
 
 ## ACTUS cycles
 
@@ -106,9 +128,11 @@ The kernel uses the following status identifiers:
 | `ACTIVE`      | `100` | `IED` executed; contract lifecycle is live    |
 | `ENDED`       | `200` | Terminal state reached                        |
 
+<div style="text-align: center;">
+
 ```mermaid
 stateDiagram-v2
-  [*] --> INACTIVE
+  [*] --> INACTIVE: Contract create
   INACTIVE --> PENDING_IED: Upload schedule
   PENDING_IED --> ACTIVE: Execute IED
   ACTIVE --> ACTIVE: Execute events
@@ -120,6 +144,8 @@ stateDiagram-v2
   state "ACTIVE (100)<br/>IED executed<br/>Contract lifecycle live" as ACTIVE
   state "ENDED (200)<br/>Terminal state reached" as ENDED
 ```
+
+</div>
 
 ## Performance default flag
 

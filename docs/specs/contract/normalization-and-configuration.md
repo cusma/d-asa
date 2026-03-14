@@ -3,9 +3,19 @@
 The contract configuration flow **MUST** follow the same sequence as the reference
 implementation:
 
-```text
-ContractAttributes -> normalize_contract_attributes() -> contract_config() -> contract_schedule() -> primary_distribution() -> contract_execute_ied()
+<div style="text-align: center;">
+
+```mermaid
+%%{init: {'flowchart':{'nodeSpacing': 20, 'rankSpacing': 20}}}%%
+flowchart TD
+    A[ContractAttributes] --> B[normalize_contract_attributes]
+    B --> C[contract_config]
+    C --> D[contract_schedule]
+    D --> E[primary_distribution]
+    E --> F[contract_execute_ied]
 ```
+
+</div>
 
 ## Required steps
 

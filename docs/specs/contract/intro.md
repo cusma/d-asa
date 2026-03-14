@@ -17,6 +17,8 @@ AVM;
 
 The canonical execution chain is, therefore:
 
+<div style="text-align: center;">
+
 ```mermaid
 flowchart LR
   ACTUS["ACTUS Contract"]
@@ -30,6 +32,8 @@ flowchart LR
   style NORMALIZE fill:#c8e6c9,stroke:#388e3c,stroke-width:2px,color:#000
   style EXEC fill:#ffccbc,stroke:#d84315,stroke-width:2px,color:#000
 ```
+
+</div>
 
 The following pages define:
 

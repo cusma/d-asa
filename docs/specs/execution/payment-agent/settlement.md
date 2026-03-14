@@ -62,7 +62,7 @@ If asset is ISO 4217 numeric code: amount is in minor units (\\( 10^{-d} \\) wit
 
 > In the case of an off-chain settlement, the D-ASA state machine:
 >
-> - Regulates payments’ approval conditions (e.g. a coupon is due);
+> - Regulates payments’ approval conditions (e.g. interest is due);
 > - Notarizes the amounts and timestamps of payments settled off-chain.
 
 ---

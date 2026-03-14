@@ -3,6 +3,8 @@
 The current D-ASA architecture is layered, not product-specific. The on-chain contract
 is a single `DASA` application assembled from five modules:
 
+<div style="text-align: center;">
+
 ```mermaid
 flowchart LR
   RBAC["RBAC"] --> KERNEL["ACTUS Kernel"]
@@ -11,9 +13,13 @@ flowchart LR
   ACCOUNTING --> TRANSFER["Transfer Agent"]
 ```
 
+</div>
+
 ## Processing chain
 
 The canonical processing chain is:
+
+<div style="text-align: center;">
 
 ```mermaid
 flowchart LR
@@ -21,6 +27,8 @@ flowchart LR
   NORMALIZE --> ABI["ABI Upload"]
   ABI --> EXEC["AVM Execution"]
 ```
+
+</div>
 
 This separation is intentional:
 
@@ -57,6 +65,8 @@ ledgers.
 
 ### Configuration
 
+<div style="text-align: center;">
+
 ```mermaid
 sequenceDiagram
   participant SDK as "Normalization SDK"
@@ -71,7 +81,11 @@ sequenceDiagram
   ABI->>K: "contract_execute_ied()"
 ```
 
+</div>
+
 ### Cash events
+
+<div style="text-align: center;">
 
 ```mermaid
 sequenceDiagram
@@ -86,7 +100,11 @@ sequenceDiagram
   PA-->>ABI: "CashClaimResult"
 ```
 
+</div>
+
 ### Transfers
+
+<div style="text-align: center;">
 
 ```mermaid
 sequenceDiagram
@@ -99,3 +117,5 @@ sequenceDiagram
   TA->>ACC: "settle receiver"
   TA->>ACC: "move active units"
 ```
+
+</div>

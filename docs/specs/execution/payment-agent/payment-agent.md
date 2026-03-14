@@ -2,16 +2,13 @@
 
 > Debt instruments' cash flows usually involve:
 > - *Principal repayment*
-> - *Early repayments*
-> - *Coupon payments*
+> - *Early principal repayments*
+> - *Interest payments*
 
 The Payment Agent executes ACTUS cashflows in two phases:
 
 1. `fund_due_cashflows`
 1. `claim_due_cashflows`
-
-This split is normative for the current reference implementation. There are no
-separate `pay_coupon`, `pay_principal`, or legacy early-repayment payment methods.
 
 ## Funding phase
 
@@ -55,12 +52,3 @@ calls from:
 
 If no Op Daemon is configured, the current implementation applies no extra caller
 restriction beyond the contract and account checks.
-
-## Payment ordering
-
-> [!IMPORTANT]
-> Algorand block proposers could order transactions in a block. In a *healthy network*,
-> block proposers are selected randomly by the Algorand consensus based on a Verifiable
-> Random Function (VRF). Therefore, the order of payments in a block is random and
-> unbiased, with no systematic advantage or precedence of a payee with respect to
-> others.
