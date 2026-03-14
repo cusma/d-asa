@@ -5,7 +5,7 @@ The D-ASA uses two distinct event concepts:
 1. *ACTUS schedule events*: contractual events stored in the normalized execution
 schedule.
 
-1. *ARC-28 execution events*: proofs that a scheduled event was actually applied
+1. *AVM execution events*: proofs that a scheduled event was actually applied
 on chain.
 
 Those concepts are related, but they are not interchangeable.
@@ -25,15 +25,15 @@ An ACTUS schedule event contains:
 - flags
 
 Schedule events exist before execution and remain part of contract state even if
-no ARC-28 proof has been emitted yet.
+no AVM proof has been emitted yet.
 
 See [Kernel State and Schedule](../specs/contract/kernel-state-and-schedule.md)
 for the normative schedule definition.
 
-## ARC-28 execution events
+## AVM execution events
 
-When the kernel applies a schedule entry, it emits an ARC-28 `ExecutionEvent` as
-an execution proof.
+When the kernel applies a schedule entry, it emits a standard [ARC-28](https://dev.algorand.co/arc-standards/arc-0028/)
+`ExecutionEvent` as an execution proof.
 
 This proof is non-normative receipt data. It does not replace the kernel state,
 and it does not define future schedule entries. Its purpose is to attest that a
