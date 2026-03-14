@@ -20,6 +20,9 @@ The method **MUST** reject allocations that:
 
 Only an active Primary Dealer **MUST** be able to call `primary_distribution`.
 
+The Primary Dealer role validity period **MAY** be used to precisely bound the primary
+distribution window.
+
 ## Completion requirement
 
 `contract_execute_ied` **MUST** fail unless:
