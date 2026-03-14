@@ -17,7 +17,6 @@ IDs (`uint8`):
 | `3`   |  30/360 ISDA  | \\([30E360ISDA]\\) | Year fractions accrue on the basis of 30 days per month and 360 days per year in the respective period (ISDA method)     |
 | `4`   |    30/360     | \\([30E360]\\)     | Year fractions accrue on the basis of 30 days per month and 360 days per year in the respective period                   |
 | `5`   |    28/366     | \\([28E366]\\)     | Year fractions accrue on the basis of 28 days per month and 366 days per year in the respective period                   |
-| `6`   |    30/365     | -                  | Year fractions accrue on the basis of 30 days per month and 365 days per year in the respective period                   |
 
 ## Calendar
 
@@ -47,6 +46,18 @@ The *calendar* **MUST** be identified with one of the following enumerated IDs:
 
 The D-ASA **MAY** specify a *business day convention* \\( [BDC] \\).
 
+| ID  | Name                               | ACTUS        | Description                                                                                                                                                                               |
+|:----|:-----------------------------------|--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `0` | No Shift                           | \\([NOS]\\)  | No shift applied to non-business days                                                                                                                                                     |
+| `1` | Shift-Calculate Following          | \\([SCF]\\)  | Shift event dates first then calculate accruals etc. Strictly shift to the next following business day                                                                                    |
+| `2` | Shift-Calculate Modified-Following | \\([SCMF]\\) | Shift event dates first then calculate accruals etc. Shift to the next following business day if this falls in the same month. Shift to the most recent preceding business day otherwise  |
+| `3` | Calculate-Shift Following          | \\([CSF]\\)  | Calculate accruals etc. first then shift event dates. Strictly shift to the next following business day                                                                                   |
+| `4` | Calculate-Shift Modified-Following | \\([CSMF]\\) | Calculate accruals etc. first then shift event dates. Shift to the next following business day if this falls in the same month. Shift to the most recent preceding business day otherwise |
+| `5` | Shift-Calculate Preceding          | \\([SCP]\\)  | Shift event dates first then calculate accruals etc. Strictly shift to the most recent preceding business day                                                                             |
+| `6` | Shift-Calculate Modified-Preceding | \\([SCMP]\\) | Shift event dates first then calculate accruals etc. Shift to the most recent preceding business day if this falls in the same month. Shift to the next following business day otherwise  |
+| `7` | Calculate-Shift Preceding          | \\([CSP]\\)  | Calculate accruals etc. first then shift event dates. Strictly shift to the most recent preceding business day                                                                            |
+| `8` | Calculate-Shift Modified-Preceding | \\([CSMP]\\) | Calculate accruals etc. first then shift event dates. Shift to the most recent preceding business day if this falls in the same month. Shift to the next following business day otherwise |
+
 ## End of Month Convention
 
 > Debt instruments may define due dates as the last day of the month.
@@ -54,7 +65,12 @@ The D-ASA **MAY** specify a *business day convention* \\( [BDC] \\).
 > The end-of-month convention defines how D-ASA execution can be shifted according
 > to the different number of days in months (31, 30, and 28) according to the calendar.
 
-The D-ASA **MAY** specify a *end-of-month convention* \\( [EOMC] \\).
+The D-ASA **MAY** specify an *end-of-month convention* \\( [EOMC] \\).
+
+| ID  |     Name     | ACTUS Acronym | Description                                                                                                      |
+|:----|:------------:|---------------|:-----------------------------------------------------------------------------------------------------------------|
+| `0` |   Same Day   | \\( [SD] \\)  | Schedule times always fall on the schedule anchor date day of the month                                          |
+| `1` | End of Month | \\( [EOM] \\) | Schedule times fall on the end of every month if the anchor date represents the last day of the respective month |
 
 ## Normalization profile restrictions
 
