@@ -24,7 +24,7 @@ asset*.
 
 The *minimum denomination* **MUST** be a divisor of the *principal*.
 
-### Discount
+### Premium and Discount
 
 > Debt instruments principal may be placed at premium or discount on issuance.
 
