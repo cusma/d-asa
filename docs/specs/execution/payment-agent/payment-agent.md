@@ -10,9 +10,6 @@ The Payment Agent executes ACTUS cashflows in two phases:
 1. `fund_due_cashflows`
 1. `claim_due_cashflows`
 
-This split is normative for the current reference implementation. There are no
-separate `pay_coupon`, `pay_principal`, or legacy early-repayment payment methods.
-
 ## Funding phase
 
 `fund_due_cashflows` **MUST**:

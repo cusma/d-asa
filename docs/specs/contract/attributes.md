@@ -109,8 +109,7 @@ The *maturity date* **MAY** be updated in case of pre-payment options.
 > Debt instrument with defined maturity date may terminate earlier if the full principal
 > redemption happens earlier than maturity.
 
-If the debt instrument has early repayment options, the D-ASA **MUST** implement
-the **OPTIONAL** `set_early_repayment_option` method.
+The D-ASA **MAY** define *prepayment options*.
 
 ### Prepayment Effects
 
