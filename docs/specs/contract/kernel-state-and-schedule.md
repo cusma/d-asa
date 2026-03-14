@@ -128,6 +128,8 @@ The kernel uses the following status identifiers:
 | `ACTIVE`      | `100` | `IED` executed; contract lifecycle is live    |
 | `ENDED`       | `200` | Terminal state reached                        |
 
+<div style="text-align: center;">
+
 ```mermaid
 stateDiagram-v2
   [*] --> INACTIVE: Contract create
@@ -142,6 +144,8 @@ stateDiagram-v2
   state "ACTIVE (100)<br/>IED executed<br/>Contract lifecycle live" as ACTIVE
   state "ENDED (200)<br/>Terminal state reached" as ENDED
 ```
+
+</div>
 
 ## Performance default flag
 
