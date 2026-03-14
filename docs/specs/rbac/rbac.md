@@ -40,11 +40,11 @@ The Arranger **MUST** retain the authority to:
 
 The D-ASA suspension authority **MUST** be restricted to specific contract roles.
 
-### Asset suspension
+### Contract suspension
 
-`rbac_contract_suspension` **MUST** suspend or resume asset-wide operations.
+`rbac_contract_suspension` **MUST** suspend or resume contract-wide operations.
 
-When the asset is suspended, the implementation **MUST** reject:
+When the contract is suspended, the implementation **MUST** reject:
 
 - primary distribution;
 - funding and claiming of due cashflows;
