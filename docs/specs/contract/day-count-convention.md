@@ -1,8 +1,8 @@
 # Day-Count Convention {#day-count-convention}
 
 > Debt instruments use a [day-count convention](https://en.wikipedia.org/wiki/Day_count_convention)
-> to calculate the amount of accrued interest when the next coupon payment is less
-> than a full coupon period away.
+> to calculate the amount of accrued interest when the next interest payment is
+> less than a full interest period away.
 
 The D-ASA **MUST** specify one *day-count convention* \\( [IPCD] \\).
 

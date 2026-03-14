@@ -211,16 +211,16 @@ stores a boolean `defaulted` flag in RBAC global state. This performance flag is
 distinct from the kernel lifecycle `status`.
 
 > [!TIP]
-> The D-ASA has no *grace period* and no *delinquency period*. A D-ASA coupon payment
-> is triggered on due date, but there is not enough liquidity to pay all the investors.
-> The D-ASA contract automatically enters in *default* immediately.
+> The D-ASA has no *grace period* and no *delinquency period*. A D-ASA interest
+> payment is triggered on due date, but there is not enough liquidity to pay all
+> the investors. The D-ASA contract automatically enters in *default* immediately.
 
 > [!TIP]
-> The D-ASA has a *grace period* and a *delinquency period*. A D-ASA coupon payment
+> The D-ASA has a *grace period* and a *delinquency period*. A D-ASA interest payment
 > is triggered on due date, but there is not enough liquidity to pay all the investors.
 > The D-ASA program starts counting the *grace period* and *delinquency period*.
 > If the *delinquency period* expires, then the contract enters in *default*.
 
 > [!TIP]
-> A D-ASA coupon payment is triggered on due date, but there is not enough liquidity
+> A D-ASA interest payment is triggered on due date, but there is not enough liquidity
 > to pay all the investors. The D-ASA contract relies on a Trustee to call the *default*.

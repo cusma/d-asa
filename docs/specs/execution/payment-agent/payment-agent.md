@@ -2,8 +2,8 @@
 
 > Debt instruments' cash flows usually involve:
 > - *Principal repayment*
-> - *Early repayments*
-> - *Coupon payments*
+> - *Early principal repayments*
+> - *Interest payments*
 
 The Payment Agent executes ACTUS cashflows in two phases:
 
