@@ -1,5 +1,9 @@
 # Debt Algorand Standard Application {#debt-algorand-standard-application}
 
+```toml
+{{#include ../pyproject.toml:3:3}}
+```
+
 ![Smart Financial Contract](./images/cover.jpg "Smart Financial Contract")
 
 > A standard for debt instruments tokenization on Algorand
