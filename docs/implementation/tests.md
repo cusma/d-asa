@@ -35,6 +35,8 @@ cashflows for PAM fixed coupon and zero coupon bonds:
 poetry run pytest -s -v -m showcase tests/pam/test_pam_lifecycle_showcase.py
 ```
 
+![PAM Fixed Coupon Bond example](../images/cli-pam-fcb.png)
+
 ## Coverage Areas
 
 - `tests/sdk/*` covers the Python-side SDK and normalization layer: contract
