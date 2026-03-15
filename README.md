@@ -25,7 +25,7 @@ Interactive notebook examples: [`examples/README.md`](./examples/README.md)
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cusma/d-asa)
 
-## Demo in One Command
+## `./d-asa run`
 
 ![PAM Fixed Coupon Bond example](./docs/images/cli-pam-fcb.png)
 
