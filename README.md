@@ -30,6 +30,8 @@ Interactive notebook examples: [`examples/README.md`](./examples/README.md)
 
 ## Demo in One Command
 
+![PAM Fixed Coupon Bond example](./docs/images/cli-pam-fcb.png)
+
 The fastest way to showcase D-ASA is with host AlgoKit for Algorand LocalNet and
 Docker for the showcase runtime.
 
