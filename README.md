@@ -3,11 +3,8 @@
 D-ASA is a full tokenization framework for [ACTUS](https://www.actusfrf.org/)-compliant
 debt instruments, issued and executed on the Algorand Virtual Machine.
 
-```mermaid
-flowchart LR
-  ACTUS["ACTUS Contract"] --> NORMALIZE["AVM Normalization"]
-  NORMALIZE --> ABI["ABI Upload"]
-  ABI --> EXEC["AVM Execution"]
+```text
+ACTUS Contract -> AVM Normalization -> ABI Upload -> AVM Execution
 ```
 
 The canonical generated artifacts are:
@@ -28,7 +25,7 @@ Interactive notebook examples: [`examples/README.md`](./examples/README.md)
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cusma/d-asa)
 
-## Demo in One Command
+## `./d-asa run`
 
 ![PAM Fixed Coupon Bond example](./docs/images/cli-pam-fcb.png)
 

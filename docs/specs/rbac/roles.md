@@ -81,8 +81,8 @@ The Account Manager owns an Algorand Address.
 The Account Manager **MUST** be able to open holder accounts. The role does not
 control payments or transfers.
 
-> The right to open investor accounts can be granted to different entities, such
-> as KYC providers or banks.
+> The right to open lender accounts can be granted to different entities, such as
+> KYC providers or banks.
 
 ### Primary Dealer
 

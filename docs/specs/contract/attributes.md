@@ -104,7 +104,7 @@ The *maturity date* **MAY** be updated in case of pre-payment options.
 ## Prepayment Options
 
 > Debt instruments could have early repayment options to repay the principal to
-> investors (partially or totally) before maturity or to reduce the maturity date.
+> lenders (partially or totally) before maturity or to reduce the maturity date.
 
 > Debt instrument with defined maturity date may terminate earlier if the full principal
 > redemption happens earlier than maturity.
@@ -114,7 +114,7 @@ The D-ASA **MAY** define *prepayment options*.
 ### Prepayment Effects
 
 > Debt instruments could have early repayment options to repay the principal to
-> investors (partially or totally) before maturity or to reduce the maturity date.
+> lenders (partially or totally) before maturity or to reduce the maturity date.
 
 > Debt instrument with a defined maturity date may terminate earlier if the full
 > principal redemption happens earlier than maturity.
@@ -213,14 +213,14 @@ distinct from the kernel lifecycle `status`.
 > [!TIP]
 > The D-ASA has no *grace period* and no *delinquency period*. A D-ASA interest
 > payment is triggered on due date, but there is not enough liquidity to pay all
-> the investors. The D-ASA contract automatically enters in *default* immediately.
+> the lenders. The D-ASA contract automatically enters in *default* immediately.
 
 > [!TIP]
 > The D-ASA has a *grace period* and a *delinquency period*. A D-ASA interest payment
-> is triggered on due date, but there is not enough liquidity to pay all the investors.
+> is triggered on due date, but there is not enough liquidity to pay all the lenders.
 > The D-ASA program starts counting the *grace period* and *delinquency period*.
 > If the *delinquency period* expires, then the contract enters in *default*.
 
 > [!TIP]
 > A D-ASA interest payment is triggered on due date, but there is not enough liquidity
-> to pay all the investors. The D-ASA contract relies on a Trustee to call the *default*.
+> to pay all the lenders. The D-ASA contract relies on a Trustee to call the *default*.
