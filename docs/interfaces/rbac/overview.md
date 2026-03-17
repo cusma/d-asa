@@ -65,8 +65,7 @@ This is a non-normative helper for payment automation.
 }
 ```
 
-When `role_id` is `ROLE_ARRANGER`, `role_address` must not be the Algorand global
-zero address.
+Only assign non-Arranger roles.
 
 ## `rbac_revoke_role`
 
@@ -161,3 +160,5 @@ distinct from the kernel lifecycle `status`.
   "errors": ["INVALID_ROLE", "INVALID_ROLE_ADDRESS"]
 }
 ```
+
+Only applicable to non-Arranger roles.
