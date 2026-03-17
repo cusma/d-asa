@@ -533,6 +533,7 @@ def test_deploy_rejects_zero_address_arranger_before_factory(
             arranger=SimpleNamespace(address=ZERO_ADDRESS, signer=object()),
         )
 
+
 def test_pyproject_runtime_dependencies_only_keep_algokit_utils() -> None:
     pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
     parsed = tomllib.loads(pyproject.read_text())
