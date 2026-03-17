@@ -21,7 +21,14 @@ The Payment Agent executes ACTUS cashflows in two phases:
 - Convert those amounts into cumulative per-unit indices;
 - Advance the global event cursor.
 
-Only the Arranger **MUST** be able to call `fund_due_cashflows`.
+If an Op Daemon address is configured, `fund_due_cashflows` **MUST** only accept
+calls from:
+
+- The Op Daemon;
+- The Arranger.
+
+If no Op Daemon is configured, the current implementation applies no extra caller
+restriction beyond the contract checks.
 
 ## Claim phase
 
