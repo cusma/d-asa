@@ -4,18 +4,18 @@
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
     intcblock 0 1 8 32 1500
-    bytecblock 0x151f7c75 "status" "event_cursor" "schedule_entry_count" "outstanding_principal" "fixed_point_scale" "accrued_interest" "interest_calculation_base" 0x4123 "nominal_interest_rate" "contract_type" "reserved_units_total" "reserved_principal" "total_units" "next_principal_redemption" "reserved_interest" "cumulative_interest_index" "cumulative_principal_index" 0x523a41525223 "settlement_asset_id" "initial_exchange_amount" 0x523a41555423 0x523a50594423 0x523a4d4e4723 0x5323 0x523a4d4f4323 0x523a54525323 0x523a4f504423 "initial_exchange_date" "transfer_opening_date" "transfer_closure_date" "rate_reset_floor" "rate_reset_cap" "contract_suspended" "defaulted" "dynamic_principal_redemption" "rate_reset_spread" "rate_reset_multiplier" "rate_reset_next" "has_rate_reset_floor" "has_rate_reset_cap" 0x00 "prospectus_hash" "prospectus_url" "denomination_asset_id" "maturity_date" "day_count_convention" 0x068101 0x0000
+    bytecblock 0x151f7c75 "status" "event_cursor" "schedule_entry_count" "outstanding_principal" "fixed_point_scale" "accrued_interest" "interest_calculation_base" 0x4123 "nominal_interest_rate" "contract_type" "reserved_units_total" "reserved_principal" "total_units" "next_principal_redemption" 0x523a41525223 "reserved_interest" "cumulative_interest_index" "cumulative_principal_index" 0x523a4f504423 "settlement_asset_id" "initial_exchange_amount" 0x523a41555423 0x523a50594423 0x523a4d4e4723 0x5323 0x523a4d4f4323 0x523a54525323 "initial_exchange_date" "transfer_opening_date" "transfer_closure_date" "rate_reset_floor" "rate_reset_cap" "contract_suspended" "defaulted" "dynamic_principal_redemption" "rate_reset_spread" "rate_reset_multiplier" "rate_reset_next" "has_rate_reset_floor" "has_rate_reset_cap" 0x00 "prospectus_hash" "prospectus_url" "denomination_asset_id" "maturity_date" "day_count_convention" 0x068101 0x0000
     txn ApplicationID
     bnz main_after_if_else@2
     // modules/rbac.py:28-29
     // # RBAC Roles
     // self.arranger = GlobalState(Account(), key=cst.PREFIX_ID_ARRANGER)
-    bytec 18 // 0x523a41525223
+    bytec 15 // 0x523a41525223
     global ZeroAddress
     app_global_put
     // modules/rbac.py:30
     // self.op_daemon = GlobalState(Account(), key=cst.PREFIX_ID_OP_DAEMON)
-    bytec 27 // 0x523a4f504423
+    bytec 19 // 0x523a4f504423
     global ZeroAddress
     app_global_put
     // modules/rbac.py:47-48
@@ -60,7 +60,7 @@ main:
     app_global_put
     // modules/actus_kernel.py:66
     // self.settlement_asset_id = Asset()
-    bytec 19 // "settlement_asset_id"
+    bytec 20 // "settlement_asset_id"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:68-69
@@ -104,7 +104,7 @@ main:
     // modules/actus_kernel.py:81-82
     // # Principal
     // self.initial_exchange_amount = UInt64()
-    bytec 20 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:83
@@ -182,18 +182,18 @@ main:
     app_global_put
     // modules/actus_kernel.py:103
     // self.reserved_interest = UInt64()
-    bytec 15 // "reserved_interest"
+    bytec 16 // "reserved_interest"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:105-106
     // # Cumulative Per-Unit Fixed-Point Indexes
     // self.cumulative_interest_index = UInt64()
-    bytec 16 // "cumulative_interest_index"
+    bytec 17 // "cumulative_interest_index"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:107
     // self.cumulative_principal_index = UInt64()
-    bytec 17 // "cumulative_principal_index"
+    bytec 18 // "cumulative_principal_index"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:115
@@ -352,7 +352,7 @@ fund_due_cashflows:
     intc_0 // 0
     pushbytes ""
     dupn 13
-    // modules/payment_agent.py:47
+    // modules/payment_agent.py:55
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -368,13 +368,56 @@ fund_due_cashflows:
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/payment_agent.py:68
-    // self._assert_caller_is_arranger()
-    callsub _assert_caller_is_arranger
-    // modules/payment_agent.py:69
+    // modules/payment_agent.py:15
+    // if self.op_daemon.value != Global.zero_address:
+    intc_0 // 0
+    bytec 19 // 0x523a4f504423
+    app_global_get_ex
+    assert // check self.op_daemon exists
+    global ZeroAddress
+    !=
+    bz fund_due_cashflows_after_if_else@62
+    // modules/payment_agent.py:17
+    // Txn.sender == self.op_daemon.value
+    txn Sender
+    intc_0 // 0
+    bytec 19 // 0x523a4f504423
+    app_global_get_ex
+    assert // check self.op_daemon exists
+    ==
+    // modules/payment_agent.py:17-18
+    // Txn.sender == self.op_daemon.value
+    // or Txn.sender == self.arranger.value
+    bnz fund_due_cashflows_bool_true@59
+    // modules/payment_agent.py:18
+    // or Txn.sender == self.arranger.value
+    txn Sender
+    intc_0 // 0
+    bytec 15 // 0x523a41525223
+    app_global_get_ex
+    assert // check self.arranger exists
+    ==
+    // modules/payment_agent.py:17-18
+    // Txn.sender == self.op_daemon.value
+    // or Txn.sender == self.arranger.value
+    bz fund_due_cashflows_bool_false@60
+
+fund_due_cashflows_bool_true@59:
+    intc_1 // 1
+
+fund_due_cashflows_bool_merge@61:
+    // modules/payment_agent.py:16-19
+    // assert (
+    //     Txn.sender == self.op_daemon.value
+    //     or Txn.sender == self.arranger.value
+    // ), err.UNAUTHORIZED
+    assert // Not authorized
+
+fund_due_cashflows_after_if_else@62:
+    // modules/payment_agent.py:77
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/payment_agent.py:70
+    // modules/payment_agent.py:78
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
@@ -389,30 +432,30 @@ fund_due_cashflows:
     // assert not self._status_is_pending_ied(), err.PENDING_IED
     !
     assert // IED not yet executed
-    // modules/payment_agent.py:72
+    // modules/payment_agent.py:80
     // if self._is_dynamic_annuity():
     callsub _is_dynamic_annuity
     bz fund_due_cashflows_after_if_else@3
-    // modules/payment_agent.py:76-77
+    // modules/payment_agent.py:84-85
     // + max_event_count
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     dup
-    // modules/payment_agent.py:77
+    // modules/payment_agent.py:85
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     pushint 100
-    // modules/payment_agent.py:76-77
+    // modules/payment_agent.py:84-85
     // + max_event_count
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     *
-    // modules/payment_agent.py:75
+    // modules/payment_agent.py:83
     // UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
     intc 4 // 1500
-    // modules/payment_agent.py:75-77
+    // modules/payment_agent.py:83-85
     // UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
     // + max_event_count
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     +
-    // modules/payment_agent.py:73-79
+    // modules/payment_agent.py:81-87
     // ensure_budget(
     //     required_budget=(
     //         UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
@@ -424,30 +467,30 @@ fund_due_cashflows:
     callsub ensure_budget
 
 fund_due_cashflows_after_if_else@3:
-    // modules/payment_agent.py:81
+    // modules/payment_agent.py:89
     // processed_events = UInt64(0)
     intc_0 // 0
     bury 5
-    // modules/payment_agent.py:82
+    // modules/payment_agent.py:90
     // funded_interest = UInt64(0)
     intc_0 // 0
     bury 14
-    // modules/payment_agent.py:83
+    // modules/payment_agent.py:91
     // funded_principal = UInt64(0)
     intc_0 // 0
     bury 13
 
 fund_due_cashflows_while_top@4:
-    // modules/payment_agent.py:86
+    // modules/payment_agent.py:94
     // processed_events < max_event_count
     dig 4
     dig 1
     <
-    // modules/payment_agent.py:86-87
+    // modules/payment_agent.py:94-95
     // processed_events < max_event_count
     // and self.event_cursor < self.schedule_entry_count
     bz fund_due_cashflows_after_while@11
-    // modules/payment_agent.py:87
+    // modules/payment_agent.py:95
     // and self.event_cursor < self.schedule_entry_count
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -458,11 +501,11 @@ fund_due_cashflows_while_top@4:
     app_global_get_ex
     assert // check self.schedule_entry_count exists
     <
-    // modules/payment_agent.py:86-87
+    // modules/payment_agent.py:94-95
     // processed_events < max_event_count
     // and self.event_cursor < self.schedule_entry_count
     bz fund_due_cashflows_after_while@11
-    // modules/payment_agent.py:89
+    // modules/payment_agent.py:97
     // entry = self._get_schedule_entry(self.event_cursor)
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -471,7 +514,7 @@ fund_due_cashflows_while_top@4:
     callsub _get_schedule_entry
     dup
     bury 17
-    // modules/payment_agent.py:90
+    // modules/payment_agent.py:98
     // if entry.scheduled_time > Global.latest_timestamp:
     pushint 9
     extract_uint64
@@ -480,7 +523,7 @@ fund_due_cashflows_while_top@4:
     global LatestTimestamp
     >
     bnz fund_due_cashflows_after_while@11
-    // modules/payment_agent.py:92
+    // modules/payment_agent.py:100
     // if not self._event_is_cash(entry.event_type.as_uint64()):
     dig 15
     intc_2 // 8
@@ -529,7 +572,7 @@ fund_due_cashflows_bool_true@52:
     intc_1 // 1
 
 fund_due_cashflows_bool_merge@54:
-    // modules/payment_agent.py:92
+    // modules/payment_agent.py:100
     // if not self._event_is_cash(entry.event_type.as_uint64()):
     bz fund_due_cashflows_after_while@11
     // modules/actus_kernel.py:548
@@ -633,7 +676,7 @@ fund_due_cashflows_after_if_else@38:
     // balance = self.settlement_asset_id.balance(Global.current_application_address)
     global CurrentApplicationAddress
     intc_0 // 0
-    bytec 19 // "settlement_asset_id"
+    bytec 20 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
     asset_holding_get AssetBalance
@@ -641,7 +684,7 @@ fund_due_cashflows_after_if_else@38:
     // modules/actus_kernel.py:456
     // return self.reserved_interest + self.reserved_principal
     intc_0 // 0
-    bytec 15 // "reserved_interest"
+    bytec 16 // "reserved_interest"
     app_global_get_ex
     assert // check self.reserved_interest exists
     intc_0 // 0
@@ -674,7 +717,7 @@ fund_due_cashflows_after_if_else@38:
     // self.reserved_interest += interest_amount
     uncover 3
     +
-    bytec 15 // "reserved_interest"
+    bytec 16 // "reserved_interest"
     swap
     app_global_put
     // modules/actus_kernel.py:584
@@ -690,22 +733,22 @@ fund_due_cashflows_after_if_else@38:
     // modules/actus_kernel.py:585
     // self.cumulative_interest_index += interest_index_delta
     intc_0 // 0
-    bytec 16 // "cumulative_interest_index"
+    bytec 17 // "cumulative_interest_index"
     app_global_get_ex
     assert // check self.cumulative_interest_index exists
     uncover 2
     +
-    bytec 16 // "cumulative_interest_index"
+    bytec 17 // "cumulative_interest_index"
     swap
     app_global_put
     // modules/actus_kernel.py:586
     // self.cumulative_principal_index += principal_index_delta
     intc_0 // 0
-    bytec 17 // "cumulative_principal_index"
+    bytec 18 // "cumulative_principal_index"
     app_global_get_ex
     assert // check self.cumulative_principal_index exists
     +
-    bytec 17 // "cumulative_principal_index"
+    bytec 18 // "cumulative_principal_index"
     swap
     app_global_put
     // modules/actus_kernel.py:587
@@ -824,19 +867,19 @@ fund_due_cashflows_after_if_else@47:
     dup
     callsub _emit_execution_event
     pop
-    // modules/payment_agent.py:96
+    // modules/payment_agent.py:104
     // funded_interest += interest_amount
     dig 13
     dig 12
     +
     bury 14
-    // modules/payment_agent.py:97
+    // modules/payment_agent.py:105
     // funded_principal += principal_amount
     dig 12
     dig 7
     +
     bury 13
-    // modules/payment_agent.py:98
+    // modules/payment_agent.py:106
     // processed_events += UInt64(1)
     dig 4
     intc_1 // 1
@@ -1058,12 +1101,12 @@ fund_due_cashflows_after_if_else@15:
     b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_interest_amount@16
 
 fund_due_cashflows_after_while@11:
-    // modules/payment_agent.py:100
+    // modules/payment_agent.py:108
     // assert processed_events > UInt64(0), err.NO_DUE_CASHFLOW
     dig 4
     dup
     assert // No due cashflow to pay
-    // modules/payment_agent.py:104
+    // modules/payment_agent.py:112
     // total_funded=funded_interest + funded_principal,
     dig 14
     dup
@@ -1071,10 +1114,10 @@ fund_due_cashflows_after_while@11:
     dup
     cover 3
     +
-    // modules/payment_agent.py:106
+    // modules/payment_agent.py:114
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // modules/payment_agent.py:101-107
+    // modules/payment_agent.py:109-115
     // return typ.CashFundingResult(
     //     funded_interest=funded_interest,
     //     funded_principal=funded_principal,
@@ -1096,7 +1139,7 @@ fund_due_cashflows_after_while@11:
     swap
     itob
     concat
-    // modules/payment_agent.py:47
+    // modules/payment_agent.py:55
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     swap
@@ -1109,12 +1152,16 @@ fund_due_cashflows_bool_false@53:
     intc_0 // 0
     b fund_due_cashflows_bool_merge@54
 
+fund_due_cashflows_bool_false@60:
+    intc_0 // 0
+    b fund_due_cashflows_bool_merge@61
+
 
 // modules.payment_agent.PaymentAgent.claim_due_cashflows[routing]() -> void:
 claim_due_cashflows:
     pushbytes ""
     dupn 2
-    // modules/payment_agent.py:109
+    // modules/payment_agent.py:117
     // @arc4.abimethod
     txna ApplicationArgs 1
     dupn 2
@@ -1150,39 +1197,39 @@ claim_due_cashflows:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/payment_agent.py:15
+    // modules/payment_agent.py:23
     // if self.op_daemon.value != Global.zero_address:
     intc_0 // 0
-    bytec 27 // 0x523a4f504423
+    bytec 19 // 0x523a4f504423
     app_global_get_ex
     assert // check self.op_daemon exists
     global ZeroAddress
     !=
     bz claim_due_cashflows_after_if_else@17
-    // modules/payment_agent.py:17
+    // modules/payment_agent.py:25
     // Txn.sender == self.op_daemon.value
     txn Sender
     intc_0 // 0
-    bytec 27 // 0x523a4f504423
+    bytec 19 // 0x523a4f504423
     app_global_get_ex
     assert // check self.op_daemon exists
     ==
-    // modules/payment_agent.py:17-19
+    // modules/payment_agent.py:25-27
     // Txn.sender == self.op_daemon.value
     // or Txn.sender == holding_address
     // or Txn.sender == self.account[holding_address].payment_address
     bnz claim_due_cashflows_bool_true@14
-    // modules/payment_agent.py:18
+    // modules/payment_agent.py:26
     // or Txn.sender == holding_address
     txn Sender
     dig 3
     ==
-    // modules/payment_agent.py:17-19
+    // modules/payment_agent.py:25-27
     // Txn.sender == self.op_daemon.value
     // or Txn.sender == holding_address
     // or Txn.sender == self.account[holding_address].payment_address
     bnz claim_due_cashflows_bool_true@14
-    // modules/payment_agent.py:19
+    // modules/payment_agent.py:27
     // or Txn.sender == self.account[holding_address].payment_address
     txn Sender
     dig 1
@@ -1190,7 +1237,7 @@ claim_due_cashflows:
     assert // check self.account entry exists
     extract 0 32
     ==
-    // modules/payment_agent.py:17-19
+    // modules/payment_agent.py:25-27
     // Txn.sender == self.op_daemon.value
     // or Txn.sender == holding_address
     // or Txn.sender == self.account[holding_address].payment_address
@@ -1200,7 +1247,7 @@ claim_due_cashflows_bool_true@14:
     intc_1 // 1
 
 claim_due_cashflows_bool_merge@16:
-    // modules/payment_agent.py:16-20
+    // modules/payment_agent.py:24-28
     // assert (
     //     Txn.sender == self.op_daemon.value
     //     or Txn.sender == holding_address
@@ -1209,10 +1256,10 @@ claim_due_cashflows_bool_merge@16:
     assert // Not authorized
 
 claim_due_cashflows_after_if_else@17:
-    // modules/payment_agent.py:139
+    // modules/payment_agent.py:147
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/payment_agent.py:140
+    // modules/payment_agent.py:148
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
     // modules/actus_kernel.py:135
@@ -1227,12 +1274,12 @@ claim_due_cashflows_after_if_else@17:
     // assert not self._status_is_pending_ied(), err.PENDING_IED
     !
     assert // IED not yet executed
-    // modules/payment_agent.py:143
+    // modules/payment_agent.py:151
     // self._ensure_units_activated(holding_address)
     dig 2
     dup
     callsub _ensure_units_activated
-    // modules/payment_agent.py:144
+    // modules/payment_agent.py:152
     // self._settle_position(holding_address)
     callsub _settle_position
     popn 2
@@ -1261,31 +1308,31 @@ claim_due_cashflows_after_if_else@17:
     +
     dup
     bury 6
-    // modules/payment_agent.py:146
+    // modules/payment_agent.py:154
     // assert total_amount > UInt64(0), err.NO_DUE_CASHFLOW
     assert // No due cashflow to pay
-    // modules/payment_agent.py:25
+    // modules/payment_agent.py:33
     // self.account[holding_address].payment_address.is_opted_in(
     extract 0 32
-    // modules/payment_agent.py:26
+    // modules/payment_agent.py:34
     // self.settlement_asset_id
     intc_0 // 0
-    bytec 19 // "settlement_asset_id"
+    bytec 20 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
-    // modules/payment_agent.py:25-27
+    // modules/payment_agent.py:33-35
     // self.account[holding_address].payment_address.is_opted_in(
     //     self.settlement_asset_id
     // )
     asset_holding_get AssetBalance
     bury 1
-    // modules/payment_agent.py:25-28
+    // modules/payment_agent.py:33-36
     // self.account[holding_address].payment_address.is_opted_in(
     //     self.settlement_asset_id
     // )
     // and not self.account[holding_address].suspended
     bz claim_due_cashflows_bool_false@24
-    // modules/payment_agent.py:28
+    // modules/payment_agent.py:36
     // and not self.account[holding_address].suspended
     dup
     box_get
@@ -1296,34 +1343,34 @@ claim_due_cashflows_after_if_else@17:
     intc_1 // 1
 
 claim_due_cashflows_bool_merge@25:
-    // modules/payment_agent.py:151
+    // modules/payment_agent.py:159
     // if self._is_payment_executable(holding_address):
     bz claim_due_cashflows_after_if_else@3
-    // modules/payment_agent.py:34
+    // modules/payment_agent.py:42
     // self.settlement_asset_id.balance(Global.current_application_address)
     global CurrentApplicationAddress
     intc_0 // 0
-    bytec 19 // "settlement_asset_id"
+    bytec 20 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
     swap
     dig 1
     asset_holding_get AssetBalance
     assert // account opted into asset
-    // modules/payment_agent.py:34-35
+    // modules/payment_agent.py:42-43
     // self.settlement_asset_id.balance(Global.current_application_address)
     // >= payment_amount
     dig 5
     dup
     cover 2
     >=
-    // modules/payment_agent.py:33-36
+    // modules/payment_agent.py:41-44
     // assert (
     //     self.settlement_asset_id.balance(Global.current_application_address)
     //     >= payment_amount
     // ), err.NOT_ENOUGH_FUNDS
     assert // Not enough funds for the payment
-    // modules/payment_agent.py:153
+    // modules/payment_agent.py:161
     // self._pay(self.account[holding_address].payment_address, total_amount)
     dig 2
     dup
@@ -1332,7 +1379,7 @@ claim_due_cashflows_bool_merge@25:
     assert // check self.account entry exists
     dup
     extract 0 32
-    // modules/payment_agent.py:40-45
+    // modules/payment_agent.py:48-53
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
     //     asset_receiver=receiver,
@@ -1340,7 +1387,7 @@ claim_due_cashflows_bool_merge@25:
     //     fee=Global.min_txn_fee,
     // ).submit()
     itxn_begin
-    // modules/payment_agent.py:44
+    // modules/payment_agent.py:52
     // fee=Global.min_txn_fee,
     global MinTxnFee
     uncover 3
@@ -1349,12 +1396,12 @@ claim_due_cashflows_bool_merge@25:
     itxn_field AssetReceiver
     uncover 2
     itxn_field XferAsset
-    // modules/payment_agent.py:40
+    // modules/payment_agent.py:48
     // itxn.AssetTransfer(
     pushint 4 // axfer
     itxn_field TypeEnum
     itxn_field Fee
-    // modules/payment_agent.py:40-45
+    // modules/payment_agent.py:48-53
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
     //     asset_receiver=receiver,
@@ -1399,7 +1446,7 @@ claim_due_cashflows_bool_merge@25:
     // modules/accounting.py:134
     // assert self.reserved_interest >= interest_amount, err.NOT_ENOUGH_FUNDS
     intc_0 // 0
-    bytec 15 // "reserved_interest"
+    bytec 16 // "reserved_interest"
     app_global_get_ex
     assert // check self.reserved_interest exists
     dup
@@ -1420,7 +1467,7 @@ claim_due_cashflows_bool_merge@25:
     // self.reserved_interest -= interest_amount
     swap
     -
-    bytec 15 // "reserved_interest"
+    bytec 16 // "reserved_interest"
     swap
     app_global_put
     // modules/accounting.py:139
@@ -1436,7 +1483,7 @@ claim_due_cashflows_bool_merge@25:
     app_global_put
 
 claim_due_cashflows_after_if_else@3:
-    // modules/payment_agent.py:159
+    // modules/payment_agent.py:167
     // total_amount=interest_amount + principal_amount,
     dig 5
     dup
@@ -1444,10 +1491,10 @@ claim_due_cashflows_after_if_else@3:
     dup
     cover 3
     +
-    // modules/payment_agent.py:160
+    // modules/payment_agent.py:168
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // modules/payment_agent.py:156-162
+    // modules/payment_agent.py:164-170
     // return typ.CashClaimResult(
     //     interest_amount=interest_amount,
     //     principal_amount=principal_amount,
@@ -1478,7 +1525,7 @@ claim_due_cashflows_after_if_else@3:
     concat
     swap
     concat
-    // modules/payment_agent.py:109
+    // modules/payment_agent.py:117
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     swap
@@ -1574,7 +1621,7 @@ primary_distribution:
     assert // D-ASA not configured
     // modules/rbac.py:73
     // assert self._role_is_active(self.primary_dealer, Txn.sender), err.UNAUTHORIZED
-    bytec 22 // 0x523a50594423
+    bytec 23 // 0x523a50594423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -1964,7 +2011,7 @@ account_suspension:
     getbit
     // modules/rbac.py:79
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
-    bytec 21 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -2021,7 +2068,7 @@ account_open:
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
     // modules/rbac.py:70
     // assert self._role_is_active(self.account_manager, Txn.sender), err.UNAUTHORIZED
-    bytec 23 // 0x523a4d4e4723
+    bytec 24 // 0x523a4d4e4723
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -2204,7 +2251,7 @@ contract_create:
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
     // modules/actus_kernel.py:1033
     // self.arranger.value = arranger
-    bytec 18 // 0x523a41525223
+    bytec 15 // 0x523a41525223
     swap
     app_global_put
     // modules/actus_kernel.py:1034
@@ -2493,7 +2540,7 @@ contract_config_after_if_else@20:
     // modules/actus_kernel.py:808
     // assert self.initial_exchange_amount == UInt64(0), err.ALREADY_CONFIGURED
     intc_0 // 0
-    bytec 20 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
     !
@@ -2538,7 +2585,7 @@ contract_config_after_if_else@20:
     assert // Different settlement asset not supported, must be equal to denomination asset
     // modules/actus_kernel.py:789
     // self.settlement_asset_id = settlement_asset_id
-    bytec 19 // "settlement_asset_id"
+    bytec 20 // "settlement_asset_id"
     dig 1
     app_global_put
     // modules/actus_kernel.py:790-796
@@ -2628,7 +2675,7 @@ contract_config_after_if_else@20:
     // modules/actus_kernel.py:830-831
     // # Principal
     // self.initial_exchange_amount = terms.initial_exchange_amount
-    bytec 20 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     dig 10
     app_global_put
     // modules/actus_kernel.py:832
@@ -2753,7 +2800,7 @@ contract_config_after_if_else@20:
     dig 1
     pushint 56
     extract_uint64
-    bytec 16 // "cumulative_interest_index"
+    bytec 17 // "cumulative_interest_index"
     swap
     app_global_put
     // modules/actus_kernel.py:857
@@ -2761,13 +2808,13 @@ contract_config_after_if_else@20:
     dig 1
     pushint 64
     extract_uint64
-    bytec 17 // "cumulative_principal_index"
+    bytec 18 // "cumulative_principal_index"
     swap
     app_global_put
     // modules/actus_kernel.py:859-860
     // # Reserved Amount (for executed cashflows)
     // self.reserved_interest = UInt64(0)
-    bytec 15 // "reserved_interest"
+    bytec 16 // "reserved_interest"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:861
@@ -2901,7 +2948,7 @@ contract_schedule:
     // modules/actus_kernel.py:885
     // assert self.initial_exchange_amount > UInt64(0), err.TERMS_NOT_CONFIGURED
     intc_0 // 0
-    bytec 20 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
     assert // D-ASA terms not configured
@@ -3069,7 +3116,7 @@ contract_schedule_else_body@6:
     // modules/actus_kernel.py:915
     // previous_page_index in self.schedule_page
     itob
-    bytec 24 // 0x5323
+    bytec 25 // 0x5323
     swap
     concat
     dup
@@ -3113,7 +3160,7 @@ contract_schedule_after_while@11:
     // self.schedule_page[page_index] = schedule_page.copy()
     dig 6
     itob
-    bytec 24 // 0x5323
+    bytec 25 // 0x5323
     swap
     concat
     dup
@@ -3425,7 +3472,7 @@ apply_non_cash_event:
     // modules/actus_kernel.py:953
     // if page_index in self.schedule_page:
     itob
-    bytec 24 // 0x5323
+    bytec 25 // 0x5323
     swap
     concat
     dup
@@ -3702,7 +3749,7 @@ apply_non_cash_event_bool_merge@23:
     bz apply_non_cash_event_else_body@5
     // modules/rbac.py:82
     // assert self._role_is_active(self.observer, Txn.sender), err.UNAUTHORIZED
-    bytec 25 // 0x523a4d4f4323
+    bytec 26 // 0x523a4d4f4323
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -3875,7 +3922,7 @@ append_observed_cash_event_after_if_else@3:
     // modules/actus_kernel.py:996
     // if page_index in self.schedule_page:
     itob
-    bytec 24 // 0x5323
+    bytec 25 // 0x5323
     swap
     concat
     dup
@@ -4052,7 +4099,7 @@ contract_get_state:
     // modules/actus_kernel.py:1279
     // initial_exchange_amount=self.initial_exchange_amount,
     intc_0 // 0
-    bytec 20 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
     // modules/actus_kernel.py:1280
@@ -4094,19 +4141,19 @@ contract_get_state:
     // modules/actus_kernel.py:1286
     // cumulative_interest_index=self.cumulative_interest_index,
     intc_0 // 0
-    bytec 16 // "cumulative_interest_index"
+    bytec 17 // "cumulative_interest_index"
     app_global_get_ex
     assert // check self.cumulative_interest_index exists
     // modules/actus_kernel.py:1287
     // cumulative_principal_index=self.cumulative_principal_index,
     intc_0 // 0
-    bytec 17 // "cumulative_principal_index"
+    bytec 18 // "cumulative_principal_index"
     app_global_get_ex
     assert // check self.cumulative_principal_index exists
     // modules/actus_kernel.py:1288
     // reserved_interest=self.reserved_interest,
     intc_0 // 0
-    bytec 15 // "reserved_interest"
+    bytec 16 // "reserved_interest"
     app_global_get_ex
     assert // check self.reserved_interest exists
     // modules/actus_kernel.py:1289
@@ -4327,7 +4374,7 @@ rbac_rotate_arranger:
     callsub _assert_caller_is_arranger
     // modules/rbac.py:181
     // self.arranger.value = new_arranger
-    bytec 18 // 0x523a41525223
+    bytec 15 // 0x523a41525223
     swap
     app_global_put
     // modules/rbac.py:182
@@ -4359,7 +4406,7 @@ rbac_set_op_daemon:
     callsub _assert_caller_is_arranger
     // modules/rbac.py:199
     // self.op_daemon.value = address
-    bytec 27 // 0x523a4f504423
+    bytec 19 // 0x523a4f504423
     swap
     app_global_put
     // modules/rbac.py:200
@@ -4418,7 +4465,7 @@ rbac_assign_role:
     bz rbac_assign_role_after_if_else@3
     // modules/rbac.py:105
     // self.arranger.value = role_address
-    bytec 18 // 0x523a41525223
+    bytec 15 // 0x523a41525223
     dig 3
     app_global_put
 
@@ -4445,7 +4492,7 @@ rbac_assign_role_after_if_else@3:
     bz rbac_assign_role_after_if_else@5
     // modules/rbac.py:109
     // assert role_address not in self.account_manager, err.INVALID_ROLE_ADDRESS
-    bytec 23 // 0x523a4d4e4723
+    bytec 24 // 0x523a4d4e4723
     dig 3
     concat
     dup
@@ -4470,7 +4517,7 @@ rbac_assign_role_after_if_else@5:
     bz rbac_assign_role_after_if_else@7
     // modules/rbac.py:113
     // assert role_address not in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 22 // 0x523a50594423
+    bytec 23 // 0x523a50594423
     dig 3
     concat
     dup
@@ -4495,7 +4542,7 @@ rbac_assign_role_after_if_else@7:
     bz rbac_assign_role_after_if_else@9
     // modules/rbac.py:117
     // assert role_address not in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 26 // 0x523a54525323
+    bytec 27 // 0x523a54525323
     dig 3
     concat
     dup
@@ -4520,7 +4567,7 @@ rbac_assign_role_after_if_else@9:
     bz rbac_assign_role_after_if_else@11
     // modules/rbac.py:121
     // assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec 21 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     dig 3
     concat
     dup
@@ -4545,7 +4592,7 @@ rbac_assign_role_after_if_else@11:
     bz rbac_assign_role_after_inlined_modules.rbac.RbacModule._set_role@14
     // modules/rbac.py:125
     // assert role_address not in self.observer, err.INVALID_ROLE_ADDRESS
-    bytec 25 // 0x523a4d4f4323
+    bytec 26 // 0x523a4d4f4323
     dig 3
     concat
     dup
@@ -4601,7 +4648,7 @@ rbac_revoke_role:
     bz rbac_revoke_role_after_if_else@3
     // modules/rbac.py:131
     // assert role_address in self.account_manager, err.INVALID_ROLE_ADDRESS
-    bytec 23 // 0x523a4d4e4723
+    bytec 24 // 0x523a4d4e4723
     dig 2
     concat
     dup
@@ -4636,7 +4683,7 @@ rbac_revoke_role_after_if_else@3:
     bz rbac_revoke_role_after_if_else@5
     // modules/rbac.py:135
     // assert role_address in self.primary_dealer, err.INVALID_ROLE_ADDRESS
-    bytec 22 // 0x523a50594423
+    bytec 23 // 0x523a50594423
     dig 2
     concat
     dup
@@ -4660,7 +4707,7 @@ rbac_revoke_role_after_if_else@5:
     bz rbac_revoke_role_after_if_else@7
     // modules/rbac.py:139
     // assert role_address in self.trustee, err.INVALID_ROLE_ADDRESS
-    bytec 26 // 0x523a54525323
+    bytec 27 // 0x523a54525323
     dig 2
     concat
     dup
@@ -4684,7 +4731,7 @@ rbac_revoke_role_after_if_else@7:
     bz rbac_revoke_role_after_if_else@9
     // modules/rbac.py:143
     // assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec 21 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     dig 2
     concat
     dup
@@ -4708,7 +4755,7 @@ rbac_revoke_role_after_if_else@9:
     bz rbac_revoke_role_after_inlined_modules.rbac.RbacModule._delete_role@12
     // modules/rbac.py:147
     // assert role_address in self.observer, err.INVALID_ROLE_ADDRESS
-    bytec 25 // 0x523a4d4f4323
+    bytec 26 // 0x523a4d4f4323
     dig 2
     concat
     dup
@@ -4736,7 +4783,7 @@ rbac_contract_suspension:
     getbit
     // modules/rbac.py:79
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
-    bytec 21 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -4773,7 +4820,7 @@ rbac_contract_default:
     getbit
     // modules/rbac.py:76
     // assert self._role_is_active(self.trustee, Txn.sender), err.UNAUTHORIZED
-    bytec 26 // 0x523a54525323
+    bytec 27 // 0x523a54525323
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -4801,7 +4848,7 @@ rbac_get_arranger:
     // modules/rbac.py:301
     // return self.arranger.value
     intc_0 // 0
-    bytec 18 // 0x523a41525223
+    bytec 15 // 0x523a41525223
     app_global_get_ex
     assert // check self.arranger exists
     // modules/rbac.py:290
@@ -4826,27 +4873,27 @@ rbac_get_address_roles:
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
     // modules/rbac.py:321
     // self._role_is_active(self.account_manager, address),
-    bytec 23 // 0x523a4d4e4723
+    bytec 24 // 0x523a4d4e4723
     dig 1
     callsub _role_is_active
     // modules/rbac.py:322
     // self._role_is_active(self.primary_dealer, address),
-    bytec 22 // 0x523a50594423
+    bytec 23 // 0x523a50594423
     dig 2
     callsub _role_is_active
     // modules/rbac.py:323
     // self._role_is_active(self.trustee, address),
-    bytec 26 // 0x523a54525323
+    bytec 27 // 0x523a54525323
     dig 3
     callsub _role_is_active
     // modules/rbac.py:324
     // self._role_is_active(self.authority, address),
-    bytec 21 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     dig 4
     callsub _role_is_active
     // modules/rbac.py:325
     // self._role_is_active(self.observer, address),
-    bytec 25 // 0x523a4d4f4323
+    bytec 26 // 0x523a4d4f4323
     uncover 5
     callsub _role_is_active
     // modules/rbac.py:303
@@ -4944,7 +4991,7 @@ rbac_get_role_validity:
 rbac_get_role_validity_switch_case_5@7:
     // modules/rbac.py:375
     // self.observer, role_address
-    bytec 25 // 0x523a4d4f4323
+    bytec 26 // 0x523a4d4f4323
     // modules/rbac.py:57
     // return role_address in role_map
     dig 1
@@ -4975,7 +5022,7 @@ rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_valid
 rbac_get_role_validity_switch_case_4@6:
     // modules/rbac.py:370
     // self.authority, role_address
-    bytec 21 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     // modules/rbac.py:57
     // return role_address in role_map
     dig 1
@@ -4999,7 +5046,7 @@ rbac_get_role_validity_switch_case_4@6:
 rbac_get_role_validity_switch_case_3@5:
     // modules/rbac.py:365
     // self.trustee, role_address
-    bytec 26 // 0x523a54525323
+    bytec 27 // 0x523a54525323
     // modules/rbac.py:57
     // return role_address in role_map
     dig 1
@@ -5023,7 +5070,7 @@ rbac_get_role_validity_switch_case_3@5:
 rbac_get_role_validity_switch_case_2@4:
     // modules/rbac.py:360
     // self.primary_dealer, role_address
-    bytec 22 // 0x523a50594423
+    bytec 23 // 0x523a50594423
     // modules/rbac.py:57
     // return role_address in role_map
     dig 1
@@ -5047,7 +5094,7 @@ rbac_get_role_validity_switch_case_2@4:
 rbac_get_role_validity_switch_case_1@3:
     // modules/rbac.py:355
     // self.account_manager, role_address
-    bytec 23 // 0x523a4d4e4723
+    bytec 24 // 0x523a4d4e4723
     // modules/rbac.py:57
     // return role_address in role_map
     dig 1
@@ -5122,7 +5169,7 @@ _settle_position:
     // # since this account's last checkpoint.
     // interest_delta = self.cumulative_interest_index - position.interest_checkpoint
     intc_0 // 0
-    bytec 16 // "cumulative_interest_index"
+    bytec 17 // "cumulative_interest_index"
     app_global_get_ex
     assert // check self.cumulative_interest_index exists
     dig 1
@@ -5132,7 +5179,7 @@ _settle_position:
     // modules/accounting.py:67
     // self.cumulative_principal_index - position.principal_checkpoint
     intc_0 // 0
-    bytec 17 // "cumulative_principal_index"
+    bytec 18 // "cumulative_principal_index"
     app_global_get_ex
     assert // check self.cumulative_principal_index exists
     dig 2
@@ -5199,7 +5246,7 @@ _settle_position:
     // # per-unit fixed-point global indices.
     // position.interest_checkpoint = self.cumulative_interest_index
     intc_0 // 0
-    bytec 16 // "cumulative_interest_index"
+    bytec 17 // "cumulative_interest_index"
     app_global_get_ex
     assert // check self.cumulative_interest_index exists
     itob
@@ -5207,7 +5254,7 @@ _settle_position:
     // modules/accounting.py:87
     // position.principal_checkpoint = self.cumulative_principal_index
     intc_0 // 0
-    bytec 17 // "cumulative_principal_index"
+    bytec 18 // "cumulative_principal_index"
     app_global_get_ex
     assert // check self.cumulative_principal_index exists
     itob
@@ -5458,7 +5505,7 @@ _get_schedule_entry:
     // modules/actus_kernel.py:206
     // assert page_index in self.schedule_page, err.INVALID_SCHEDULE_PAGE
     itob
-    bytec 24 // 0x5323
+    bytec 25 // 0x5323
     swap
     concat
     dup
@@ -6154,7 +6201,7 @@ _apply_non_cash_schedule_entry:
     // modules/actus_kernel.py:452
     // return self.initial_exchange_amount
     intc_0 // 0
-    bytec 20 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
     // modules/actus_kernel.py:641-645
@@ -6768,7 +6815,7 @@ _emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payo
     // modules/actus_kernel.py:723
     // currency_id=self.settlement_asset_id,
     intc_0 // 0
-    bytec 19 // "settlement_asset_id"
+    bytec 20 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
     // modules/actus_kernel.py:724
@@ -6956,7 +7003,7 @@ _assert_caller_is_arranger:
     // modules/rbac.py:54
     // return role_address == self.arranger.value
     intc_0 // 0
-    bytec 18 // 0x523a41525223
+    bytec 15 // 0x523a41525223
     app_global_get_ex
     assert // check self.arranger exists
     ==
