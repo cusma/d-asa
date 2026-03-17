@@ -74,7 +74,8 @@ The Arranger **MUST** be able to:
 ### Op Daemon
 
 The Op Daemon is an optional execution helper. If configured, the Op Daemon **MAY**
-trigger holder cashflow claims in addition to the holder or payment address.
+trigger due cashflow funding together with the Arranger and trigger holder
+cashflow claims in addition to the holder or payment address.
 
 ### Account Manager
 

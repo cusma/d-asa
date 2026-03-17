@@ -40,6 +40,7 @@ holder = app.account(holder_account)
 - `AuthorityRole.suspend_account(...)`
 - `AuthorityRole.set_contract_suspension(...)`
 - `ObserverRole.apply_non_cash_event(...)`
+- `OpDaemonRole.fund_due_cashflows(...)`
 - `OpDaemonRole.claim(...)`
 
 ## Holding Accounts
