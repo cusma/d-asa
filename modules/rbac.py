@@ -104,9 +104,7 @@ class RbacModule(ARC4Contract):
     def _set_role(
         self, role_id: UInt64, role_address: Account, validity: typ.RoleValidity
     ) -> None:
-        if role_id == UInt64(enums.ROLE_ARRANGER):
-            self.arranger.value = role_address
-            return
+        # Arranger role is rotated with a dedicated ABI
 
         if role_id == UInt64(enums.ROLE_ACCOUNT_MANAGER):
             assert role_address not in self.account_manager, err.INVALID_ROLE_ADDRESS
