@@ -868,6 +868,19 @@ class ObserverRole(_BoundRole):
 
 
 class OpDaemonRole(_BoundRole):
+    def fund_due_cashflows(self, *, max_event_count: int) -> FundingResult:
+        result = self._client.send.fund_due_cashflows(
+            FundDueCashflowsArgs(max_event_count=max_event_count)
+        )
+        funding = cast(CashFundingResult, result.abi_return)
+        return FundingResult(
+            funded_interest=funding.funded_interest,
+            funded_principal=funding.funded_principal,
+            total_funded=funding.total_funded,
+            processed_events=funding.processed_events,
+            timestamp=funding.timestamp,
+        )
+
     def claim(
         self, *, holding_address: str, payment_info: bytes | str = b""
     ) -> ClaimResult:
