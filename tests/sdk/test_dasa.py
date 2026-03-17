@@ -6,6 +6,7 @@ from decimal import Decimal
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 from algosdk.constants import ZERO_ADDRESS
 
 from d_asa import (
@@ -20,6 +21,7 @@ from d_asa import (
 from d_asa.models import AccountPosition
 from smart_contracts import constants as cst
 from smart_contracts import enums
+from smart_contracts.errors import INVALID_ROLE_ADDRESS
 
 
 @dataclass(frozen=True, slots=True)
@@ -110,6 +112,24 @@ class FakeSend:
         )
         self.contract_schedule_returns.append(value)
         return SimpleNamespace(abi_return=value)
+
+    def rbac_rotate_arranger(
+        self,
+        args: object,
+        params: object | None = None,
+        send_params: object | None = None,
+    ) -> SimpleNamespace:
+        self.calls.append(("rbac_rotate_arranger", args, params, send_params))
+        return SimpleNamespace(abi_return=222)
+
+    def rbac_assign_role(
+        self,
+        args: object,
+        params: object | None = None,
+        send_params: object | None = None,
+    ) -> SimpleNamespace:
+        self.calls.append(("rbac_assign_role", args, params, send_params))
+        return SimpleNamespace(abi_return=333)
 
 
 class FakeClient:
@@ -466,6 +486,52 @@ def test_arranger_configure_contract_uses_mappers_and_updates_pricing_context() 
         "contract_schedule",
     ]
 
+
+def test_arranger_role_rejects_zero_address_rotation_before_submit() -> None:
+    fake_send = FakeSend()
+    client = FakeClient(
+        timestamp=1_700_000_000, global_state=_global_state(), send=fake_send
+    )
+    app = DAsa.from_client(client)
+
+    with pytest.raises(INVALID_ROLE_ADDRESS):
+        app.arranger(
+            SimpleNamespace(address="ARRANGER", signer=object())
+        ).rotate_arranger(ZERO_ADDRESS)
+
+    assert fake_send.calls == []
+
+
+def test_arranger_role_rejects_zero_address_assignment_before_submit() -> None:
+    fake_send = FakeSend()
+    client = FakeClient(
+        timestamp=1_700_000_000, global_state=_global_state(), send=fake_send
+    )
+    app = DAsa.from_client(client)
+
+    with pytest.raises(INVALID_ROLE_ADDRESS):
+        app.arranger(SimpleNamespace(address="ARRANGER", signer=object())).assign_role(
+            DAsaRole.ARRANGER,
+            ZERO_ADDRESS,
+        )
+
+    assert fake_send.calls == []
+
+
+def test_deploy_rejects_zero_address_arranger_before_factory(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class ShouldNotConstructFactory:
+        def __init__(self, *args: object, **kwargs: object) -> None:
+            raise AssertionError("factory should not be constructed")
+
+    monkeypatch.setattr("d_asa.dasa._GeneratedDasaFactory", ShouldNotConstructFactory)
+
+    with pytest.raises(INVALID_ROLE_ADDRESS):
+        DAsa.deploy(
+            algorand=SimpleNamespace(),
+            arranger=SimpleNamespace(address=ZERO_ADDRESS, signer=object()),
+        )
 
 def test_pyproject_runtime_dependencies_only_keep_algokit_utils() -> None:
     pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
