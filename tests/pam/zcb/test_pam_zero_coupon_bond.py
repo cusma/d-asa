@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import pytest
+
 from algokit_utils import (
     AlgoAmount,
     AlgorandClient,
     CommonAppCallParams,
+    LogicError,
     SendParams,
     SigningAccount,
 )
@@ -14,12 +17,14 @@ from d_asa.artifacts.dasa_client import (
     ClaimDueCashflowsArgs,
     DasaClient,
     FundDueCashflowsArgs,
+    RbacSetOpDaemonArgs,
 )
 from d_asa.contracts import make_pam_zero_coupon_bond
 from d_asa.registry import CONTRACT_TYPE_IDS, EVENT_TYPE_IDS
 from d_asa.schedule import Cycle
 from smart_contracts import constants as cst
 from smart_contracts import enums
+from smart_contracts import errors as err
 from tests import utils
 from tests.pam.pam_test_support import (
     ISSUANCE_DELAY_CYCLE,
@@ -33,6 +38,66 @@ from tests.pam.pam_test_support import (
 
 ZERO_COUPON_MATURITY_CYCLE = Cycle.parse_cycle("360D")
 ZERO_COUPON_DISCOUNT_BPS = 200
+
+
+def _prepare_zero_coupon_due_cashflow(
+    *,
+    algorand: AlgorandClient,
+    bank: SigningAccount,
+    currency: utils.Currency,
+    client: DasaClient,
+    primary_dealer: utils.DAsaPrimaryDealer,
+    account_manager: utils.DAsaAccountManager,
+) -> tuple[SigningAccount, int]:
+    current_ts = utils.get_latest_timestamp(algorand.client.algod)
+    issuance_delay = cycle_duration_seconds(ISSUANCE_DELAY_CYCLE)
+    maturity_offset = cycle_duration_seconds(ZERO_COUPON_MATURITY_CYCLE)
+
+    issuance_date = current_ts + issuance_delay
+    maturity_date = issuance_date + maturity_offset
+    discount_amount = PRINCIPAL * ZERO_COUPON_DISCOUNT_BPS // cst.BPS
+    issue_price = PRINCIPAL - discount_amount
+    currency_scale = 10**currency.decimals
+    scaled_principal = scale_currency_amount(PRINCIPAL, currency_scale)
+    scaled_issue_price = scale_currency_amount(issue_price, currency_scale)
+
+    attrs = make_pam_zero_coupon_bond(
+        contract_id=2,
+        status_date=current_ts,
+        initial_exchange_date=issuance_date,
+        maturity_date=maturity_date,
+        notional_principal=PRINCIPAL,
+        premium_discount_at_ied=discount_amount,
+    )
+    normalized = normalize_contract_attributes(
+        attrs,
+        denomination_asset_id=currency.id,
+        denomination_asset_decimals=currency.decimals,
+        notional_unit_value=MINIMUM_DENOMINATION,
+        secondary_market_opening_date=issuance_date,
+        secondary_market_closure_date=maturity_date + cst.DAY_2_SEC,
+    )
+
+    participants = setup_pam_lifecycle(
+        client=client,
+        primary_dealer=primary_dealer,
+        account_manager=account_manager,
+        algorand=algorand,
+        bank=bank,
+        currency=currency,
+        normalized=normalized,
+        bank_funding_amount=scaled_principal - scaled_issue_price,
+        investor_payment_amount=normalized.terms.initial_exchange_amount,
+        prospectus_url="ACTUS zero coupon PAM lifecycle",
+    )
+
+    ied_entry = normalized.schedule[0]
+    utils.time_warp(ied_entry.scheduled_time + cst.DAY_2_SEC)
+    client.send.contract_execute_ied()
+
+    md_entry = normalized.schedule[1]
+    utils.time_warp(md_entry.scheduled_time)
+    return participants.investor, scaled_principal
 
 
 def test_zero_coupon_pam_discounted_full_lifecycle(
@@ -202,3 +267,110 @@ def test_zero_coupon_pam_discounted_full_lifecycle(
     assert final_position.claimable_interest == 0
     assert final_position.claimable_principal == 0
     assert final_position.settled_cursor == len(normalized.schedule)
+
+
+def test_fund_due_cashflows_is_permissionless_without_op_daemon(
+    algorand: AlgorandClient,
+    bank: SigningAccount,
+    currency: utils.Currency,
+    d_asa_client: DasaClient,
+    pam_primary_dealer: utils.DAsaPrimaryDealer,
+    pam_account_manager: utils.DAsaAccountManager,
+) -> None:
+    investor, scaled_principal = _prepare_zero_coupon_due_cashflow(
+        algorand=algorand,
+        bank=bank,
+        currency=currency,
+        client=d_asa_client,
+        primary_dealer=pam_primary_dealer,
+        account_manager=pam_account_manager,
+    )
+
+    funding = d_asa_client.send.fund_due_cashflows(
+        FundDueCashflowsArgs(max_event_count=1),
+        params=CommonAppCallParams(
+            sender=investor.address,
+            signer=investor.signer,
+        ),
+    ).abi_return
+
+    assert funding.processed_events == 1
+    assert funding.total_funded == scaled_principal
+
+
+def test_fund_due_cashflows_allows_arranger_and_rejects_others_when_op_daemon_is_set(
+    algorand: AlgorandClient,
+    arranger: SigningAccount,
+    bank: SigningAccount,
+    currency: utils.Currency,
+    d_asa_client: DasaClient,
+    pam_primary_dealer: utils.DAsaPrimaryDealer,
+    pam_account_manager: utils.DAsaAccountManager,
+    no_role_account: SigningAccount,
+) -> None:
+    investor, scaled_principal = _prepare_zero_coupon_due_cashflow(
+        algorand=algorand,
+        bank=bank,
+        currency=currency,
+        client=d_asa_client,
+        primary_dealer=pam_primary_dealer,
+        account_manager=pam_account_manager,
+    )
+
+    d_asa_client.send.rbac_set_op_daemon(
+        RbacSetOpDaemonArgs(address=no_role_account.address)
+    )
+
+    with pytest.raises(LogicError, match=err.UNAUTHORIZED):
+        d_asa_client.send.fund_due_cashflows(
+            FundDueCashflowsArgs(max_event_count=1),
+            params=CommonAppCallParams(
+                sender=investor.address,
+                signer=investor.signer,
+            ),
+        )
+
+    funding = d_asa_client.send.fund_due_cashflows(
+        FundDueCashflowsArgs(max_event_count=1),
+        params=CommonAppCallParams(
+            sender=arranger.address,
+            signer=arranger.signer,
+        ),
+    ).abi_return
+
+    assert funding.processed_events == 1
+    assert funding.total_funded == scaled_principal
+
+
+def test_fund_due_cashflows_allows_op_daemon_when_set(
+    algorand: AlgorandClient,
+    bank: SigningAccount,
+    currency: utils.Currency,
+    d_asa_client: DasaClient,
+    pam_primary_dealer: utils.DAsaPrimaryDealer,
+    pam_account_manager: utils.DAsaAccountManager,
+    no_role_account: SigningAccount,
+) -> None:
+    _investor, scaled_principal = _prepare_zero_coupon_due_cashflow(
+        algorand=algorand,
+        bank=bank,
+        currency=currency,
+        client=d_asa_client,
+        primary_dealer=pam_primary_dealer,
+        account_manager=pam_account_manager,
+    )
+
+    d_asa_client.send.rbac_set_op_daemon(
+        RbacSetOpDaemonArgs(address=no_role_account.address)
+    )
+
+    funding = d_asa_client.send.fund_due_cashflows(
+        FundDueCashflowsArgs(max_event_count=1),
+        params=CommonAppCallParams(
+            sender=no_role_account.address,
+            signer=no_role_account.signer,
+        ),
+    ).abi_return
+
+    assert funding.processed_events == 1
+    assert funding.total_funded == scaled_principal
