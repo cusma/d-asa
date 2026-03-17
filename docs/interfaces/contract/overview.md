@@ -14,9 +14,11 @@ schedule, and advances non-cash lifecycle events.
     { "name": "arranger", "type": "address" }
   ],
   "returns": { "type": "uint64", "desc": "UNIX timestamp of contract creation" },
-  "errors": []
+  "errors": ["INVALID_ROLE_ADDRESS"]
 }
 ```
+
+The arranger argument must not be the Algorand global zero address.
 
 ## `contract_config`
 

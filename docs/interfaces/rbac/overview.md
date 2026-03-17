@@ -27,9 +27,11 @@ Only the Arranger may call RBAC methods, unless otherwise specified.
     { "name": "new_arranger", "type": "address" }
   ],
   "returns": { "type": "uint64", "desc": "UNIX timestamp of the rotation" },
-  "errors": ["UNAUTHORIZED"]
+  "errors": ["UNAUTHORIZED", "INVALID_ROLE_ADDRESS"]
 }
 ```
+
+The new arranger must not be the Algorand global zero address.
 
 ## `rbac_set_op_daemon`
 
@@ -62,6 +64,9 @@ This is a non-normative helper for payment automation.
   "errors": ["UNAUTHORIZED", "DEFAULTED", "INVALID_ROLE", "INVALID_ROLE_ADDRESS"]
 }
 ```
+
+When `role_id` is `ROLE_ARRANGER`, `role_address` must not be the Algorand global
+zero address.
 
 ## `rbac_revoke_role`
 

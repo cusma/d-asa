@@ -23,6 +23,10 @@ The Arranger **MUST** retain the authority to:
 - set the optional operation daemon with `rbac_set_op_daemon`;
 - update the application with `contract_update`.
 
+The arranger slot **MUST NOT** be set to the Algorand global zero address during
+contract creation or later rotation, because doing so would lock out arranger-only
+operations.
+
 ## Suspension
 
 > Debt instruments are regulated under different legal frameworks and their jurisdictions.

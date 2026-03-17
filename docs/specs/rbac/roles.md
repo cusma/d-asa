@@ -59,6 +59,8 @@ permissions.
 
 The Arranger owns an Algorand Address.
 
+That address **MUST NOT** be the Algorand global zero address.
+
 The Arranger **MUST** be able to:
 
 - create the contract;
