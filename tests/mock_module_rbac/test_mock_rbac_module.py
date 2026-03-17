@@ -5,6 +5,7 @@ from algokit_utils import (
     LogicError,
     SigningAccount,
 )
+from algosdk.constants import ZERO_ADDRESS
 
 from smart_contracts import enums
 from smart_contracts import errors as err
@@ -124,6 +125,15 @@ def test_rbac_rotate_arranger_transfers_control(
     assert rbac_client.state.global_state.op_daemon == rbac_client.app_address
 
 
+def test_rbac_rotate_arranger_rejects_global_zero_address(
+    rbac_client: MockRbacModuleClient,
+) -> None:
+    with pytest.raises(LogicError, match=err.INVALID_ROLE_ADDRRESS):
+        rbac_client.send.rbac_rotate_arranger(
+            RbacRotateArrangerArgs(new_arranger=ZERO_ADDRESS)
+        )
+
+
 def test_rbac_assign_role_updates_role_validity_and_masks(
     algorand: AlgorandClient,
     no_role_account: SigningAccount,
@@ -190,6 +200,15 @@ def test_rbac_assign_role_rejects_invalid_calls(
             RbacAssignRoleArgs(
                 role_id=enums.ROLE_AUTHORITY,
                 role_address=authority.address,
+                validity=RoleValidity(0, 2**64 - 1),
+            )
+        )
+
+    with pytest.raises(LogicError, match=err.INVALID_ROLE_ADDRRESS):
+        rbac_client.send.rbac_assign_role(
+            RbacAssignRoleArgs(
+                role_id=enums.ROLE_ARRANGER,
+                role_address=ZERO_ADDRESS,
                 validity=RoleValidity(0, 2**64 - 1),
             )
         )
