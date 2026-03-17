@@ -66,6 +66,9 @@ class RbacModule(ARC4Contract):
     def _assert_caller_is_arranger(self) -> None:
         assert self._is_arranger(Txn.sender), err.UNAUTHORIZED
 
+    def _assert_valid_arranger_address(self, role_address: Account) -> None:
+        assert role_address != Global.zero_address, err.INVALID_ROLE_ADDRRESS
+
     def _assert_caller_is_account_manager(self) -> None:
         assert self._role_is_active(self.account_manager, Txn.sender), err.UNAUTHORIZED
 
@@ -176,8 +179,10 @@ class RbacModule(ARC4Contract):
 
         Raises:
             UNAUTHORIZED: Caller is not the current arranger.
+            INVALID_ROLE_ADDRESS: Arranger address must not be the global zero address.
         """
         self._assert_caller_is_arranger()
+        self._assert_valid_arranger_address(new_arranger)
         self.arranger.value = new_arranger
         return Global.latest_timestamp
 

@@ -1028,8 +1028,9 @@ class ActusKernelModule(RbacModule):
             UNIX timestamp of contract creation.
 
         Raises:
-            None: This method does not raise contract-specific errors.
+            INVALID_ROLE_ADDRESS: Arranger address must not be the global zero address.
         """
+        self._assert_valid_arranger_address(arranger)
         self.arranger.value = arranger
         return Global.latest_timestamp
 
