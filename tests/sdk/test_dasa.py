@@ -111,6 +111,24 @@ class FakeSend:
         self.contract_schedule_returns.append(value)
         return SimpleNamespace(abi_return=value)
 
+    def rbac_rotate_arranger(
+        self,
+        args: object,
+        params: object | None = None,
+        send_params: object | None = None,
+    ) -> SimpleNamespace:
+        self.calls.append(("rbac_rotate_arranger", args, params, send_params))
+        return SimpleNamespace(abi_return=222)
+
+    def rbac_assign_role(
+        self,
+        args: object,
+        params: object | None = None,
+        send_params: object | None = None,
+    ) -> SimpleNamespace:
+        self.calls.append(("rbac_assign_role", args, params, send_params))
+        return SimpleNamespace(abi_return=333)
+
 
 class FakeClient:
     def __init__(

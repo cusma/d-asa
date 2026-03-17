@@ -5,6 +5,7 @@ from algokit_utils import (
     LogicError,
     SigningAccount,
 )
+from algosdk.constants import ZERO_ADDRESS
 
 from smart_contracts import enums
 from smart_contracts import errors as err
@@ -122,6 +123,15 @@ def test_rbac_rotate_arranger_transfers_control(
         params=CommonAppCallParams(sender=no_role_account.address),
     )
     assert rbac_client.state.global_state.op_daemon == rbac_client.app_address
+
+
+def test_rbac_rotate_arranger_rejects_global_zero_address(
+    rbac_client: MockRbacModuleClient,
+) -> None:
+    with pytest.raises(LogicError, match=err.INVALID_ROLE_ADDRESS):
+        rbac_client.send.rbac_rotate_arranger(
+            RbacRotateArrangerArgs(new_arranger=ZERO_ADDRESS)
+        )
 
 
 def test_rbac_assign_role_updates_role_validity_and_masks(
@@ -378,19 +388,11 @@ def test_rbac_get_address_roles_covers_every_role_fixture(
     )
 
 
-def test_rbac_get_role_validity_reports_arranger_and_rejects_invalid_inputs(
+def test_rbac_get_role_validity_rejects_invalid_inputs(
     arranger: SigningAccount,
     no_role_account: SigningAccount,
     rbac_client: MockRbacModuleClient,
 ) -> None:
-    arranger_validity = rbac_client.send.rbac_get_role_validity(
-        RbacGetRoleValidityArgs(
-            role_id=enums.ROLE_ARRANGER,
-            role_address=arranger.address,
-        )
-    ).abi_return
-    assert arranger_validity == RoleValidity(0, 0)
-
     with pytest.raises(LogicError, match=err.INVALID_ROLE):
         rbac_client.send.rbac_get_role_validity(
             RbacGetRoleValidityArgs(
