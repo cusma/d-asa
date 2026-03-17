@@ -24,7 +24,8 @@ The Payment Agent interface funds due ACTUS cash events and allows holder claims
 }
 ```
 
-Only the Arranger may call this method.
+If an Op Daemon is configured, only the Arranger or Op Daemon may call this
+method. Otherwise the method is permissionless.
 
 ## `claim_due_cashflows`
 
