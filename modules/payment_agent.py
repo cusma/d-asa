@@ -14,11 +14,12 @@ class PaymentAgent(AccountingModule):
         """Require the caller to be allowed to fund due contract-wide cashflows."""
         if self.op_daemon.value != Global.zero_address:
             assert (
-                Txn.sender == self.op_daemon.value
-                or Txn.sender == self.arranger.value
+                Txn.sender == self.op_daemon.value or Txn.sender == self.arranger.value
             ), err.UNAUTHORIZED
 
-    def _assert_claim_due_cashflow_authorization(self, holding_address: Account) -> None:
+    def _assert_claim_due_cashflow_authorization(
+        self, holding_address: Account
+    ) -> None:
         """Require the caller to be allowed to trigger a holder payment."""
         if self.op_daemon.value != Global.zero_address:
             assert (

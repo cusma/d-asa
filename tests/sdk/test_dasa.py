@@ -568,9 +568,11 @@ def test_op_daemon_role_fund_due_cashflows_uses_bound_client() -> None:
         send=SimpleNamespace(fund_due_cashflows=fund_due_cashflows),
     )
 
-    funding = DAsa.from_client(client).op_daemon(
-        SimpleNamespace(address="OP_DAEMON", signer=object())
-    ).fund_due_cashflows(max_event_count=2)
+    funding = (
+        DAsa.from_client(client)
+        .op_daemon(SimpleNamespace(address="OP_DAEMON", signer=object()))
+        .fund_due_cashflows(max_event_count=2)
+    )
 
     assert funding.funded_interest == 10
     assert funding.funded_principal == 20
