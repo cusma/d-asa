@@ -10,7 +10,15 @@ from .accounting import AccountingModule
 class PaymentAgent(AccountingModule):
     """Provide ACTUS cashflow funding and holder withdrawal behavior."""
 
-    def _assert_payment_authorization(self, holding_address: Account) -> None:
+    def _assert_fund_due_cashflow_authorization(self) -> None:
+        """Require the caller to be allowed to fund due contract-wide cashflows."""
+        if self.op_daemon.value != Global.zero_address:
+            assert (
+                Txn.sender == self.op_daemon.value
+                or Txn.sender == self.arranger.value
+            ), err.UNAUTHORIZED
+
+    def _assert_claim_due_cashflow_authorization(self, holding_address: Account) -> None:
         """Require the caller to be allowed to trigger a holder payment."""
         if self.op_daemon.value != Global.zero_address:
             assert (
@@ -57,7 +65,7 @@ class PaymentAgent(AccountingModule):
 
         Raises:
             NOT_CONFIGURED: Contract terms and schedule are not fully configured.
-            UNAUTHORIZED: Caller is not the arranger.
+            UNAUTHORIZED: Caller is not the arranger or op daemon when configured.
             DEFAULTED: Asset is defaulted.
             SUSPENDED: Asset operations are suspended.
             PENDING_IED: Initial exchange has not executed yet.
@@ -65,7 +73,7 @@ class PaymentAgent(AccountingModule):
             NOT_ENOUGH_FUNDS: Contract account does not hold enough free settlement funds.
         """
         self._assert_configured()
-        self._assert_caller_is_arranger()
+        self._assert_fund_due_cashflow_authorization()
         self._assert_is_not_contract_defaulted()
         self._assert_is_not_contract_suspended()
         self._assert_initial_exchange_executed()
@@ -135,7 +143,7 @@ class PaymentAgent(AccountingModule):
         """
         self._assert_configured()
         self._assert_valid_holding_address(holding_address)
-        self._assert_payment_authorization(holding_address)
+        self._assert_claim_due_cashflow_authorization(holding_address)
         self._assert_is_not_contract_defaulted()
         self._assert_is_not_contract_suspended()
         self._assert_initial_exchange_executed()
