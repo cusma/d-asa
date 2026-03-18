@@ -40,9 +40,8 @@ class TransferAgent(AccountingModule):
         """
         self._assert_caller_is_arranger()
         assert open_date < closure_date, err.INVALID_SORTING
-        assert (
-            self.initial_exchange_date and open_date >= self.initial_exchange_date
-        ), err.INVALID_TRANSFER_OPENING
+        ied = self.initial_exchange_date
+        assert ied and open_date >= ied, err.INVALID_TRANSFER_OPENING
 
         self.transfer_opening_date = open_date
         self.transfer_closure_date = closure_date

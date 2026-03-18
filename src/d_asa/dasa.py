@@ -722,11 +722,11 @@ class ArrangerRole(_BoundRole):
         return cast(int, result.abi_return)
 
     def set_transfer_window(self, *, open_date: int, closure_date: int) -> int:
-        state = self.contract.get_state()
         if closure_date <= open_date:
             raise ValueError(
                 "transfer window closure_date must be strictly after open_date"
             )
+        state = self.contract.get_state()
         if not state.initial_exchange_date or open_date < state.initial_exchange_date:
             raise ValueError(
                 "transfer window open_date must be at or after initial_exchange_date"
