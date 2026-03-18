@@ -111,6 +111,15 @@ class FakeSend:
         self.contract_schedule_returns.append(value)
         return SimpleNamespace(abi_return=value)
 
+    def transfer_set_schedule(
+        self,
+        args: object,
+        params: object | None = None,
+        send_params: object | None = None,
+    ) -> SimpleNamespace:
+        self.calls.append(("transfer_set_schedule", args, params, send_params))
+        return SimpleNamespace(abi_return=444)
+
     def rbac_rotate_arranger(
         self,
         args: object,
@@ -483,6 +492,31 @@ def test_arranger_configure_contract_uses_mappers_and_updates_pricing_context() 
         "contract_config",
         "contract_schedule",
     ]
+
+
+def test_arranger_set_transfer_window_rejects_open_before_ied() -> None:
+    client = FakeClient(
+        timestamp=1_700_000_000,
+        global_state=_global_state(
+            status=enums.STATUS_PENDING_IED,
+            initial_exchange_date=1_700_000_000 + 30 * cst.DAY_2_SEC,
+        ),
+    )
+    arranger = DAsa.from_client(client).arranger(
+        SimpleNamespace(address="ARRANGER", signer=object())
+    )
+
+    try:
+        arranger.set_transfer_window(
+            open_date=1_700_000_000 + 29 * cst.DAY_2_SEC,
+            closure_date=1_700_000_000 + 60 * cst.DAY_2_SEC,
+        )
+    except ValueError as exc:
+        assert "at or after initial_exchange_date" in str(exc)
+    else:  # pragma: no cover - defensive
+        raise AssertionError(
+            "expected set_transfer_window to reject opening before IED"
+        )
 
 
 def test_pyproject_runtime_dependencies_only_keep_algokit_utils() -> None:
