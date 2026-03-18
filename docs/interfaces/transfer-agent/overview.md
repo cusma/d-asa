@@ -14,11 +14,12 @@ secondary transfers.
     { "name": "closure_date", "type": "uint64" }
   ],
   "returns": { "type": "uint64", "desc": "UNIX timestamp of the schedule update" },
-  "errors": ["UNAUTHORIZED", "INVALID_SORTING"]
+  "errors": ["UNAUTHORIZED", "INVALID_SORTING", "INVALID_TRANSFER_OPENING"]
 }
 ```
 
-Only the Arranger may call this method.
+Only the Arranger may call this method. The `IED` **MUST** be already defined and
+the opening date **MUST** be greater than or equal to `IED`.
 
 ## `primary_distribution`
 
