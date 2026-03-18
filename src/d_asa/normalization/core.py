@@ -142,6 +142,16 @@ def normalize_contract_attributes(
             "D-ASA requires status_date to be strictly before initial_exchange_date"
         )
 
+    if secondary_market_opening_date < contract.initial_exchange_date:
+        raise ActusNormalizationError(
+            "secondary_market_opening_date must be at or after initial_exchange_date"
+        )
+
+    if secondary_market_closure_date <= secondary_market_opening_date:
+        raise ActusNormalizationError(
+            "secondary_market_closure_date must be strictly after secondary_market_opening_date"
+        )
+
     if contract.business_day_convention != BusinessDayConvention.NOS:
         raise UnsupportedActusFeatureError(
             "D-ASA compliance profile only supports business_day_convention=NOS"
