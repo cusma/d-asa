@@ -6,6 +6,7 @@ from decimal import Decimal
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 from algosdk.constants import ZERO_ADDRESS
 
 from d_asa import (
@@ -593,6 +594,56 @@ def test_contract_view_get_address_roles_at_time_zero() -> None:
     # When checking roles at timestamp 1000, the role should be active (exactly at start)
     roles_at_start = contract_view.get_address_roles("MANAGER", at_time=1000)
     assert roles_at_start.account_manager is True
+
+
+def test_arranger_assign_role_rejects_zero_address_locally() -> None:
+    send = FakeSend()
+    client = FakeClient(
+        timestamp=1_700_000_000,
+        global_state=_global_state(),
+        send=send,
+    )
+    arranger = SimpleNamespace(address="ARRANGER", signer=object())
+
+    with pytest.raises(
+        ValueError, match="role address must not be the Algorand zero address"
+    ):
+        DAsa.from_client(client).arranger(arranger).assign_role(
+            DAsaRole.AUTHORITY,
+            ZERO_ADDRESS,
+        )
+
+    assert all(call[0] != "rbac_assign_role" for call in send.calls)
+
+
+def test_arranger_assign_role_rejects_non_strict_validity_window_locally() -> None:
+    send = FakeSend()
+    client = FakeClient(
+        timestamp=1_700_000_000,
+        global_state=_global_state(),
+        send=send,
+    )
+    arranger = SimpleNamespace(address="ARRANGER", signer=object())
+
+    with pytest.raises(
+        ValueError, match="role validity start must be strictly earlier than end"
+    ):
+        DAsa.from_client(client).arranger(arranger).assign_role(
+            DAsaRole.AUTHORITY,
+            "AUTHORITY",
+            validity=RoleValidityWindow(10, 10),
+        )
+
+    with pytest.raises(
+        ValueError, match="role validity start must be strictly earlier than end"
+    ):
+        DAsa.from_client(client).arranger(arranger).assign_role(
+            DAsaRole.AUTHORITY,
+            "AUTHORITY",
+            validity=RoleValidityWindow(11, 10),
+        )
+
+    assert all(call[0] != "rbac_assign_role" for call in send.calls)
 
 
 def test_op_daemon_role_fund_due_cashflows_uses_bound_client() -> None:

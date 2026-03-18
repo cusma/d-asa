@@ -803,6 +803,10 @@ class ArrangerRole(_BoundRole):
         validity: RoleValidityWindow | None = None,
     ) -> int:
         validity_window = validity or RoleValidityWindow(0, DEFAULT_ROLE_VALIDITY_END)
+        if address == ZERO_ADDRESS:
+            raise ValueError("role address must not be the Algorand zero address")
+        if validity_window.start >= validity_window.end:
+            raise ValueError("role validity start must be strictly earlier than end")
         result = self._client.send.rbac_assign_role(
             RbacAssignRoleArgs(
                 role_id=int(role),

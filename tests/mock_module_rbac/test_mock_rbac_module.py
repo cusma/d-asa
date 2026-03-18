@@ -204,6 +204,33 @@ def test_rbac_assign_role_rejects_invalid_calls(
             )
         )
 
+    with pytest.raises(LogicError, match=err.INVALID_ROLE_ADDRESS):
+        rbac_client.send.rbac_assign_role(
+            RbacAssignRoleArgs(
+                role_id=enums.ROLE_AUTHORITY,
+                role_address=ZERO_ADDRESS,
+                validity=RoleValidity(0, 2**64 - 1),
+            )
+        )
+
+    with pytest.raises(LogicError, match=err.INVALID_SORTING):
+        rbac_client.send.rbac_assign_role(
+            RbacAssignRoleArgs(
+                role_id=enums.ROLE_AUTHORITY,
+                role_address=no_role_account.address,
+                validity=RoleValidity(10, 10),
+            )
+        )
+
+    with pytest.raises(LogicError, match=err.INVALID_SORTING):
+        rbac_client.send.rbac_assign_role(
+            RbacAssignRoleArgs(
+                role_id=enums.ROLE_AUTHORITY,
+                role_address=no_role_account.address,
+                validity=RoleValidity(11, 10),
+            )
+        )
+
 
 def test_rbac_revoke_role_removes_assignment(
     no_role_account: SigningAccount,
