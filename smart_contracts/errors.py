@@ -51,6 +51,7 @@ PRIMARY_DISTRIBUTION_INCOMPLETE = "Primary distribution is not complete"
 PRIMARY_DISTRIBUTION_CLOSED = "Primary distribution is closed"
 
 # Transfer
+INVALID_TRANSFER_OPENING = "Transfer opening date must be at or after IED"
 SELF_TRANSFER = "Sender and receiver must be different"
 NULL_TRANSFER = "Transfer units must be greater than zero"
 OVER_TRANSFER = "Insufficient sender units to transfer"
