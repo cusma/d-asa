@@ -40,7 +40,15 @@ time-bounded assignments. A role assignment is active only if:
 role_validity_start <= current_block_timestamp <= role_validity_end
 ```
 
+Every stored assignment window **MUST** be strictly ordered:
+
+```text
+role_validity_start < role_validity_end
+```
+
 The D-ASA **MUST** reject actions that require an inactive role assignment.
+
+Time-bounded role addresses **MUST NOT** be the global zero address.
 
 ## Responsibilities
 

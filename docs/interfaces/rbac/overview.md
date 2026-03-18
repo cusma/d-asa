@@ -61,11 +61,12 @@ This is a non-normative helper for payment automation.
     { "name": "validity", "type": "RoleValidity" }
   ],
   "returns": { "type": "uint64", "desc": "UNIX timestamp of the assignment" },
-  "errors": ["UNAUTHORIZED", "DEFAULTED", "INVALID_ROLE", "INVALID_ROLE_ADDRESS"]
+  "errors": ["UNAUTHORIZED", "DEFAULTED", "INVALID_ROLE", "INVALID_ROLE_ADDRESS", "INVALID_SORTING"]
 }
 ```
 
-Only assign non-Arranger roles.
+Only assign non-Arranger roles. The target address must not be the global zero address,
+and `validity.role_validity_start` must be strictly earlier than `validity.role_validity_end`.
 
 ## `rbac_revoke_role`
 
