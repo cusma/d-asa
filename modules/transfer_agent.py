@@ -39,9 +39,10 @@ class TransferAgent(AccountingModule):
             INVALID_TRANSFER_OPENING: The opening date is before the contract IED.
         """
         self._assert_caller_is_arranger()
-        assert open_date < closure_date, err.INVALID_SORTING
-        ied = self.initial_exchange_date
-        assert ied and open_date >= ied, err.INVALID_TRANSFER_OPENING
+        self._assert_configured()
+        assert (
+            self.initial_exchange_date <= open_date < closure_date
+        ), err.INVALID_SORTING
 
         self.transfer_opening_date = open_date
         self.transfer_closure_date = closure_date
