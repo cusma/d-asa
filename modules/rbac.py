@@ -220,12 +220,18 @@ class RbacModule(ARC4Contract):
             UNAUTHORIZED: Caller is not the arranger.
             DEFAULTED: Asset is defaulted.
             INVALID_ROLE: Role identifier is not supported.
-            INVALID_ROLE_ADDRESS: Address is invalid for the requested role.
+            INVALID_ROLE_ADDRESS: Address is invalid for the requested role or is the global zero address.
+            INVALID_SORTING: Role validity start must be strictly earlier than the end.
         """
 
         self._assert_caller_is_arranger()
         self._assert_is_not_contract_defaulted()
         self._assert_valid_role(role_id.as_uint64())
+        assert role_address != Global.zero_address, err.INVALID_ROLE_ADDRESS
+        assert (
+            validity.role_validity_start < validity.role_validity_end
+        ), err.INVALID_SORTING
+
         self._set_role(role_id.as_uint64(), role_address, validity)
         return Global.latest_timestamp
 

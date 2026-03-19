@@ -69,6 +69,16 @@ class NormalizedActusTerms:
                 "D-ASA requires notional_principal be divisible by notional_unit_value"
             )
 
+        if self.secondary_market_opening_date < self.initial_exchange_date:
+            raise ActusNormalizationError(
+                "secondary_market_opening_date must be at or after initial_exchange_date"
+            )
+
+        if self.secondary_market_closure_date <= self.secondary_market_opening_date:
+            raise ActusNormalizationError(
+                "secondary_market_closure_date must be strictly after secondary_market_opening_date"
+            )
+
     @property
     def total_units(self) -> int:
         return self.notional_principal // self.notional_unit_value

@@ -776,9 +776,6 @@ class ActusKernelModule(RbacModule):
         _creator, exists = op.AssetParamsGet.asset_creator(denomination_asset_id)
         assert exists, err.INVALID_DENOMINATION
 
-    def _set_denomination_asset(self, denomination_asset_id: Asset) -> None:
-        self.denomination_asset_id = denomination_asset_id
-
     def _assert_settlement_asset(self, settlement_asset_id: Asset) -> None:
         # The reference implementation settlement asset is the denomination asset
         assert (
@@ -809,7 +806,7 @@ class ActusKernelModule(RbacModule):
 
         # Set Denomination Asset
         self._assert_denomination_asset(terms.denomination_asset_id)
-        self._set_denomination_asset(terms.denomination_asset_id)
+        self.denomination_asset_id = terms.denomination_asset_id
 
         # Set Settlement Asset
         self._assert_settlement_asset(terms.settlement_asset_id)
@@ -823,6 +820,9 @@ class ActusKernelModule(RbacModule):
         self.day_count_convention = terms.day_count_convention.as_uint64()
 
         # Time
+        assert (
+            Global.latest_timestamp < terms.initial_exchange_date < terms.maturity_date
+        ), err.INVALID_ACTUS_CONFIG
         self.initial_exchange_date = terms.initial_exchange_date
         self.maturity_date = terms.maturity_date
         self.next_principal_redemption = initial_state.next_principal_redemption

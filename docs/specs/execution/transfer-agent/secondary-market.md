@@ -15,7 +15,8 @@ The transfer window is interpreted as:
 open_date <= now < closure_date
 ```
 
-The method **MUST** reject a schedule in which `open_date >= closure_date`.
+The `IED` **MUST** be defined and the method **MUST** reject a schedule in which
+`open_date >= closure_date` and a schedule in which `open_date < initial_exchange_date`.
 
 ## Default behavior
 
@@ -27,4 +28,5 @@ no additional secondary-market date restriction beyond the generic transfer chec
 The SDK normalization helpers may carry secondary-market dates as deployment metadata.
 Those dates are not part of the on-chain `NormalizedActusTerms` ABI struct in the
 current kernel. On-chain enforcement therefore happens through `transfer_set_schedule`,
-not through `contract_config`.
+with `contract_config` additionally rejecting preconfigured transfer windows whose
+opening date is before `IED`.

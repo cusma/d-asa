@@ -15,6 +15,10 @@ Role assignments **MUST** be validated against their stored time window at execu
 time. A role that exists but is outside its validity interval **MUST** be treated
 as inactive.
 
+When assigning a time-bounded role, the target address **MUST NOT** be the global
+zero address and the supplied validity interval **MUST** satisfy
+`role_validity_start < role_validity_end`.
+
 ## Arrangement
 
 The Arranger **MUST** retain the authority to:

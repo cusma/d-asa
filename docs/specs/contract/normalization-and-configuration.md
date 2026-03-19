@@ -98,6 +98,9 @@ preserve:
 `transfer_set_schedule` is separate from kernel configuration. Secondary-market
 dates are not part of the on-chain `NormalizedActusTerms` struct in the current
 ABI and, if enforced, **MUST** be configured separately at the execution layer.
+The SDK normalization metadata for secondary-market dates **MUST** satisfy
+`secondary_market_opening_date >= initial_exchange_date` and
+`secondary_market_closure_date > secondary_market_opening_date`.
 
 ## Performance state
 

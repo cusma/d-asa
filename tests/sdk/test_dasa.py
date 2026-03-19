@@ -6,6 +6,7 @@ from decimal import Decimal
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 from algosdk.constants import ZERO_ADDRESS
 
 from d_asa import (
@@ -110,6 +111,15 @@ class FakeSend:
         )
         self.contract_schedule_returns.append(value)
         return SimpleNamespace(abi_return=value)
+
+    def transfer_set_schedule(
+        self,
+        args: object,
+        params: object | None = None,
+        send_params: object | None = None,
+    ) -> SimpleNamespace:
+        self.calls.append(("transfer_set_schedule", args, params, send_params))
+        return SimpleNamespace(abi_return=444)
 
     def rbac_rotate_arranger(
         self,
@@ -485,6 +495,31 @@ def test_arranger_configure_contract_uses_mappers_and_updates_pricing_context() 
     ]
 
 
+def test_arranger_set_transfer_window_rejects_open_before_ied() -> None:
+    client = FakeClient(
+        timestamp=1_700_000_000,
+        global_state=_global_state(
+            status=enums.STATUS_PENDING_IED,
+            initial_exchange_date=1_700_000_000 + 30 * cst.DAY_2_SEC,
+        ),
+    )
+    arranger = DAsa.from_client(client).arranger(
+        SimpleNamespace(address="ARRANGER", signer=object())
+    )
+
+    try:
+        arranger.set_transfer_window(
+            open_date=1_700_000_000 + 29 * cst.DAY_2_SEC,
+            closure_date=1_700_000_000 + 60 * cst.DAY_2_SEC,
+        )
+    except ValueError as exc:
+        assert "at or after initial_exchange_date" in str(exc)
+    else:  # pragma: no cover - defensive
+        raise AssertionError(
+            "expected set_transfer_window to reject opening before IED"
+        )
+
+
 def test_pyproject_runtime_dependencies_only_keep_algokit_utils() -> None:
     pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
     parsed = tomllib.loads(pyproject.read_text())
@@ -559,6 +594,56 @@ def test_contract_view_get_address_roles_at_time_zero() -> None:
     # When checking roles at timestamp 1000, the role should be active (exactly at start)
     roles_at_start = contract_view.get_address_roles("MANAGER", at_time=1000)
     assert roles_at_start.account_manager is True
+
+
+def test_arranger_assign_role_rejects_zero_address_locally() -> None:
+    send = FakeSend()
+    client = FakeClient(
+        timestamp=1_700_000_000,
+        global_state=_global_state(),
+        send=send,
+    )
+    arranger = SimpleNamespace(address="ARRANGER", signer=object())
+
+    with pytest.raises(
+        ValueError, match="role address must not be the Algorand zero address"
+    ):
+        DAsa.from_client(client).arranger(arranger).assign_role(
+            DAsaRole.AUTHORITY,
+            ZERO_ADDRESS,
+        )
+
+    assert all(call[0] != "rbac_assign_role" for call in send.calls)
+
+
+def test_arranger_assign_role_rejects_non_strict_validity_window_locally() -> None:
+    send = FakeSend()
+    client = FakeClient(
+        timestamp=1_700_000_000,
+        global_state=_global_state(),
+        send=send,
+    )
+    arranger = SimpleNamespace(address="ARRANGER", signer=object())
+
+    with pytest.raises(
+        ValueError, match="role validity start must be strictly earlier than end"
+    ):
+        DAsa.from_client(client).arranger(arranger).assign_role(
+            DAsaRole.AUTHORITY,
+            "AUTHORITY",
+            validity=RoleValidityWindow(10, 10),
+        )
+
+    with pytest.raises(
+        ValueError, match="role validity start must be strictly earlier than end"
+    ):
+        DAsa.from_client(client).arranger(arranger).assign_role(
+            DAsaRole.AUTHORITY,
+            "AUTHORITY",
+            validity=RoleValidityWindow(11, 10),
+        )
+
+    assert all(call[0] != "rbac_assign_role" for call in send.calls)
 
 
 def test_op_daemon_role_fund_due_cashflows_uses_bound_client() -> None:

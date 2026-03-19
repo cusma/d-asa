@@ -287,6 +287,30 @@ class TestNormalizeContractAttributes:
                 secondary_market_closure_date=1950000,
             )
 
+    def test_secondary_market_opening_before_ied_raises_error(self):
+        """Test that secondary-market opening cannot precede IED."""
+        contract = make_pam_zero_coupon_bond(
+            contract_id=1,
+            status_date=1000000,
+            initial_exchange_date=1100000,
+            maturity_date=2000000,
+            notional_principal=1000000,
+            premium_discount_at_ied=0,
+        )
+
+        with pytest.raises(
+            ActusNormalizationError,
+            match="secondary_market_opening_date must be at or after initial_exchange_date",
+        ):
+            normalize_contract_attributes(
+                contract,
+                denomination_asset_id=100,
+                denomination_asset_decimals=2,
+                notional_unit_value=1000,
+                secondary_market_opening_date=1099999,
+                secondary_market_closure_date=1950000,
+            )
+
     def test_normalize_pam_fixed_coupon_bond(self):
         """Test normalizing a PAM fixed coupon bond."""
         contract = make_pam_fixed_coupon_bond_profile(
@@ -857,7 +881,7 @@ class TestLaxArrayPrNext:
             denomination_asset_id=1,
             denomination_asset_decimals=6,
             notional_unit_value=Decimal("1.0"),
-            secondary_market_opening_date=base_time,
+            secondary_market_opening_date=ied,
             secondary_market_closure_date=ied + (10 * month_secs),
         )
 
@@ -924,7 +948,7 @@ class TestLaxArrayPrNext:
             denomination_asset_id=1,
             denomination_asset_decimals=6,
             notional_unit_value=Decimal("1.0"),
-            secondary_market_opening_date=base_time,
+            secondary_market_opening_date=ied,
             secondary_market_closure_date=ied + (6 * month_secs),
         )
 
@@ -986,7 +1010,7 @@ class TestLaxArrayPrNext:
             denomination_asset_id=1,
             denomination_asset_decimals=6,
             notional_unit_value=Decimal("1.0"),
-            secondary_market_opening_date=base_time,
+            secondary_market_opening_date=ied,
             secondary_market_closure_date=ied + (5 * month_secs),
         )
 
@@ -1035,7 +1059,7 @@ class TestRateResetAmortizing:
             denomination_asset_id=100,
             denomination_asset_decimals=2,
             notional_unit_value=1000,
-            secondary_market_opening_date=1000000,
+            secondary_market_opening_date=1100000,
             secondary_market_closure_date=2000000,
         )
 
@@ -1097,7 +1121,7 @@ class TestRateResetAmortizing:
             denomination_asset_id=100,
             denomination_asset_decimals=2,
             notional_unit_value=1000,
-            secondary_market_opening_date=1000000,
+            secondary_market_opening_date=1100000,
             secondary_market_closure_date=2000000,
         )
 
@@ -1153,7 +1177,7 @@ class TestRateResetAmortizing:
             denomination_asset_id=100,
             denomination_asset_decimals=2,
             notional_unit_value=1000,
-            secondary_market_opening_date=1000000,
+            secondary_market_opening_date=1100000,
             secondary_market_closure_date=2000000,
         )
 
@@ -1205,7 +1229,7 @@ def test_nam_capitalizes_unpaid_interest():
         denomination_asset_id=100,
         denomination_asset_decimals=2,
         notional_unit_value=1000,
-        secondary_market_opening_date=1000000,
+        secondary_market_opening_date=1100000,
         secondary_market_closure_date=2000000,
     )
 
@@ -1278,7 +1302,7 @@ class TestRateResetInterpolation:
             denomination_asset_id=100,
             denomination_asset_decimals=6,
             notional_unit_value=1,
-            secondary_market_opening_date=start_ts,
+            secondary_market_opening_date=contract.initial_exchange_date,
             secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
         )
         schedule = result.schedule
@@ -1354,7 +1378,7 @@ class TestRateResetInterpolation:
             denomination_asset_id=100,
             denomination_asset_decimals=6,
             notional_unit_value=1,
-            secondary_market_opening_date=status_ts,
+            secondary_market_opening_date=start_ts,
             secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
         )
         schedule = result.schedule
@@ -1425,7 +1449,7 @@ class TestRateResetInterpolation:
             denomination_asset_id=100,
             denomination_asset_decimals=6,
             notional_unit_value=1,
-            secondary_market_opening_date=status_ts,
+            secondary_market_opening_date=start_ts,
             secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
         )
         schedule = result.schedule
@@ -1498,7 +1522,7 @@ class TestRateResetInterpolation:
             denomination_asset_id=100,
             denomination_asset_decimals=6,
             notional_unit_value=1,
-            secondary_market_opening_date=status_ts,
+            secondary_market_opening_date=start_ts,
             secondary_market_closure_date=start_ts + 200 * 24 * 60 * 60,
         )
         schedule = result.schedule
@@ -1574,7 +1598,7 @@ def test_nam_capitalization_uint64_overflow_detection():
             denomination_asset_id=100,
             denomination_asset_decimals=2,
             notional_unit_value=1000,
-            secondary_market_opening_date=1000000,
+            secondary_market_opening_date=1100000,
             secondary_market_closure_date=2000000,
         )
 
@@ -1620,7 +1644,7 @@ def test_lax_inc_uint64_overflow_detection():
             denomination_asset_id=100,
             denomination_asset_decimals=0,  # No scaling to simplify
             notional_unit_value=1,
-            secondary_market_opening_date=1000000,
+            secondary_market_opening_date=1100000,
             secondary_market_closure_date=2000000,
         )
 
@@ -1665,7 +1689,7 @@ def test_lax_array_pr_next_scaled_value_overflow_detection():
             denomination_asset_id=100,
             denomination_asset_decimals=6,  # 6 decimals will cause overflow
             notional_unit_value=1,
-            secondary_market_opening_date=1000000,
+            secondary_market_opening_date=1100000,
             secondary_market_closure_date=2000000,
         )
 
@@ -1724,7 +1748,7 @@ def test_ann_subtype_calculates_annuity_payment():
         denomination_asset_id=100,
         denomination_asset_decimals=6,
         notional_unit_value=1,
-        secondary_market_opening_date=status_ts,
+        secondary_market_opening_date=start_ts,
         secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
     )
 
@@ -1733,7 +1757,7 @@ def test_ann_subtype_calculates_annuity_payment():
         denomination_asset_id=100,
         denomination_asset_decimals=6,
         notional_unit_value=1,
-        secondary_market_opening_date=status_ts,
+        secondary_market_opening_date=start_ts,
         secondary_market_closure_date=start_ts + 400 * 24 * 60 * 60,
     )
 
