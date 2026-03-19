@@ -4,7 +4,7 @@
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
     intcblock 0 1 8 32 1500
-    bytecblock 0x151f7c75 "status" "event_cursor" "schedule_entry_count" "outstanding_principal" "fixed_point_scale" "accrued_interest" "interest_calculation_base" 0x4123 "nominal_interest_rate" "contract_type" "reserved_units_total" "reserved_principal" "total_units" "next_principal_redemption" "reserved_interest" "cumulative_interest_index" "cumulative_principal_index" 0x523a41525223 0x523a4f504423 "settlement_asset_id" "initial_exchange_date" "initial_exchange_amount" 0x523a41555423 0x523a50594423 0x523a4d4e4723 0x5323 0x523a4d4f4323 0x523a54525323 "transfer_opening_date" "transfer_closure_date" "rate_reset_floor" "rate_reset_cap" "contract_suspended" "defaulted" "dynamic_principal_redemption" "rate_reset_spread" "rate_reset_multiplier" "rate_reset_next" "has_rate_reset_floor" "has_rate_reset_cap" 0x00 "prospectus_hash" "prospectus_url" "denomination_asset_id" "maturity_date" "day_count_convention" 0x068101 0x0000
+    bytecblock 0x151f7c75 "status" "event_cursor" "schedule_entry_count" "outstanding_principal" "fixed_point_scale" "accrued_interest" "interest_calculation_base" 0x4123 "nominal_interest_rate" "contract_type" "reserved_units_total" "reserved_principal" "total_units" "next_principal_redemption" "reserved_interest" "cumulative_interest_index" "cumulative_principal_index" 0x523a41525223 0x523a4f504423 "settlement_asset_id" "initial_exchange_amount" 0x523a41555423 "initial_exchange_date" 0x523a50594423 0x523a4d4e4723 0x5323 0x523a4d4f4323 0x523a54525323 "transfer_opening_date" "transfer_closure_date" "rate_reset_floor" "rate_reset_cap" "contract_suspended" "defaulted" "dynamic_principal_redemption" "rate_reset_spread" "rate_reset_multiplier" "rate_reset_next" "has_rate_reset_floor" "has_rate_reset_cap" 0x00 "prospectus_hash" "prospectus_url" "denomination_asset_id" "maturity_date" "day_count_convention" 0x068101 0x0000
     txn ApplicationID
     bnz main_after_if_else@2
     // modules/rbac.py:28-29
@@ -66,7 +66,7 @@ main:
     // modules/actus_kernel.py:68-69
     // # Time
     // self.initial_exchange_date = typ.TimeStamp()
-    bytec 21 // "initial_exchange_date"
+    bytec 23 // "initial_exchange_date"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:70
@@ -104,7 +104,7 @@ main:
     // modules/actus_kernel.py:81-82
     // # Principal
     // self.initial_exchange_amount = UInt64()
-    bytec 22 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     intc_0 // 0
     app_global_put
     // modules/actus_kernel.py:83
@@ -1553,37 +1553,36 @@ transfer_set_schedule:
     ==
     assert // invalid number of bytes for arc4.uint64
     btoi
-    dup
-    cover 2
+    swap
     // modules/transfer_agent.py:41
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/transfer_agent.py:42
-    // assert open_date < closure_date, err.INVALID_SORTING
-    <
-    assert // Time events must be sorted in strictly ascending order
+    // modules/actus_kernel.py:143
+    // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
+    intc_0 // 0
+    bytec_1 // "status"
+    app_global_get_ex
+    assert // check self.status exists
+    assert // D-ASA not configured
     // modules/transfer_agent.py:44
-    // self.initial_exchange_date and open_date >= self.initial_exchange_date
+    // self.initial_exchange_date <= open_date < closure_date
     intc_0 // 0
-    bytec 21 // "initial_exchange_date"
+    bytec 23 // "initial_exchange_date"
     app_global_get_ex
     assert // check self.initial_exchange_date exists
+    >=
     bz transfer_set_schedule_bool_false@4
-    intc_0 // 0
-    bytec 21 // "initial_exchange_date"
-    app_global_get_ex
-    assert // check self.initial_exchange_date exists
-    dig 2
-    <=
+    dup2
+    <
     bz transfer_set_schedule_bool_false@4
     intc_1 // 1
 
 transfer_set_schedule_bool_merge@5:
     // modules/transfer_agent.py:43-45
     // assert (
-    //     self.initial_exchange_date and open_date >= self.initial_exchange_date
-    // ), err.INVALID_TRANSFER_OPENING
-    assert // Transfer opening date must be at or after IED
+    //     self.initial_exchange_date <= open_date < closure_date
+    // ), err.INVALID_SORTING
+    assert // Time events must be sorted in strictly ascending order
     // modules/transfer_agent.py:47
     // self.transfer_opening_date = open_date
     bytec 29 // "transfer_opening_date"
@@ -1699,7 +1698,7 @@ primary_distribution:
     // modules/transfer_agent.py:89
     // if self.initial_exchange_date:
     intc_0 // 0
-    bytec 21 // "initial_exchange_date"
+    bytec 23 // "initial_exchange_date"
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     bz primary_distribution_after_if_else@3
@@ -1707,7 +1706,7 @@ primary_distribution:
     // Global.latest_timestamp <= self.initial_exchange_date
     global LatestTimestamp
     intc_0 // 0
-    bytec 21 // "initial_exchange_date"
+    bytec 23 // "initial_exchange_date"
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     <=
@@ -2030,7 +2029,7 @@ account_suspension:
     getbit
     // modules/rbac.py:82
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
-    bytec 23 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -2296,7 +2295,7 @@ contract_create:
 // modules.actus_kernel.ActusKernelModule.contract_config[routing]() -> void:
 contract_config:
     pushbytes ""
-    dup
+    dupn 2
     // modules/actus_kernel.py:1037
     // @arc4.abimethod
     txna ApplicationArgs 1
@@ -2456,14 +2455,14 @@ contract_config_bool_merge@9:
     pushint 33
     extract_uint64
     dup
-    bury 8
+    bury 9
     assert // Invalid ACTUS configuration
     // modules/actus_kernel.py:327
     // terms.day_count_convention.as_uint64()
     pushint 57
     getbyte
     dup
-    bury 8
+    bury 9
     // modules/actus_kernel.py:297-303
     // return day_count_convention in (
     //     UInt64(enums.DCC_AA),
@@ -2473,7 +2472,7 @@ contract_config_bool_merge@9:
     //     UInt64(enums.DCC_30E360),
     // )
     bz contract_config_bool_true@16
-    dig 6
+    dig 7
     // modules/actus_kernel.py:299
     // UInt64(enums.DCC_A360),
     intc_1 // 1
@@ -2487,7 +2486,7 @@ contract_config_bool_merge@9:
     // )
     ==
     bnz contract_config_bool_true@16
-    dig 6
+    dig 7
     // modules/actus_kernel.py:300
     // UInt64(enums.DCC_A365),
     pushint 2
@@ -2501,7 +2500,7 @@ contract_config_bool_merge@9:
     // )
     ==
     bnz contract_config_bool_true@16
-    dig 6
+    dig 7
     // modules/actus_kernel.py:301
     // UInt64(enums.DCC_30E360ISDA),
     pushint 3
@@ -2515,7 +2514,7 @@ contract_config_bool_merge@9:
     // )
     ==
     bnz contract_config_bool_true@16
-    dig 6
+    dig 7
     // modules/actus_kernel.py:302
     // UInt64(enums.DCC_30E360),
     pushint 4
@@ -2554,7 +2553,7 @@ contract_config_bool_merge@18:
     assert // Invalid ACTUS configuration
 
 contract_config_after_if_else@20:
-    // modules/actus_kernel.py:807
+    // modules/actus_kernel.py:804
     // assert self.status == UInt64(enums.STATUS_INACTIVE), err.ALREADY_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
@@ -2562,15 +2561,15 @@ contract_config_after_if_else@20:
     assert // check self.status exists
     !
     assert // D-ASA already configured
-    // modules/actus_kernel.py:808
+    // modules/actus_kernel.py:805
     // assert self.initial_exchange_amount == UInt64(0), err.ALREADY_CONFIGURED
     intc_0 // 0
-    bytec 22 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
     !
     assert // D-ASA already configured
-    // modules/actus_kernel.py:810-811
+    // modules/actus_kernel.py:807-808
     // # Set Denomination Asset
     // self._assert_denomination_asset(terms.denomination_asset_id)
     dig 4
@@ -2586,34 +2585,34 @@ contract_config_after_if_else@20:
     // modules/actus_kernel.py:777
     // assert exists, err.INVALID_DENOMINATION
     assert // Denomination asset is not properly set
-    // modules/actus_kernel.py:780
-    // self.denomination_asset_id = denomination_asset_id
+    // modules/actus_kernel.py:809
+    // self.denomination_asset_id = terms.denomination_asset_id
     bytec 44 // "denomination_asset_id"
     dig 1
     app_global_put
-    // modules/actus_kernel.py:814-815
+    // modules/actus_kernel.py:811-812
     // # Set Settlement Asset
     // self._assert_settlement_asset(terms.settlement_asset_id)
     dig 1
     pushint 9
     extract_uint64
-    // modules/actus_kernel.py:785
+    // modules/actus_kernel.py:782
     // settlement_asset_id == self.denomination_asset_id
     dup
     uncover 2
     ==
-    // modules/actus_kernel.py:783-786
+    // modules/actus_kernel.py:780-783
     // # The reference implementation settlement asset is the denomination asset
     // assert (
     //     settlement_asset_id == self.denomination_asset_id
     // ), err.INVALID_SETTLEMENT_ASSET
     assert // Different settlement asset not supported, must be equal to denomination asset
-    // modules/actus_kernel.py:789
+    // modules/actus_kernel.py:786
     // self.settlement_asset_id = settlement_asset_id
     bytec 20 // "settlement_asset_id"
     dig 1
     app_global_put
-    // modules/actus_kernel.py:790-796
+    // modules/actus_kernel.py:787-793
     // # The reference implementation has on-chain settlement with ASA
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
@@ -2622,26 +2621,26 @@ contract_config_after_if_else@20:
     //     fee=Global.min_txn_fee,
     // ).submit()
     itxn_begin
-    // modules/actus_kernel.py:795
+    // modules/actus_kernel.py:792
     // fee=Global.min_txn_fee,
     global MinTxnFee
-    // modules/actus_kernel.py:793
+    // modules/actus_kernel.py:790
     // asset_receiver=Global.current_application_address,
     global CurrentApplicationAddress
-    // modules/actus_kernel.py:794
+    // modules/actus_kernel.py:791
     // asset_amount=0,
     intc_0 // 0
     itxn_field AssetAmount
     itxn_field AssetReceiver
     swap
     itxn_field XferAsset
-    // modules/actus_kernel.py:790-791
+    // modules/actus_kernel.py:787-788
     // # The reference implementation has on-chain settlement with ASA
     // itxn.AssetTransfer(
     pushint 4 // axfer
     itxn_field TypeEnum
     itxn_field Fee
-    // modules/actus_kernel.py:790-796
+    // modules/actus_kernel.py:787-793
     // # The reference implementation has on-chain settlement with ASA
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
@@ -2650,7 +2649,7 @@ contract_config_after_if_else@20:
     //     fee=Global.min_txn_fee,
     // ).submit()
     itxn_submit
-    // modules/actus_kernel.py:818-819
+    // modules/actus_kernel.py:815-816
     // # Units
     // self.total_units = terms.total_units
     dup
@@ -2659,29 +2658,53 @@ contract_config_after_if_else@20:
     bytec 13 // "total_units"
     swap
     app_global_put
-    // modules/actus_kernel.py:820
+    // modules/actus_kernel.py:817
     // self.reserved_units_total = UInt64(0)
     bytec 11 // "reserved_units_total"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:822-823
+    // modules/actus_kernel.py:819-820
     // # Day-Count Conventions
     // self.day_count_convention = terms.day_count_convention.as_uint64()
     bytec 46 // "day_count_convention"
-    dig 8
+    dig 9
     app_global_put
-    // modules/actus_kernel.py:825-826
-    // # Time
-    // self.initial_exchange_date = terms.initial_exchange_date
-    dup
+    // modules/actus_kernel.py:824
+    // Global.latest_timestamp < terms.initial_exchange_date < terms.maturity_date
+    global LatestTimestamp
+    swap
     pushint 41
     extract_uint64
-    bytec 21 // "initial_exchange_date"
-    dig 1
+    dup
+    bury 8
+    <
+    bz contract_config_bool_false@23
+    dig 4
+    pushint 49
+    extract_uint64
+    dig 6
+    >
+    bz contract_config_bool_false@23
+    intc_1 // 1
+
+contract_config_bool_merge@24:
+    // modules/actus_kernel.py:822-825
+    // # Time
+    // assert (
+    //     Global.latest_timestamp < terms.initial_exchange_date < terms.maturity_date
+    // ), err.INVALID_ACTUS_CONFIG
+    assert // Invalid ACTUS configuration
+    // modules/actus_kernel.py:826
+    // self.initial_exchange_date = terms.initial_exchange_date
+    bytec 23 // "initial_exchange_date"
+    dig 6
+    dup
+    cover 2
     app_global_put
     // modules/actus_kernel.py:827
     // self.maturity_date = terms.maturity_date
-    dig 1
+    dig 5
+    dup
     pushint 49
     extract_uint64
     bytec 45 // "maturity_date"
@@ -2700,12 +2723,12 @@ contract_config_after_if_else@20:
     // modules/actus_kernel.py:830-831
     // # Principal
     // self.initial_exchange_amount = terms.initial_exchange_amount
-    bytec 22 // "initial_exchange_amount"
-    dig 10
+    bytec 21 // "initial_exchange_amount"
+    dig 11
     app_global_put
     // modules/actus_kernel.py:832
     // self.dynamic_principal_redemption = terms.dynamic_principal_redemption
-    dig 3
+    dig 2
     pushint 786
     getbit
     bytec 35 // "dynamic_principal_redemption"
@@ -2747,7 +2770,7 @@ contract_config_after_if_else@20:
     app_global_put
     // modules/actus_kernel.py:841
     // self.rate_reset_spread = terms.rate_reset_spread
-    dig 3
+    dig 2
     pushint 58
     extract_uint64
     bytec 36 // "rate_reset_spread"
@@ -2755,7 +2778,7 @@ contract_config_after_if_else@20:
     app_global_put
     // modules/actus_kernel.py:842
     // self.rate_reset_multiplier = terms.rate_reset_multiplier
-    dig 3
+    dig 2
     pushint 66
     extract_uint64
     bytec 37 // "rate_reset_multiplier"
@@ -2763,7 +2786,7 @@ contract_config_after_if_else@20:
     app_global_put
     // modules/actus_kernel.py:843
     // self.rate_reset_floor = terms.rate_reset_floor
-    dig 3
+    dig 2
     pushint 74
     extract_uint64
     bytec 31 // "rate_reset_floor"
@@ -2771,7 +2794,7 @@ contract_config_after_if_else@20:
     app_global_put
     // modules/actus_kernel.py:844
     // self.rate_reset_cap = terms.rate_reset_cap
-    dig 3
+    dig 2
     pushint 82
     extract_uint64
     bytec 32 // "rate_reset_cap"
@@ -2779,7 +2802,7 @@ contract_config_after_if_else@20:
     app_global_put
     // modules/actus_kernel.py:845
     // self.rate_reset_next = terms.rate_reset_next
-    dig 3
+    dig 2
     pushint 90
     extract_uint64
     bytec 38 // "rate_reset_next"
@@ -2787,7 +2810,7 @@ contract_config_after_if_else@20:
     app_global_put
     // modules/actus_kernel.py:846
     // self.has_rate_reset_floor = terms.has_rate_reset_floor
-    dig 3
+    dig 2
     pushint 784
     getbit
     bytec 39 // "has_rate_reset_floor"
@@ -2795,7 +2818,7 @@ contract_config_after_if_else@20:
     app_global_put
     // modules/actus_kernel.py:847
     // self.has_rate_reset_cap = terms.has_rate_reset_cap
-    dig 3
+    dig 2
     pushint 785
     getbit
     bytec 40 // "has_rate_reset_cap"
@@ -2804,7 +2827,7 @@ contract_config_after_if_else@20:
     // modules/actus_kernel.py:849-850
     // # Scaling
     // self.fixed_point_scale = terms.fixed_point_scale
-    uncover 3
+    uncover 2
     pushint 99
     extract_uint64
     bytec 5 // "fixed_point_scale"
@@ -2893,6 +2916,10 @@ contract_config_after_if_else@20:
     intc_1 // 1
     return
 
+contract_config_bool_false@23:
+    intc_0 // 0
+    b contract_config_bool_merge@24
+
 contract_config_bool_false@17:
     intc_0 // 0
     b contract_config_bool_merge@18
@@ -2973,7 +3000,7 @@ contract_schedule:
     // modules/actus_kernel.py:885
     // assert self.initial_exchange_amount > UInt64(0), err.TERMS_NOT_CONFIGURED
     intc_0 // 0
-    bytec 22 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
     assert // D-ASA terms not configured
@@ -4124,7 +4151,7 @@ contract_get_state:
     // modules/actus_kernel.py:1280
     // initial_exchange_amount=self.initial_exchange_amount,
     intc_0 // 0
-    bytec 22 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
     // modules/actus_kernel.py:1281
@@ -4607,7 +4634,7 @@ rbac_assign_role_after_if_else@7:
     bz rbac_assign_role_after_if_else@9
     // modules/rbac.py:121
     // assert role_address not in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec 23 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     dig 3
     concat
     dup
@@ -4771,7 +4798,7 @@ rbac_revoke_role_after_if_else@7:
     bz rbac_revoke_role_after_if_else@9
     // modules/rbac.py:143
     // assert role_address in self.authority, err.INVALID_ROLE_ADDRESS
-    bytec 23 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     dig 2
     concat
     dup
@@ -4823,7 +4850,7 @@ rbac_contract_suspension:
     getbit
     // modules/rbac.py:82
     // assert self._role_is_active(self.authority, Txn.sender), err.UNAUTHORIZED
-    bytec 23 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     txn Sender
     callsub _role_is_active
     assert // Not authorized
@@ -4928,7 +4955,7 @@ rbac_get_address_roles:
     callsub _role_is_active
     // modules/rbac.py:332
     // self._role_is_active(self.authority, address),
-    bytec 23 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     dig 4
     callsub _role_is_active
     // modules/rbac.py:333
@@ -5058,7 +5085,7 @@ rbac_get_role_validity_after_inlined_modules.rbac.RbacModule.rbac_get_role_valid
 rbac_get_role_validity_switch_case_3@5:
     // modules/rbac.py:374
     // self.authority, role_address
-    bytec 23 // 0x523a41555423
+    bytec 22 // 0x523a41555423
     // modules/rbac.py:57
     // return role_address in role_map
     dig 1
@@ -6227,7 +6254,7 @@ _apply_non_cash_schedule_entry:
     // modules/actus_kernel.py:452
     // return self.initial_exchange_amount
     intc_0 // 0
-    bytec 22 // "initial_exchange_amount"
+    bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
     // modules/actus_kernel.py:641-645
