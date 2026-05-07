@@ -30,183 +30,183 @@ main:
     bytec 34 // "defaulted"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:56-57
+    // modules/actus_kernel.py:55-56
     // # Contract
     // self.status = UInt64(enums.STATUS_INACTIVE)
     bytec_1 // "status"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:58
+    // modules/actus_kernel.py:57
     // self.contract_type = UInt64()
     bytec 10 // "contract_type"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:60-61
+    // modules/actus_kernel.py:59-60
     // # Prospectus (Informational)
     // self.prospectus_hash = Bytes()
     bytec 42 // "prospectus_hash"
     pushbytes 0x
     app_global_put
-    // modules/actus_kernel.py:62
+    // modules/actus_kernel.py:61
     // self.prospectus_url = String()
     bytec 43 // "prospectus_url"
     pushbytes ""
     app_global_put
-    // modules/actus_kernel.py:64-65
+    // modules/actus_kernel.py:63-64
     // # Denomination
     // self.denomination_asset_id = Asset()
     bytec 44 // "denomination_asset_id"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:66
+    // modules/actus_kernel.py:65
     // self.settlement_asset_id = Asset()
     bytec 20 // "settlement_asset_id"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:68-69
+    // modules/actus_kernel.py:67-68
     // # Time
     // self.initial_exchange_date = typ.TimeStamp()
     bytec 23 // "initial_exchange_date"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:70
+    // modules/actus_kernel.py:69
     // self.maturity_date = typ.TimeStamp()
     bytec 45 // "maturity_date"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:71
+    // modules/actus_kernel.py:70
     // self.transfer_opening_date = typ.TimeStamp()
     bytec 29 // "transfer_opening_date"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:72
+    // modules/actus_kernel.py:71
     // self.transfer_closure_date = typ.TimeStamp()
     bytec 30 // "transfer_closure_date"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:74-75
+    // modules/actus_kernel.py:73-74
     // # Day Count Convention
     // self.day_count_convention = UInt64()
     bytec 46 // "day_count_convention"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:77-78
+    // modules/actus_kernel.py:76-77
     // # Units
     // self.total_units = UInt64()
     bytec 13 // "total_units"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:79
+    // modules/actus_kernel.py:78
     // self.reserved_units_total = UInt64()
     bytec 11 // "reserved_units_total"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:81-82
+    // modules/actus_kernel.py:80-81
     // # Principal
     // self.initial_exchange_amount = UInt64()
     bytec 21 // "initial_exchange_amount"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:83
+    // modules/actus_kernel.py:82
     // self.outstanding_principal = UInt64()
     bytec 4 // "outstanding_principal"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:84
+    // modules/actus_kernel.py:83
     // self.next_principal_redemption = UInt64()
     bytec 14 // "next_principal_redemption"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:85
+    // modules/actus_kernel.py:84
     // self.dynamic_principal_redemption = False
     bytec 35 // "dynamic_principal_redemption"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:87-88
+    // modules/actus_kernel.py:86-87
     // # Interest
     // self.interest_calculation_base = UInt64()
     bytec 7 // "interest_calculation_base"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:89
+    // modules/actus_kernel.py:88
     // self.accrued_interest = UInt64()
     bytec 6 // "accrued_interest"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:91-92
+    // modules/actus_kernel.py:90-91
     // # Interest Rates
     // self.nominal_interest_rate = UInt64()
     bytec 9 // "nominal_interest_rate"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:93
+    // modules/actus_kernel.py:92
     // self.rate_reset_spread = UInt64()
     bytec 36 // "rate_reset_spread"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:94
+    // modules/actus_kernel.py:93
     // self.rate_reset_multiplier = UInt64()
     bytec 37 // "rate_reset_multiplier"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:95
+    // modules/actus_kernel.py:94
     // self.rate_reset_floor = UInt64()
     bytec 31 // "rate_reset_floor"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:96
+    // modules/actus_kernel.py:95
     // self.rate_reset_cap = UInt64()
     bytec 32 // "rate_reset_cap"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:97
+    // modules/actus_kernel.py:96
     // self.rate_reset_next = UInt64()
     bytec 38 // "rate_reset_next"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:98
+    // modules/actus_kernel.py:97
     // self.has_rate_reset_floor = False
     bytec 39 // "has_rate_reset_floor"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:99
+    // modules/actus_kernel.py:98
     // self.has_rate_reset_cap = False
     bytec 40 // "has_rate_reset_cap"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:101-102
+    // modules/actus_kernel.py:100-101
     // # Primary Distribution
     // self.reserved_principal = UInt64()
     bytec 12 // "reserved_principal"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:103
+    // modules/actus_kernel.py:102
     // self.reserved_interest = UInt64()
     bytec 15 // "reserved_interest"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:105-106
+    // modules/actus_kernel.py:104-105
     // # Cumulative Per-Unit Fixed-Point Indexes
     // self.cumulative_interest_index = UInt64()
     bytec 16 // "cumulative_interest_index"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:107
+    // modules/actus_kernel.py:106
     // self.cumulative_principal_index = UInt64()
     bytec 17 // "cumulative_principal_index"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:115
+    // modules/actus_kernel.py:114
     // self.event_cursor = UInt64()
     bytec_2 // "event_cursor"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:116
+    // modules/actus_kernel.py:115
     // self.schedule_entry_count = UInt64()
     bytec_3 // "schedule_entry_count"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:118-119
+    // modules/actus_kernel.py:117-118
     // # Scaling
     // self.fixed_point_scale = UInt64()
     bytec 5 // "fixed_point_scale"
@@ -352,7 +352,7 @@ fund_due_cashflows:
     intc_0 // 0
     pushbytes ""
     dupn 13
-    // modules/payment_agent.py:56
+    // modules/payment_agent.py:55
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -361,14 +361,14 @@ fund_due_cashflows:
     ==
     assert // invalid number of bytes for arc4.uint64
     btoi
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/payment_agent.py:15
+    // modules/payment_agent.py:14
     // if self.op_daemon.value != Global.zero_address:
     intc_0 // 0
     bytec 19 // 0x523a4f504423
@@ -377,7 +377,7 @@ fund_due_cashflows:
     global ZeroAddress
     !=
     bz fund_due_cashflows_after_if_else@62
-    // modules/payment_agent.py:17
+    // modules/payment_agent.py:16
     // Txn.sender == self.op_daemon.value or Txn.sender == self.arranger.value
     txn Sender
     intc_0 // 0
@@ -398,20 +398,20 @@ fund_due_cashflows_bool_true@59:
     intc_1 // 1
 
 fund_due_cashflows_bool_merge@61:
-    // modules/payment_agent.py:16-18
+    // modules/payment_agent.py:15-17
     // assert (
     //     Txn.sender == self.op_daemon.value or Txn.sender == self.arranger.value
     // ), err.UNAUTHORIZED
     assert // Not authorized
 
 fund_due_cashflows_after_if_else@62:
-    // modules/payment_agent.py:78
+    // modules/payment_agent.py:77
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/payment_agent.py:79
+    // modules/payment_agent.py:78
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
-    // modules/actus_kernel.py:135
+    // modules/actus_kernel.py:134
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
     bytec_1 // "status"
@@ -419,34 +419,34 @@ fund_due_cashflows_after_if_else@62:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/actus_kernel.py:147
+    // modules/actus_kernel.py:146
     // assert not self._status_is_pending_ied(), err.PENDING_IED
     !
     assert // IED not yet executed
-    // modules/payment_agent.py:81
+    // modules/payment_agent.py:80
     // if self._is_dynamic_annuity():
     callsub _is_dynamic_annuity
     bz fund_due_cashflows_after_if_else@3
-    // modules/payment_agent.py:85-86
+    // modules/payment_agent.py:84-85
     // + max_event_count
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     dup
-    // modules/payment_agent.py:86
+    // modules/payment_agent.py:85
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     pushint 100
-    // modules/payment_agent.py:85-86
+    // modules/payment_agent.py:84-85
     // + max_event_count
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     *
-    // modules/payment_agent.py:84
+    // modules/payment_agent.py:83
     // UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
     intc 4 // 1500
-    // modules/payment_agent.py:84-86
+    // modules/payment_agent.py:83-85
     // UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
     // + max_event_count
     // * UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_PER_EVENT_BUDGET)
     +
-    // modules/payment_agent.py:82-88
+    // modules/payment_agent.py:81-87
     // ensure_budget(
     //     required_budget=(
     //         UInt64(cst.OP_UP_FUND_DUE_CASHFLOWS_BASE_BUDGET)
@@ -458,30 +458,30 @@ fund_due_cashflows_after_if_else@62:
     callsub ensure_budget
 
 fund_due_cashflows_after_if_else@3:
-    // modules/payment_agent.py:90
+    // modules/payment_agent.py:89
     // processed_events = UInt64(0)
     intc_0 // 0
     bury 5
-    // modules/payment_agent.py:91
+    // modules/payment_agent.py:90
     // funded_interest = UInt64(0)
     intc_0 // 0
     bury 14
-    // modules/payment_agent.py:92
+    // modules/payment_agent.py:91
     // funded_principal = UInt64(0)
     intc_0 // 0
     bury 13
 
 fund_due_cashflows_while_top@4:
-    // modules/payment_agent.py:95
+    // modules/payment_agent.py:94
     // processed_events < max_event_count
     dig 4
     dig 1
     <
-    // modules/payment_agent.py:95-96
+    // modules/payment_agent.py:94-95
     // processed_events < max_event_count
     // and self.event_cursor < self.schedule_entry_count
     bz fund_due_cashflows_after_while@11
-    // modules/payment_agent.py:96
+    // modules/payment_agent.py:95
     // and self.event_cursor < self.schedule_entry_count
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -492,11 +492,11 @@ fund_due_cashflows_while_top@4:
     app_global_get_ex
     assert // check self.schedule_entry_count exists
     <
-    // modules/payment_agent.py:95-96
+    // modules/payment_agent.py:94-95
     // processed_events < max_event_count
     // and self.event_cursor < self.schedule_entry_count
     bz fund_due_cashflows_after_while@11
-    // modules/payment_agent.py:98
+    // modules/payment_agent.py:97
     // entry = self._get_schedule_entry(self.event_cursor)
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -505,7 +505,7 @@ fund_due_cashflows_while_top@4:
     callsub _get_schedule_entry
     dup
     bury 17
-    // modules/payment_agent.py:99
+    // modules/payment_agent.py:98
     // if entry.scheduled_time > Global.latest_timestamp:
     pushint 9
     extract_uint64
@@ -514,17 +514,17 @@ fund_due_cashflows_while_top@4:
     global LatestTimestamp
     >
     bnz fund_due_cashflows_after_while@11
-    // modules/payment_agent.py:101
+    // modules/payment_agent.py:100
     // if not self._event_is_cash(entry.event_type.as_uint64()):
     dig 15
     intc_2 // 8
     getbyte
     dup
     bury 16
-    // modules/actus_kernel.py:351
+    // modules/actus_kernel.py:350
     // UInt64(enums.EVT_IP),
     intc_2 // 8
-    // modules/actus_kernel.py:350-354
+    // modules/actus_kernel.py:349-353
     // return event_type in (
     //     UInt64(enums.EVT_IP),
     //     UInt64(enums.EVT_PR),
@@ -535,10 +535,10 @@ fund_due_cashflows_while_top@4:
     bury 4
     bnz fund_due_cashflows_bool_true@52
     dig 14
-    // modules/actus_kernel.py:352
+    // modules/actus_kernel.py:351
     // UInt64(enums.EVT_PR),
     pushint 3
-    // modules/actus_kernel.py:350-354
+    // modules/actus_kernel.py:349-353
     // return event_type in (
     //     UInt64(enums.EVT_IP),
     //     UInt64(enums.EVT_PR),
@@ -547,10 +547,10 @@ fund_due_cashflows_while_top@4:
     ==
     bnz fund_due_cashflows_bool_true@52
     dig 14
-    // modules/actus_kernel.py:353
+    // modules/actus_kernel.py:352
     // UInt64(enums.EVT_MD),
     pushint 19
-    // modules/actus_kernel.py:350-354
+    // modules/actus_kernel.py:349-353
     // return event_type in (
     //     UInt64(enums.EVT_IP),
     //     UInt64(enums.EVT_PR),
@@ -563,10 +563,10 @@ fund_due_cashflows_bool_true@52:
     intc_1 // 1
 
 fund_due_cashflows_bool_merge@54:
-    // modules/payment_agent.py:101
+    // modules/payment_agent.py:100
     // if not self._event_is_cash(entry.event_type.as_uint64()):
     bz fund_due_cashflows_after_while@11
-    // modules/actus_kernel.py:548
+    // modules/actus_kernel.py:547
     // assert entry.event_id == self.event_cursor, err.INVALID_EVENT_CURSOR
     dig 15
     intc_0 // 0
@@ -577,13 +577,13 @@ fund_due_cashflows_bool_merge@54:
     assert // check self.event_cursor exists
     ==
     assert // Invalid event cursor
-    // modules/actus_kernel.py:549
+    // modules/actus_kernel.py:548
     // assert entry.scheduled_time <= Global.latest_timestamp, err.NO_DUE_CASHFLOW
     dig 1
     global LatestTimestamp
     <=
     assert // No due cashflow to pay
-    // modules/actus_kernel.py:413
+    // modules/actus_kernel.py:412
     // if event_type not in (UInt64(enums.EVT_IP), UInt64(enums.EVT_MD)):
     dig 2
     bnz fund_due_cashflows_after_if_else@15
@@ -591,20 +591,20 @@ fund_due_cashflows_bool_merge@54:
     pushint 19
     ==
     bnz fund_due_cashflows_after_if_else@15
-    // modules/actus_kernel.py:414
+    // modules/actus_kernel.py:413
     // return UInt64(0)
     intc_0 // 0
     bury 11
 
 fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_interest_amount@16:
-    // modules/actus_kernel.py:426
+    // modules/actus_kernel.py:425
     // event_type = entry.event_type.as_uint64()
     dig 15
     intc_2 // 8
     getbyte
     dup
     bury 16
-    // modules/actus_kernel.py:427
+    // modules/actus_kernel.py:426
     // if event_type not in (UInt64(enums.EVT_PR), UInt64(enums.EVT_MD)):
     pushint 3
     ==
@@ -613,19 +613,19 @@ fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_i
     pushint 19
     ==
     bnz fund_due_cashflows_after_if_else@19
-    // modules/actus_kernel.py:428
+    // modules/actus_kernel.py:427
     // return UInt64(0)
     intc_0 // 0
     bury 6
 
 fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@28:
-    // modules/actus_kernel.py:553
+    // modules/actus_kernel.py:552
     // next_outstanding_principal = entry.next_outstanding_principal
     dig 15
     pushint 49
     extract_uint64
     bury 8
-    // modules/actus_kernel.py:556
+    // modules/actus_kernel.py:555
     // if self._is_dynamic_annuity():
     callsub _is_dynamic_annuity
     bnz fund_due_cashflows_if_body@29
@@ -633,37 +633,37 @@ fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_p
     bury 9
 
 fund_due_cashflows_after_if_else@38:
-    // modules/actus_kernel.py:572-574
+    // modules/actus_kernel.py:571-573
     // # Funding uses per-unit cumulative indices so each holder can settle
     // # independently from its current unit balance.
     // interest_index_delta = self._amount_to_index_delta(interest_amount_due)
     dig 10
     callsub _amount_to_index_delta
-    // modules/actus_kernel.py:575
+    // modules/actus_kernel.py:574
     // principal_index_delta = self._amount_to_index_delta(principal_amount_due)
     dig 6
     callsub _amount_to_index_delta
-    // modules/actus_kernel.py:576
+    // modules/actus_kernel.py:575
     // interest_amount = self._index_delta_to_amount(interest_index_delta)
     dig 1
     callsub _index_delta_to_amount
     dup
     cover 2
     bury 15
-    // modules/actus_kernel.py:577
+    // modules/actus_kernel.py:576
     // principal_amount = self._index_delta_to_amount(principal_index_delta)
     dup
     callsub _index_delta_to_amount
     dup
     bury 11
-    // modules/actus_kernel.py:578
+    // modules/actus_kernel.py:577
     // required_amount = interest_amount + principal_amount
     dig 2
     dig 1
     +
     dup
     bury 9
-    // modules/actus_kernel.py:734
+    // modules/actus_kernel.py:733
     // balance = self.settlement_asset_id.balance(Global.current_application_address)
     global CurrentApplicationAddress
     intc_0 // 0
@@ -672,7 +672,7 @@ fund_due_cashflows_after_if_else@38:
     assert // check self.settlement_asset_id exists
     asset_holding_get AssetBalance
     assert // account opted into asset
-    // modules/actus_kernel.py:456
+    // modules/actus_kernel.py:455
     // return self.reserved_interest + self.reserved_principal
     intc_0 // 0
     bytec 15 // "reserved_interest"
@@ -684,34 +684,34 @@ fund_due_cashflows_after_if_else@38:
     assert // check self.reserved_principal exists
     dig 1
     +
-    // modules/actus_kernel.py:736
+    // modules/actus_kernel.py:735
     // assert balance >= reserved_total, err.NOT_ENOUGH_FUNDS
     dig 2
     dig 1
     >=
     assert // Not enough funds for the payment
-    // modules/actus_kernel.py:737
+    // modules/actus_kernel.py:736
     // return balance - reserved_total
     uncover 2
     swap
     -
-    // modules/actus_kernel.py:580
+    // modules/actus_kernel.py:579
     // self._available_settlement_funds() >= required_amount
     uncover 2
     >=
-    // modules/actus_kernel.py:579-581
+    // modules/actus_kernel.py:578-580
     // assert (
     //     self._available_settlement_funds() >= required_amount
     // ), err.NOT_ENOUGH_FUNDS
     assert // Not enough funds for the payment
-    // modules/actus_kernel.py:583
+    // modules/actus_kernel.py:582
     // self.reserved_interest += interest_amount
     uncover 3
     +
     bytec 15 // "reserved_interest"
     swap
     app_global_put
-    // modules/actus_kernel.py:584
+    // modules/actus_kernel.py:583
     // self.reserved_principal += principal_amount
     intc_0 // 0
     bytec 12 // "reserved_principal"
@@ -721,7 +721,7 @@ fund_due_cashflows_after_if_else@38:
     bytec 12 // "reserved_principal"
     swap
     app_global_put
-    // modules/actus_kernel.py:585
+    // modules/actus_kernel.py:584
     // self.cumulative_interest_index += interest_index_delta
     intc_0 // 0
     bytec 16 // "cumulative_interest_index"
@@ -732,7 +732,7 @@ fund_due_cashflows_after_if_else@38:
     bytec 16 // "cumulative_interest_index"
     swap
     app_global_put
-    // modules/actus_kernel.py:586
+    // modules/actus_kernel.py:585
     // self.cumulative_principal_index += principal_index_delta
     intc_0 // 0
     bytec 17 // "cumulative_principal_index"
@@ -742,7 +742,7 @@ fund_due_cashflows_after_if_else@38:
     bytec 17 // "cumulative_principal_index"
     swap
     app_global_put
-    // modules/actus_kernel.py:587
+    // modules/actus_kernel.py:586
     // if entry.event_type.as_uint64() == UInt64(enums.EVT_PR):
     dig 15
     intc_2 // 8
@@ -750,7 +750,7 @@ fund_due_cashflows_after_if_else@38:
     pushint 3
     ==
     bz fund_due_cashflows_else_body@40
-    // modules/actus_kernel.py:588-589
+    // modules/actus_kernel.py:587-588
     // # For PR, the period interest stays accrued until a later IP or MD.
     // self.accrued_interest += self._entry_interest_segment(entry)
     intc_0 // 0
@@ -766,14 +766,14 @@ fund_due_cashflows_after_if_else@38:
     app_global_put
 
 fund_due_cashflows_after_if_else@41:
-    // modules/actus_kernel.py:592
+    // modules/actus_kernel.py:591
     // if not self._is_dynamic_annuity() or entry.event_type.as_uint64() == UInt64(
     callsub _is_dynamic_annuity
     bz fund_due_cashflows_if_body@43
     dig 15
     intc_2 // 8
     getbyte
-    // modules/actus_kernel.py:592-594
+    // modules/actus_kernel.py:591-593
     // if not self._is_dynamic_annuity() or entry.event_type.as_uint64() == UInt64(
     //     enums.EVT_MD
     // ):
@@ -782,7 +782,7 @@ fund_due_cashflows_after_if_else@41:
     bz fund_due_cashflows_after_if_else@44
 
 fund_due_cashflows_if_body@43:
-    // modules/actus_kernel.py:595
+    // modules/actus_kernel.py:594
     // self.next_principal_redemption = entry.next_principal_redemption
     dig 15
     pushint 41
@@ -792,17 +792,17 @@ fund_due_cashflows_if_body@43:
     app_global_put
 
 fund_due_cashflows_after_if_else@44:
-    // modules/actus_kernel.py:596
+    // modules/actus_kernel.py:595
     // self.outstanding_principal = next_outstanding_principal
     bytec 4 // "outstanding_principal"
     dig 8
     app_global_put
-    // modules/actus_kernel.py:597
+    // modules/actus_kernel.py:596
     // self.interest_calculation_base = next_interest_base
     bytec 7 // "interest_calculation_base"
     dig 9
     app_global_put
-    // modules/actus_kernel.py:598
+    // modules/actus_kernel.py:597
     // self.event_cursor += UInt64(1)
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -813,41 +813,41 @@ fund_due_cashflows_after_if_else@44:
     bytec_2 // "event_cursor"
     swap
     app_global_put
-    // modules/actus_kernel.py:600
+    // modules/actus_kernel.py:599
     // if entry.event_type == arc4.UInt8(
     dig 15
     extract 8 1
-    // modules/actus_kernel.py:600-602
+    // modules/actus_kernel.py:599-601
     // if entry.event_type == arc4.UInt8(
     //     enums.EVT_MD
     // ) and self.outstanding_principal == UInt64(0):
     pushbytes 0x13
     b==
     bz fund_due_cashflows_after_if_else@47
-    // modules/actus_kernel.py:602
+    // modules/actus_kernel.py:601
     // ) and self.outstanding_principal == UInt64(0):
     intc_0 // 0
     bytec 4 // "outstanding_principal"
     app_global_get_ex
     assert // check self.outstanding_principal exists
-    // modules/actus_kernel.py:600-602
+    // modules/actus_kernel.py:599-601
     // if entry.event_type == arc4.UInt8(
     //     enums.EVT_MD
     // ) and self.outstanding_principal == UInt64(0):
     bnz fund_due_cashflows_after_if_else@47
-    // modules/actus_kernel.py:603
+    // modules/actus_kernel.py:602
     // self.status = UInt64(enums.STATUS_ENDED)
     bytec_1 // "status"
     pushint 200
     app_global_put
-    // modules/actus_kernel.py:604
+    // modules/actus_kernel.py:603
     // self.interest_calculation_base = UInt64(0)
     bytec 7 // "interest_calculation_base"
     intc_0 // 0
     app_global_put
 
 fund_due_cashflows_after_if_else@47:
-    // modules/actus_kernel.py:606-610
+    // modules/actus_kernel.py:605-609
     // self._emit_execution_event(
     //     entry=entry,
     //     payoff=interest_amount + principal_amount,
@@ -858,19 +858,19 @@ fund_due_cashflows_after_if_else@47:
     dup
     callsub _emit_execution_event
     pop
-    // modules/payment_agent.py:105
+    // modules/payment_agent.py:104
     // funded_interest += interest_amount
     dig 13
     dig 12
     +
     bury 14
-    // modules/payment_agent.py:106
+    // modules/payment_agent.py:105
     // funded_principal += principal_amount
     dig 12
     dig 7
     +
     bury 13
-    // modules/payment_agent.py:107
+    // modules/payment_agent.py:106
     // processed_events += UInt64(1)
     dig 4
     intc_1 // 1
@@ -879,7 +879,7 @@ fund_due_cashflows_after_if_else@47:
     b fund_due_cashflows_while_top@4
 
 fund_due_cashflows_else_body@40:
-    // modules/actus_kernel.py:591
+    // modules/actus_kernel.py:590
     // self.accrued_interest = UInt64(0)
     bytec 6 // "accrued_interest"
     intc_0 // 0
@@ -887,21 +887,21 @@ fund_due_cashflows_else_body@40:
     b fund_due_cashflows_after_if_else@41
 
 fund_due_cashflows_if_body@29:
-    // modules/actus_kernel.py:557
+    // modules/actus_kernel.py:556
     // event_type = entry.event_type.as_uint64()
     dig 15
     intc_2 // 8
     getbyte
     dup
     bury 16
-    // modules/actus_kernel.py:558-560
+    // modules/actus_kernel.py:557-559
     // # Dynamic annuities derive next state from the payment decomposition,
     // # not only from the precomputed `next_*` fields.
     // if event_type == UInt64(enums.EVT_PR):
     pushint 3
     ==
     bz fund_due_cashflows_else_body@31
-    // modules/actus_kernel.py:562
+    // modules/actus_kernel.py:561
     // self.outstanding_principal - principal_amount_due
     intc_0 // 0
     bytec 4 // "outstanding_principal"
@@ -915,13 +915,13 @@ fund_due_cashflows_if_body@29:
     b fund_due_cashflows_after_if_else@38
 
 fund_due_cashflows_else_body@31:
-    // modules/actus_kernel.py:565
+    // modules/actus_kernel.py:564
     // elif event_type == UInt64(enums.EVT_IP):
     dig 14
     intc_2 // 8
     ==
     bz fund_due_cashflows_else_body@33
-    // modules/actus_kernel.py:566
+    // modules/actus_kernel.py:565
     // next_outstanding_principal = self.outstanding_principal
     intc_0 // 0
     bytec 4 // "outstanding_principal"
@@ -929,7 +929,7 @@ fund_due_cashflows_else_body@31:
     swap
     bury 9
     assert // check self.outstanding_principal exists
-    // modules/actus_kernel.py:567
+    // modules/actus_kernel.py:566
     // next_interest_base = self.interest_calculation_base
     intc_0 // 0
     bytec 7 // "interest_calculation_base"
@@ -940,7 +940,7 @@ fund_due_cashflows_else_body@31:
     b fund_due_cashflows_after_if_else@38
 
 fund_due_cashflows_else_body@33:
-    // modules/actus_kernel.py:568
+    // modules/actus_kernel.py:567
     // elif event_type == UInt64(enums.EVT_MD):
     dig 14
     pushint 19
@@ -951,40 +951,40 @@ fund_due_cashflows_else_body@33:
     b fund_due_cashflows_after_if_else@38
 
 fund_due_cashflows_if_body@34:
-    // modules/actus_kernel.py:569
+    // modules/actus_kernel.py:568
     // next_outstanding_principal = UInt64(0)
     intc_0 // 0
     bury 8
-    // modules/actus_kernel.py:570
+    // modules/actus_kernel.py:569
     // next_interest_base = UInt64(0)
     intc_0 // 0
     bury 9
     b fund_due_cashflows_after_if_else@38
 
 fund_due_cashflows_after_if_else@19:
-    // modules/actus_kernel.py:429
+    // modules/actus_kernel.py:428
     // if self._is_dynamic_annuity():
     callsub _is_dynamic_annuity
     bz fund_due_cashflows_after_if_else@27
-    // modules/actus_kernel.py:430
+    // modules/actus_kernel.py:429
     // if event_type == UInt64(enums.EVT_MD):
     dig 14
     pushint 19
     ==
     bz fund_due_cashflows_after_if_else@22
-    // modules/actus_kernel.py:431
+    // modules/actus_kernel.py:430
     // return self.outstanding_principal
     intc_0 // 0
     bytec 4 // "outstanding_principal"
     app_global_get_ex
     assert // check self.outstanding_principal exists
     bury 6
-    // modules/actus_kernel.py:552
+    // modules/actus_kernel.py:551
     // principal_amount_due = self._entry_principal_amount(entry)
     b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@28
 
 fund_due_cashflows_after_if_else@22:
-    // modules/actus_kernel.py:432
+    // modules/actus_kernel.py:431
     // interest_due = self.accrued_interest + self._entry_interest_segment(entry)
     intc_0 // 0
     bytec 6 // "accrued_interest"
@@ -996,7 +996,7 @@ fund_due_cashflows_after_if_else@22:
     +
     dup
     bury 11
-    // modules/actus_kernel.py:433
+    // modules/actus_kernel.py:432
     // if self.next_principal_redemption <= interest_due:
     intc_0 // 0
     bytec 14 // "next_principal_redemption"
@@ -1004,16 +1004,16 @@ fund_due_cashflows_after_if_else@22:
     assert // check self.next_principal_redemption exists
     >=
     bz fund_due_cashflows_after_if_else@24
-    // modules/actus_kernel.py:434
+    // modules/actus_kernel.py:433
     // return UInt64(0)
     intc_0 // 0
     bury 6
-    // modules/actus_kernel.py:552
+    // modules/actus_kernel.py:551
     // principal_amount_due = self._entry_principal_amount(entry)
     b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@28
 
 fund_due_cashflows_after_if_else@24:
-    // modules/actus_kernel.py:435
+    // modules/actus_kernel.py:434
     // principal_amount = self.next_principal_redemption - interest_due
     intc_0 // 0
     bytec 14 // "next_principal_redemption"
@@ -1023,7 +1023,7 @@ fund_due_cashflows_after_if_else@24:
     -
     dup
     bury 8
-    // modules/actus_kernel.py:436
+    // modules/actus_kernel.py:435
     // if principal_amount > self.outstanding_principal:
     intc_0 // 0
     bytec 4 // "outstanding_principal"
@@ -1031,26 +1031,26 @@ fund_due_cashflows_after_if_else@24:
     assert // check self.outstanding_principal exists
     >
     bz fund_due_cashflows_after_if_else@26
-    // modules/actus_kernel.py:437
+    // modules/actus_kernel.py:436
     // return self.outstanding_principal
     intc_0 // 0
     bytec 4 // "outstanding_principal"
     app_global_get_ex
     assert // check self.outstanding_principal exists
     bury 6
-    // modules/actus_kernel.py:552
+    // modules/actus_kernel.py:551
     // principal_amount_due = self._entry_principal_amount(entry)
     b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@28
 
 fund_due_cashflows_after_if_else@26:
     dig 6
     bury 6
-    // modules/actus_kernel.py:552
+    // modules/actus_kernel.py:551
     // principal_amount_due = self._entry_principal_amount(entry)
     b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@28
 
 fund_due_cashflows_after_if_else@27:
-    // modules/actus_kernel.py:440
+    // modules/actus_kernel.py:439
     // entry.next_outstanding_principal <= self.outstanding_principal
     dig 15
     pushint 49
@@ -1061,22 +1061,22 @@ fund_due_cashflows_after_if_else@27:
     assert // check self.outstanding_principal exists
     dup2
     <=
-    // modules/actus_kernel.py:439-441
+    // modules/actus_kernel.py:438-440
     // assert (
     //     entry.next_outstanding_principal <= self.outstanding_principal
     // ), err.INVALID_ACTUS_CONFIG
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:442
+    // modules/actus_kernel.py:441
     // return self.outstanding_principal - entry.next_outstanding_principal
     swap
     -
     bury 6
-    // modules/actus_kernel.py:552
+    // modules/actus_kernel.py:551
     // principal_amount_due = self._entry_principal_amount(entry)
     b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_principal_amount@28
 
 fund_due_cashflows_after_if_else@15:
-    // modules/actus_kernel.py:415
+    // modules/actus_kernel.py:414
     // return self.accrued_interest + self._entry_interest_segment(entry)
     intc_0 // 0
     bytec 6 // "accrued_interest"
@@ -1087,17 +1087,17 @@ fund_due_cashflows_after_if_else@15:
     bury 18
     +
     bury 11
-    // modules/actus_kernel.py:551
+    // modules/actus_kernel.py:550
     // interest_amount_due = self._entry_interest_amount(entry)
     b fund_due_cashflows_after_inlined_modules.actus_kernel.ActusKernelModule._entry_interest_amount@16
 
 fund_due_cashflows_after_while@11:
-    // modules/payment_agent.py:109
+    // modules/payment_agent.py:108
     // assert processed_events > UInt64(0), err.NO_DUE_CASHFLOW
     dig 4
     dup
     assert // No due cashflow to pay
-    // modules/payment_agent.py:113
+    // modules/payment_agent.py:112
     // total_funded=funded_interest + funded_principal,
     dig 14
     dup
@@ -1105,10 +1105,10 @@ fund_due_cashflows_after_while@11:
     dup
     cover 3
     +
-    // modules/payment_agent.py:115
+    // modules/payment_agent.py:114
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // modules/payment_agent.py:110-116
+    // modules/payment_agent.py:109-115
     // return typ.CashFundingResult(
     //     funded_interest=funded_interest,
     //     funded_principal=funded_principal,
@@ -1130,7 +1130,7 @@ fund_due_cashflows_after_while@11:
     swap
     itob
     concat
-    // modules/payment_agent.py:56
+    // modules/payment_agent.py:55
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     swap
@@ -1152,7 +1152,7 @@ fund_due_cashflows_bool_false@60:
 claim_due_cashflows:
     pushbytes ""
     dupn 2
-    // modules/payment_agent.py:118
+    // modules/payment_agent.py:117
     // @arc4.abimethod
     txna ApplicationArgs 1
     dupn 2
@@ -1172,14 +1172,14 @@ claim_due_cashflows:
     assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
     extract 2 0
     swap
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/accounting.py:24
+    // modules/accounting.py:23
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
     swap
@@ -1188,7 +1188,7 @@ claim_due_cashflows:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/payment_agent.py:24
+    // modules/payment_agent.py:23
     // if self.op_daemon.value != Global.zero_address:
     intc_0 // 0
     bytec 19 // 0x523a4f504423
@@ -1197,7 +1197,7 @@ claim_due_cashflows:
     global ZeroAddress
     !=
     bz claim_due_cashflows_after_if_else@17
-    // modules/payment_agent.py:26
+    // modules/payment_agent.py:25
     // Txn.sender == self.op_daemon.value
     txn Sender
     intc_0 // 0
@@ -1205,22 +1205,22 @@ claim_due_cashflows:
     app_global_get_ex
     assert // check self.op_daemon exists
     ==
-    // modules/payment_agent.py:26-28
+    // modules/payment_agent.py:25-27
+    // Txn.sender == self.op_daemon.value
+    // or Txn.sender == holding_address
+    // or Txn.sender == self.account[holding_address].payment_address
+    bnz claim_due_cashflows_bool_true@14
+    // modules/payment_agent.py:26
+    // or Txn.sender == holding_address
+    txn Sender
+    dig 3
+    ==
+    // modules/payment_agent.py:25-27
     // Txn.sender == self.op_daemon.value
     // or Txn.sender == holding_address
     // or Txn.sender == self.account[holding_address].payment_address
     bnz claim_due_cashflows_bool_true@14
     // modules/payment_agent.py:27
-    // or Txn.sender == holding_address
-    txn Sender
-    dig 3
-    ==
-    // modules/payment_agent.py:26-28
-    // Txn.sender == self.op_daemon.value
-    // or Txn.sender == holding_address
-    // or Txn.sender == self.account[holding_address].payment_address
-    bnz claim_due_cashflows_bool_true@14
-    // modules/payment_agent.py:28
     // or Txn.sender == self.account[holding_address].payment_address
     txn Sender
     dig 1
@@ -1228,7 +1228,7 @@ claim_due_cashflows:
     assert // check self.account entry exists
     extract 0 32
     ==
-    // modules/payment_agent.py:26-28
+    // modules/payment_agent.py:25-27
     // Txn.sender == self.op_daemon.value
     // or Txn.sender == holding_address
     // or Txn.sender == self.account[holding_address].payment_address
@@ -1238,7 +1238,7 @@ claim_due_cashflows_bool_true@14:
     intc_1 // 1
 
 claim_due_cashflows_bool_merge@16:
-    // modules/payment_agent.py:25-29
+    // modules/payment_agent.py:24-28
     // assert (
     //     Txn.sender == self.op_daemon.value
     //     or Txn.sender == holding_address
@@ -1247,13 +1247,13 @@ claim_due_cashflows_bool_merge@16:
     assert // Not authorized
 
 claim_due_cashflows_after_if_else@17:
-    // modules/payment_agent.py:148
+    // modules/payment_agent.py:147
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/payment_agent.py:149
+    // modules/payment_agent.py:148
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
-    // modules/actus_kernel.py:135
+    // modules/actus_kernel.py:134
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
     bytec_1 // "status"
@@ -1261,20 +1261,20 @@ claim_due_cashflows_after_if_else@17:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/actus_kernel.py:147
+    // modules/actus_kernel.py:146
     // assert not self._status_is_pending_ied(), err.PENDING_IED
     !
     assert // IED not yet executed
-    // modules/payment_agent.py:152
+    // modules/payment_agent.py:151
     // self._ensure_units_activated(holding_address)
     dig 2
     dup
     callsub _ensure_units_activated
-    // modules/payment_agent.py:153
+    // modules/payment_agent.py:152
     // self._settle_position(holding_address)
     callsub _settle_position
     popn 2
-    // modules/accounting.py:117
+    // modules/accounting.py:116
     // self.account[holding_address].claimable_interest
     dup
     box_get
@@ -1285,45 +1285,45 @@ claim_due_cashflows_after_if_else@17:
     dup
     cover 2
     bury 8
-    // modules/accounting.py:118
+    // modules/accounting.py:117
     // + self.account[holding_address].claimable_principal
     dup
     pushint 81
     extract_uint64
     dup
     bury 8
-    // modules/accounting.py:117-118
+    // modules/accounting.py:116-117
     // self.account[holding_address].claimable_interest
     // + self.account[holding_address].claimable_principal
     uncover 2
     +
     dup
     bury 6
-    // modules/payment_agent.py:155
+    // modules/payment_agent.py:154
     // assert total_amount > UInt64(0), err.NO_DUE_CASHFLOW
     assert // No due cashflow to pay
-    // modules/payment_agent.py:34
+    // modules/payment_agent.py:33
     // self.account[holding_address].payment_address.is_opted_in(
     extract 0 32
-    // modules/payment_agent.py:35
+    // modules/payment_agent.py:34
     // self.settlement_asset_id
     intc_0 // 0
     bytec 20 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
-    // modules/payment_agent.py:34-36
+    // modules/payment_agent.py:33-35
     // self.account[holding_address].payment_address.is_opted_in(
     //     self.settlement_asset_id
     // )
     asset_holding_get AssetBalance
     bury 1
-    // modules/payment_agent.py:34-37
+    // modules/payment_agent.py:33-36
     // self.account[holding_address].payment_address.is_opted_in(
     //     self.settlement_asset_id
     // )
     // and not self.account[holding_address].suspended
     bz claim_due_cashflows_bool_false@24
-    // modules/payment_agent.py:37
+    // modules/payment_agent.py:36
     // and not self.account[holding_address].suspended
     dup
     box_get
@@ -1334,10 +1334,10 @@ claim_due_cashflows_after_if_else@17:
     intc_1 // 1
 
 claim_due_cashflows_bool_merge@25:
-    // modules/payment_agent.py:160
+    // modules/payment_agent.py:159
     // if self._is_payment_executable(holding_address):
     bz claim_due_cashflows_after_if_else@3
-    // modules/payment_agent.py:43
+    // modules/payment_agent.py:42
     // self.settlement_asset_id.balance(Global.current_application_address)
     global CurrentApplicationAddress
     intc_0 // 0
@@ -1348,20 +1348,20 @@ claim_due_cashflows_bool_merge@25:
     dig 1
     asset_holding_get AssetBalance
     assert // account opted into asset
-    // modules/payment_agent.py:43-44
+    // modules/payment_agent.py:42-43
     // self.settlement_asset_id.balance(Global.current_application_address)
     // >= payment_amount
     dig 5
     dup
     cover 2
     >=
-    // modules/payment_agent.py:42-45
+    // modules/payment_agent.py:41-44
     // assert (
     //     self.settlement_asset_id.balance(Global.current_application_address)
     //     >= payment_amount
     // ), err.NOT_ENOUGH_FUNDS
     assert // Not enough funds for the payment
-    // modules/payment_agent.py:162
+    // modules/payment_agent.py:161
     // self._pay(self.account[holding_address].payment_address, total_amount)
     dig 2
     dup
@@ -1370,7 +1370,7 @@ claim_due_cashflows_bool_merge@25:
     assert // check self.account entry exists
     dup
     extract 0 32
-    // modules/payment_agent.py:49-54
+    // modules/payment_agent.py:48-53
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
     //     asset_receiver=receiver,
@@ -1378,7 +1378,7 @@ claim_due_cashflows_bool_merge@25:
     //     fee=Global.min_txn_fee,
     // ).submit()
     itxn_begin
-    // modules/payment_agent.py:53
+    // modules/payment_agent.py:52
     // fee=Global.min_txn_fee,
     global MinTxnFee
     uncover 3
@@ -1387,12 +1387,12 @@ claim_due_cashflows_bool_merge@25:
     itxn_field AssetReceiver
     uncover 2
     itxn_field XferAsset
-    // modules/payment_agent.py:49
+    // modules/payment_agent.py:48
     // itxn.AssetTransfer(
     pushint 4 // axfer
     itxn_field TypeEnum
     itxn_field Fee
-    // modules/payment_agent.py:49-54
+    // modules/payment_agent.py:48-53
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
     //     asset_receiver=receiver,
@@ -1400,7 +1400,7 @@ claim_due_cashflows_bool_merge@25:
     //     fee=Global.min_txn_fee,
     // ).submit()
     itxn_submit
-    // modules/accounting.py:125-126
+    // modules/accounting.py:124-125
     // # Get the claimable amounts before reset
     // interest_amount = position.claimable_interest
     dup
@@ -1409,7 +1409,7 @@ claim_due_cashflows_bool_merge@25:
     dup
     cover 2
     bury 9
-    // modules/accounting.py:127
+    // modules/accounting.py:126
     // principal_amount = position.claimable_principal
     dup
     pushint 81
@@ -1417,7 +1417,7 @@ claim_due_cashflows_bool_merge@25:
     dup
     cover 3
     bury 9
-    // modules/accounting.py:129-130
+    // modules/accounting.py:128-129
     // # Reset the position's claimable amounts
     // position.claimable_interest = UInt64(0)
     intc_0 // 0
@@ -1425,16 +1425,16 @@ claim_due_cashflows_bool_merge@25:
     swap
     dig 1
     replace2 73
-    // modules/accounting.py:131
+    // modules/accounting.py:130
     // position.claimable_principal = UInt64(0)
     swap
     replace2 81
-    // modules/accounting.py:132
+    // modules/accounting.py:131
     // self.account[holding_address] = position.copy()
     uncover 3
     swap
     box_put
-    // modules/accounting.py:134
+    // modules/accounting.py:133
     // assert self.reserved_interest >= interest_amount, err.NOT_ENOUGH_FUNDS
     intc_0 // 0
     bytec 15 // "reserved_interest"
@@ -1444,7 +1444,7 @@ claim_due_cashflows_bool_merge@25:
     dig 2
     >=
     assert // Not enough funds for the payment
-    // modules/accounting.py:135
+    // modules/accounting.py:134
     // assert self.reserved_principal >= principal_amount, err.NOT_ENOUGH_FUNDS
     intc_0 // 0
     bytec 12 // "reserved_principal"
@@ -1453,7 +1453,7 @@ claim_due_cashflows_bool_merge@25:
     dig 3
     >=
     assert // Not enough funds for the payment
-    // modules/accounting.py:137-138
+    // modules/accounting.py:136-137
     // # Update the global reserved interest and principal amounts
     // self.reserved_interest -= interest_amount
     swap
@@ -1461,7 +1461,7 @@ claim_due_cashflows_bool_merge@25:
     bytec 15 // "reserved_interest"
     swap
     app_global_put
-    // modules/accounting.py:139
+    // modules/accounting.py:138
     // self.reserved_principal -= principal_amount
     intc_0 // 0
     bytec 12 // "reserved_principal"
@@ -1474,7 +1474,7 @@ claim_due_cashflows_bool_merge@25:
     app_global_put
 
 claim_due_cashflows_after_if_else@3:
-    // modules/payment_agent.py:168
+    // modules/payment_agent.py:167
     // total_amount=interest_amount + principal_amount,
     dig 5
     dup
@@ -1482,10 +1482,10 @@ claim_due_cashflows_after_if_else@3:
     dup
     cover 3
     +
-    // modules/payment_agent.py:169
+    // modules/payment_agent.py:168
     // timestamp=Global.latest_timestamp,
     global LatestTimestamp
-    // modules/payment_agent.py:165-171
+    // modules/payment_agent.py:164-170
     // return typ.CashClaimResult(
     //     interest_amount=interest_amount,
     //     principal_amount=principal_amount,
@@ -1516,7 +1516,7 @@ claim_due_cashflows_after_if_else@3:
     concat
     swap
     concat
-    // modules/payment_agent.py:118
+    // modules/payment_agent.py:117
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     swap
@@ -1536,7 +1536,7 @@ claim_due_cashflows_bool_false@15:
 
 // modules.transfer_agent.TransferAgent.transfer_set_schedule[routing]() -> void:
 transfer_set_schedule:
-    // modules/transfer_agent.py:22
+    // modules/transfer_agent.py:21
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -1554,17 +1554,17 @@ transfer_set_schedule:
     assert // invalid number of bytes for arc4.uint64
     btoi
     swap
-    // modules/transfer_agent.py:41
+    // modules/transfer_agent.py:40
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/transfer_agent.py:44
+    // modules/transfer_agent.py:43
     // self.initial_exchange_date <= open_date < closure_date
     intc_0 // 0
     bytec 23 // "initial_exchange_date"
@@ -1578,25 +1578,25 @@ transfer_set_schedule:
     intc_1 // 1
 
 transfer_set_schedule_bool_merge@5:
-    // modules/transfer_agent.py:43-45
+    // modules/transfer_agent.py:42-44
     // assert (
     //     self.initial_exchange_date <= open_date < closure_date
     // ), err.INVALID_SORTING
     assert // Time events must be sorted in strictly ascending order
-    // modules/transfer_agent.py:47
+    // modules/transfer_agent.py:46
     // self.transfer_opening_date = open_date
     bytec 29 // "transfer_opening_date"
     dig 2
     app_global_put
-    // modules/transfer_agent.py:48
+    // modules/transfer_agent.py:47
     // self.transfer_closure_date = closure_date
     bytec 30 // "transfer_closure_date"
     dig 1
     app_global_put
-    // modules/transfer_agent.py:49
+    // modules/transfer_agent.py:48
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/transfer_agent.py:22
+    // modules/transfer_agent.py:21
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -1613,7 +1613,7 @@ transfer_set_schedule_bool_false@4:
 
 // modules.transfer_agent.TransferAgent.primary_distribution[routing]() -> void:
 primary_distribution:
-    // modules/transfer_agent.py:51
+    // modules/transfer_agent.py:50
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -1630,7 +1630,7 @@ primary_distribution:
     btoi
     dup
     cover 2
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
@@ -1643,13 +1643,13 @@ primary_distribution:
     txn Sender
     callsub _role_is_active
     assert // Not authorized
-    // modules/transfer_agent.py:80
+    // modules/transfer_agent.py:79
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/transfer_agent.py:81
+    // modules/transfer_agent.py:80
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
-    // modules/actus_kernel.py:135
+    // modules/actus_kernel.py:134
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
     bytec_1 // "status"
@@ -1657,10 +1657,10 @@ primary_distribution:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/transfer_agent.py:82
+    // modules/transfer_agent.py:81
     // assert self._status_is_pending_ied(), err.PRIMARY_DISTRIBUTION_CLOSED
     assert // Primary distribution is closed
-    // modules/accounting.py:24
+    // modules/accounting.py:23
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
     dig 2
@@ -1670,15 +1670,15 @@ primary_distribution:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/transfer_agent.py:84
+    // modules/transfer_agent.py:83
     // self._assert_is_not_account_suspended(holding_address)
     swap
     callsub _assert_is_not_account_suspended
-    // modules/transfer_agent.py:85
+    // modules/transfer_agent.py:84
     // assert units > UInt64(0), err.ZERO_UNITS
     dup
     assert // Can not distribute zero units
-    // modules/transfer_agent.py:87
+    // modules/transfer_agent.py:86
     // self.reserved_units_total + units <= self.total_units
     intc_0 // 0
     bytec 11 // "reserved_units_total"
@@ -1690,19 +1690,19 @@ primary_distribution:
     app_global_get_ex
     assert // check self.total_units exists
     <=
-    // modules/transfer_agent.py:86-88
+    // modules/transfer_agent.py:85-87
     // assert (
     //     self.reserved_units_total + units <= self.total_units
     // ), err.OVER_DISTRIBUTION
     assert // Insufficient remaining D-ASA units
-    // modules/transfer_agent.py:89
+    // modules/transfer_agent.py:88
     // if self.initial_exchange_date:
     intc_0 // 0
     bytec 23 // "initial_exchange_date"
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     bz primary_distribution_after_if_else@3
-    // modules/transfer_agent.py:91
+    // modules/transfer_agent.py:90
     // Global.latest_timestamp <= self.initial_exchange_date
     global LatestTimestamp
     intc_0 // 0
@@ -1710,14 +1710,14 @@ primary_distribution:
     app_global_get_ex
     assert // check self.initial_exchange_date exists
     <=
-    // modules/transfer_agent.py:90-92
+    // modules/transfer_agent.py:89-91
     // assert (
     //     Global.latest_timestamp <= self.initial_exchange_date
     // ), err.PRIMARY_DISTRIBUTION_CLOSED
     assert // Primary distribution is closed
 
 primary_distribution_after_if_else@3:
-    // modules/accounting.py:148
+    // modules/accounting.py:147
     // self.account[holding_address].reserved_units += units
     dupn 2
     box_get
@@ -1731,8 +1731,8 @@ primary_distribution_after_if_else@3:
     itob
     pushint 40
     swap
-    box_replace
-    // modules/transfer_agent.py:95
+    box_replace // on error: index out of bounds
+    // modules/transfer_agent.py:94
     // self.reserved_units_total += units
     intc_0 // 0
     bytec 11 // "reserved_units_total"
@@ -1742,7 +1742,7 @@ primary_distribution_after_if_else@3:
     bytec 11 // "reserved_units_total"
     dig 1
     app_global_put
-    // modules/transfer_agent.py:96
+    // modules/transfer_agent.py:95
     // return self.total_units - self.reserved_units_total
     intc_0 // 0
     bytec 13 // "total_units"
@@ -1750,7 +1750,7 @@ primary_distribution_after_if_else@3:
     assert // check self.total_units exists
     swap
     -
-    // modules/transfer_agent.py:51
+    // modules/transfer_agent.py:50
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -1765,7 +1765,7 @@ primary_distribution_after_if_else@3:
 transfer:
     intc_0 // 0
     dup
-    // modules/transfer_agent.py:98
+    // modules/transfer_agent.py:97
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -1786,20 +1786,20 @@ transfer:
     ==
     assert // invalid number of bytes for arc4.uint64
     btoi
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/transfer_agent.py:134
+    // modules/transfer_agent.py:133
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/transfer_agent.py:135
+    // modules/transfer_agent.py:134
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
-    // modules/actus_kernel.py:135
+    // modules/actus_kernel.py:134
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
     bytec_1 // "status"
@@ -1807,18 +1807,18 @@ transfer:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/actus_kernel.py:147
+    // modules/actus_kernel.py:146
     // assert not self._status_is_pending_ied(), err.PENDING_IED
     !
     assert // IED not yet executed
-    // modules/transfer_agent.py:13
+    // modules/transfer_agent.py:12
     // if self.transfer_opening_date:
     intc_0 // 0
     bytec 29 // "transfer_opening_date"
     app_global_get_ex
     assert // check self.transfer_opening_date exists
     bz transfer_after_if_else@3
-    // modules/transfer_agent.py:15
+    // modules/transfer_agent.py:14
     // self.transfer_opening_date <= Global.latest_timestamp
     intc_0 // 0
     bytec 29 // "transfer_opening_date"
@@ -1826,21 +1826,21 @@ transfer:
     assert // check self.transfer_opening_date exists
     global LatestTimestamp
     <=
-    // modules/transfer_agent.py:14-16
+    // modules/transfer_agent.py:13-15
     // assert (
     //     self.transfer_opening_date <= Global.latest_timestamp
     // ), err.CLOSED_TRANSFER
     assert // Transfer is closed
 
 transfer_after_if_else@3:
-    // modules/transfer_agent.py:17
+    // modules/transfer_agent.py:16
     // if self.transfer_closure_date:
     intc_0 // 0
     bytec 30 // "transfer_closure_date"
     app_global_get_ex
     assert // check self.transfer_closure_date exists
     bz transfer_after_if_else@5
-    // modules/transfer_agent.py:19
+    // modules/transfer_agent.py:18
     // Global.latest_timestamp < self.transfer_closure_date
     global LatestTimestamp
     intc_0 // 0
@@ -1848,14 +1848,14 @@ transfer_after_if_else@3:
     app_global_get_ex
     assert // check self.transfer_closure_date exists
     <
-    // modules/transfer_agent.py:18-20
+    // modules/transfer_agent.py:17-19
     // assert (
     //     Global.latest_timestamp < self.transfer_closure_date
     // ), err.CLOSED_TRANSFER
     assert // Transfer is closed
 
 transfer_after_if_else@5:
-    // modules/transfer_agent.py:139
+    // modules/transfer_agent.py:138
     // assert Txn.sender == sender_holding_address, err.UNAUTHORIZED
     txn Sender
     dig 4
@@ -1863,7 +1863,7 @@ transfer_after_if_else@5:
     cover 2
     ==
     assert // Not authorized
-    // modules/accounting.py:24
+    // modules/accounting.py:23
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
     dig 1
@@ -1884,25 +1884,25 @@ transfer_after_if_else@5:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/transfer_agent.py:142
+    // modules/transfer_agent.py:141
     // self._assert_is_not_account_suspended(sender_holding_address)
     dig 2
     callsub _assert_is_not_account_suspended
-    // modules/transfer_agent.py:143
+    // modules/transfer_agent.py:142
     // self._assert_is_not_account_suspended(receiver_holding_address)
     dup
     callsub _assert_is_not_account_suspended
-    // modules/transfer_agent.py:144
+    // modules/transfer_agent.py:143
     // assert sender_holding_address != receiver_holding_address, err.SELF_TRANSFER
     uncover 2
     !=
     assert // Sender and receiver must be different
-    // modules/transfer_agent.py:145
+    // modules/transfer_agent.py:144
     // assert units > UInt64(0), err.NULL_TRANSFER
     dig 1
     dup
     assert // Transfer units must be greater than zero
-    // modules/transfer_agent.py:146
+    // modules/transfer_agent.py:145
     // assert units <= self.account[sender_holding_address].units, err.OVER_TRANSFER
     swap
     box_get
@@ -1911,7 +1911,7 @@ transfer_after_if_else@5:
     extract_uint64
     <=
     assert // Insufficient sender units to transfer
-    // modules/actus_kernel.py:763
+    // modules/actus_kernel.py:762
     // if self.event_cursor >= self.schedule_entry_count:
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -1923,46 +1923,46 @@ transfer_after_if_else@5:
     assert // check self.schedule_entry_count exists
     >=
     bnz transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_event_pending@10
-    // modules/actus_kernel.py:765
+    // modules/actus_kernel.py:764
     // next_entry = self._get_schedule_entry(self.event_cursor)
     intc_0 // 0
     bytec_2 // "event_cursor"
     app_global_get_ex
     assert // check self.event_cursor exists
     callsub _get_schedule_entry
-    // modules/actus_kernel.py:767
+    // modules/actus_kernel.py:766
     // next_entry.scheduled_time > Global.latest_timestamp
     pushint 9
     extract_uint64
     global LatestTimestamp
     >
-    // modules/actus_kernel.py:766-768
+    // modules/actus_kernel.py:765-767
     // assert (
     //     next_entry.scheduled_time > Global.latest_timestamp
     // ), err.PENDING_ACTUS_EVENT
     assert // ACTUS event not yet executed
 
 transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_event_pending@10:
-    // modules/transfer_agent.py:149
+    // modules/transfer_agent.py:148
     // self._ensure_units_activated(sender_holding_address)
     dig 3
     dup
     callsub _ensure_units_activated
-    // modules/transfer_agent.py:150
+    // modules/transfer_agent.py:149
     // self._ensure_units_activated(receiver_holding_address)
     dig 3
     dup
     cover 2
     callsub _ensure_units_activated
-    // modules/transfer_agent.py:151
+    // modules/transfer_agent.py:150
     // self._settle_position(sender_holding_address)
     callsub _settle_position
     popn 2
-    // modules/transfer_agent.py:152
+    // modules/transfer_agent.py:151
     // self._settle_position(receiver_holding_address)
     callsub _settle_position
     popn 2
-    // modules/accounting.py:152
+    // modules/accounting.py:151
     // assert units <= self.account[holding_address].units, err.OVER_TRANSFER
     dig 5
     dup
@@ -1976,7 +1976,7 @@ transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_eve
     dig 1
     <=
     assert // Insufficient sender units to transfer
-    // modules/accounting.py:153
+    // modules/accounting.py:152
     // self.account[holding_address].units -= units
     dig 1
     -
@@ -1984,8 +1984,8 @@ transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_eve
     uncover 2
     intc_3 // 32
     uncover 2
-    box_replace
-    // modules/accounting.py:144
+    box_replace // on error: index out of bounds
+    // modules/accounting.py:143
     // self.account[holding_address].units += units
     dig 5
     dup
@@ -1998,8 +1998,8 @@ transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_eve
     itob
     intc_3 // 32
     swap
-    box_replace
-    // modules/transfer_agent.py:98
+    box_replace // on error: index out of bounds
+    // modules/transfer_agent.py:97
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
     dig 2
@@ -2011,7 +2011,7 @@ transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_eve
 
 // modules.accounting.AccountingModule.account_suspension[routing]() -> void:
 account_suspension:
-    // modules/accounting.py:165
+    // modules/accounting.py:164
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2033,7 +2033,7 @@ account_suspension:
     txn Sender
     callsub _role_is_active
     assert // Not authorized
-    // modules/accounting.py:24
+    // modules/accounting.py:23
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
     uncover 2
@@ -2042,7 +2042,7 @@ account_suspension:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/accounting.py:185
+    // modules/accounting.py:184
     // self.account[holding_address].suspended = suspended
     dup
     pushint 48
@@ -2053,11 +2053,11 @@ account_suspension:
     setbit
     pushint 48
     swap
-    box_replace
-    // modules/accounting.py:186
+    box_replace // on error: index out of bounds
+    // modules/accounting.py:185
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/accounting.py:165
+    // modules/accounting.py:164
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -2070,7 +2070,7 @@ account_suspension:
 
 // modules.accounting.AccountingModule.account_open[routing]() -> void:
 account_open:
-    // modules/accounting.py:188
+    // modules/accounting.py:187
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2090,7 +2090,7 @@ account_open:
     txn Sender
     callsub _role_is_active
     assert // Not authorized
-    // modules/actus_kernel.py:139
+    // modules/actus_kernel.py:138
     // return self.status == UInt64(enums.STATUS_ENDED)
     intc_0 // 0
     bytec_1 // "status"
@@ -2098,17 +2098,17 @@ account_open:
     assert // check self.status exists
     pushint 200
     ==
-    // modules/accounting.py:210
+    // modules/accounting.py:209
     // assert not self._status_is_ended(), err.UNAUTHORIZED
     !
     assert // Not authorized
-    // modules/accounting.py:211
+    // modules/accounting.py:210
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/accounting.py:212
+    // modules/accounting.py:211
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
-    // modules/accounting.py:213
+    // modules/accounting.py:212
     // assert holding_address not in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
     uncover 2
@@ -2118,10 +2118,10 @@ account_open:
     bury 1
     !
     assert // Invalid account holding address
-    // modules/accounting.py:34
+    // modules/accounting.py:33
     // units=UInt64(0),
     intc_0 // 0
-    // modules/accounting.py:32-42
+    // modules/accounting.py:31-41
     // return typ.AccountPosition(
     //     payment_address=payment_address,
     //     units=UInt64(0),
@@ -2151,13 +2151,13 @@ account_open:
     concat
     swap
     concat
-    // modules/accounting.py:214
+    // modules/accounting.py:213
     // self.account[holding_address] = self._new_account_position(payment_address)
     box_put
-    // modules/accounting.py:215
+    // modules/accounting.py:214
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/accounting.py:188
+    // modules/accounting.py:187
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -2170,7 +2170,7 @@ account_open:
 
 // modules.accounting.AccountingModule.account_update_payment_address[routing]() -> void:
 account_update_payment_address:
-    // modules/accounting.py:217
+    // modules/accounting.py:216
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2184,7 +2184,7 @@ account_update_payment_address:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/accounting.py:24
+    // modules/accounting.py:23
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
     dig 2
@@ -2193,27 +2193,27 @@ account_update_payment_address:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/accounting.py:238
+    // modules/accounting.py:237
     // assert Txn.sender == holding_address, err.UNAUTHORIZED
     txn Sender
     uncover 3
     ==
     assert // Not authorized
-    // modules/accounting.py:239
+    // modules/accounting.py:238
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/accounting.py:240
+    // modules/accounting.py:239
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
-    // modules/accounting.py:241
+    // modules/accounting.py:240
     // self.account[holding_address].payment_address = payment_address
     intc_0 // 0
     uncover 2
-    box_replace
-    // modules/accounting.py:242
+    box_replace // on error: index out of bounds
+    // modules/accounting.py:241
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/accounting.py:217
+    // modules/accounting.py:216
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -2226,7 +2226,7 @@ account_update_payment_address:
 
 // modules.accounting.AccountingModule.account_get_position[routing]() -> void:
 account_get_position:
-    // modules/accounting.py:244
+    // modules/accounting.py:243
     // @arc4.abimethod(readonly=True)
     txna ApplicationArgs 1
     dup
@@ -2234,7 +2234,7 @@ account_get_position:
     intc_3 // 32
     ==
     assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
-    // modules/accounting.py:24
+    // modules/accounting.py:23
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
     swap
@@ -2243,11 +2243,11 @@ account_get_position:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/accounting.py:259
+    // modules/accounting.py:258
     // return self.account[holding_address]
     box_get
     pop
-    // modules/accounting.py:244
+    // modules/accounting.py:243
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -2259,7 +2259,7 @@ account_get_position:
 
 // modules.actus_kernel.ActusKernelModule.contract_create[routing]() -> void:
 contract_create:
-    // modules/actus_kernel.py:1019
+    // modules/actus_kernel.py:1018
     // @arc4.abimethod(create="require")
     txna ApplicationArgs 1
     dup
@@ -2273,15 +2273,15 @@ contract_create:
     global ZeroAddress
     !=
     assert // Invalid account role address
-    // modules/actus_kernel.py:1034
+    // modules/actus_kernel.py:1033
     // self.arranger.value = arranger
     bytec 18 // 0x523a41525223
     swap
     app_global_put
-    // modules/actus_kernel.py:1035
+    // modules/actus_kernel.py:1034
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1019
+    // modules/actus_kernel.py:1018
     // @arc4.abimethod(create="require")
     itob
     bytec_0 // 0x151f7c75
@@ -2296,7 +2296,7 @@ contract_create:
 contract_config:
     pushbytes ""
     dupn 2
-    // modules/actus_kernel.py:1037
+    // modules/actus_kernel.py:1036
     // @arc4.abimethod
     txna ApplicationArgs 1
     dupn 2
@@ -2335,10 +2335,10 @@ contract_config:
     +
     ==
     assert // invalid number of bytes for smart_contracts.abi_types.Prospectus
-    // modules/actus_kernel.py:1067
+    // modules/actus_kernel.py:1066
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:1069-1070
+    // modules/actus_kernel.py:1068-1069
     // # Configure Contract
     // self.contract_type = terms.contract_type.as_uint64()
     intc_0 // 0
@@ -2347,7 +2347,7 @@ contract_config:
     bytec 10 // "contract_type"
     dig 1
     app_global_put
-    // modules/actus_kernel.py:218-225
+    // modules/actus_kernel.py:217-224
     // return contract_type in (
     //     UInt64(enums.CT_PAM),
     //     UInt64(enums.CT_ANN),
@@ -2358,10 +2358,25 @@ contract_config:
     // )
     bz contract_config_bool_true@7
     dup
-    // modules/actus_kernel.py:220
+    // modules/actus_kernel.py:219
     // UInt64(enums.CT_ANN),
     intc_1 // 1
-    // modules/actus_kernel.py:218-225
+    // modules/actus_kernel.py:217-224
+    // return contract_type in (
+    //     UInt64(enums.CT_PAM),
+    //     UInt64(enums.CT_ANN),
+    //     UInt64(enums.CT_NAM),
+    //     UInt64(enums.CT_LAM),
+    //     UInt64(enums.CT_LAX),
+    //     UInt64(enums.CT_CLM),
+    // )
+    ==
+    bnz contract_config_bool_true@7
+    dup
+    // modules/actus_kernel.py:220
+    // UInt64(enums.CT_NAM),
+    pushint 2
+    // modules/actus_kernel.py:217-224
     // return contract_type in (
     //     UInt64(enums.CT_PAM),
     //     UInt64(enums.CT_ANN),
@@ -2374,9 +2389,9 @@ contract_config:
     bnz contract_config_bool_true@7
     dup
     // modules/actus_kernel.py:221
-    // UInt64(enums.CT_NAM),
-    pushint 2
-    // modules/actus_kernel.py:218-225
+    // UInt64(enums.CT_LAM),
+    pushint 3
+    // modules/actus_kernel.py:217-224
     // return contract_type in (
     //     UInt64(enums.CT_PAM),
     //     UInt64(enums.CT_ANN),
@@ -2389,9 +2404,9 @@ contract_config:
     bnz contract_config_bool_true@7
     dup
     // modules/actus_kernel.py:222
-    // UInt64(enums.CT_LAM),
-    pushint 3
-    // modules/actus_kernel.py:218-225
+    // UInt64(enums.CT_LAX),
+    pushint 4
+    // modules/actus_kernel.py:217-224
     // return contract_type in (
     //     UInt64(enums.CT_PAM),
     //     UInt64(enums.CT_ANN),
@@ -2404,24 +2419,9 @@ contract_config:
     bnz contract_config_bool_true@7
     dup
     // modules/actus_kernel.py:223
-    // UInt64(enums.CT_LAX),
-    pushint 4
-    // modules/actus_kernel.py:218-225
-    // return contract_type in (
-    //     UInt64(enums.CT_PAM),
-    //     UInt64(enums.CT_ANN),
-    //     UInt64(enums.CT_NAM),
-    //     UInt64(enums.CT_LAM),
-    //     UInt64(enums.CT_LAX),
-    //     UInt64(enums.CT_CLM),
-    // )
-    ==
-    bnz contract_config_bool_true@7
-    dup
-    // modules/actus_kernel.py:224
     // UInt64(enums.CT_CLM),
     pushint 5
-    // modules/actus_kernel.py:218-225
+    // modules/actus_kernel.py:217-224
     // return contract_type in (
     //     UInt64(enums.CT_PAM),
     //     UInt64(enums.CT_ANN),
@@ -2437,10 +2437,10 @@ contract_config_bool_true@7:
     intc_1 // 1
 
 contract_config_bool_merge@9:
-    // modules/actus_kernel.py:229
+    // modules/actus_kernel.py:228
     // assert self._is_supported_contract_type(contract_type), err.INVALID_ACTUS_CONFIG
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:1072
+    // modules/actus_kernel.py:1071
     // self._store_contract_config(self.contract_type, terms, initial_state)
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -2448,7 +2448,7 @@ contract_config_bool_merge@9:
     swap
     bury 2
     assert // check self.contract_type exists
-    // modules/actus_kernel.py:325
+    // modules/actus_kernel.py:324
     // assert terms.initial_exchange_amount > UInt64(0), err.INVALID_ACTUS_CONFIG
     dig 4
     dup
@@ -2457,13 +2457,13 @@ contract_config_bool_merge@9:
     dup
     bury 9
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:327
+    // modules/actus_kernel.py:326
     // terms.day_count_convention.as_uint64()
     pushint 57
     getbyte
     dup
     bury 9
-    // modules/actus_kernel.py:297-303
+    // modules/actus_kernel.py:296-302
     // return day_count_convention in (
     //     UInt64(enums.DCC_AA),
     //     UInt64(enums.DCC_A360),
@@ -2473,10 +2473,24 @@ contract_config_bool_merge@9:
     // )
     bz contract_config_bool_true@16
     dig 7
-    // modules/actus_kernel.py:299
+    // modules/actus_kernel.py:298
     // UInt64(enums.DCC_A360),
     intc_1 // 1
-    // modules/actus_kernel.py:297-303
+    // modules/actus_kernel.py:296-302
+    // return day_count_convention in (
+    //     UInt64(enums.DCC_AA),
+    //     UInt64(enums.DCC_A360),
+    //     UInt64(enums.DCC_A365),
+    //     UInt64(enums.DCC_30E360ISDA),
+    //     UInt64(enums.DCC_30E360),
+    // )
+    ==
+    bnz contract_config_bool_true@16
+    dig 7
+    // modules/actus_kernel.py:299
+    // UInt64(enums.DCC_A365),
+    pushint 2
+    // modules/actus_kernel.py:296-302
     // return day_count_convention in (
     //     UInt64(enums.DCC_AA),
     //     UInt64(enums.DCC_A360),
@@ -2488,9 +2502,9 @@ contract_config_bool_merge@9:
     bnz contract_config_bool_true@16
     dig 7
     // modules/actus_kernel.py:300
-    // UInt64(enums.DCC_A365),
-    pushint 2
-    // modules/actus_kernel.py:297-303
+    // UInt64(enums.DCC_30E360ISDA),
+    pushint 3
+    // modules/actus_kernel.py:296-302
     // return day_count_convention in (
     //     UInt64(enums.DCC_AA),
     //     UInt64(enums.DCC_A360),
@@ -2502,23 +2516,9 @@ contract_config_bool_merge@9:
     bnz contract_config_bool_true@16
     dig 7
     // modules/actus_kernel.py:301
-    // UInt64(enums.DCC_30E360ISDA),
-    pushint 3
-    // modules/actus_kernel.py:297-303
-    // return day_count_convention in (
-    //     UInt64(enums.DCC_AA),
-    //     UInt64(enums.DCC_A360),
-    //     UInt64(enums.DCC_A365),
-    //     UInt64(enums.DCC_30E360ISDA),
-    //     UInt64(enums.DCC_30E360),
-    // )
-    ==
-    bnz contract_config_bool_true@16
-    dig 7
-    // modules/actus_kernel.py:302
     // UInt64(enums.DCC_30E360),
     pushint 4
-    // modules/actus_kernel.py:297-303
+    // modules/actus_kernel.py:296-302
     // return day_count_convention in (
     //     UInt64(enums.DCC_AA),
     //     UInt64(enums.DCC_A360),
@@ -2533,18 +2533,18 @@ contract_config_bool_true@16:
     intc_1 // 1
 
 contract_config_bool_merge@18:
-    // modules/actus_kernel.py:309-311
+    // modules/actus_kernel.py:308-310
     // assert self._is_supported_day_count_convention(
     //     day_count_convention
     // ), err.INVALID_DAY_COUNT_CONVENTION
     assert // Invalid day-count convention ID
-    // modules/actus_kernel.py:329
+    // modules/actus_kernel.py:328
     // if contract_type != UInt64(enums.CT_ANN):
     dup
     intc_1 // 1
     !=
     bz contract_config_after_if_else@20
-    // modules/actus_kernel.py:330
+    // modules/actus_kernel.py:329
     // assert not terms.dynamic_principal_redemption, err.INVALID_ACTUS_CONFIG
     dig 4
     pushint 786
@@ -2553,7 +2553,7 @@ contract_config_bool_merge@18:
     assert // Invalid ACTUS configuration
 
 contract_config_after_if_else@20:
-    // modules/actus_kernel.py:804
+    // modules/actus_kernel.py:803
     // assert self.status == UInt64(enums.STATUS_INACTIVE), err.ALREADY_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
@@ -2561,7 +2561,7 @@ contract_config_after_if_else@20:
     assert // check self.status exists
     !
     assert // D-ASA already configured
-    // modules/actus_kernel.py:805
+    // modules/actus_kernel.py:804
     // assert self.initial_exchange_amount == UInt64(0), err.ALREADY_CONFIGURED
     intc_0 // 0
     bytec 21 // "initial_exchange_amount"
@@ -2569,50 +2569,50 @@ contract_config_after_if_else@20:
     assert // check self.initial_exchange_amount exists
     !
     assert // D-ASA already configured
-    // modules/actus_kernel.py:807-808
+    // modules/actus_kernel.py:806-807
     // # Set Denomination Asset
     // self._assert_denomination_asset(terms.denomination_asset_id)
     dig 4
     dup
     intc_1 // 1
     extract_uint64
-    // modules/actus_kernel.py:775-776
+    // modules/actus_kernel.py:774-775
     // # The reference implementation has on-chain denomination with ASA
     // _creator, exists = op.AssetParamsGet.asset_creator(denomination_asset_id)
     dup
     asset_params_get AssetCreator
     bury 1
-    // modules/actus_kernel.py:777
+    // modules/actus_kernel.py:776
     // assert exists, err.INVALID_DENOMINATION
     assert // Denomination asset is not properly set
-    // modules/actus_kernel.py:809
+    // modules/actus_kernel.py:808
     // self.denomination_asset_id = terms.denomination_asset_id
     bytec 44 // "denomination_asset_id"
     dig 1
     app_global_put
-    // modules/actus_kernel.py:811-812
+    // modules/actus_kernel.py:810-811
     // # Set Settlement Asset
     // self._assert_settlement_asset(terms.settlement_asset_id)
     dig 1
     pushint 9
     extract_uint64
-    // modules/actus_kernel.py:782
+    // modules/actus_kernel.py:781
     // settlement_asset_id == self.denomination_asset_id
     dup
     uncover 2
     ==
-    // modules/actus_kernel.py:780-783
+    // modules/actus_kernel.py:779-782
     // # The reference implementation settlement asset is the denomination asset
     // assert (
     //     settlement_asset_id == self.denomination_asset_id
     // ), err.INVALID_SETTLEMENT_ASSET
     assert // Different settlement asset not supported, must be equal to denomination asset
-    // modules/actus_kernel.py:786
+    // modules/actus_kernel.py:785
     // self.settlement_asset_id = settlement_asset_id
     bytec 20 // "settlement_asset_id"
     dig 1
     app_global_put
-    // modules/actus_kernel.py:787-793
+    // modules/actus_kernel.py:786-792
     // # The reference implementation has on-chain settlement with ASA
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
@@ -2621,26 +2621,26 @@ contract_config_after_if_else@20:
     //     fee=Global.min_txn_fee,
     // ).submit()
     itxn_begin
-    // modules/actus_kernel.py:792
+    // modules/actus_kernel.py:791
     // fee=Global.min_txn_fee,
     global MinTxnFee
-    // modules/actus_kernel.py:790
+    // modules/actus_kernel.py:789
     // asset_receiver=Global.current_application_address,
     global CurrentApplicationAddress
-    // modules/actus_kernel.py:791
+    // modules/actus_kernel.py:790
     // asset_amount=0,
     intc_0 // 0
     itxn_field AssetAmount
     itxn_field AssetReceiver
     swap
     itxn_field XferAsset
-    // modules/actus_kernel.py:787-788
+    // modules/actus_kernel.py:786-787
     // # The reference implementation has on-chain settlement with ASA
     // itxn.AssetTransfer(
     pushint 4 // axfer
     itxn_field TypeEnum
     itxn_field Fee
-    // modules/actus_kernel.py:787-793
+    // modules/actus_kernel.py:786-792
     // # The reference implementation has on-chain settlement with ASA
     // itxn.AssetTransfer(
     //     xfer_asset=self.settlement_asset_id,
@@ -2649,7 +2649,7 @@ contract_config_after_if_else@20:
     //     fee=Global.min_txn_fee,
     // ).submit()
     itxn_submit
-    // modules/actus_kernel.py:815-816
+    // modules/actus_kernel.py:814-815
     // # Units
     // self.total_units = terms.total_units
     dup
@@ -2658,18 +2658,18 @@ contract_config_after_if_else@20:
     bytec 13 // "total_units"
     swap
     app_global_put
-    // modules/actus_kernel.py:817
+    // modules/actus_kernel.py:816
     // self.reserved_units_total = UInt64(0)
     bytec 11 // "reserved_units_total"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:819-820
+    // modules/actus_kernel.py:818-819
     // # Day-Count Conventions
     // self.day_count_convention = terms.day_count_convention.as_uint64()
     bytec 46 // "day_count_convention"
     dig 9
     app_global_put
-    // modules/actus_kernel.py:824
+    // modules/actus_kernel.py:823
     // Global.latest_timestamp < terms.initial_exchange_date < terms.maturity_date
     global LatestTimestamp
     swap
@@ -2688,20 +2688,20 @@ contract_config_after_if_else@20:
     intc_1 // 1
 
 contract_config_bool_merge@24:
-    // modules/actus_kernel.py:822-825
+    // modules/actus_kernel.py:821-824
     // # Time
     // assert (
     //     Global.latest_timestamp < terms.initial_exchange_date < terms.maturity_date
     // ), err.INVALID_ACTUS_CONFIG
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:826
+    // modules/actus_kernel.py:825
     // self.initial_exchange_date = terms.initial_exchange_date
     bytec 23 // "initial_exchange_date"
     dig 6
     dup
     cover 2
     app_global_put
-    // modules/actus_kernel.py:827
+    // modules/actus_kernel.py:826
     // self.maturity_date = terms.maturity_date
     dig 5
     dup
@@ -2710,7 +2710,7 @@ contract_config_bool_merge@24:
     bytec 45 // "maturity_date"
     dig 1
     app_global_put
-    // modules/actus_kernel.py:828
+    // modules/actus_kernel.py:827
     // self.next_principal_redemption = initial_state.next_principal_redemption
     dig 6
     dup
@@ -2720,13 +2720,13 @@ contract_config_bool_merge@24:
     bytec 14 // "next_principal_redemption"
     swap
     app_global_put
-    // modules/actus_kernel.py:830-831
+    // modules/actus_kernel.py:829-830
     // # Principal
     // self.initial_exchange_amount = terms.initial_exchange_amount
     bytec 21 // "initial_exchange_amount"
     dig 11
     app_global_put
-    // modules/actus_kernel.py:832
+    // modules/actus_kernel.py:831
     // self.dynamic_principal_redemption = terms.dynamic_principal_redemption
     dig 2
     pushint 786
@@ -2734,7 +2734,7 @@ contract_config_bool_merge@24:
     bytec 35 // "dynamic_principal_redemption"
     swap
     app_global_put
-    // modules/actus_kernel.py:833
+    // modules/actus_kernel.py:832
     // self.outstanding_principal = initial_state.outstanding_principal
     dig 1
     pushint 16
@@ -2742,7 +2742,7 @@ contract_config_bool_merge@24:
     bytec 4 // "outstanding_principal"
     swap
     app_global_put
-    // modules/actus_kernel.py:835-836
+    // modules/actus_kernel.py:834-835
     // # Interest
     // self.accrued_interest = initial_state.accrued_interest
     dig 1
@@ -2751,7 +2751,7 @@ contract_config_bool_merge@24:
     bytec 6 // "accrued_interest"
     swap
     app_global_put
-    // modules/actus_kernel.py:838-839
+    // modules/actus_kernel.py:837-838
     // # Interest Rate
     // self.nominal_interest_rate = initial_state.nominal_interest_rate
     dig 1
@@ -2760,7 +2760,7 @@ contract_config_bool_merge@24:
     bytec 9 // "nominal_interest_rate"
     swap
     app_global_put
-    // modules/actus_kernel.py:840
+    // modules/actus_kernel.py:839
     // self.interest_calculation_base = initial_state.interest_calculation_base
     dig 1
     pushint 24
@@ -2768,7 +2768,7 @@ contract_config_bool_merge@24:
     bytec 7 // "interest_calculation_base"
     swap
     app_global_put
-    // modules/actus_kernel.py:841
+    // modules/actus_kernel.py:840
     // self.rate_reset_spread = terms.rate_reset_spread
     dig 2
     pushint 58
@@ -2776,7 +2776,7 @@ contract_config_bool_merge@24:
     bytec 36 // "rate_reset_spread"
     swap
     app_global_put
-    // modules/actus_kernel.py:842
+    // modules/actus_kernel.py:841
     // self.rate_reset_multiplier = terms.rate_reset_multiplier
     dig 2
     pushint 66
@@ -2784,7 +2784,7 @@ contract_config_bool_merge@24:
     bytec 37 // "rate_reset_multiplier"
     swap
     app_global_put
-    // modules/actus_kernel.py:843
+    // modules/actus_kernel.py:842
     // self.rate_reset_floor = terms.rate_reset_floor
     dig 2
     pushint 74
@@ -2792,7 +2792,7 @@ contract_config_bool_merge@24:
     bytec 31 // "rate_reset_floor"
     swap
     app_global_put
-    // modules/actus_kernel.py:844
+    // modules/actus_kernel.py:843
     // self.rate_reset_cap = terms.rate_reset_cap
     dig 2
     pushint 82
@@ -2800,7 +2800,7 @@ contract_config_bool_merge@24:
     bytec 32 // "rate_reset_cap"
     swap
     app_global_put
-    // modules/actus_kernel.py:845
+    // modules/actus_kernel.py:844
     // self.rate_reset_next = terms.rate_reset_next
     dig 2
     pushint 90
@@ -2808,7 +2808,7 @@ contract_config_bool_merge@24:
     bytec 38 // "rate_reset_next"
     swap
     app_global_put
-    // modules/actus_kernel.py:846
+    // modules/actus_kernel.py:845
     // self.has_rate_reset_floor = terms.has_rate_reset_floor
     dig 2
     pushint 784
@@ -2816,7 +2816,7 @@ contract_config_bool_merge@24:
     bytec 39 // "has_rate_reset_floor"
     swap
     app_global_put
-    // modules/actus_kernel.py:847
+    // modules/actus_kernel.py:846
     // self.has_rate_reset_cap = terms.has_rate_reset_cap
     dig 2
     pushint 785
@@ -2824,7 +2824,7 @@ contract_config_bool_merge@24:
     bytec 40 // "has_rate_reset_cap"
     swap
     app_global_put
-    // modules/actus_kernel.py:849-850
+    // modules/actus_kernel.py:848-849
     // # Scaling
     // self.fixed_point_scale = terms.fixed_point_scale
     uncover 2
@@ -2833,7 +2833,7 @@ contract_config_bool_merge@24:
     bytec 5 // "fixed_point_scale"
     swap
     app_global_put
-    // modules/actus_kernel.py:852-853
+    // modules/actus_kernel.py:851-852
     // # Schedule Processing
     // self.event_cursor = initial_state.event_cursor
     dig 1
@@ -2842,7 +2842,7 @@ contract_config_bool_merge@24:
     bytec_2 // "event_cursor"
     swap
     app_global_put
-    // modules/actus_kernel.py:855-856
+    // modules/actus_kernel.py:854-855
     // # Per-Unit Fixed-Point Indexes
     // self.cumulative_interest_index = initial_state.cumulative_interest_index
     dig 1
@@ -2851,7 +2851,7 @@ contract_config_bool_merge@24:
     bytec 16 // "cumulative_interest_index"
     swap
     app_global_put
-    // modules/actus_kernel.py:857
+    // modules/actus_kernel.py:856
     // self.cumulative_principal_index = initial_state.cumulative_principal_index
     dig 1
     pushint 64
@@ -2859,24 +2859,24 @@ contract_config_bool_merge@24:
     bytec 17 // "cumulative_principal_index"
     swap
     app_global_put
-    // modules/actus_kernel.py:859-860
+    // modules/actus_kernel.py:858-859
     // # Reserved Amount (for executed cashflows)
     // self.reserved_interest = UInt64(0)
     bytec 15 // "reserved_interest"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:861
+    // modules/actus_kernel.py:860
     // self.reserved_principal = UInt64(0)
     bytec 12 // "reserved_principal"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:863
+    // modules/actus_kernel.py:862
     // assert terms.initial_exchange_date > Global.latest_timestamp, err.INVALID_IED
     dig 2
     global LatestTimestamp
     >
     assert // IED must be set in the future
-    // modules/actus_kernel.py:864
+    // modules/actus_kernel.py:863
     // assert terms.initial_exchange_date > initial_state.status_date, err.INVALID_IED
     swap
     intc_0 // 0
@@ -2884,11 +2884,11 @@ contract_config_bool_merge@24:
     dig 2
     <
     assert // IED must be set in the future
-    // modules/actus_kernel.py:865
+    // modules/actus_kernel.py:864
     // assert terms.initial_exchange_date < terms.maturity_date, err.INVALID_IED
     <
     assert // IED must be set in the future
-    // modules/actus_kernel.py:1074-1075
+    // modules/actus_kernel.py:1073-1074
     // # Notarize prospectus (optional)
     // self.prospectus_hash = prospectus.hash.bytes
     dig 2
@@ -2896,17 +2896,17 @@ contract_config_bool_merge@24:
     bytec 42 // "prospectus_hash"
     swap
     app_global_put
-    // modules/actus_kernel.py:1076
+    // modules/actus_kernel.py:1075
     // self.prospectus_url = prospectus.url
     dig 1
     extract 2 0
     bytec 43 // "prospectus_url"
     swap
     app_global_put
-    // modules/actus_kernel.py:1077
+    // modules/actus_kernel.py:1076
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1037
+    // modules/actus_kernel.py:1036
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -2934,7 +2934,7 @@ contract_schedule:
     intc_0 // 0
     pushbytes ""
     dupn 2
-    // modules/actus_kernel.py:1079
+    // modules/actus_kernel.py:1078
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -2970,10 +2970,10 @@ contract_schedule:
     len
     ==
     assert // invalid number of bytes for arc4.dynamic_array<smart_contracts.abi_types.ExecutionScheduleEntry>
-    // modules/actus_kernel.py:1111
+    // modules/actus_kernel.py:1110
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:1114
+    // modules/actus_kernel.py:1113
     // contract_type=self.contract_type,
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -2981,7 +2981,7 @@ contract_schedule:
     swap
     cover 3
     assert // check self.contract_type exists
-    // modules/actus_kernel.py:881
+    // modules/actus_kernel.py:880
     // assert self.status == UInt64(enums.STATUS_INACTIVE), err.ALREADY_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
@@ -2989,7 +2989,7 @@ contract_schedule:
     assert // check self.status exists
     !
     assert // D-ASA already configured
-    // modules/actus_kernel.py:882-884
+    // modules/actus_kernel.py:881-883
     // assert schedule_page.length <= UInt64(
     //     cst.SCHEDULE_PAGE_SIZE
     // ), err.INVALID_SCHEDULE_PAGE
@@ -2997,31 +2997,31 @@ contract_schedule:
     pushint 16
     <=
     assert // Invalid schedule page
-    // modules/actus_kernel.py:885
+    // modules/actus_kernel.py:884
     // assert self.initial_exchange_amount > UInt64(0), err.TERMS_NOT_CONFIGURED
     intc_0 // 0
     bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
     assert // D-ASA terms not configured
-    // modules/actus_kernel.py:887
+    // modules/actus_kernel.py:886
     // page_cursor = schedule_page_index * UInt64(cst.SCHEDULE_PAGE_SIZE)
     swap
     pushint 16
     *
     swap
-    // modules/actus_kernel.py:894
+    // modules/actus_kernel.py:893
     // + page_length * UInt64(cst.OP_UP_CONTRACT_CONFIG_PER_ENTRY_BUDGET)
     pushint 100
     *
-    // modules/actus_kernel.py:893
+    // modules/actus_kernel.py:892
     // UInt64(cst.OP_UP_CONTRACT_CONFIG_BASE_BUDGET)
     intc 4 // 1500
-    // modules/actus_kernel.py:893-894
+    // modules/actus_kernel.py:892-893
     // UInt64(cst.OP_UP_CONTRACT_CONFIG_BASE_BUDGET)
     // + page_length * UInt64(cst.OP_UP_CONTRACT_CONFIG_PER_ENTRY_BUDGET)
     +
-    // modules/actus_kernel.py:889-896
+    // modules/actus_kernel.py:888-895
     // # Validation cost grows with page length, so configuration explicitly
     // # buys extra opcode budget for larger uploads.
     // ensure_budget(
@@ -3032,18 +3032,18 @@ contract_schedule:
     // )
     intc_0 // 0
     callsub ensure_budget
-    // modules/actus_kernel.py:897
+    // modules/actus_kernel.py:896
     // index = UInt64(0)
     intc_0 // 0
 
 contract_schedule_while_top@2:
-    // modules/actus_kernel.py:898
+    // modules/actus_kernel.py:897
     // while index < page_length:
     dup
     dig 4
     <
     bz contract_schedule_after_while@11
-    // modules/actus_kernel.py:899-900
+    // modules/actus_kernel.py:898-899
     // entry = schedule_page[index].copy()
     // entry_event_type = entry.event_type.as_uint64()
     dig 4
@@ -3057,20 +3057,20 @@ contract_schedule_while_top@2:
     *
     pushint 65
     extract3 // on error: index access is out of bounds
-    // modules/actus_kernel.py:900
+    // modules/actus_kernel.py:899
     // entry_event_type = entry.event_type.as_uint64()
     dup
-    // modules/actus_kernel.py:899-900
+    // modules/actus_kernel.py:898-899
     // entry = schedule_page[index].copy()
     // entry_event_type = entry.event_type.as_uint64()
     intc_2 // 8
-    // modules/actus_kernel.py:900
+    // modules/actus_kernel.py:899
     // entry_event_type = entry.event_type.as_uint64()
     getbyte
     dup
     cover 2
     bury 13
-    // modules/actus_kernel.py:901
+    // modules/actus_kernel.py:900
     // assert entry.event_id == page_cursor + index, err.INVALID_EVENT_ID
     dup
     intc_0 // 0
@@ -3083,14 +3083,14 @@ contract_schedule_while_top@2:
     dig 1
     ==
     assert // Invalid event id
-    // modules/actus_kernel.py:902-904
+    // modules/actus_kernel.py:901-903
     // self._assert_event_allowed_for_contract_type(
     //     contract_type, entry_event_type
     // )
     dig 5
     uncover 3
     callsub _assert_event_allowed_for_contract_type
-    // modules/actus_kernel.py:905
+    // modules/actus_kernel.py:904
     // assert entry.scheduled_time > UInt64(0), err.INVALID_ACTUS_CONFIG
     swap
     pushint 9
@@ -3098,14 +3098,14 @@ contract_schedule_while_top@2:
     dup
     bury 10
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:906
+    // modules/actus_kernel.py:905
     // if entry.event_id > UInt64(0):
     bz contract_schedule_after_if_else@8
-    // modules/actus_kernel.py:907
+    // modules/actus_kernel.py:906
     // if index > UInt64(0):
     dup
     bz contract_schedule_else_body@6
-    // modules/actus_kernel.py:908
+    // modules/actus_kernel.py:907
     // previous_entry = schedule_page[index - UInt64(1)].copy()
     dup
     intc_1 // 1
@@ -3118,24 +3118,24 @@ contract_schedule_while_top@2:
     extract3 // on error: index access is out of bounds
 
 contract_schedule_after_if_else@7:
-    // modules/actus_kernel.py:923
+    // modules/actus_kernel.py:922
     // previous_entry.scheduled_time <= entry.scheduled_time
     pushint 9
     extract_uint64
     dig 8
     <=
-    // modules/actus_kernel.py:922-924
+    // modules/actus_kernel.py:921-923
     // assert (
     //     previous_entry.scheduled_time <= entry.scheduled_time
     // ), err.INVALID_SORTING
     assert // Time events must be sorted in strictly ascending order
 
 contract_schedule_after_if_else@8:
-    // modules/actus_kernel.py:925
+    // modules/actus_kernel.py:924
     // if entry.event_id == UInt64(0):
     dig 8
     bnz contract_schedule_after_if_else@10
-    // modules/actus_kernel.py:926-928
+    // modules/actus_kernel.py:925-927
     // assert entry_event_type == UInt64(
     //     enums.EVT_IED
     // ), err.INVALID_ACTUS_CONFIG
@@ -3145,7 +3145,7 @@ contract_schedule_after_if_else@8:
     assert // Invalid ACTUS configuration
 
 contract_schedule_after_if_else@10:
-    // modules/actus_kernel.py:929
+    // modules/actus_kernel.py:928
     // index += UInt64(1)
     dup
     intc_1 // 1
@@ -3154,18 +3154,18 @@ contract_schedule_after_if_else@10:
     b contract_schedule_while_top@2
 
 contract_schedule_else_body@6:
-    // modules/actus_kernel.py:910-912
+    // modules/actus_kernel.py:909-911
     // # The first entry of a page must still be ordered after the
     // # last entry of the previous page.
     // assert schedule_page_index > UInt64(0), err.INVALID_EVENT_ID
     dig 6
     dup
     assert // Invalid event id
-    // modules/actus_kernel.py:913
+    // modules/actus_kernel.py:912
     // previous_page_index = schedule_page_index - UInt64(1)
     intc_1 // 1
     -
-    // modules/actus_kernel.py:915
+    // modules/actus_kernel.py:914
     // previous_page_index in self.schedule_page
     itob
     bytec 26 // 0x5323
@@ -3174,12 +3174,12 @@ contract_schedule_else_body@6:
     dup
     box_len
     bury 1
-    // modules/actus_kernel.py:914-916
+    // modules/actus_kernel.py:913-915
     // assert (
     //     previous_page_index in self.schedule_page
     // ), err.INVALID_SCHEDULE_PAGE
     assert // Invalid schedule page
-    // modules/actus_kernel.py:917-918
+    // modules/actus_kernel.py:916-917
     // previous_page = self.schedule_page[previous_page_index].copy()
     // assert previous_page.length > UInt64(0), err.INVALID_SCHEDULE_PAGE
     dup
@@ -3187,15 +3187,15 @@ contract_schedule_else_body@6:
     pushint 2
     box_extract
     btoi
-    // modules/actus_kernel.py:918
+    // modules/actus_kernel.py:917
     // assert previous_page.length > UInt64(0), err.INVALID_SCHEDULE_PAGE
     dup
     assert // Invalid schedule page
-    // modules/actus_kernel.py:920
+    // modules/actus_kernel.py:919
     // previous_page.length - UInt64(1)
     intc_1 // 1
     -
-    // modules/actus_kernel.py:919-921
+    // modules/actus_kernel.py:918-920
     // previous_entry = previous_page[
     //     previous_page.length - UInt64(1)
     // ].copy()
@@ -3204,11 +3204,11 @@ contract_schedule_else_body@6:
     pushint 2
     +
     pushint 65
-    box_extract
+    box_extract // on error: index out of bounds
     b contract_schedule_after_if_else@7
 
 contract_schedule_after_while@11:
-    // modules/actus_kernel.py:200
+    // modules/actus_kernel.py:199
     // self.schedule_page[page_index] = schedule_page.copy()
     dig 6
     itob
@@ -3220,35 +3220,35 @@ contract_schedule_after_while@11:
     pop
     dig 5
     box_put
-    // modules/actus_kernel.py:932
+    // modules/actus_kernel.py:931
     // if is_last_page:
     dig 5
     bz contract_schedule_after_if_else@13
-    // modules/actus_kernel.py:934
+    // modules/actus_kernel.py:933
     // schedule_page_index * UInt64(cst.SCHEDULE_PAGE_SIZE) + page_length
     dig 1
     dig 4
     +
-    // modules/actus_kernel.py:933
+    // modules/actus_kernel.py:932
     // self.schedule_entry_count = (
     bytec_3 // "schedule_entry_count"
-    // modules/actus_kernel.py:933-935
+    // modules/actus_kernel.py:932-934
     // self.schedule_entry_count = (
     //     schedule_page_index * UInt64(cst.SCHEDULE_PAGE_SIZE) + page_length
     // )
     swap
     app_global_put
-    // modules/actus_kernel.py:936
+    // modules/actus_kernel.py:935
     // self.status = UInt64(enums.STATUS_PENDING_IED)
     bytec_1 // "status"
     pushint 50
     app_global_put
 
 contract_schedule_after_if_else@13:
-    // modules/actus_kernel.py:1119
+    // modules/actus_kernel.py:1118
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1079
+    // modules/actus_kernel.py:1078
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -3261,23 +3261,23 @@ contract_schedule_after_if_else@13:
 
 // modules.actus_kernel.ActusKernelModule.contract_execute_ied[routing]() -> void:
 contract_execute_ied:
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1144
+    // modules/actus_kernel.py:1143
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:1145
+    // modules/actus_kernel.py:1144
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/actus_kernel.py:1146
+    // modules/actus_kernel.py:1145
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
-    // modules/actus_kernel.py:1148
+    // modules/actus_kernel.py:1147
     // assert self.event_cursor < self.schedule_entry_count, err.INVALID_EVENT_CURSOR
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -3290,10 +3290,10 @@ contract_execute_ied:
     dig 1
     >
     assert // Invalid event cursor
-    // modules/actus_kernel.py:1149
+    // modules/actus_kernel.py:1148
     // entry = self._get_schedule_entry(self.event_cursor)
     callsub _get_schedule_entry
-    // modules/actus_kernel.py:1150
+    // modules/actus_kernel.py:1149
     // assert entry.event_type == arc4.UInt8(enums.EVT_IED), err.INVALID_EVENT_TYPE
     dup
     extract 8 1
@@ -3301,39 +3301,39 @@ contract_execute_ied:
     pushbytes 0x01
     b==
     assert // Invalid event type
-    // modules/actus_kernel.py:1154
+    // modules/actus_kernel.py:1153
     // event_id=entry.event_id,
     dig 1
     extract 0 8
-    // modules/actus_kernel.py:1156
+    // modules/actus_kernel.py:1155
     // scheduled_time=entry.scheduled_time,
     dig 2
     extract 9 8
-    // modules/actus_kernel.py:1157
+    // modules/actus_kernel.py:1156
     // accrual_factor=entry.accrual_factor,
     dig 3
     extract 17 8
-    // modules/actus_kernel.py:1158
+    // modules/actus_kernel.py:1157
     // redemption_accrual_factor=entry.redemption_accrual_factor,
     dig 4
     extract 25 8
-    // modules/actus_kernel.py:1160
+    // modules/actus_kernel.py:1159
     // next_nominal_interest_rate=entry.next_nominal_interest_rate,
     dig 5
     extract 33 8
-    // modules/actus_kernel.py:1161
+    // modules/actus_kernel.py:1160
     // next_principal_redemption=entry.next_principal_redemption,
     dig 6
     extract 41 8
-    // modules/actus_kernel.py:1162
+    // modules/actus_kernel.py:1161
     // next_outstanding_principal=entry.next_outstanding_principal,
     dig 7
     extract 49 8
-    // modules/actus_kernel.py:1163
+    // modules/actus_kernel.py:1162
     // flags=entry.flags,
     dig 8
     extract 57 8
-    // modules/actus_kernel.py:1153-1164
+    // modules/actus_kernel.py:1152-1163
     // typ.ObservedEventRequest(
     //     event_id=entry.event_id,
     //     event_type=entry.event_type,
@@ -3355,10 +3355,10 @@ contract_execute_ied:
     concat
     uncover 5
     concat
-    // modules/actus_kernel.py:1159
+    // modules/actus_kernel.py:1158
     // observed_rate=UInt64(0),
     intc_0 // 0
-    // modules/actus_kernel.py:1153-1164
+    // modules/actus_kernel.py:1152-1163
     // typ.ObservedEventRequest(
     //     event_id=entry.event_id,
     //     event_type=entry.event_type,
@@ -3381,7 +3381,7 @@ contract_execute_ied:
     concat
     swap
     concat
-    // modules/actus_kernel.py:1151-1165
+    // modules/actus_kernel.py:1150-1164
     // self._apply_non_cash_schedule_entry(
     //     entry,
     //     typ.ObservedEventRequest(
@@ -3399,10 +3399,10 @@ contract_execute_ied:
     // )
     callsub _apply_non_cash_schedule_entry
     popn 2
-    // modules/actus_kernel.py:1166
+    // modules/actus_kernel.py:1165
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1121
+    // modules/actus_kernel.py:1120
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -3419,7 +3419,7 @@ apply_non_cash_event:
     dupn 4
     pushbytes ""
     dup
-    // modules/actus_kernel.py:1168
+    // modules/actus_kernel.py:1167
     // @arc4.abimethod
     txna ApplicationArgs 1
     dup
@@ -3434,20 +3434,20 @@ apply_non_cash_event:
     pushint 73
     ==
     assert // invalid number of bytes for smart_contracts.abi_types.ObservedEventRequest
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1205
+    // modules/actus_kernel.py:1204
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/actus_kernel.py:1206
+    // modules/actus_kernel.py:1205
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
-    // modules/actus_kernel.py:1208
+    // modules/actus_kernel.py:1207
     // if payload.flags & UInt64(enums.FLAG_OBSERVED_EVENT):
     pushint 65
     extract_uint64
@@ -3455,7 +3455,7 @@ apply_non_cash_event:
     pushint 4
     &
     bz apply_non_cash_event_after_if_else@3
-    // modules/actus_kernel.py:233
+    // modules/actus_kernel.py:232
     // return self.contract_type == UInt64(enums.CT_CLM)
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -3463,13 +3463,13 @@ apply_non_cash_event:
     assert // check self.contract_type exists
     pushint 5
     ==
-    // modules/actus_kernel.py:1209
+    // modules/actus_kernel.py:1208
     // assert self._supports_observed_events(), err.OBSERVED_EVENT_REQUIRED
     assert // Observed event required to execute this action
-    // modules/actus_kernel.py:1210
+    // modules/actus_kernel.py:1209
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:233
+    // modules/actus_kernel.py:232
     // return self.contract_type == UInt64(enums.CT_CLM)
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -3478,10 +3478,10 @@ apply_non_cash_event:
     dup
     pushint 5
     ==
-    // modules/actus_kernel.py:945
+    // modules/actus_kernel.py:944
     // assert self._supports_observed_events(), err.OBSERVED_EVENT_REQUIRED
     assert // Observed event required to execute this action
-    // modules/actus_kernel.py:946
+    // modules/actus_kernel.py:945
     // assert payload.event_id == self.schedule_entry_count, err.INVALID_EVENT_ID
     dig 2
     dup
@@ -3495,53 +3495,53 @@ apply_non_cash_event:
     assert // check self.schedule_entry_count exists
     ==
     assert // Invalid event id
-    // modules/actus_kernel.py:948
+    // modules/actus_kernel.py:947
     // self.contract_type, payload.event_type.as_uint64()
     dup
     extract 8 1
     bury 12
     intc_2 // 8
     getbyte
-    // modules/actus_kernel.py:947-949
+    // modules/actus_kernel.py:946-948
     // self._assert_event_allowed_for_contract_type(
     //     self.contract_type, payload.event_type.as_uint64()
     // )
     callsub _assert_event_allowed_for_contract_type
-    // modules/actus_kernel.py:951
+    // modules/actus_kernel.py:950
     // page_index = self._schedule_page_index(self.schedule_entry_count)
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
     app_global_get_ex
     assert // check self.schedule_entry_count exists
-    // modules/actus_kernel.py:190
+    // modules/actus_kernel.py:189
     // return event_id // UInt64(cst.SCHEDULE_PAGE_SIZE)
     pushint 16
     /
-    // modules/actus_kernel.py:952
+    // modules/actus_kernel.py:951
     // page = typ.ExecutionSchedulePage()
     bytec 48 // 0x0000
     bury 7
-    // modules/actus_kernel.py:953
+    // modules/actus_kernel.py:952
     // if page_index in self.schedule_page:
     itob
     bytec 26 // 0x5323
     swap
     concat
     dup
-    bury 9
+    bury 8
     box_len
     bury 1
     bz apply_non_cash_event_after_if_else@27
-    // modules/actus_kernel.py:954
+    // modules/actus_kernel.py:953
     // page = self.schedule_page[page_index].copy()
-    dig 7
+    dig 6
     box_get
     swap
     bury 7
     assert // check self.schedule_page entry exists
 
 apply_non_cash_event_after_if_else@27:
-    // modules/actus_kernel.py:955
+    // modules/actus_kernel.py:954
     // assert page.length < UInt64(cst.SCHEDULE_PAGE_SIZE), err.INVALID_SCHEDULE_PAGE
     dig 5
     dup
@@ -3551,32 +3551,32 @@ apply_non_cash_event_after_if_else@27:
     pushint 16
     <
     assert // Invalid schedule page
-    // modules/actus_kernel.py:960
+    // modules/actus_kernel.py:959
     // scheduled_time=payload.scheduled_time,
     dig 3
     dup
     extract 9 8
-    // modules/actus_kernel.py:961
+    // modules/actus_kernel.py:960
     // accrual_factor=payload.accrual_factor,
     dig 1
     extract 17 8
-    // modules/actus_kernel.py:962
+    // modules/actus_kernel.py:961
     // redemption_accrual_factor=payload.redemption_accrual_factor,
     dig 2
     extract 25 8
-    // modules/actus_kernel.py:963
+    // modules/actus_kernel.py:962
     // next_nominal_interest_rate=payload.next_nominal_interest_rate,
     dig 3
     extract 41 8
-    // modules/actus_kernel.py:964
+    // modules/actus_kernel.py:963
     // next_principal_redemption=payload.next_principal_redemption,
     dig 4
     extract 49 8
-    // modules/actus_kernel.py:965
+    // modules/actus_kernel.py:964
     // next_outstanding_principal=payload.next_outstanding_principal,
     uncover 5
     extract 57 8
-    // modules/actus_kernel.py:957-967
+    // modules/actus_kernel.py:956-966
     // typ.ExecutionScheduleEntry(
     //     event_id=payload.event_id,
     //     event_type=payload.event_type,
@@ -3607,7 +3607,8 @@ apply_non_cash_event_after_if_else@27:
     dig 3
     itob
     concat
-    // modules/actus_kernel.py:956-968
+    swap
+    // modules/actus_kernel.py:955-967
     // page.append(
     //     typ.ExecutionScheduleEntry(
     //         event_id=payload.event_id,
@@ -3621,24 +3622,24 @@ apply_non_cash_event_after_if_else@27:
     //         flags=payload.flags,
     //     )
     // )
-    uncover 2
-    swap
-    concat // on error: max array length exceeded
-    swap
     intc_1 // 1
     +
     itob
-    extract 6 2
+    extract 6 0
+    uncover 2
+    swap
     replace2 0
-    // modules/actus_kernel.py:969
+    swap
+    concat
+    // modules/actus_kernel.py:968
     // self.schedule_page[page_index] = page.copy()
-    dig 8
+    dig 7
     dup
     box_del
     pop
     swap
     box_put
-    // modules/actus_kernel.py:970
+    // modules/actus_kernel.py:969
     // self.schedule_entry_count += UInt64(1)
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
@@ -3651,7 +3652,7 @@ apply_non_cash_event_after_if_else@27:
     app_global_put
 
 apply_non_cash_event_after_if_else@3:
-    // modules/actus_kernel.py:1213
+    // modules/actus_kernel.py:1212
     // assert event_id == self.event_cursor, err.INVALID_EVENT_CURSOR
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -3662,12 +3663,12 @@ apply_non_cash_event_after_if_else@3:
     uncover 2
     ==
     assert // Invalid event cursor
-    // modules/actus_kernel.py:1214
+    // modules/actus_kernel.py:1213
     // entry = self._get_schedule_entry(event_id)
     callsub _get_schedule_entry
     dup
-    bury 8
-    // modules/actus_kernel.py:1216
+    bury 9
+    // modules/actus_kernel.py:1215
     // entry.event_type.as_uint64()
     dup
     extract 8 1
@@ -3676,10 +3677,25 @@ apply_non_cash_event_after_if_else@3:
     getbyte
     dup
     bury 6
-    // modules/actus_kernel.py:364
+    // modules/actus_kernel.py:363
     // UInt64(enums.EVT_IED),
     intc_1 // 1
-    // modules/actus_kernel.py:363-370
+    // modules/actus_kernel.py:362-369
+    // return event_type in (
+    //     UInt64(enums.EVT_IED),
+    //     UInt64(enums.EVT_PI),
+    //     UInt64(enums.EVT_RR),
+    //     UInt64(enums.EVT_RRF),
+    //     UInt64(enums.EVT_IPCB),
+    //     UInt64(enums.EVT_PRF),
+    // )
+    ==
+    bnz apply_non_cash_event_bool_true@15
+    dig 4
+    // modules/actus_kernel.py:364
+    // UInt64(enums.EVT_PI),
+    pushint 4
+    // modules/actus_kernel.py:362-369
     // return event_type in (
     //     UInt64(enums.EVT_IED),
     //     UInt64(enums.EVT_PI),
@@ -3692,9 +3708,9 @@ apply_non_cash_event_after_if_else@3:
     bnz apply_non_cash_event_bool_true@15
     dig 4
     // modules/actus_kernel.py:365
-    // UInt64(enums.EVT_PI),
-    pushint 4
-    // modules/actus_kernel.py:363-370
+    // UInt64(enums.EVT_RR),
+    pushint 12
+    // modules/actus_kernel.py:362-369
     // return event_type in (
     //     UInt64(enums.EVT_IED),
     //     UInt64(enums.EVT_PI),
@@ -3707,9 +3723,9 @@ apply_non_cash_event_after_if_else@3:
     bnz apply_non_cash_event_bool_true@15
     dig 4
     // modules/actus_kernel.py:366
-    // UInt64(enums.EVT_RR),
-    pushint 12
-    // modules/actus_kernel.py:363-370
+    // UInt64(enums.EVT_RRF),
+    pushint 11
+    // modules/actus_kernel.py:362-369
     // return event_type in (
     //     UInt64(enums.EVT_IED),
     //     UInt64(enums.EVT_PI),
@@ -3722,9 +3738,9 @@ apply_non_cash_event_after_if_else@3:
     bnz apply_non_cash_event_bool_true@15
     dig 4
     // modules/actus_kernel.py:367
-    // UInt64(enums.EVT_RRF),
-    pushint 11
-    // modules/actus_kernel.py:363-370
+    // UInt64(enums.EVT_IPCB),
+    pushint 18
+    // modules/actus_kernel.py:362-369
     // return event_type in (
     //     UInt64(enums.EVT_IED),
     //     UInt64(enums.EVT_PI),
@@ -3737,24 +3753,9 @@ apply_non_cash_event_after_if_else@3:
     bnz apply_non_cash_event_bool_true@15
     dig 4
     // modules/actus_kernel.py:368
-    // UInt64(enums.EVT_IPCB),
-    pushint 18
-    // modules/actus_kernel.py:363-370
-    // return event_type in (
-    //     UInt64(enums.EVT_IED),
-    //     UInt64(enums.EVT_PI),
-    //     UInt64(enums.EVT_RR),
-    //     UInt64(enums.EVT_RRF),
-    //     UInt64(enums.EVT_IPCB),
-    //     UInt64(enums.EVT_PRF),
-    // )
-    ==
-    bnz apply_non_cash_event_bool_true@15
-    dig 4
-    // modules/actus_kernel.py:369
     // UInt64(enums.EVT_PRF),
     pushint 5
-    // modules/actus_kernel.py:363-370
+    // modules/actus_kernel.py:362-369
     // return event_type in (
     //     UInt64(enums.EVT_IED),
     //     UInt64(enums.EVT_PI),
@@ -3770,18 +3771,18 @@ apply_non_cash_event_bool_true@15:
     intc_1 // 1
 
 apply_non_cash_event_bool_merge@17:
-    // modules/actus_kernel.py:1215-1217
+    // modules/actus_kernel.py:1214-1216
     // assert self._event_is_non_cash(
     //     entry.event_type.as_uint64()
     // ), err.INVALID_EVENT_TYPE
     assert // Invalid event type
-    // modules/actus_kernel.py:1218
+    // modules/actus_kernel.py:1217
     // assert entry.event_type != arc4.UInt8(enums.EVT_IED), err.INVALID_EVENT_TYPE
     dig 8
     pushbytes 0x01
     b!=
     assert // Invalid event type
-    // modules/actus_kernel.py:374
+    // modules/actus_kernel.py:373
     // return event_type in (UInt64(enums.EVT_RR), UInt64(enums.EVT_RRF))
     dig 4
     pushint 12
@@ -3796,7 +3797,7 @@ apply_non_cash_event_bool_true@21:
     intc_1 // 1
 
 apply_non_cash_event_bool_merge@23:
-    // modules/actus_kernel.py:1219
+    // modules/actus_kernel.py:1218
     // if self._event_is_rate_reset(entry.event_type.as_uint64()):
     bz apply_non_cash_event_else_body@5
     // modules/rbac.py:85
@@ -3807,16 +3808,16 @@ apply_non_cash_event_bool_merge@23:
     assert // Not authorized
 
 apply_non_cash_event_after_if_else@6:
-    // modules/actus_kernel.py:1223
+    // modules/actus_kernel.py:1222
     // self._apply_non_cash_schedule_entry(entry, payload)
-    dig 6
+    dig 7
     dig 2
     callsub _apply_non_cash_schedule_entry
     popn 2
-    // modules/actus_kernel.py:1224
+    // modules/actus_kernel.py:1223
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1168
+    // modules/actus_kernel.py:1167
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -3827,7 +3828,7 @@ apply_non_cash_event_after_if_else@6:
     return
 
 apply_non_cash_event_else_body@5:
-    // modules/actus_kernel.py:1222
+    // modules/actus_kernel.py:1221
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
     b apply_non_cash_event_after_if_else@6
@@ -3845,7 +3846,7 @@ apply_non_cash_event_bool_false@16:
 append_observed_cash_event:
     intc_0 // 0
     dup
-    // modules/actus_kernel.py:1226
+    // modules/actus_kernel.py:1225
     // @arc4.abimethod
     txna ApplicationArgs 1
     dupn 2
@@ -3853,23 +3854,23 @@ append_observed_cash_event:
     pushint 65
     ==
     assert // invalid number of bytes for smart_contracts.abi_types.ObservedCashEventRequest
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1255
+    // modules/actus_kernel.py:1254
     // self._assert_caller_is_arranger()
     callsub _assert_caller_is_arranger
-    // modules/actus_kernel.py:1256
+    // modules/actus_kernel.py:1255
     // self._assert_is_not_contract_defaulted()
     callsub _assert_is_not_contract_defaulted
-    // modules/actus_kernel.py:1257
+    // modules/actus_kernel.py:1256
     // self._assert_is_not_contract_suspended()
     callsub _assert_is_not_contract_suspended
-    // modules/actus_kernel.py:135
+    // modules/actus_kernel.py:134
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
     bytec_1 // "status"
@@ -3877,11 +3878,11 @@ append_observed_cash_event:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/actus_kernel.py:147
+    // modules/actus_kernel.py:146
     // assert not self._status_is_pending_ied(), err.PENDING_IED
     !
     assert // IED not yet executed
-    // modules/actus_kernel.py:233
+    // modules/actus_kernel.py:232
     // return self.contract_type == UInt64(enums.CT_CLM)
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -3889,10 +3890,10 @@ append_observed_cash_event:
     assert // check self.contract_type exists
     pushint 5
     ==
-    // modules/actus_kernel.py:981
+    // modules/actus_kernel.py:980
     // assert self._supports_observed_events(), err.OBSERVED_EVENT_REQUIRED
     assert // Observed event required to execute this action
-    // modules/actus_kernel.py:982
+    // modules/actus_kernel.py:981
     // assert payload.event_id == self.schedule_entry_count, err.INVALID_EVENT_ID
     dup
     intc_0 // 0
@@ -3907,7 +3908,7 @@ append_observed_cash_event:
     dig 1
     ==
     assert // Invalid event id
-    // modules/actus_kernel.py:983
+    // modules/actus_kernel.py:982
     // assert payload.event_type == arc4.UInt8(enums.EVT_PR), err.INVALID_EVENT_TYPE
     dig 1
     extract 8 1
@@ -3916,7 +3917,7 @@ append_observed_cash_event:
     pushbytes 0x03
     b==
     assert // Invalid event type
-    // modules/actus_kernel.py:984
+    // modules/actus_kernel.py:983
     // assert payload.flags & UInt64(enums.FLAG_CASH_EVENT), err.INVALID_ACTUS_CONFIG
     swap
     pushint 57
@@ -3926,10 +3927,10 @@ append_observed_cash_event:
     intc_1 // 1
     &
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:986
+    // modules/actus_kernel.py:985
     // if self.schedule_entry_count > UInt64(0):
     bz append_observed_cash_event_after_if_else@3
-    // modules/actus_kernel.py:988
+    // modules/actus_kernel.py:987
     // self.schedule_entry_count - UInt64(1)
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
@@ -3937,12 +3938,12 @@ append_observed_cash_event:
     assert // check self.schedule_entry_count exists
     intc_1 // 1
     -
-    // modules/actus_kernel.py:987-989
+    // modules/actus_kernel.py:986-988
     // previous_entry = self._get_schedule_entry(
     //     self.schedule_entry_count - UInt64(1)
     // )
     callsub _get_schedule_entry
-    // modules/actus_kernel.py:991
+    // modules/actus_kernel.py:990
     // previous_entry.scheduled_time <= payload.scheduled_time
     pushint 9
     extract_uint64
@@ -3950,28 +3951,28 @@ append_observed_cash_event:
     pushint 9
     extract_uint64
     <=
-    // modules/actus_kernel.py:990-992
+    // modules/actus_kernel.py:989-991
     // assert (
     //     previous_entry.scheduled_time <= payload.scheduled_time
     // ), err.INVALID_SORTING
     assert // Time events must be sorted in strictly ascending order
 
 append_observed_cash_event_after_if_else@3:
-    // modules/actus_kernel.py:994
+    // modules/actus_kernel.py:993
     // page_index = self._schedule_page_index(self.schedule_entry_count)
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
     app_global_get_ex
     assert // check self.schedule_entry_count exists
-    // modules/actus_kernel.py:190
+    // modules/actus_kernel.py:189
     // return event_id // UInt64(cst.SCHEDULE_PAGE_SIZE)
     pushint 16
     /
-    // modules/actus_kernel.py:995
+    // modules/actus_kernel.py:994
     // page = typ.ExecutionSchedulePage()
     bytec 48 // 0x0000
     bury 6
-    // modules/actus_kernel.py:996
+    // modules/actus_kernel.py:995
     // if page_index in self.schedule_page:
     itob
     bytec 26 // 0x5323
@@ -3982,7 +3983,7 @@ append_observed_cash_event_after_if_else@3:
     box_len
     bury 1
     bz append_observed_cash_event_after_if_else@5
-    // modules/actus_kernel.py:997
+    // modules/actus_kernel.py:996
     // page = self.schedule_page[page_index].copy()
     dig 5
     box_get
@@ -3991,7 +3992,7 @@ append_observed_cash_event_after_if_else@3:
     assert // check self.schedule_page entry exists
 
 append_observed_cash_event_after_if_else@5:
-    // modules/actus_kernel.py:998
+    // modules/actus_kernel.py:997
     // assert page.length < UInt64(cst.SCHEDULE_PAGE_SIZE), err.INVALID_SCHEDULE_PAGE
     dig 4
     dup
@@ -4001,32 +4002,32 @@ append_observed_cash_event_after_if_else@5:
     pushint 16
     <
     assert // Invalid schedule page
-    // modules/actus_kernel.py:1003
+    // modules/actus_kernel.py:1002
     // scheduled_time=payload.scheduled_time,
     dig 5
     dup
     extract 9 8
-    // modules/actus_kernel.py:1004
+    // modules/actus_kernel.py:1003
     // accrual_factor=payload.accrual_factor,
     dig 1
     extract 17 8
-    // modules/actus_kernel.py:1005
+    // modules/actus_kernel.py:1004
     // redemption_accrual_factor=payload.redemption_accrual_factor,
     dig 2
     extract 25 8
-    // modules/actus_kernel.py:1006
+    // modules/actus_kernel.py:1005
     // next_nominal_interest_rate=payload.next_nominal_interest_rate,
     dig 3
     extract 33 8
-    // modules/actus_kernel.py:1007
+    // modules/actus_kernel.py:1006
     // next_principal_redemption=payload.next_principal_redemption,
     dig 4
     extract 41 8
-    // modules/actus_kernel.py:1008
+    // modules/actus_kernel.py:1007
     // next_outstanding_principal=payload.next_outstanding_principal,
     uncover 5
     extract 49 8
-    // modules/actus_kernel.py:1000-1010
+    // modules/actus_kernel.py:999-1009
     // typ.ExecutionScheduleEntry(
     //     event_id=payload.event_id,
     //     event_type=payload.event_type,
@@ -4057,7 +4058,8 @@ append_observed_cash_event_after_if_else@5:
     dig 3
     itob
     concat
-    // modules/actus_kernel.py:999-1011
+    swap
+    // modules/actus_kernel.py:998-1010
     // page.append(
     //     typ.ExecutionScheduleEntry(
     //         event_id=payload.event_id,
@@ -4071,16 +4073,16 @@ append_observed_cash_event_after_if_else@5:
     //         flags=payload.flags,
     //     )
     // )
-    uncover 2
-    swap
-    concat // on error: max array length exceeded
-    swap
     intc_1 // 1
     +
     itob
-    extract 6 2
+    extract 6 0
+    uncover 2
+    swap
     replace2 0
-    // modules/actus_kernel.py:1012
+    swap
+    concat
+    // modules/actus_kernel.py:1011
     // self.schedule_page[page_index] = page.copy()
     dig 6
     dup
@@ -4088,7 +4090,7 @@ append_observed_cash_event_after_if_else@5:
     pop
     swap
     box_put
-    // modules/actus_kernel.py:1013
+    // modules/actus_kernel.py:1012
     // self.schedule_entry_count += UInt64(1)
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
@@ -4099,10 +4101,10 @@ append_observed_cash_event_after_if_else@5:
     bytec_3 // "schedule_entry_count"
     swap
     app_global_put
-    // modules/actus_kernel.py:1261
+    // modules/actus_kernel.py:1260
     // return Global.latest_timestamp
     global LatestTimestamp
-    // modules/actus_kernel.py:1226
+    // modules/actus_kernel.py:1225
     // @arc4.abimethod
     itob
     bytec_0 // 0x151f7c75
@@ -4115,7 +4117,7 @@ append_observed_cash_event_after_if_else@5:
 
 // modules.actus_kernel.ActusKernelModule.contract_get_state[routing]() -> void:
 contract_get_state:
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
@@ -4123,7 +4125,7 @@ contract_get_state:
     assert // check self.status exists
     dup
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1276
+    // modules/actus_kernel.py:1275
     // contract_type=arc4.UInt8(self.contract_type),
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -4136,85 +4138,85 @@ contract_get_state:
     <=
     assert // overflow
     extract 7 1
-    // modules/actus_kernel.py:1278
+    // modules/actus_kernel.py:1277
     // total_units=self.total_units,
     intc_0 // 0
     bytec 13 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
-    // modules/actus_kernel.py:1279
+    // modules/actus_kernel.py:1278
     // reserved_units_total=self.reserved_units_total,
     intc_0 // 0
     bytec 11 // "reserved_units_total"
     app_global_get_ex
     assert // check self.reserved_units_total exists
-    // modules/actus_kernel.py:1280
+    // modules/actus_kernel.py:1279
     // initial_exchange_amount=self.initial_exchange_amount,
     intc_0 // 0
     bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
-    // modules/actus_kernel.py:1281
+    // modules/actus_kernel.py:1280
     // event_cursor=self.event_cursor,
     intc_0 // 0
     bytec_2 // "event_cursor"
     app_global_get_ex
     assert // check self.event_cursor exists
-    // modules/actus_kernel.py:1282
+    // modules/actus_kernel.py:1281
     // schedule_entry_count=self.schedule_entry_count,
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
     app_global_get_ex
     assert // check self.schedule_entry_count exists
-    // modules/actus_kernel.py:1283
+    // modules/actus_kernel.py:1282
     // outstanding_principal=self.outstanding_principal,
     intc_0 // 0
     bytec 4 // "outstanding_principal"
     app_global_get_ex
     assert // check self.outstanding_principal exists
-    // modules/actus_kernel.py:1284
+    // modules/actus_kernel.py:1283
     // interest_calculation_base=self.interest_calculation_base,
     intc_0 // 0
     bytec 7 // "interest_calculation_base"
     app_global_get_ex
     assert // check self.interest_calculation_base exists
-    // modules/actus_kernel.py:1285
+    // modules/actus_kernel.py:1284
     // nominal_interest_rate=self.nominal_interest_rate,
     intc_0 // 0
     bytec 9 // "nominal_interest_rate"
     app_global_get_ex
     assert // check self.nominal_interest_rate exists
-    // modules/actus_kernel.py:1286
+    // modules/actus_kernel.py:1285
     // accrued_interest=self.accrued_interest,
     intc_0 // 0
     bytec 6 // "accrued_interest"
     app_global_get_ex
     assert // check self.accrued_interest exists
-    // modules/actus_kernel.py:1287
+    // modules/actus_kernel.py:1286
     // cumulative_interest_index=self.cumulative_interest_index,
     intc_0 // 0
     bytec 16 // "cumulative_interest_index"
     app_global_get_ex
     assert // check self.cumulative_interest_index exists
-    // modules/actus_kernel.py:1288
+    // modules/actus_kernel.py:1287
     // cumulative_principal_index=self.cumulative_principal_index,
     intc_0 // 0
     bytec 17 // "cumulative_principal_index"
     app_global_get_ex
     assert // check self.cumulative_principal_index exists
-    // modules/actus_kernel.py:1289
+    // modules/actus_kernel.py:1288
     // reserved_interest=self.reserved_interest,
     intc_0 // 0
     bytec 15 // "reserved_interest"
     app_global_get_ex
     assert // check self.reserved_interest exists
-    // modules/actus_kernel.py:1290
+    // modules/actus_kernel.py:1289
     // reserved_principal=self.reserved_principal,
     intc_0 // 0
     bytec 12 // "reserved_principal"
     app_global_get_ex
     assert // check self.reserved_principal exists
-    // modules/actus_kernel.py:1275-1291
+    // modules/actus_kernel.py:1274-1290
     // return typ.KernelState(
     //     contract_type=arc4.UInt8(self.contract_type),
     //     status=self.status,
@@ -4276,7 +4278,7 @@ contract_get_state:
     swap
     itob
     concat
-    // modules/actus_kernel.py:1263
+    // modules/actus_kernel.py:1262
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -4288,14 +4290,14 @@ contract_get_state:
 
 // modules.actus_kernel.ActusKernelModule.contract_get_next_due_event[routing]() -> void:
 contract_get_next_due_event:
-    // modules/actus_kernel.py:143
+    // modules/actus_kernel.py:142
     // assert self.status != UInt64(enums.STATUS_INACTIVE), err.NOT_CONFIGURED
     intc_0 // 0
     bytec_1 // "status"
     app_global_get_ex
     assert // check self.status exists
     assert // D-ASA not configured
-    // modules/actus_kernel.py:1305
+    // modules/actus_kernel.py:1304
     // if self.event_cursor >= self.schedule_entry_count:
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -4307,13 +4309,13 @@ contract_get_next_due_event:
     assert // check self.schedule_entry_count exists
     >=
     bz contract_get_next_due_event_after_if_else@3
-    // modules/actus_kernel.py:1307
+    // modules/actus_kernel.py:1306
     // event_id=self.event_cursor,
     intc_0 // 0
     bytec_2 // "event_cursor"
     app_global_get_ex
     assert // check self.event_cursor exists
-    // modules/actus_kernel.py:1306-1316
+    // modules/actus_kernel.py:1305-1315
     // return typ.ExecutionScheduleEntry(
     //     event_id=self.event_cursor,
     //     event_type=arc4.UInt8(0),
@@ -4326,10 +4328,10 @@ contract_get_next_due_event:
     //     flags=UInt64(0),
     // )
     itob
-    // modules/actus_kernel.py:1308
+    // modules/actus_kernel.py:1307
     // event_type=arc4.UInt8(0),
     bytec 41 // 0x00
-    // modules/actus_kernel.py:1306-1316
+    // modules/actus_kernel.py:1305-1315
     // return typ.ExecutionScheduleEntry(
     //     event_id=self.event_cursor,
     //     event_type=arc4.UInt8(0),
@@ -4342,10 +4344,10 @@ contract_get_next_due_event:
     //     flags=UInt64(0),
     // )
     concat
-    // modules/actus_kernel.py:1309
+    // modules/actus_kernel.py:1308
     // scheduled_time=UInt64(0),
     intc_0 // 0
-    // modules/actus_kernel.py:1306-1316
+    // modules/actus_kernel.py:1305-1315
     // return typ.ExecutionScheduleEntry(
     //     event_id=self.event_cursor,
     //     event_type=arc4.UInt8(0),
@@ -4375,7 +4377,7 @@ contract_get_next_due_event:
     concat
 
 contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.contract_get_next_due_event@4:
-    // modules/actus_kernel.py:1293
+    // modules/actus_kernel.py:1292
     // @arc4.abimethod(readonly=True)
     bytec_0 // 0x151f7c75
     swap
@@ -4385,14 +4387,14 @@ contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule
     return
 
 contract_get_next_due_event_after_if_else@3:
-    // modules/actus_kernel.py:1317
+    // modules/actus_kernel.py:1316
     // return self._get_schedule_entry(self.event_cursor)
     intc_0 // 0
     bytec_2 // "event_cursor"
     app_global_get_ex
     assert // check self.event_cursor exists
     callsub _get_schedule_entry
-    // modules/actus_kernel.py:1293
+    // modules/actus_kernel.py:1292
     // @arc4.abimethod(readonly=True)
     b contract_get_next_due_event_after_inlined_modules.actus_kernel.ActusKernelModule.contract_get_next_due_event@4
 
@@ -5181,10 +5183,10 @@ rbac_get_role_validity_switch_case_0@2:
 
 // modules.accounting.AccountingModule._assert_is_not_account_suspended(holding_address: bytes) -> void:
 _assert_is_not_account_suspended:
-    // modules/accounting.py:26
+    // modules/accounting.py:25
     // def _assert_is_not_account_suspended(self, holding_address: Account) -> None:
     proto 1 0
-    // modules/accounting.py:28
+    // modules/accounting.py:27
     // assert not self.account[holding_address].suspended, err.SUSPENDED
     bytec 8 // 0x4123
     frame_dig -1
@@ -5200,10 +5202,10 @@ _assert_is_not_account_suspended:
 
 // modules.accounting.AccountingModule._settle_position(holding_address: bytes) -> uint64, uint64:
 _settle_position:
-    // modules/accounting.py:44
+    // modules/accounting.py:43
     // def _settle_position(self, holding_address: Account) -> tuple[UInt64, UInt64]:
     proto 1 2
-    // modules/accounting.py:24
+    // modules/accounting.py:23
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
     frame_dig -1
@@ -5212,12 +5214,12 @@ _settle_position:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/accounting.py:61
+    // modules/accounting.py:60
     // position = self.account[holding_address].copy()
     dup
     box_get
     pop
-    // modules/accounting.py:63-65
+    // modules/accounting.py:62-64
     // # Compute the incremental per-unit fixed-point interest and principal accrued
     // # since this account's last checkpoint.
     // interest_delta = self.cumulative_interest_index - position.interest_checkpoint
@@ -5229,7 +5231,7 @@ _settle_position:
     pushint 57
     extract_uint64
     -
-    // modules/accounting.py:67
+    // modules/accounting.py:66
     // self.cumulative_principal_index - position.principal_checkpoint
     intc_0 // 0
     bytec 17 // "cumulative_principal_index"
@@ -5239,7 +5241,7 @@ _settle_position:
     pushint 65
     extract_uint64
     -
-    // modules/accounting.py:73
+    // modules/accounting.py:72
     // interest_delta, position.units, self.fixed_point_scale
     dig 2
     intc_3 // 32
@@ -5248,7 +5250,7 @@ _settle_position:
     bytec 5 // "fixed_point_scale"
     app_global_get_ex
     assert // check self.fixed_point_scale exists
-    // modules/accounting.py:70-74
+    // modules/accounting.py:69-73
     // # Convert the per-unit fixed-point deltas into absolute claimable amounts
     // # using the account's active units.
     // claimable_interest = self._scaled_mul_div(
@@ -5258,13 +5260,13 @@ _settle_position:
     dig 2
     uncover 2
     callsub _scaled_mul_div
-    // modules/accounting.py:76
+    // modules/accounting.py:75
     // principal_delta, position.units, self.fixed_point_scale
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
     app_global_get_ex
     assert // check self.fixed_point_scale exists
-    // modules/accounting.py:75-77
+    // modules/accounting.py:74-76
     // claimable_principal = self._scaled_mul_div(
     //     principal_delta, position.units, self.fixed_point_scale
     // )
@@ -5272,7 +5274,7 @@ _settle_position:
     uncover 3
     uncover 2
     callsub _scaled_mul_div
-    // modules/accounting.py:79-81
+    // modules/accounting.py:78-80
     // # Accrue the claimable amounts to the account position and make them available
     // # for withdrawal.
     // position.claimable_interest += claimable_interest
@@ -5285,7 +5287,7 @@ _settle_position:
     uncover 3
     swap
     replace2 73
-    // modules/accounting.py:82
+    // modules/accounting.py:81
     // position.claimable_principal += claimable_principal
     dup
     pushint 81
@@ -5294,7 +5296,7 @@ _settle_position:
     +
     itob
     replace2 81
-    // modules/accounting.py:84-86
+    // modules/accounting.py:83-85
     // # Advance the account's per-unit fixed-point checkpoints to the current global
     // # per-unit fixed-point global indices.
     // position.interest_checkpoint = self.cumulative_interest_index
@@ -5304,7 +5306,7 @@ _settle_position:
     assert // check self.cumulative_interest_index exists
     itob
     replace2 57
-    // modules/accounting.py:87
+    // modules/accounting.py:86
     // position.principal_checkpoint = self.cumulative_principal_index
     intc_0 // 0
     bytec 17 // "cumulative_principal_index"
@@ -5312,7 +5314,7 @@ _settle_position:
     assert // check self.cumulative_principal_index exists
     itob
     replace2 65
-    // modules/accounting.py:89-90
+    // modules/accounting.py:88-89
     // # Advance the account's event cursor to the current global event cursor.
     // position.settled_cursor = self.event_cursor
     intc_0 // 0
@@ -5321,26 +5323,26 @@ _settle_position:
     assert // check self.event_cursor exists
     itob
     replace2 49
-    // modules/accounting.py:92-94
+    // modules/accounting.py:91-93
     // # Update the account position and return the newly accrued claimable amounts
     // # added to the total position's claimable amounts.
     // self.account[holding_address] = position.copy()
     uncover 3
     swap
     box_put
-    // modules/accounting.py:95
+    // modules/accounting.py:94
     // return claimable_interest, claimable_principal
     retsub
 
 
 // modules.accounting.AccountingModule._ensure_units_activated(holding_address: bytes) -> void:
 _ensure_units_activated:
-    // modules/accounting.py:97
+    // modules/accounting.py:96
     // def _ensure_units_activated(self, holding_address: Account) -> None:
     proto 1 0
     intc_0 // 0
     pushbytes ""
-    // modules/accounting.py:24
+    // modules/accounting.py:23
     // assert holding_address in self.account, err.INVALID_HOLDING_ADDRESS
     bytec 8 // 0x4123
     frame_dig -1
@@ -5349,7 +5351,7 @@ _ensure_units_activated:
     box_len
     bury 1
     assert // Invalid account holding address
-    // modules/actus_kernel.py:135
+    // modules/actus_kernel.py:134
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
     bytec_1 // "status"
@@ -5357,15 +5359,15 @@ _ensure_units_activated:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/accounting.py:100
+    // modules/accounting.py:99
     // if self._status_is_pending_ied():
     bz _ensure_units_activated_after_if_else@2
-    // modules/accounting.py:101
+    // modules/accounting.py:100
     // return
     retsub
 
 _ensure_units_activated_after_if_else@2:
-    // modules/accounting.py:103
+    // modules/accounting.py:102
     // position = self.account[holding_address].copy()
     frame_dig 2
     box_get
@@ -5374,19 +5376,19 @@ _ensure_units_activated_after_if_else@2:
     cover 2
     frame_bury 0
     assert // check self.account entry exists
-    // modules/accounting.py:104
+    // modules/accounting.py:103
     // if position.reserved_units == UInt64(0):
     pushint 40
     extract_uint64
     dup
     frame_bury 1
     bnz _ensure_units_activated_after_if_else@4
-    // modules/accounting.py:105
+    // modules/accounting.py:104
     // return
     retsub
 
 _ensure_units_activated_after_if_else@4:
-    // modules/accounting.py:108
+    // modules/accounting.py:107
     // position.units += activated_units
     frame_dig 0
     dup
@@ -5398,17 +5400,17 @@ _ensure_units_activated_after_if_else@4:
     +
     itob
     replace2 32
-    // modules/accounting.py:109
+    // modules/accounting.py:108
     // position.reserved_units = UInt64(0)
     intc_0 // 0
     itob
     replace2 40
-    // modules/accounting.py:110
+    // modules/accounting.py:109
     // self.account[holding_address] = position.copy()
     frame_dig 2
     swap
     box_put
-    // modules/accounting.py:111
+    // modules/accounting.py:110
     // assert self.reserved_units_total >= activated_units, err.OVER_DISTRIBUTION
     intc_0 // 0
     bytec 11 // "reserved_units_total"
@@ -5418,7 +5420,7 @@ _ensure_units_activated_after_if_else@4:
     dig 2
     >=
     assert // Insufficient remaining D-ASA units
-    // modules/accounting.py:112
+    // modules/accounting.py:111
     // self.reserved_units_total -= activated_units
     swap
     -
@@ -5430,12 +5432,12 @@ _ensure_units_activated_after_if_else@4:
 
 // modules.actus_kernel.ActusKernelModule._scaled_mul_div(multiplicand: uint64, multiplier: uint64, divisor: uint64) -> uint64:
 _scaled_mul_div:
-    // modules/actus_kernel.py:153-155
+    // modules/actus_kernel.py:152-154
     // def _scaled_mul_div(
     //     self, multiplicand: UInt64, multiplier: UInt64, divisor: UInt64
     // ) -> UInt64:
     proto 3 1
-    // modules/actus_kernel.py:157
+    // modules/actus_kernel.py:156
     // if multiplicand == UInt64(0) or multiplier == UInt64(0):
     frame_dig -3
     bz _scaled_mul_div_if_body@2
@@ -5443,18 +5445,18 @@ _scaled_mul_div:
     bnz _scaled_mul_div_after_if_else@3
 
 _scaled_mul_div_if_body@2:
-    // modules/actus_kernel.py:158
+    // modules/actus_kernel.py:157
     // return UInt64(0)
     intc_0 // 0
     retsub
 
 _scaled_mul_div_after_if_else@3:
-    // modules/actus_kernel.py:159
+    // modules/actus_kernel.py:158
     // high, low = op.mulw(multiplicand, multiplier)
     frame_dig -3
     frame_dig -2
     mulw
-    // modules/actus_kernel.py:160
+    // modules/actus_kernel.py:159
     // return op.divw(high, low, divisor)
     frame_dig -1
     divw
@@ -5463,20 +5465,20 @@ _scaled_mul_div_after_if_else@3:
 
 // modules.actus_kernel.ActusKernelModule._amount_to_index_delta(amount: uint64) -> uint64:
 _amount_to_index_delta:
-    // modules/actus_kernel.py:162
+    // modules/actus_kernel.py:161
     // def _amount_to_index_delta(self, amount: UInt64) -> UInt64:
     proto 1 1
-    // modules/actus_kernel.py:164
+    // modules/actus_kernel.py:163
     // if amount == UInt64(0):
     frame_dig -1
     bnz _amount_to_index_delta_after_if_else@2
-    // modules/actus_kernel.py:165
+    // modules/actus_kernel.py:164
     // return UInt64(0)
     intc_0 // 0
     retsub
 
 _amount_to_index_delta_after_if_else@2:
-    // modules/actus_kernel.py:166
+    // modules/actus_kernel.py:165
     // assert self.total_units > UInt64(0), err.NO_UNITS
     intc_0 // 0
     bytec 13 // "total_units"
@@ -5484,7 +5486,7 @@ _amount_to_index_delta_after_if_else@2:
     assert // check self.total_units exists
     dup
     assert // No D-ASA units
-    // modules/actus_kernel.py:167
+    // modules/actus_kernel.py:166
     // return self._scaled_mul_div(amount, self.fixed_point_scale, self.total_units)
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
@@ -5499,32 +5501,32 @@ _amount_to_index_delta_after_if_else@2:
 
 // modules.actus_kernel.ActusKernelModule._index_delta_to_amount(index_delta: uint64) -> uint64:
 _index_delta_to_amount:
-    // modules/actus_kernel.py:169
+    // modules/actus_kernel.py:168
     // def _index_delta_to_amount(self, index_delta: UInt64) -> UInt64:
     proto 1 1
-    // modules/actus_kernel.py:176
+    // modules/actus_kernel.py:175
     // if index_delta == UInt64(0):
     frame_dig -1
     bnz _index_delta_to_amount_after_if_else@2
-    // modules/actus_kernel.py:177
+    // modules/actus_kernel.py:176
     // return UInt64(0)
     intc_0 // 0
     retsub
 
 _index_delta_to_amount_after_if_else@2:
-    // modules/actus_kernel.py:179
+    // modules/actus_kernel.py:178
     // self.total_units,
     intc_0 // 0
     bytec 13 // "total_units"
     app_global_get_ex
     assert // check self.total_units exists
-    // modules/actus_kernel.py:181
+    // modules/actus_kernel.py:180
     // self.fixed_point_scale,
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
     app_global_get_ex
     assert // check self.fixed_point_scale exists
-    // modules/actus_kernel.py:178-182
+    // modules/actus_kernel.py:177-181
     // return self._scaled_mul_div(
     //     self.total_units,
     //     index_delta,
@@ -5538,10 +5540,10 @@ _index_delta_to_amount_after_if_else@2:
 
 // modules.actus_kernel.ActusKernelModule._get_schedule_entry(event_id: uint64) -> bytes:
 _get_schedule_entry:
-    // modules/actus_kernel.py:202
+    // modules/actus_kernel.py:201
     // def _get_schedule_entry(self, event_id: UInt64) -> typ.ExecutionScheduleEntry:
     proto 1 1
-    // modules/actus_kernel.py:204
+    // modules/actus_kernel.py:203
     // assert event_id < self.schedule_entry_count, err.INVALID_EVENT_ID
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
@@ -5550,12 +5552,12 @@ _get_schedule_entry:
     frame_dig -1
     >
     assert // Invalid event id
-    // modules/actus_kernel.py:190
+    // modules/actus_kernel.py:189
     // return event_id // UInt64(cst.SCHEDULE_PAGE_SIZE)
     frame_dig -1
     pushint 16
     /
-    // modules/actus_kernel.py:206
+    // modules/actus_kernel.py:205
     // assert page_index in self.schedule_page, err.INVALID_SCHEDULE_PAGE
     itob
     bytec 26 // 0x5323
@@ -5565,12 +5567,12 @@ _get_schedule_entry:
     box_len
     bury 1
     assert // Invalid schedule page
-    // modules/actus_kernel.py:194
+    // modules/actus_kernel.py:193
     // return event_id % UInt64(cst.SCHEDULE_PAGE_SIZE)
     frame_dig -1
     pushint 16
     %
-    // modules/actus_kernel.py:209
+    // modules/actus_kernel.py:208
     // assert offset < page.length, err.INVALID_SCHEDULE_PAGE
     dig 1
     intc_0 // 0
@@ -5580,80 +5582,80 @@ _get_schedule_entry:
     dig 1
     >
     assert // Invalid schedule page
-    // modules/actus_kernel.py:210
+    // modules/actus_kernel.py:209
     // return page[offset].copy()
     pushint 65
     *
     pushint 2
     +
     pushint 65
-    box_extract
+    box_extract // on error: index out of bounds
     retsub
 
 
 // modules.actus_kernel.ActusKernelModule._assert_event_allowed_for_contract_type(contract_type: uint64, event_type: uint64) -> void:
 _assert_event_allowed_for_contract_type:
-    // modules/actus_kernel.py:313-315
+    // modules/actus_kernel.py:312-314
     // def _assert_event_allowed_for_contract_type(
     //     self, contract_type: UInt64, event_type: UInt64
     // ) -> None:
     proto 2 0
-    // modules/actus_kernel.py:254-255
+    // modules/actus_kernel.py:253-254
     // # Check common events first
     // if event_type in common_events:
     frame_dig -1
-    // modules/actus_kernel.py:247
+    // modules/actus_kernel.py:246
     // UInt64(enums.EVT_IED),
     intc_1 // 1
-    // modules/actus_kernel.py:254-255
+    // modules/actus_kernel.py:253-254
+    // # Check common events first
+    // if event_type in common_events:
+    ==
+    bnz _assert_event_allowed_for_contract_type_if_body@6
+    frame_dig -1
+    // modules/actus_kernel.py:247
+    // UInt64(enums.EVT_IP),
+    intc_2 // 8
+    // modules/actus_kernel.py:253-254
     // # Check common events first
     // if event_type in common_events:
     ==
     bnz _assert_event_allowed_for_contract_type_if_body@6
     frame_dig -1
     // modules/actus_kernel.py:248
-    // UInt64(enums.EVT_IP),
-    intc_2 // 8
-    // modules/actus_kernel.py:254-255
+    // UInt64(enums.EVT_MD),
+    pushint 19
+    // modules/actus_kernel.py:253-254
     // # Check common events first
     // if event_type in common_events:
     ==
     bnz _assert_event_allowed_for_contract_type_if_body@6
     frame_dig -1
     // modules/actus_kernel.py:249
-    // UInt64(enums.EVT_MD),
-    pushint 19
-    // modules/actus_kernel.py:254-255
+    // UInt64(enums.EVT_RR),
+    pushint 12
+    // modules/actus_kernel.py:253-254
     // # Check common events first
     // if event_type in common_events:
     ==
     bnz _assert_event_allowed_for_contract_type_if_body@6
     frame_dig -1
     // modules/actus_kernel.py:250
-    // UInt64(enums.EVT_RR),
-    pushint 12
-    // modules/actus_kernel.py:254-255
-    // # Check common events first
-    // if event_type in common_events:
-    ==
-    bnz _assert_event_allowed_for_contract_type_if_body@6
-    frame_dig -1
-    // modules/actus_kernel.py:251
     // UInt64(enums.EVT_RRF),
     pushint 11
-    // modules/actus_kernel.py:254-255
+    // modules/actus_kernel.py:253-254
     // # Check common events first
     // if event_type in common_events:
     ==
     bz _assert_event_allowed_for_contract_type_after_if_else@7
 
 _assert_event_allowed_for_contract_type_if_body@6:
-    // modules/actus_kernel.py:256
+    // modules/actus_kernel.py:255
     // return True
     intc_1 // 1
 
 _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34:
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
@@ -5661,28 +5663,28 @@ _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.Actus
     retsub
 
 _assert_event_allowed_for_contract_type_after_if_else@7:
-    // modules/actus_kernel.py:258-259
+    // modules/actus_kernel.py:257-258
     // # Contract-specific additional events
     // if contract_type == UInt64(enums.CT_PAM):
     frame_dig -2
     bnz _assert_event_allowed_for_contract_type_after_if_else@9
-    // modules/actus_kernel.py:260-261
+    // modules/actus_kernel.py:259-260
     // # PAM only supports common events
     // return False
     intc_0 // 0
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
     b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34
 
 _assert_event_allowed_for_contract_type_after_if_else@9:
-    // modules/actus_kernel.py:263
+    // modules/actus_kernel.py:262
     // if contract_type == UInt64(enums.CT_LAM) or contract_type == UInt64(
     frame_dig -2
     pushint 3
     ==
-    // modules/actus_kernel.py:263-265
+    // modules/actus_kernel.py:262-264
     // if contract_type == UInt64(enums.CT_LAM) or contract_type == UInt64(
     //     enums.CT_NAM
     // ):
@@ -5693,17 +5695,17 @@ _assert_event_allowed_for_contract_type_after_if_else@9:
     bz _assert_event_allowed_for_contract_type_after_if_else@16
 
 _assert_event_allowed_for_contract_type_if_body@11:
-    // modules/actus_kernel.py:266-270
+    // modules/actus_kernel.py:265-269
     // # LAM/NAM add: PR, IPCB
     // return event_type in (
     //     UInt64(enums.EVT_PR),
     //     UInt64(enums.EVT_IPCB),
     // )
     frame_dig -1
-    // modules/actus_kernel.py:268
+    // modules/actus_kernel.py:267
     // UInt64(enums.EVT_PR),
     pushint 3
-    // modules/actus_kernel.py:266-270
+    // modules/actus_kernel.py:265-269
     // # LAM/NAM add: PR, IPCB
     // return event_type in (
     //     UInt64(enums.EVT_PR),
@@ -5712,10 +5714,10 @@ _assert_event_allowed_for_contract_type_if_body@11:
     ==
     bnz _assert_event_allowed_for_contract_type_bool_true@13
     frame_dig -1
-    // modules/actus_kernel.py:269
+    // modules/actus_kernel.py:268
     // UInt64(enums.EVT_IPCB),
     pushint 18
-    // modules/actus_kernel.py:266-270
+    // modules/actus_kernel.py:265-269
     // # LAM/NAM add: PR, IPCB
     // return event_type in (
     //     UInt64(enums.EVT_PR),
@@ -5726,7 +5728,7 @@ _assert_event_allowed_for_contract_type_if_body@11:
 
 _assert_event_allowed_for_contract_type_bool_true@13:
     intc_1 // 1
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
@@ -5734,20 +5736,20 @@ _assert_event_allowed_for_contract_type_bool_true@13:
 
 _assert_event_allowed_for_contract_type_bool_false@14:
     intc_0 // 0
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
     b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34
 
 _assert_event_allowed_for_contract_type_after_if_else@16:
-    // modules/actus_kernel.py:272
+    // modules/actus_kernel.py:271
     // if contract_type == UInt64(enums.CT_ANN):
     frame_dig -2
     intc_1 // 1
     ==
     bz _assert_event_allowed_for_contract_type_after_if_else@23
-    // modules/actus_kernel.py:273-278
+    // modules/actus_kernel.py:272-277
     // # ANN adds: PR, IPCB, PRF
     // return event_type in (
     //     UInt64(enums.EVT_PR),
@@ -5755,10 +5757,23 @@ _assert_event_allowed_for_contract_type_after_if_else@16:
     //     UInt64(enums.EVT_PRF),
     // )
     frame_dig -1
-    // modules/actus_kernel.py:275
+    // modules/actus_kernel.py:274
     // UInt64(enums.EVT_PR),
     pushint 3
-    // modules/actus_kernel.py:273-278
+    // modules/actus_kernel.py:272-277
+    // # ANN adds: PR, IPCB, PRF
+    // return event_type in (
+    //     UInt64(enums.EVT_PR),
+    //     UInt64(enums.EVT_IPCB),
+    //     UInt64(enums.EVT_PRF),
+    // )
+    ==
+    bnz _assert_event_allowed_for_contract_type_bool_true@20
+    frame_dig -1
+    // modules/actus_kernel.py:275
+    // UInt64(enums.EVT_IPCB),
+    pushint 18
+    // modules/actus_kernel.py:272-277
     // # ANN adds: PR, IPCB, PRF
     // return event_type in (
     //     UInt64(enums.EVT_PR),
@@ -5769,22 +5784,9 @@ _assert_event_allowed_for_contract_type_after_if_else@16:
     bnz _assert_event_allowed_for_contract_type_bool_true@20
     frame_dig -1
     // modules/actus_kernel.py:276
-    // UInt64(enums.EVT_IPCB),
-    pushint 18
-    // modules/actus_kernel.py:273-278
-    // # ANN adds: PR, IPCB, PRF
-    // return event_type in (
-    //     UInt64(enums.EVT_PR),
-    //     UInt64(enums.EVT_IPCB),
-    //     UInt64(enums.EVT_PRF),
-    // )
-    ==
-    bnz _assert_event_allowed_for_contract_type_bool_true@20
-    frame_dig -1
-    // modules/actus_kernel.py:277
     // UInt64(enums.EVT_PRF),
     pushint 5
-    // modules/actus_kernel.py:273-278
+    // modules/actus_kernel.py:272-277
     // # ANN adds: PR, IPCB, PRF
     // return event_type in (
     //     UInt64(enums.EVT_PR),
@@ -5796,7 +5798,7 @@ _assert_event_allowed_for_contract_type_after_if_else@16:
 
 _assert_event_allowed_for_contract_type_bool_true@20:
     intc_1 // 1
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
@@ -5804,20 +5806,20 @@ _assert_event_allowed_for_contract_type_bool_true@20:
 
 _assert_event_allowed_for_contract_type_bool_false@21:
     intc_0 // 0
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
     b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34
 
 _assert_event_allowed_for_contract_type_after_if_else@23:
-    // modules/actus_kernel.py:280
+    // modules/actus_kernel.py:279
     // if contract_type == UInt64(enums.CT_LAX):
     frame_dig -2
     pushint 4
     ==
     bz _assert_event_allowed_for_contract_type_after_if_else@31
-    // modules/actus_kernel.py:281-287
+    // modules/actus_kernel.py:280-286
     // # LAX adds: PR, PI, IPCB, PRF
     // return event_type in (
     //     UInt64(enums.EVT_PR),
@@ -5826,10 +5828,24 @@ _assert_event_allowed_for_contract_type_after_if_else@23:
     //     UInt64(enums.EVT_PRF),
     // )
     frame_dig -1
-    // modules/actus_kernel.py:283
+    // modules/actus_kernel.py:282
     // UInt64(enums.EVT_PR),
     pushint 3
-    // modules/actus_kernel.py:281-287
+    // modules/actus_kernel.py:280-286
+    // # LAX adds: PR, PI, IPCB, PRF
+    // return event_type in (
+    //     UInt64(enums.EVT_PR),
+    //     UInt64(enums.EVT_PI),
+    //     UInt64(enums.EVT_IPCB),
+    //     UInt64(enums.EVT_PRF),
+    // )
+    ==
+    bnz _assert_event_allowed_for_contract_type_bool_true@28
+    frame_dig -1
+    // modules/actus_kernel.py:283
+    // UInt64(enums.EVT_PI),
+    pushint 4
+    // modules/actus_kernel.py:280-286
     // # LAX adds: PR, PI, IPCB, PRF
     // return event_type in (
     //     UInt64(enums.EVT_PR),
@@ -5841,9 +5857,9 @@ _assert_event_allowed_for_contract_type_after_if_else@23:
     bnz _assert_event_allowed_for_contract_type_bool_true@28
     frame_dig -1
     // modules/actus_kernel.py:284
-    // UInt64(enums.EVT_PI),
-    pushint 4
-    // modules/actus_kernel.py:281-287
+    // UInt64(enums.EVT_IPCB),
+    pushint 18
+    // modules/actus_kernel.py:280-286
     // # LAX adds: PR, PI, IPCB, PRF
     // return event_type in (
     //     UInt64(enums.EVT_PR),
@@ -5855,23 +5871,9 @@ _assert_event_allowed_for_contract_type_after_if_else@23:
     bnz _assert_event_allowed_for_contract_type_bool_true@28
     frame_dig -1
     // modules/actus_kernel.py:285
-    // UInt64(enums.EVT_IPCB),
-    pushint 18
-    // modules/actus_kernel.py:281-287
-    // # LAX adds: PR, PI, IPCB, PRF
-    // return event_type in (
-    //     UInt64(enums.EVT_PR),
-    //     UInt64(enums.EVT_PI),
-    //     UInt64(enums.EVT_IPCB),
-    //     UInt64(enums.EVT_PRF),
-    // )
-    ==
-    bnz _assert_event_allowed_for_contract_type_bool_true@28
-    frame_dig -1
-    // modules/actus_kernel.py:286
     // UInt64(enums.EVT_PRF),
     pushint 5
-    // modules/actus_kernel.py:281-287
+    // modules/actus_kernel.py:280-286
     // # LAX adds: PR, PI, IPCB, PRF
     // return event_type in (
     //     UInt64(enums.EVT_PR),
@@ -5884,7 +5886,7 @@ _assert_event_allowed_for_contract_type_after_if_else@23:
 
 _assert_event_allowed_for_contract_type_bool_true@28:
     intc_1 // 1
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
@@ -5892,36 +5894,36 @@ _assert_event_allowed_for_contract_type_bool_true@28:
 
 _assert_event_allowed_for_contract_type_bool_false@29:
     intc_0 // 0
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
     b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34
 
 _assert_event_allowed_for_contract_type_after_if_else@31:
-    // modules/actus_kernel.py:289
+    // modules/actus_kernel.py:288
     // if contract_type == UInt64(enums.CT_CLM):
     frame_dig -2
     pushint 5
     ==
     bz _assert_event_allowed_for_contract_type_after_if_else@33
-    // modules/actus_kernel.py:290-291
+    // modules/actus_kernel.py:289-290
     // # CLM adds: PR
     // return event_type == UInt64(enums.EVT_PR)
     frame_dig -1
     pushint 3
     ==
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
     b _assert_event_allowed_for_contract_type_after_inlined_modules.actus_kernel.ActusKernelModule._event_allowed_for_contract_type@34
 
 _assert_event_allowed_for_contract_type_after_if_else@33:
-    // modules/actus_kernel.py:293
+    // modules/actus_kernel.py:292
     // return False
     intc_0 // 0
-    // modules/actus_kernel.py:317-319
+    // modules/actus_kernel.py:316-318
     // assert self._event_allowed_for_contract_type(
     //     contract_type, event_type
     // ), err.INVALID_ACTUS_CONFIG
@@ -5930,7 +5932,7 @@ _assert_event_allowed_for_contract_type_after_if_else@33:
 
 // modules.actus_kernel.ActusKernelModule._is_dynamic_annuity() -> uint64:
 _is_dynamic_annuity:
-    // modules/actus_kernel.py:335
+    // modules/actus_kernel.py:334
     // self.contract_type == UInt64(enums.CT_ANN)
     intc_0 // 0
     bytec 10 // "contract_type"
@@ -5938,22 +5940,22 @@ _is_dynamic_annuity:
     assert // check self.contract_type exists
     intc_1 // 1
     ==
-    // modules/actus_kernel.py:335-336
+    // modules/actus_kernel.py:334-335
     // self.contract_type == UInt64(enums.CT_ANN)
     // and self.dynamic_principal_redemption
     bz _is_dynamic_annuity_bool_false@3
-    // modules/actus_kernel.py:336
+    // modules/actus_kernel.py:335
     // and self.dynamic_principal_redemption
     intc_0 // 0
     bytec 35 // "dynamic_principal_redemption"
     app_global_get_ex
     assert // check self.dynamic_principal_redemption exists
-    // modules/actus_kernel.py:335-336
+    // modules/actus_kernel.py:334-335
     // self.contract_type == UInt64(enums.CT_ANN)
     // and self.dynamic_principal_redemption
     bz _is_dynamic_annuity_bool_false@3
     intc_1 // 1
-    // modules/actus_kernel.py:334-337
+    // modules/actus_kernel.py:333-336
     // return (
     //     self.contract_type == UInt64(enums.CT_ANN)
     //     and self.dynamic_principal_redemption
@@ -5962,7 +5964,7 @@ _is_dynamic_annuity:
 
 _is_dynamic_annuity_bool_false@3:
     intc_0 // 0
-    // modules/actus_kernel.py:334-337
+    // modules/actus_kernel.py:333-336
     // return (
     //     self.contract_type == UInt64(enums.CT_ANN)
     //     and self.dynamic_principal_redemption
@@ -5972,45 +5974,45 @@ _is_dynamic_annuity_bool_false@3:
 
 // modules.actus_kernel.ActusKernelModule._entry_interest_segment(entry: bytes) -> uint64, bytes:
 _entry_interest_segment:
-    // modules/actus_kernel.py:380
+    // modules/actus_kernel.py:379
     // def _entry_interest_segment(self, entry: typ.ExecutionScheduleEntry) -> UInt64:
     proto 1 2
-    // modules/actus_kernel.py:389
+    // modules/actus_kernel.py:388
     // entry.accrual_factor == UInt64(0)
     frame_dig -1
     pushint 17
     extract_uint64
     dup
-    // modules/actus_kernel.py:389-391
+    // modules/actus_kernel.py:388-390
     // entry.accrual_factor == UInt64(0)
     // or self.nominal_interest_rate == UInt64(0)
     // or self.interest_calculation_base == UInt64(0)
     bz _entry_interest_segment_if_body@3
-    // modules/actus_kernel.py:390
+    // modules/actus_kernel.py:389
     // or self.nominal_interest_rate == UInt64(0)
     intc_0 // 0
     bytec 9 // "nominal_interest_rate"
     app_global_get_ex
     assert // check self.nominal_interest_rate exists
-    // modules/actus_kernel.py:389-391
+    // modules/actus_kernel.py:388-390
     // entry.accrual_factor == UInt64(0)
     // or self.nominal_interest_rate == UInt64(0)
     // or self.interest_calculation_base == UInt64(0)
     bz _entry_interest_segment_if_body@3
-    // modules/actus_kernel.py:391
+    // modules/actus_kernel.py:390
     // or self.interest_calculation_base == UInt64(0)
     intc_0 // 0
     bytec 7 // "interest_calculation_base"
     app_global_get_ex
     assert // check self.interest_calculation_base exists
-    // modules/actus_kernel.py:389-391
+    // modules/actus_kernel.py:388-390
     // entry.accrual_factor == UInt64(0)
     // or self.nominal_interest_rate == UInt64(0)
     // or self.interest_calculation_base == UInt64(0)
     bnz _entry_interest_segment_after_if_else@4
 
 _entry_interest_segment_if_body@3:
-    // modules/actus_kernel.py:393
+    // modules/actus_kernel.py:392
     // return UInt64(0)
     intc_0 // 0
     frame_dig -1
@@ -6018,38 +6020,38 @@ _entry_interest_segment_if_body@3:
     retsub
 
 _entry_interest_segment_after_if_else@4:
-    // modules/actus_kernel.py:395
+    // modules/actus_kernel.py:394
     // self.interest_calculation_base,
     intc_0 // 0
     bytec 7 // "interest_calculation_base"
     app_global_get_ex
     assert // check self.interest_calculation_base exists
-    // modules/actus_kernel.py:396
+    // modules/actus_kernel.py:395
     // self.nominal_interest_rate,
     intc_0 // 0
     bytec 9 // "nominal_interest_rate"
     app_global_get_ex
     assert // check self.nominal_interest_rate exists
-    // modules/actus_kernel.py:397
+    // modules/actus_kernel.py:396
     // self.fixed_point_scale,
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
     app_global_get_ex
     assert // check self.fixed_point_scale exists
-    // modules/actus_kernel.py:394-398
+    // modules/actus_kernel.py:393-397
     // accrued = self._scaled_mul_div(
     //     self.interest_calculation_base,
     //     self.nominal_interest_rate,
     //     self.fixed_point_scale,
     // )
     callsub _scaled_mul_div
-    // modules/actus_kernel.py:402
+    // modules/actus_kernel.py:401
     // self.fixed_point_scale,
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
     app_global_get_ex
     assert // check self.fixed_point_scale exists
-    // modules/actus_kernel.py:399-403
+    // modules/actus_kernel.py:398-402
     // return self._scaled_mul_div(
     //     accrued,
     //     entry.accrual_factor,
@@ -6065,36 +6067,36 @@ _entry_interest_segment_after_if_else@4:
 
 // modules.actus_kernel.ActusKernelModule._discount_annuity_factor(discount_factor: uint64, redemption_factor: uint64) -> uint64:
 _discount_annuity_factor:
-    // modules/actus_kernel.py:462-466
+    // modules/actus_kernel.py:461-465
     // def _discount_annuity_factor(
     //     self,
     //     discount_factor: UInt64,
     //     redemption_factor: UInt64,
     // ) -> UInt64:
     proto 2 1
-    // modules/actus_kernel.py:468
+    // modules/actus_kernel.py:467
     // if redemption_factor == UInt64(0):
     frame_dig -1
     bnz _discount_annuity_factor_after_if_else@2
-    // modules/actus_kernel.py:469
+    // modules/actus_kernel.py:468
     // return discount_factor
     frame_dig -2
     retsub
 
 _discount_annuity_factor_after_if_else@2:
-    // modules/actus_kernel.py:470
+    // modules/actus_kernel.py:469
     // period_rate = self.fixed_point_scale + self._scaled_mul_div(
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
     app_global_get_ex
     assert // check self.fixed_point_scale exists
-    // modules/actus_kernel.py:471
+    // modules/actus_kernel.py:470
     // self.nominal_interest_rate,
     intc_0 // 0
     bytec 9 // "nominal_interest_rate"
     app_global_get_ex
     assert // check self.nominal_interest_rate exists
-    // modules/actus_kernel.py:470-474
+    // modules/actus_kernel.py:469-473
     // period_rate = self.fixed_point_scale + self._scaled_mul_div(
     //     self.nominal_interest_rate,
     //     redemption_factor,
@@ -6104,17 +6106,17 @@ _discount_annuity_factor_after_if_else@2:
     dig 2
     callsub _scaled_mul_div
     +
-    // modules/actus_kernel.py:475
+    // modules/actus_kernel.py:474
     // assert period_rate > UInt64(0), err.INVALID_ACTUS_CONFIG
     dup
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:478
+    // modules/actus_kernel.py:477
     // self.fixed_point_scale,
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
     app_global_get_ex
     assert // check self.fixed_point_scale exists
-    // modules/actus_kernel.py:476-480
+    // modules/actus_kernel.py:475-479
     // return self._scaled_mul_div(
     //     discount_factor,
     //     self.fixed_point_scale,
@@ -6129,7 +6131,7 @@ _discount_annuity_factor_after_if_else@2:
 
 // modules.actus_kernel.ActusKernelModule._apply_non_cash_schedule_entry(entry: bytes, payload: bytes) -> bytes, bytes:
 _apply_non_cash_schedule_entry:
-    // modules/actus_kernel.py:613-615
+    // modules/actus_kernel.py:612-614
     // def _apply_non_cash_schedule_entry(
     //     self, entry: typ.ExecutionScheduleEntry, payload: typ.ObservedEventRequest
     // ) -> None:
@@ -6137,7 +6139,7 @@ _apply_non_cash_schedule_entry:
     intc_0 // 0
     pushbytes ""
     dupn 8
-    // modules/actus_kernel.py:623
+    // modules/actus_kernel.py:622
     // assert entry.event_id == self.event_cursor, err.INVALID_EVENT_CURSOR
     frame_dig -2
     intc_0 // 0
@@ -6148,7 +6150,7 @@ _apply_non_cash_schedule_entry:
     assert // check self.event_cursor exists
     ==
     assert // Invalid event cursor
-    // modules/actus_kernel.py:624
+    // modules/actus_kernel.py:623
     // assert entry.scheduled_time <= Global.latest_timestamp, err.NO_DUE_CASHFLOW
     frame_dig -2
     pushint 9
@@ -6156,19 +6158,19 @@ _apply_non_cash_schedule_entry:
     global LatestTimestamp
     <=
     assert // No due cashflow to pay
-    // modules/actus_kernel.py:626
+    // modules/actus_kernel.py:625
     // event_type = entry.event_type.as_uint64()
     frame_dig -2
     intc_2 // 8
     getbyte
     dup
-    // modules/actus_kernel.py:627
+    // modules/actus_kernel.py:626
     // if event_type == UInt64(enums.EVT_IED):
     intc_1 // 1
     ==
     dup
     bz _apply_non_cash_schedule_entry_after_if_else@6
-    // modules/actus_kernel.py:135
+    // modules/actus_kernel.py:134
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
     bytec_1 // "status"
@@ -6176,12 +6178,12 @@ _apply_non_cash_schedule_entry:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/actus_kernel.py:628-630
+    // modules/actus_kernel.py:627-629
     // # IED finalizes issuance: reserved units become activatable and the
     // # schedule's initial contractual state becomes live.
     // assert self._status_is_pending_ied(), err.INVALID_ACTUS_CONFIG
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:632
+    // modules/actus_kernel.py:631
     // self.reserved_units_total == self.total_units
     intc_0 // 0
     bytec 11 // "reserved_units_total"
@@ -6192,12 +6194,12 @@ _apply_non_cash_schedule_entry:
     app_global_get_ex
     assert // check self.total_units exists
     ==
-    // modules/actus_kernel.py:631-633
+    // modules/actus_kernel.py:630-632
     // assert (
     //     self.reserved_units_total == self.total_units
     // ), err.PRIMARY_DISTRIBUTION_INCOMPLETE
     assert // Primary distribution is not complete
-    // modules/actus_kernel.py:634
+    // modules/actus_kernel.py:633
     // self.outstanding_principal = entry.next_outstanding_principal
     frame_dig -2
     pushint 49
@@ -6205,12 +6207,12 @@ _apply_non_cash_schedule_entry:
     bytec 4 // "outstanding_principal"
     dig 1
     app_global_put
-    // modules/actus_kernel.py:635
+    // modules/actus_kernel.py:634
     // self.interest_calculation_base = entry.next_outstanding_principal
     bytec 7 // "interest_calculation_base"
     swap
     app_global_put
-    // modules/actus_kernel.py:636
+    // modules/actus_kernel.py:635
     // self.nominal_interest_rate = entry.next_nominal_interest_rate
     frame_dig -2
     pushint 33
@@ -6218,12 +6220,12 @@ _apply_non_cash_schedule_entry:
     bytec 9 // "nominal_interest_rate"
     swap
     app_global_put
-    // modules/actus_kernel.py:637
+    // modules/actus_kernel.py:636
     // self.accrued_interest = UInt64(0)
     bytec 6 // "accrued_interest"
     intc_0 // 0
     app_global_put
-    // modules/actus_kernel.py:638
+    // modules/actus_kernel.py:637
     // self.next_principal_redemption = entry.next_principal_redemption
     frame_dig -2
     pushint 41
@@ -6231,7 +6233,7 @@ _apply_non_cash_schedule_entry:
     bytec 14 // "next_principal_redemption"
     swap
     app_global_put
-    // modules/actus_kernel.py:639
+    // modules/actus_kernel.py:638
     // self.event_cursor += UInt64(1)
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -6242,22 +6244,22 @@ _apply_non_cash_schedule_entry:
     bytec_2 // "event_cursor"
     swap
     app_global_put
-    // modules/actus_kernel.py:640
+    // modules/actus_kernel.py:639
     // self.status = UInt64(enums.STATUS_ACTIVE)
     bytec_1 // "status"
     pushint 100
     app_global_put
-    // modules/actus_kernel.py:451
+    // modules/actus_kernel.py:450
     // assert entry.event_type.as_uint64() == UInt64(enums.EVT_IED), err.NOT_EVT_IED
     frame_dig 11
     assert // Not IED event
-    // modules/actus_kernel.py:452
+    // modules/actus_kernel.py:451
     // return self.initial_exchange_amount
     intc_0 // 0
     bytec 21 // "initial_exchange_amount"
     app_global_get_ex
     assert // check self.initial_exchange_amount exists
-    // modules/actus_kernel.py:641-645
+    // modules/actus_kernel.py:640-644
     // self._emit_execution_event(
     //     entry=entry,
     //     payoff=self._entry_ied_amount(entry),
@@ -6265,10 +6267,10 @@ _apply_non_cash_schedule_entry:
     // )
     frame_dig -2
     swap
-    // modules/actus_kernel.py:644
+    // modules/actus_kernel.py:643
     // settled_amount=UInt64(0),
     intc_0 // 0
-    // modules/actus_kernel.py:641-645
+    // modules/actus_kernel.py:640-644
     // self._emit_execution_event(
     //     entry=entry,
     //     payoff=self._entry_ied_amount(entry),
@@ -6277,7 +6279,7 @@ _apply_non_cash_schedule_entry:
     callsub _emit_execution_event
     dup
     frame_bury -2
-    // modules/actus_kernel.py:646
+    // modules/actus_kernel.py:645
     // return
     frame_dig -1
     frame_bury 1
@@ -6285,7 +6287,7 @@ _apply_non_cash_schedule_entry:
     retsub
 
 _apply_non_cash_schedule_entry_after_if_else@6:
-    // modules/actus_kernel.py:135
+    // modules/actus_kernel.py:134
     // return self.status == UInt64(enums.STATUS_PENDING_IED)
     intc_0 // 0
     bytec_1 // "status"
@@ -6293,11 +6295,11 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     assert // check self.status exists
     pushint 50
     ==
-    // modules/actus_kernel.py:147
+    // modules/actus_kernel.py:146
     // assert not self._status_is_pending_ied(), err.PENDING_IED
     !
     assert // IED not yet executed
-    // modules/actus_kernel.py:649
+    // modules/actus_kernel.py:648
     // self.accrued_interest += self._entry_interest_segment(entry)
     intc_0 // 0
     bytec 6 // "accrued_interest"
@@ -6310,30 +6312,30 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     bytec 6 // "accrued_interest"
     swap
     app_global_put
-    // modules/actus_kernel.py:651
+    // modules/actus_kernel.py:650
     // if event_type == UInt64(enums.EVT_RR):
     frame_dig 10
     pushint 12
     ==
     bz _apply_non_cash_schedule_entry_else_body@10
-    // modules/actus_kernel.py:655
+    // modules/actus_kernel.py:654
     // payload.observed_rate,
     frame_dig -1
     pushint 33
     extract_uint64
-    // modules/actus_kernel.py:656
+    // modules/actus_kernel.py:655
     // self.rate_reset_multiplier,
     intc_0 // 0
     bytec 37 // "rate_reset_multiplier"
     app_global_get_ex
     assert // check self.rate_reset_multiplier exists
-    // modules/actus_kernel.py:657
+    // modules/actus_kernel.py:656
     // self.fixed_point_scale,
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
     app_global_get_ex
     assert // check self.fixed_point_scale exists
-    // modules/actus_kernel.py:652-658
+    // modules/actus_kernel.py:651-657
     // # RR derives the next rate from an observed oracle value plus the
     // # contract spread / multiplier terms, then enforces floor and cap.
     // observed_rate = self._scaled_mul_div(
@@ -6342,7 +6344,7 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     //     self.fixed_point_scale,
     // )
     callsub _scaled_mul_div
-    // modules/actus_kernel.py:660
+    // modules/actus_kernel.py:659
     // observed_rate + self.rate_reset_spread
     intc_0 // 0
     bytec 36 // "rate_reset_spread"
@@ -6350,7 +6352,7 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     assert // check self.rate_reset_spread exists
     +
     frame_bury 6
-    // modules/actus_kernel.py:741
+    // modules/actus_kernel.py:740
     // if self.has_rate_reset_floor and rate < self.rate_reset_floor:
     intc_0 // 0
     bytec 39 // "has_rate_reset_floor"
@@ -6364,7 +6366,7 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     frame_dig 6
     >
     bz _apply_non_cash_schedule_entry_after_if_else@55
-    // modules/actus_kernel.py:742
+    // modules/actus_kernel.py:741
     // rate = self.rate_reset_floor
     intc_0 // 0
     bytec 31 // "rate_reset_floor"
@@ -6374,7 +6376,7 @@ _apply_non_cash_schedule_entry_after_if_else@6:
     assert // check self.rate_reset_floor exists
 
 _apply_non_cash_schedule_entry_after_if_else@55:
-    // modules/actus_kernel.py:743
+    // modules/actus_kernel.py:742
     // if self.has_rate_reset_cap and rate > self.rate_reset_cap:
     intc_0 // 0
     bytec 40 // "has_rate_reset_cap"
@@ -6388,7 +6390,7 @@ _apply_non_cash_schedule_entry_after_if_else@55:
     frame_dig 6
     <
     bz _apply_non_cash_schedule_entry_after_if_else@58
-    // modules/actus_kernel.py:744
+    // modules/actus_kernel.py:743
     // rate = self.rate_reset_cap
     intc_0 // 0
     bytec 32 // "rate_reset_cap"
@@ -6398,10 +6400,10 @@ _apply_non_cash_schedule_entry_after_if_else@55:
     assert // check self.rate_reset_cap exists
 
 _apply_non_cash_schedule_entry_after_if_else@58:
-    // modules/actus_kernel.py:659
+    // modules/actus_kernel.py:658
     // self.nominal_interest_rate = self._clamp_rate(
     bytec 9 // "nominal_interest_rate"
-    // modules/actus_kernel.py:659-661
+    // modules/actus_kernel.py:658-660
     // self.nominal_interest_rate = self._clamp_rate(
     //     observed_rate + self.rate_reset_spread
     // )
@@ -6409,13 +6411,13 @@ _apply_non_cash_schedule_entry_after_if_else@58:
     app_global_put
 
 _apply_non_cash_schedule_entry_after_if_else@18:
-    // modules/actus_kernel.py:671
+    // modules/actus_kernel.py:670
     // if event_type == UInt64(enums.EVT_PI):
     frame_dig 10
     pushint 4
     ==
     bz _apply_non_cash_schedule_entry_else_body@20
-    // modules/actus_kernel.py:672
+    // modules/actus_kernel.py:671
     // self.outstanding_principal = entry.next_outstanding_principal
     frame_dig -2
     pushint 49
@@ -6423,24 +6425,24 @@ _apply_non_cash_schedule_entry_after_if_else@18:
     bytec 4 // "outstanding_principal"
     dig 1
     app_global_put
-    // modules/actus_kernel.py:673
+    // modules/actus_kernel.py:672
     // self.interest_calculation_base = entry.next_outstanding_principal
     bytec 7 // "interest_calculation_base"
     swap
     app_global_put
 
 _apply_non_cash_schedule_entry_after_if_else@23:
-    // modules/actus_kernel.py:678
+    // modules/actus_kernel.py:677
     // if self._is_dynamic_annuity():
     callsub _is_dynamic_annuity
     bz _apply_non_cash_schedule_entry_else_body@29
-    // modules/actus_kernel.py:679
+    // modules/actus_kernel.py:678
     // if event_type == UInt64(enums.EVT_PRF):
     frame_dig 10
     pushint 5
     ==
     bz _apply_non_cash_schedule_entry_after_if_else@30
-    // modules/actus_kernel.py:683
+    // modules/actus_kernel.py:682
     // + (self.schedule_entry_count - self.event_cursor)
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
@@ -6451,22 +6453,22 @@ _apply_non_cash_schedule_entry_after_if_else@23:
     app_global_get_ex
     assert // check self.event_cursor exists
     -
-    // modules/actus_kernel.py:684
+    // modules/actus_kernel.py:683
     // * UInt64(cst.OP_UP_NON_CASH_PER_ENTRY_BUDGET)
     pushint 100
-    // modules/actus_kernel.py:683-684
+    // modules/actus_kernel.py:682-683
     // + (self.schedule_entry_count - self.event_cursor)
     // * UInt64(cst.OP_UP_NON_CASH_PER_ENTRY_BUDGET)
     *
-    // modules/actus_kernel.py:682
+    // modules/actus_kernel.py:681
     // UInt64(cst.OP_UP_NON_CASH_BASE_BUDGET)
     intc 4 // 1500
-    // modules/actus_kernel.py:682-684
+    // modules/actus_kernel.py:681-683
     // UInt64(cst.OP_UP_NON_CASH_BASE_BUDGET)
     // + (self.schedule_entry_count - self.event_cursor)
     // * UInt64(cst.OP_UP_NON_CASH_PER_ENTRY_BUDGET)
     +
-    // modules/actus_kernel.py:680-686
+    // modules/actus_kernel.py:679-685
     // ensure_budget(
     //     required_budget=(
     //         UInt64(cst.OP_UP_NON_CASH_BASE_BUDGET)
@@ -6476,7 +6478,7 @@ _apply_non_cash_schedule_entry_after_if_else@23:
     // )
     intc_0 // 0
     callsub ensure_budget
-    // modules/actus_kernel.py:490
+    // modules/actus_kernel.py:489
     // discount_factor = self.fixed_point_scale
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
@@ -6484,15 +6486,15 @@ _apply_non_cash_schedule_entry_after_if_else@23:
     swap
     frame_bury 2
     assert // check self.fixed_point_scale exists
-    // modules/actus_kernel.py:491
+    // modules/actus_kernel.py:490
     // denominator = UInt64(0)
     intc_0 // 0
     frame_bury 1
-    // modules/actus_kernel.py:492
+    // modules/actus_kernel.py:491
     // skip_first_redemption = False
     intc_0 // 0
     frame_bury 7
-    // modules/actus_kernel.py:494
+    // modules/actus_kernel.py:493
     // if entry.redemption_accrual_factor > UInt64(0):
     frame_dig -2
     pushint 25
@@ -6500,7 +6502,7 @@ _apply_non_cash_schedule_entry_after_if_else@23:
     dup
     frame_bury 8
     bz _apply_non_cash_schedule_entry_after_if_else@35
-    // modules/actus_kernel.py:495-499
+    // modules/actus_kernel.py:494-498
     // # An initial PRF may describe the first redemption period directly.
     // discount_factor = self._discount_annuity_factor(
     //     discount_factor,
@@ -6511,14 +6513,14 @@ _apply_non_cash_schedule_entry_after_if_else@23:
     callsub _discount_annuity_factor
     dup
     frame_bury 2
-    // modules/actus_kernel.py:501
+    // modules/actus_kernel.py:500
     // skip_first_redemption = True
     intc_1 // 1
     frame_bury 7
     frame_bury 1
 
 _apply_non_cash_schedule_entry_after_if_else@35:
-    // modules/actus_kernel.py:503
+    // modules/actus_kernel.py:502
     // future_event_id = self.event_cursor + UInt64(1)
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -6529,7 +6531,7 @@ _apply_non_cash_schedule_entry_after_if_else@35:
     frame_bury 3
 
 _apply_non_cash_schedule_entry_while_top@36:
-    // modules/actus_kernel.py:504
+    // modules/actus_kernel.py:503
     // while future_event_id < self.schedule_entry_count:
     intc_0 // 0
     bytec_3 // "schedule_entry_count"
@@ -6538,45 +6540,45 @@ _apply_non_cash_schedule_entry_while_top@36:
     frame_dig 3
     >
     bz _apply_non_cash_schedule_entry_after_while@48
-    // modules/actus_kernel.py:505
+    // modules/actus_kernel.py:504
     // future_entry = self._get_schedule_entry(future_event_id)
     frame_dig 3
     callsub _get_schedule_entry
     dup
     frame_bury 0
-    // modules/actus_kernel.py:506
+    // modules/actus_kernel.py:505
     // future_event_type = future_entry.event_type.as_uint64()
     intc_2 // 8
     getbyte
     dup
     frame_bury 4
-    // modules/actus_kernel.py:507-508
+    // modules/actus_kernel.py:506-507
     // # Only redemption-bearing events contribute to the annuity denominator.
     // is_redemption_event = future_event_type == UInt64(enums.EVT_PR) or (
     pushint 3
     ==
-    // modules/actus_kernel.py:507-511
+    // modules/actus_kernel.py:506-510
     // # Only redemption-bearing events contribute to the annuity denominator.
     // is_redemption_event = future_event_type == UInt64(enums.EVT_PR) or (
     //     future_event_type == UInt64(enums.EVT_MD)
     //     and future_entry.redemption_accrual_factor > UInt64(0)
     // )
     bnz _apply_non_cash_schedule_entry_bool_true@40
-    // modules/actus_kernel.py:509
+    // modules/actus_kernel.py:508
     // future_event_type == UInt64(enums.EVT_MD)
     frame_dig 4
     pushint 19
     ==
-    // modules/actus_kernel.py:509-510
+    // modules/actus_kernel.py:508-509
     // future_event_type == UInt64(enums.EVT_MD)
     // and future_entry.redemption_accrual_factor > UInt64(0)
     bz _apply_non_cash_schedule_entry_bool_false@41
-    // modules/actus_kernel.py:510
+    // modules/actus_kernel.py:509
     // and future_entry.redemption_accrual_factor > UInt64(0)
     frame_dig 0
     pushint 25
     extract_uint64
-    // modules/actus_kernel.py:509-510
+    // modules/actus_kernel.py:508-509
     // future_event_type == UInt64(enums.EVT_MD)
     // and future_entry.redemption_accrual_factor > UInt64(0)
     bz _apply_non_cash_schedule_entry_bool_false@41
@@ -6585,20 +6587,20 @@ _apply_non_cash_schedule_entry_bool_true@40:
     intc_1 // 1
 
 _apply_non_cash_schedule_entry_bool_merge@42:
-    // modules/actus_kernel.py:512
+    // modules/actus_kernel.py:511
     // if is_redemption_event:
     bz _apply_non_cash_schedule_entry_after_if_else@47
-    // modules/actus_kernel.py:513
+    // modules/actus_kernel.py:512
     // if skip_first_redemption:
     frame_dig 7
     bz _apply_non_cash_schedule_entry_else_body@45
-    // modules/actus_kernel.py:514
+    // modules/actus_kernel.py:513
     // skip_first_redemption = False
     intc_0 // 0
     frame_bury 7
 
 _apply_non_cash_schedule_entry_after_if_else@47:
-    // modules/actus_kernel.py:521
+    // modules/actus_kernel.py:520
     // future_event_id += UInt64(1)
     frame_dig 3
     intc_1 // 1
@@ -6607,12 +6609,12 @@ _apply_non_cash_schedule_entry_after_if_else@47:
     b _apply_non_cash_schedule_entry_while_top@36
 
 _apply_non_cash_schedule_entry_else_body@45:
-    // modules/actus_kernel.py:518
+    // modules/actus_kernel.py:517
     // future_entry.redemption_accrual_factor,
     frame_dig 0
     pushint 25
     extract_uint64
-    // modules/actus_kernel.py:516-519
+    // modules/actus_kernel.py:515-518
     // discount_factor = self._discount_annuity_factor(
     //     discount_factor,
     //     future_entry.redemption_accrual_factor,
@@ -6622,7 +6624,7 @@ _apply_non_cash_schedule_entry_else_body@45:
     callsub _discount_annuity_factor
     dup
     frame_bury 2
-    // modules/actus_kernel.py:520
+    // modules/actus_kernel.py:519
     // denominator += discount_factor
     frame_dig 1
     +
@@ -6634,17 +6636,17 @@ _apply_non_cash_schedule_entry_bool_false@41:
     b _apply_non_cash_schedule_entry_bool_merge@42
 
 _apply_non_cash_schedule_entry_after_while@48:
-    // modules/actus_kernel.py:523
+    // modules/actus_kernel.py:522
     // assert denominator > UInt64(0), err.INVALID_ACTUS_CONFIG
     frame_dig 1
     assert // Invalid ACTUS configuration
-    // modules/actus_kernel.py:524
+    // modules/actus_kernel.py:523
     // numerator = self.outstanding_principal
     intc_0 // 0
     bytec 4 // "outstanding_principal"
     app_global_get_ex
     assert // check self.outstanding_principal exists
-    // modules/actus_kernel.py:525
+    // modules/actus_kernel.py:524
     // if entry.flags & UInt64(enums.FLAG_INITIAL_PRF) == UInt64(0):
     frame_dig -2
     pushint 57
@@ -6652,7 +6654,7 @@ _apply_non_cash_schedule_entry_after_while@48:
     intc_2 // 8
     &
     bnz _apply_non_cash_schedule_entry_after_if_else@50
-    // modules/actus_kernel.py:526-527
+    // modules/actus_kernel.py:525-526
     // # Subsequent PRF events amortize both principal and already accrued carry.
     // numerator += self.accrued_interest
     intc_0 // 0
@@ -6662,13 +6664,13 @@ _apply_non_cash_schedule_entry_after_while@48:
     +
 
 _apply_non_cash_schedule_entry_after_if_else@50:
-    // modules/actus_kernel.py:530
+    // modules/actus_kernel.py:529
     // self.fixed_point_scale,
     intc_0 // 0
     bytec 5 // "fixed_point_scale"
     app_global_get_ex
     assert // check self.fixed_point_scale exists
-    // modules/actus_kernel.py:528-532
+    // modules/actus_kernel.py:527-531
     // return self._scaled_mul_div(
     //     numerator,
     //     self.fixed_point_scale,
@@ -6676,10 +6678,10 @@ _apply_non_cash_schedule_entry_after_if_else@50:
     // )
     frame_dig 1
     callsub _scaled_mul_div
-    // modules/actus_kernel.py:687
+    // modules/actus_kernel.py:686
     // self.next_principal_redemption = self._recalculate_annuity_payment(
     bytec 14 // "next_principal_redemption"
-    // modules/actus_kernel.py:687-689
+    // modules/actus_kernel.py:686-688
     // self.next_principal_redemption = self._recalculate_annuity_payment(
     //     entry
     // )
@@ -6687,7 +6689,7 @@ _apply_non_cash_schedule_entry_after_if_else@50:
     app_global_put
 
 _apply_non_cash_schedule_entry_after_if_else@30:
-    // modules/actus_kernel.py:692
+    // modules/actus_kernel.py:691
     // self.event_cursor += UInt64(1)
     intc_0 // 0
     bytec_2 // "event_cursor"
@@ -6698,20 +6700,20 @@ _apply_non_cash_schedule_entry_after_if_else@30:
     bytec_2 // "event_cursor"
     swap
     app_global_put
-    // modules/actus_kernel.py:693-697
+    // modules/actus_kernel.py:692-696
     // self._emit_execution_event(
     //     entry=entry,
     //     payoff=UInt64(0),
     //     settled_amount=UInt64(0),
     // )
     frame_dig -2
-    // modules/actus_kernel.py:695
+    // modules/actus_kernel.py:694
     // payoff=UInt64(0),
     intc_0 // 0
-    // modules/actus_kernel.py:696
+    // modules/actus_kernel.py:695
     // settled_amount=UInt64(0),
     dup
-    // modules/actus_kernel.py:693-697
+    // modules/actus_kernel.py:692-696
     // self._emit_execution_event(
     //     entry=entry,
     //     payoff=UInt64(0),
@@ -6726,7 +6728,7 @@ _apply_non_cash_schedule_entry_after_if_else@30:
     retsub
 
 _apply_non_cash_schedule_entry_else_body@29:
-    // modules/actus_kernel.py:691
+    // modules/actus_kernel.py:690
     // self.next_principal_redemption = entry.next_principal_redemption
     frame_dig -2
     pushint 41
@@ -6737,13 +6739,13 @@ _apply_non_cash_schedule_entry_else_body@29:
     b _apply_non_cash_schedule_entry_after_if_else@30
 
 _apply_non_cash_schedule_entry_else_body@20:
-    // modules/actus_kernel.py:674
+    // modules/actus_kernel.py:673
     // elif event_type == UInt64(enums.EVT_IPCB):
     frame_dig 10
     pushint 18
     ==
     bz _apply_non_cash_schedule_entry_after_if_else@23
-    // modules/actus_kernel.py:675-676
+    // modules/actus_kernel.py:674-675
     // # IPCB keeps principal unchanged and only resets the interest base.
     // self.interest_calculation_base = self.outstanding_principal
     intc_0 // 0
@@ -6756,23 +6758,23 @@ _apply_non_cash_schedule_entry_else_body@20:
     b _apply_non_cash_schedule_entry_after_if_else@23
 
 _apply_non_cash_schedule_entry_else_body@10:
-    // modules/actus_kernel.py:662
+    // modules/actus_kernel.py:661
     // elif event_type == UInt64(enums.EVT_RRF):
     frame_dig 10
     pushint 11
     ==
     bz _apply_non_cash_schedule_entry_else_body@14
-    // modules/actus_kernel.py:663
+    // modules/actus_kernel.py:662
     // next_rate = entry.next_nominal_interest_rate
     frame_dig -2
     pushint 33
     extract_uint64
     dup
     frame_bury 5
-    // modules/actus_kernel.py:664
+    // modules/actus_kernel.py:663
     // if next_rate == UInt64(0):
     bnz _apply_non_cash_schedule_entry_after_if_else@13
-    // modules/actus_kernel.py:665
+    // modules/actus_kernel.py:664
     // next_rate = self.rate_reset_next
     intc_0 // 0
     bytec 38 // "rate_reset_next"
@@ -6782,7 +6784,7 @@ _apply_non_cash_schedule_entry_else_body@10:
     assert // check self.rate_reset_next exists
 
 _apply_non_cash_schedule_entry_after_if_else@13:
-    // modules/actus_kernel.py:666
+    // modules/actus_kernel.py:665
     // self.nominal_interest_rate = next_rate
     bytec 9 // "nominal_interest_rate"
     frame_dig 5
@@ -6790,7 +6792,7 @@ _apply_non_cash_schedule_entry_after_if_else@13:
     b _apply_non_cash_schedule_entry_after_if_else@18
 
 _apply_non_cash_schedule_entry_else_body@14:
-    // modules/actus_kernel.py:668
+    // modules/actus_kernel.py:667
     // if entry.next_nominal_interest_rate != UInt64(0):
     frame_dig -2
     pushint 33
@@ -6798,7 +6800,7 @@ _apply_non_cash_schedule_entry_else_body@14:
     dup
     frame_bury 9
     bz _apply_non_cash_schedule_entry_after_if_else@18
-    // modules/actus_kernel.py:669
+    // modules/actus_kernel.py:668
     // self.nominal_interest_rate = entry.next_nominal_interest_rate
     bytec 9 // "nominal_interest_rate"
     frame_dig 9
@@ -6808,7 +6810,7 @@ _apply_non_cash_schedule_entry_else_body@14:
 
 // modules.actus_kernel.ActusKernelModule._emit_execution_event(entry: bytes, payoff: uint64, settled_amount: uint64) -> bytes:
 _emit_execution_event:
-    // modules/actus_kernel.py:703-709
+    // modules/actus_kernel.py:702-708
     // def _emit_execution_event(
     //     self,
     //     *,
@@ -6817,44 +6819,44 @@ _emit_execution_event:
     //     settled_amount: UInt64,
     // ) -> None:
     proto 3 1
-    // modules/actus_kernel.py:713
+    // modules/actus_kernel.py:712
     // contract_id=Global.current_application_id.id,
     global CurrentApplicationID
-    // modules/actus_kernel.py:714
+    // modules/actus_kernel.py:713
     // event_id=entry.event_id,
     frame_dig -3
     intc_0 // 0
     extract_uint64
-    // modules/actus_kernel.py:715
+    // modules/actus_kernel.py:714
     // event_type=entry.event_type,
     frame_dig -3
     extract 8 1
-    // modules/actus_kernel.py:716
+    // modules/actus_kernel.py:715
     // scheduled_time=entry.scheduled_time,
     frame_dig -3
     extract 9 8
-    // modules/actus_kernel.py:717
+    // modules/actus_kernel.py:716
     // applied_at=Global.latest_timestamp,
     global LatestTimestamp
-    // modules/actus_kernel.py:720
+    // modules/actus_kernel.py:719
     // self._payoff_sign(entry.event_type.as_uint64(), payoff)
     frame_dig -3
-    // modules/actus_kernel.py:715
+    // modules/actus_kernel.py:714
     // event_type=entry.event_type,
     intc_2 // 8
-    // modules/actus_kernel.py:720
+    // modules/actus_kernel.py:719
     // self._payoff_sign(entry.event_type.as_uint64(), payoff)
     getbyte
-    // modules/actus_kernel.py:749
+    // modules/actus_kernel.py:748
     // if payoff == UInt64(0):
     frame_dig -2
     bnz _emit_execution_event_after_if_else@3
-    // modules/actus_kernel.py:750
+    // modules/actus_kernel.py:749
     // return UInt64(enums.PAYOFF_SIGN_POSITIVE)
     intc_1 // 1
 
 _emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payoff_sign@7:
-    // modules/actus_kernel.py:719-721
+    // modules/actus_kernel.py:718-720
     // payoff_sign=arc4.UInt8(
     //     self._payoff_sign(entry.event_type.as_uint64(), payoff)
     // ),
@@ -6865,19 +6867,19 @@ _emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payo
     <=
     assert // overflow
     extract 7 1
-    // modules/actus_kernel.py:723
+    // modules/actus_kernel.py:722
     // currency_id=self.settlement_asset_id,
     intc_0 // 0
     bytec 20 // "settlement_asset_id"
     app_global_get_ex
     assert // check self.settlement_asset_id exists
-    // modules/actus_kernel.py:724
+    // modules/actus_kernel.py:723
     // sequence=entry.event_id + UInt64(1),
     frame_dig 1
     dup
     intc_1 // 1
     +
-    // modules/actus_kernel.py:712-725
+    // modules/actus_kernel.py:711-724
     // ExecutionEvent(
     //     contract_id=Global.current_application_id.id,
     //     event_id=entry.event_id,
@@ -6918,7 +6920,7 @@ _emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payo
     swap
     itob
     concat
-    // modules/actus_kernel.py:711-726
+    // modules/actus_kernel.py:710-725
     // arc4.emit(
     //     ExecutionEvent(
     //         contract_id=Global.current_application_id.id,
@@ -6944,7 +6946,7 @@ _emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payo
     retsub
 
 _emit_execution_event_after_if_else@3:
-    // modules/actus_kernel.py:751
+    // modules/actus_kernel.py:750
     // if event_type in (UInt64(enums.EVT_IED), UInt64(enums.EVT_PI)):
     frame_dig 5
     intc_1 // 1
@@ -6956,18 +6958,18 @@ _emit_execution_event_after_if_else@3:
     bz _emit_execution_event_after_if_else@6
 
 _emit_execution_event_if_body@5:
-    // modules/actus_kernel.py:752
+    // modules/actus_kernel.py:751
     // return UInt64(enums.PAYOFF_SIGN_POSITIVE)
     intc_1 // 1
-    // modules/actus_kernel.py:720
+    // modules/actus_kernel.py:719
     // self._payoff_sign(entry.event_type.as_uint64(), payoff)
     b _emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payoff_sign@7
 
 _emit_execution_event_after_if_else@6:
-    // modules/actus_kernel.py:753
+    // modules/actus_kernel.py:752
     // return UInt64(enums.PAYOFF_SIGN_NEGATIVE)
     pushint 255
-    // modules/actus_kernel.py:720
+    // modules/actus_kernel.py:719
     // self._payoff_sign(entry.event_type.as_uint64(), payoff)
     b _emit_execution_event_after_inlined_modules.actus_kernel.ActusKernelModule._payoff_sign@7
 

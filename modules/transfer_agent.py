@@ -1,8 +1,7 @@
 from algopy import Account, Global, Txn, UInt64, arc4
 
+from modules.accounting import AccountingModule
 from smart_contracts import errors as err
-
-from .accounting import AccountingModule
 
 
 class TransferAgent(AccountingModule):

@@ -36,13 +36,12 @@ from algopy import (
     op,
 )
 
+from modules.rbac import RbacModule
 from smart_contracts import abi_types as typ
 from smart_contracts import constants as cst
 from smart_contracts import enums
 from smart_contracts import errors as err
 from smart_contracts.events import ExecutionEvent
-
-from .rbac import RbacModule
 
 
 class ActusKernelModule(RbacModule):
