@@ -1,10 +1,9 @@
 from algopy import Account, BoxMap, Global, Txn, UInt64, arc4
 
+from modules.actus_kernel import ActusKernelModule
 from smart_contracts import abi_types as typ
 from smart_contracts import constants as cst
 from smart_contracts import errors as err
-
-from . import ActusKernelModule
 
 
 class AccountingModule(ActusKernelModule):
