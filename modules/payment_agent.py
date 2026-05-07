@@ -1,10 +1,9 @@
 from algopy import Account, Bytes, Global, Txn, UInt64, arc4, ensure_budget, itxn
 
+from modules.accounting import AccountingModule
 from smart_contracts import abi_types as typ
 from smart_contracts import constants as cst
 from smart_contracts import errors as err
-
-from .accounting import AccountingModule
 
 
 class PaymentAgent(AccountingModule):
