@@ -51,8 +51,6 @@ pytest-sugar = "^1.1.1"
 pip-audit = "^2.10.0"
 pre-commit = "^4.5.1"
 puyapy = "^5.8.1"
-urllib3 = "^2.6.3"
-pip = "^26.1"
 python-dotenv = "^1.2.2"
 
 [tool.poetry.group.notebooks]
