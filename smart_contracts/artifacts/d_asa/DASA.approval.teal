@@ -1731,7 +1731,7 @@ primary_distribution_after_if_else@3:
     itob
     pushint 40
     swap
-    box_replace
+    box_replace // on error: index out of bounds
     // modules/transfer_agent.py:95
     // self.reserved_units_total += units
     intc_0 // 0
@@ -1984,7 +1984,7 @@ transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_eve
     uncover 2
     intc_3 // 32
     uncover 2
-    box_replace
+    box_replace // on error: index out of bounds
     // modules/accounting.py:144
     // self.account[holding_address].units += units
     dig 5
@@ -1998,7 +1998,7 @@ transfer_after_inlined_modules.actus_kernel.ActusKernelModule._assert_no_due_eve
     itob
     intc_3 // 32
     swap
-    box_replace
+    box_replace // on error: index out of bounds
     // modules/transfer_agent.py:98
     // @arc4.abimethod
     bytec_0 // 0x151f7c75
@@ -2053,7 +2053,7 @@ account_suspension:
     setbit
     pushint 48
     swap
-    box_replace
+    box_replace // on error: index out of bounds
     // modules/accounting.py:186
     // return Global.latest_timestamp
     global LatestTimestamp
@@ -2209,7 +2209,7 @@ account_update_payment_address:
     // self.account[holding_address].payment_address = payment_address
     intc_0 // 0
     uncover 2
-    box_replace
+    box_replace // on error: index out of bounds
     // modules/accounting.py:242
     // return Global.latest_timestamp
     global LatestTimestamp
@@ -3204,7 +3204,7 @@ contract_schedule_else_body@6:
     pushint 2
     +
     pushint 65
-    box_extract
+    box_extract // on error: index out of bounds
     b contract_schedule_after_if_else@7
 
 contract_schedule_after_while@11:
@@ -3528,13 +3528,13 @@ apply_non_cash_event:
     swap
     concat
     dup
-    bury 9
+    bury 8
     box_len
     bury 1
     bz apply_non_cash_event_after_if_else@27
     // modules/actus_kernel.py:954
     // page = self.schedule_page[page_index].copy()
-    dig 7
+    dig 6
     box_get
     swap
     bury 7
@@ -3607,6 +3607,7 @@ apply_non_cash_event_after_if_else@27:
     dig 3
     itob
     concat
+    swap
     // modules/actus_kernel.py:956-968
     // page.append(
     //     typ.ExecutionScheduleEntry(
@@ -3621,18 +3622,18 @@ apply_non_cash_event_after_if_else@27:
     //         flags=payload.flags,
     //     )
     // )
-    uncover 2
-    swap
-    concat // on error: max array length exceeded
-    swap
     intc_1 // 1
     +
     itob
-    extract 6 2
+    extract 6 0
+    uncover 2
+    swap
     replace2 0
+    swap
+    concat
     // modules/actus_kernel.py:969
     // self.schedule_page[page_index] = page.copy()
-    dig 8
+    dig 7
     dup
     box_del
     pop
@@ -3666,7 +3667,7 @@ apply_non_cash_event_after_if_else@3:
     // entry = self._get_schedule_entry(event_id)
     callsub _get_schedule_entry
     dup
-    bury 8
+    bury 9
     // modules/actus_kernel.py:1216
     // entry.event_type.as_uint64()
     dup
@@ -3809,7 +3810,7 @@ apply_non_cash_event_bool_merge@23:
 apply_non_cash_event_after_if_else@6:
     // modules/actus_kernel.py:1223
     // self._apply_non_cash_schedule_entry(entry, payload)
-    dig 6
+    dig 7
     dig 2
     callsub _apply_non_cash_schedule_entry
     popn 2
@@ -4057,6 +4058,7 @@ append_observed_cash_event_after_if_else@5:
     dig 3
     itob
     concat
+    swap
     // modules/actus_kernel.py:999-1011
     // page.append(
     //     typ.ExecutionScheduleEntry(
@@ -4071,15 +4073,15 @@ append_observed_cash_event_after_if_else@5:
     //         flags=payload.flags,
     //     )
     // )
-    uncover 2
-    swap
-    concat // on error: max array length exceeded
-    swap
     intc_1 // 1
     +
     itob
-    extract 6 2
+    extract 6 0
+    uncover 2
+    swap
     replace2 0
+    swap
+    concat
     // modules/actus_kernel.py:1012
     // self.schedule_page[page_index] = page.copy()
     dig 6
@@ -5587,7 +5589,7 @@ _get_schedule_entry:
     pushint 2
     +
     pushint 65
-    box_extract
+    box_extract // on error: index out of bounds
     retsub
 
 

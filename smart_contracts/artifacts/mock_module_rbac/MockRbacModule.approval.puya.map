@@ -1215,8 +1215,8 @@
       "defined_out": [
         "role_address#0",
         "role_id#1",
-        "validity#0",
-        "values%0#0"
+        "tmp%3#1",
+        "validity#0"
       ],
       "stack_out": [
         "role_address#0",
@@ -1224,7 +1224,7 @@
         "role_id#1",
         "validity#0",
         "role_id#1",
-        "values%0#0"
+        "tmp%3#1"
       ]
     },
     "350": {
@@ -1234,7 +1234,7 @@
         "validity#0",
         "role_id#1",
         "role_id#1",
-        "values%0#0",
+        "tmp%3#1",
         "validity#0"
       ]
     },
@@ -1242,42 +1242,6 @@
       "op": "pushint 8",
       "defined_out": [
         "8",
-        "role_address#0",
-        "role_id#1",
-        "validity#0",
-        "values%0#0"
-      ],
-      "stack_out": [
-        "role_address#0",
-        "validity#0",
-        "role_id#1",
-        "role_id#1",
-        "values%0#0",
-        "validity#0",
-        "8"
-      ]
-    },
-    "354": {
-      "op": "extract_uint64",
-      "defined_out": [
-        "role_address#0",
-        "role_id#1",
-        "validity#0",
-        "values%0#0",
-        "values%1#0"
-      ],
-      "stack_out": [
-        "role_address#0",
-        "validity#0",
-        "role_id#1",
-        "role_id#1",
-        "values%0#0",
-        "values%1#0"
-      ]
-    },
-    "355": {
-      "op": "<",
-      "defined_out": [
         "role_address#0",
         "role_id#1",
         "tmp%3#1",
@@ -1288,7 +1252,43 @@
         "validity#0",
         "role_id#1",
         "role_id#1",
-        "tmp%3#1"
+        "tmp%3#1",
+        "validity#0",
+        "8"
+      ]
+    },
+    "354": {
+      "op": "extract_uint64",
+      "defined_out": [
+        "role_address#0",
+        "role_id#1",
+        "tmp%3#1",
+        "tmp%4#1",
+        "validity#0"
+      ],
+      "stack_out": [
+        "role_address#0",
+        "validity#0",
+        "role_id#1",
+        "role_id#1",
+        "tmp%3#1",
+        "tmp%4#1"
+      ]
+    },
+    "355": {
+      "op": "<",
+      "defined_out": [
+        "role_address#0",
+        "role_id#1",
+        "tmp%5#1",
+        "validity#0"
+      ],
+      "stack_out": [
+        "role_address#0",
+        "validity#0",
+        "role_id#1",
+        "role_id#1",
+        "tmp%5#1"
       ]
     },
     "356": {
@@ -1368,7 +1368,7 @@
     "366": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "role_address#0",
         "role_id#1",
         "validity#0"
@@ -1377,14 +1377,14 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%0#0"
+        "map_prefixed_key%0#0"
       ]
     },
     "367": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%0#0",
-        "box_prefixed_key%0#0 (copy)",
+        "map_prefixed_key%0#0",
+        "map_prefixed_key%0#0 (copy)",
         "role_address#0",
         "role_id#1",
         "validity#0"
@@ -1393,15 +1393,15 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%0#0",
-        "box_prefixed_key%0#0 (copy)"
+        "map_prefixed_key%0#0",
+        "map_prefixed_key%0#0 (copy)"
       ]
     },
     "368": {
       "op": "box_len",
       "defined_out": [
         "_%0#0",
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "maybe_exists%0#0",
         "role_address#0",
         "role_id#1",
@@ -1411,7 +1411,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "_%0#0",
         "maybe_exists%0#0"
       ]
@@ -1422,14 +1422,14 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "maybe_exists%0#0"
       ]
     },
     "371": {
       "op": "!",
       "defined_out": [
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "role_address#0",
         "role_id#1",
         "tmp%1#2",
@@ -1439,7 +1439,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "tmp%1#2"
       ]
     },
@@ -1450,7 +1450,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%0#0"
+        "map_prefixed_key%0#0"
       ]
     },
     "373": {
@@ -1459,7 +1459,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "validity#0"
       ]
     },
@@ -1480,13 +1480,13 @@
       ],
       "op": "global LatestTimestamp",
       "defined_out": [
-        "tmp%5#1"
+        "tmp%7#0"
       ],
       "stack_out": [
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "tmp%5#1"
+        "tmp%7#0"
       ]
     },
     "378": {
@@ -1649,7 +1649,7 @@
     "396": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "role_address#0",
         "role_id#1"
       ],
@@ -1657,14 +1657,14 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%2#0"
+        "map_prefixed_key%2#0"
       ]
     },
     "397": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%2#0",
-        "box_prefixed_key%2#0 (copy)",
+        "map_prefixed_key%2#0",
+        "map_prefixed_key%2#0 (copy)",
         "role_address#0",
         "role_id#1"
       ],
@@ -1672,15 +1672,15 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%2#0",
-        "box_prefixed_key%2#0 (copy)"
+        "map_prefixed_key%2#0",
+        "map_prefixed_key%2#0 (copy)"
       ]
     },
     "398": {
       "op": "box_len",
       "defined_out": [
         "_%1#0",
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "maybe_exists%1#0",
         "role_address#0",
         "role_id#1"
@@ -1689,7 +1689,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "_%1#0",
         "maybe_exists%1#0"
       ]
@@ -1700,24 +1700,24 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "maybe_exists%1#0"
       ]
     },
     "401": {
       "op": "!",
       "defined_out": [
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "role_address#0",
         "role_id#1",
-        "tmp%3#1"
+        "tmp%3#2"
       ],
       "stack_out": [
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%2#0",
-        "tmp%3#1"
+        "map_prefixed_key%2#0",
+        "tmp%3#2"
       ]
     },
     "402": {
@@ -1727,13 +1727,13 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%2#0"
+        "map_prefixed_key%2#0"
       ]
     },
     "403": {
       "op": "dig 2",
       "defined_out": [
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "role_address#0",
         "role_id#1",
         "validity#0"
@@ -1742,7 +1742,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "validity#0"
       ]
     },
@@ -1793,13 +1793,13 @@
       "op": "==",
       "defined_out": [
         "role_id#1",
-        "tmp%4#0"
+        "tmp%4#2"
       ],
       "stack_out": [
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "tmp%4#0"
+        "tmp%4#2"
       ]
     },
     "413": {
@@ -1841,7 +1841,7 @@
     "419": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "role_address#0",
         "role_id#1"
       ],
@@ -1849,14 +1849,14 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%4#0"
+        "map_prefixed_key%4#0"
       ]
     },
     "420": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%4#0",
-        "box_prefixed_key%4#0 (copy)",
+        "map_prefixed_key%4#0",
+        "map_prefixed_key%4#0 (copy)",
         "role_address#0",
         "role_id#1"
       ],
@@ -1864,15 +1864,15 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%4#0",
-        "box_prefixed_key%4#0 (copy)"
+        "map_prefixed_key%4#0",
+        "map_prefixed_key%4#0 (copy)"
       ]
     },
     "421": {
       "op": "box_len",
       "defined_out": [
         "_%2#0",
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "maybe_exists%2#0",
         "role_address#0",
         "role_id#1"
@@ -1881,7 +1881,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "_%2#0",
         "maybe_exists%2#0"
       ]
@@ -1892,24 +1892,24 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "maybe_exists%2#0"
       ]
     },
     "424": {
       "op": "!",
       "defined_out": [
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "role_address#0",
         "role_id#1",
-        "tmp%5#2"
+        "tmp%5#1"
       ],
       "stack_out": [
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%4#0",
-        "tmp%5#2"
+        "map_prefixed_key%4#0",
+        "tmp%5#1"
       ]
     },
     "425": {
@@ -1919,13 +1919,13 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%4#0"
+        "map_prefixed_key%4#0"
       ]
     },
     "426": {
       "op": "dig 2",
       "defined_out": [
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "role_address#0",
         "role_id#1",
         "validity#0"
@@ -1934,7 +1934,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "validity#0"
       ]
     },
@@ -2033,7 +2033,7 @@
     "442": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "role_address#0",
         "role_id#1"
       ],
@@ -2041,14 +2041,14 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%6#0"
+        "map_prefixed_key%6#0"
       ]
     },
     "443": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%6#0",
-        "box_prefixed_key%6#0 (copy)",
+        "map_prefixed_key%6#0",
+        "map_prefixed_key%6#0 (copy)",
         "role_address#0",
         "role_id#1"
       ],
@@ -2056,15 +2056,15 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%6#0",
-        "box_prefixed_key%6#0 (copy)"
+        "map_prefixed_key%6#0",
+        "map_prefixed_key%6#0 (copy)"
       ]
     },
     "444": {
       "op": "box_len",
       "defined_out": [
         "_%3#0",
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "maybe_exists%3#0",
         "role_address#0",
         "role_id#1"
@@ -2073,7 +2073,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "_%3#0",
         "maybe_exists%3#0"
       ]
@@ -2084,24 +2084,24 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "maybe_exists%3#0"
       ]
     },
     "447": {
       "op": "!",
       "defined_out": [
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "role_address#0",
         "role_id#1",
-        "tmp%7#0"
+        "tmp%7#1"
       ],
       "stack_out": [
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%6#0",
-        "tmp%7#0"
+        "map_prefixed_key%6#0",
+        "tmp%7#1"
       ]
     },
     "448": {
@@ -2111,13 +2111,13 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%6#0"
+        "map_prefixed_key%6#0"
       ]
     },
     "449": {
       "op": "dig 2",
       "defined_out": [
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "role_address#0",
         "role_id#1",
         "validity#0"
@@ -2126,7 +2126,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "validity#0"
       ]
     },
@@ -2225,7 +2225,7 @@
     "466": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "role_address#0",
         "role_id#1"
       ],
@@ -2233,14 +2233,14 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%8#0"
+        "map_prefixed_key%8#0"
       ]
     },
     "467": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%8#0",
-        "box_prefixed_key%8#0 (copy)",
+        "map_prefixed_key%8#0",
+        "map_prefixed_key%8#0 (copy)",
         "role_address#0",
         "role_id#1"
       ],
@@ -2248,15 +2248,15 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%8#0",
-        "box_prefixed_key%8#0 (copy)"
+        "map_prefixed_key%8#0",
+        "map_prefixed_key%8#0 (copy)"
       ]
     },
     "468": {
       "op": "box_len",
       "defined_out": [
         "_%4#0",
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "maybe_exists%4#0",
         "role_address#0",
         "role_id#1"
@@ -2265,7 +2265,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "_%4#0",
         "maybe_exists%4#0"
       ]
@@ -2276,14 +2276,14 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "maybe_exists%4#0"
       ]
     },
     "471": {
       "op": "!",
       "defined_out": [
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "role_address#0",
         "role_id#1",
         "tmp%9#0"
@@ -2292,7 +2292,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "tmp%9#0"
       ]
     },
@@ -2303,13 +2303,13 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%8#0"
+        "map_prefixed_key%8#0"
       ]
     },
     "473": {
       "op": "dig 2",
       "defined_out": [
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "role_address#0",
         "role_id#1",
         "validity#0"
@@ -2318,7 +2318,7 @@
         "role_address#0",
         "validity#0",
         "role_id#1",
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "validity#0"
       ]
     },
@@ -2624,36 +2624,36 @@
     "523": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%0#0"
+        "map_prefixed_key%0#0"
       ]
     },
     "524": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%0#0",
-        "box_prefixed_key%0#0 (copy)",
+        "map_prefixed_key%0#0",
+        "map_prefixed_key%0#0 (copy)",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%0#0",
-        "box_prefixed_key%0#0 (copy)"
+        "map_prefixed_key%0#0",
+        "map_prefixed_key%0#0 (copy)"
       ]
     },
     "525": {
       "op": "box_len",
       "defined_out": [
         "_%0#0",
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "maybe_exists%0#0",
         "role_address#0",
         "role_id#1"
@@ -2661,7 +2661,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "_%0#0",
         "maybe_exists%0#0"
       ]
@@ -2671,7 +2671,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%0#0",
+        "map_prefixed_key%0#0",
         "maybe_exists%0#0"
       ]
     },
@@ -2681,7 +2681,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%0#0"
+        "map_prefixed_key%0#0"
       ]
     },
     "529": {
@@ -2866,36 +2866,36 @@
     "551": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%2#0"
+        "map_prefixed_key%2#0"
       ]
     },
     "552": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%2#0",
-        "box_prefixed_key%2#0 (copy)",
+        "map_prefixed_key%2#0",
+        "map_prefixed_key%2#0 (copy)",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%2#0",
-        "box_prefixed_key%2#0 (copy)"
+        "map_prefixed_key%2#0",
+        "map_prefixed_key%2#0 (copy)"
       ]
     },
     "553": {
       "op": "box_len",
       "defined_out": [
         "_%1#0",
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "maybe_exists%1#0",
         "role_address#0",
         "role_id#1"
@@ -2903,7 +2903,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "_%1#0",
         "maybe_exists%1#0"
       ]
@@ -2913,7 +2913,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%2#0",
+        "map_prefixed_key%2#0",
         "maybe_exists%1#0"
       ]
     },
@@ -2923,7 +2923,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%2#0"
+        "map_prefixed_key%2#0"
       ]
     },
     "557": {
@@ -3026,36 +3026,36 @@
     "572": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%4#0"
+        "map_prefixed_key%4#0"
       ]
     },
     "573": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%4#0",
-        "box_prefixed_key%4#0 (copy)",
+        "map_prefixed_key%4#0",
+        "map_prefixed_key%4#0 (copy)",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%4#0",
-        "box_prefixed_key%4#0 (copy)"
+        "map_prefixed_key%4#0",
+        "map_prefixed_key%4#0 (copy)"
       ]
     },
     "574": {
       "op": "box_len",
       "defined_out": [
         "_%2#0",
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "maybe_exists%2#0",
         "role_address#0",
         "role_id#1"
@@ -3063,7 +3063,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "_%2#0",
         "maybe_exists%2#0"
       ]
@@ -3073,7 +3073,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%4#0",
+        "map_prefixed_key%4#0",
         "maybe_exists%2#0"
       ]
     },
@@ -3083,7 +3083,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%4#0"
+        "map_prefixed_key%4#0"
       ]
     },
     "578": {
@@ -3186,36 +3186,36 @@
     "593": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%6#0"
+        "map_prefixed_key%6#0"
       ]
     },
     "594": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%6#0",
-        "box_prefixed_key%6#0 (copy)",
+        "map_prefixed_key%6#0",
+        "map_prefixed_key%6#0 (copy)",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%6#0",
-        "box_prefixed_key%6#0 (copy)"
+        "map_prefixed_key%6#0",
+        "map_prefixed_key%6#0 (copy)"
       ]
     },
     "595": {
       "op": "box_len",
       "defined_out": [
         "_%3#0",
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "maybe_exists%3#0",
         "role_address#0",
         "role_id#1"
@@ -3223,7 +3223,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "_%3#0",
         "maybe_exists%3#0"
       ]
@@ -3233,7 +3233,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%6#0",
+        "map_prefixed_key%6#0",
         "maybe_exists%3#0"
       ]
     },
@@ -3243,7 +3243,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%6#0"
+        "map_prefixed_key%6#0"
       ]
     },
     "599": {
@@ -3346,36 +3346,36 @@
     "615": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%8#0"
+        "map_prefixed_key%8#0"
       ]
     },
     "616": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%8#0",
-        "box_prefixed_key%8#0 (copy)",
+        "map_prefixed_key%8#0",
+        "map_prefixed_key%8#0 (copy)",
         "role_address#0",
         "role_id#1"
       ],
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%8#0",
-        "box_prefixed_key%8#0 (copy)"
+        "map_prefixed_key%8#0",
+        "map_prefixed_key%8#0 (copy)"
       ]
     },
     "617": {
       "op": "box_len",
       "defined_out": [
         "_%4#0",
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "maybe_exists%4#0",
         "role_address#0",
         "role_id#1"
@@ -3383,7 +3383,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "_%4#0",
         "maybe_exists%4#0"
       ]
@@ -3393,7 +3393,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%8#0",
+        "map_prefixed_key%8#0",
         "maybe_exists%4#0"
       ]
     },
@@ -3403,7 +3403,7 @@
       "stack_out": [
         "role_address#0",
         "role_id#1",
-        "box_prefixed_key%8#0"
+        "map_prefixed_key%8#0"
       ]
     },
     "621": {
@@ -4722,38 +4722,38 @@
     "818": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "819": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)",
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)"
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)"
       ]
     },
     "820": {
       "op": "box_len",
       "defined_out": [
         "_%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "_%0#0",
         "maybe_exists%0#0"
       ]
@@ -4762,7 +4762,7 @@
       "op": "bury 1",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0"
       ]
     },
@@ -4771,7 +4771,7 @@
       "op": "assert // Invalid account role address",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "824": {
@@ -4887,38 +4887,38 @@
     "835": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "836": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)",
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)"
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)"
       ]
     },
     "837": {
       "op": "box_len",
       "defined_out": [
         "_%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "_%0#0",
         "maybe_exists%0#0"
       ]
@@ -4927,7 +4927,7 @@
       "op": "bury 1",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0"
       ]
     },
@@ -4936,7 +4936,7 @@
       "op": "assert // Invalid account role address",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "841": {
@@ -4995,38 +4995,38 @@
     "849": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "850": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)",
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)"
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)"
       ]
     },
     "851": {
       "op": "box_len",
       "defined_out": [
         "_%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "_%0#0",
         "maybe_exists%0#0"
       ]
@@ -5035,7 +5035,7 @@
       "op": "bury 1",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0"
       ]
     },
@@ -5044,7 +5044,7 @@
       "op": "assert // Invalid account role address",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "855": {
@@ -5103,38 +5103,38 @@
     "864": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "865": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)",
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)"
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)"
       ]
     },
     "866": {
       "op": "box_len",
       "defined_out": [
         "_%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "_%0#0",
         "maybe_exists%0#0"
       ]
@@ -5143,7 +5143,7 @@
       "op": "bury 1",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0"
       ]
     },
@@ -5152,7 +5152,7 @@
       "op": "assert // Invalid account role address",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "870": {
@@ -5211,38 +5211,38 @@
     "879": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "880": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)",
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1 (copy)"
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1 (copy)"
       ]
     },
     "881": {
       "op": "box_len",
       "defined_out": [
         "_%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0",
         "role_address#0"
       ],
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "_%0#0",
         "maybe_exists%0#0"
       ]
@@ -5251,7 +5251,7 @@
       "op": "bury 1",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0"
       ]
     },
@@ -5260,7 +5260,7 @@
       "op": "assert // Invalid account role address",
       "stack_out": [
         "role_address#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "885": {
@@ -5331,34 +5331,34 @@
     "899": {
       "op": "concat",
       "defined_out": [
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "900": {
       "op": "dup",
       "defined_out": [
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1"
       ]
     },
     "901": {
       "op": "box_len",
       "defined_out": [
         "_%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "_%0#0",
         "maybe_exists%0#0"
       ]
@@ -5367,7 +5367,7 @@
       "op": "bury 1",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "maybe_exists%0#0"
       ]
     },
@@ -5375,15 +5375,15 @@
       "op": "bz _role_is_active_bool_false@4",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "907": {
       "op": "frame_dig 1",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1"
       ]
     },
     "909": {
@@ -5391,11 +5391,11 @@
       "defined_out": [
         "aggregate%box_get%0#0",
         "aggregate%box_get%1#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "aggregate%box_get%0#0",
         "aggregate%box_get%1#0"
       ]
@@ -5405,7 +5405,7 @@
       "op": "assert // check BoxMap entry exists",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "aggregate%box_get%0#0"
       ]
     },
@@ -5413,7 +5413,7 @@
       "op": "intc_1 // 0",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "aggregate%box_get%0#0",
         "0"
       ]
@@ -5421,13 +5421,13 @@
     "912": {
       "op": "extract_uint64",
       "defined_out": [
-        "box_prefixed_key%0#1",
-        "values%0#0"
+        "map_prefixed_key%0#1",
+        "tmp%1#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "values%0#0"
+        "map_prefixed_key%0#1",
+        "tmp%1#0"
       ]
     },
     "913": {
@@ -5437,13 +5437,13 @@
       "op": "dup",
       "defined_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "values%0#0"
+        "map_prefixed_key%0#1",
+        "tmp%1#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "values%0#0",
+        "map_prefixed_key%0#1",
+        "tmp%1#0",
         "awst_tmp%0#0",
         "awst_tmp%0#0"
       ]
@@ -5452,13 +5452,13 @@
       "op": "frame_bury 0",
       "defined_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "values%0#0"
+        "map_prefixed_key%0#1",
+        "tmp%1#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "values%0#0",
+        "map_prefixed_key%0#1",
+        "tmp%1#0",
         "awst_tmp%0#0"
       ]
     },
@@ -5466,28 +5466,28 @@
       "op": "<=",
       "defined_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "tmp%1#0"
+        "map_prefixed_key%0#1",
+        "tmp%2#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "tmp%1#0"
+        "map_prefixed_key%0#1",
+        "tmp%2#0"
       ]
     },
     "919": {
       "op": "bz _role_is_active_bool_false@4",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "922": {
       "op": "frame_dig 1",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1",
+        "map_prefixed_key%0#1"
       ]
     },
     "924": {
@@ -5496,11 +5496,11 @@
         "aggregate%box_get%2#0",
         "aggregate%box_get%3#0",
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "aggregate%box_get%2#0",
         "aggregate%box_get%3#0"
       ]
@@ -5510,7 +5510,7 @@
       "op": "assert // check BoxMap entry exists",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "aggregate%box_get%2#0"
       ]
     },
@@ -5520,11 +5520,11 @@
         "8",
         "aggregate%box_get%2#0",
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "aggregate%box_get%2#0",
         "8"
       ]
@@ -5533,21 +5533,21 @@
       "op": "extract_uint64",
       "defined_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "values%1#0"
+        "map_prefixed_key%0#1",
+        "tmp%3#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "values%1#0"
+        "map_prefixed_key%0#1",
+        "tmp%3#0"
       ]
     },
     "929": {
       "op": "frame_dig 0",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "values%1#0",
+        "map_prefixed_key%0#1",
+        "tmp%3#0",
         "awst_tmp%0#0"
       ]
     },
@@ -5555,20 +5555,20 @@
       "op": ">=",
       "defined_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "tmp%2#0"
+        "map_prefixed_key%0#1",
+        "tmp%4#0"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
-        "tmp%2#0"
+        "map_prefixed_key%0#1",
+        "tmp%4#0"
       ]
     },
     "932": {
       "op": "bz _role_is_active_bool_false@4",
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ]
     },
     "935": {
@@ -5576,11 +5576,11 @@
       "defined_out": [
         "and_result%0#0",
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "and_result%0#0"
       ]
     },
@@ -5588,7 +5588,7 @@
       "block": "_role_is_active_bool_merge@5",
       "stack_in": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "and_result%0#0"
       ],
       "op": "frame_bury 0",
@@ -5604,7 +5604,7 @@
       "block": "_role_is_active_bool_false@4",
       "stack_in": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1"
+        "map_prefixed_key%0#1"
       ],
       "op": "intc_1 // 0",
       "defined_out": [
@@ -5612,7 +5612,7 @@
       ],
       "stack_out": [
         "awst_tmp%0#0",
-        "box_prefixed_key%0#1",
+        "map_prefixed_key%0#1",
         "and_result%0#0"
       ]
     },
