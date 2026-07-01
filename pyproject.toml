@@ -42,13 +42,13 @@ python = ">=3.13,<4.0"
 [tool.poetry.group.dev.dependencies]
 algokit-client-generator = "^2.2.0"
 algorand-python = "^3.5.0"
-black = { extras = ["d"], version = "^26.3.1" }
-ruff = "^0.15.12"
+black = { extras = ["d"], version = "^26.5.1" }
+ruff = "^0.15.20"
 mypy = "^1.19.1"
-pytest = "^9.0.3"
+pytest = "^9.1.1"
 pytest-cov = "^7.1.0"
 pytest-sugar = "^1.1.1"
-pip-audit = "^2.10.0"
+pip-audit = "^2.10.1"
 pre-commit = "^4.5.1"
 puyapy = "^5.8.1"
 python-dotenv = "^1.2.2"
@@ -57,8 +57,8 @@ python-dotenv = "^1.2.2"
 optional = true
 
 [tool.poetry.group.notebooks.dependencies]
-ipykernel = "^7.2.0"
-jupyterlab = "^4.4.7"
+ipykernel = "^7.3.0"
+jupyterlab = "^4.6.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
